@@ -1,0 +1,108 @@
+---
+const links = [
+  { href: '/', label: 'Inicio' },
+  { href: '/trayectoria', label: 'Trayectoria' },
+  { href: '/girek-study', label: 'Girek Study' },
+  { href: '/portafolio', label: 'Portafolio' },
+];
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header id="site-nav" class="fixed inset-x-0 top-0 z-50 transition-all duration-300">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 md:px-8">
+    <a href="/" class="group flex items-center gap-2.5" aria-label="Inicio">
+      <span class="grid h-11 w-11 place-items-center transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-110">
+        <img src="/brand/girek-fox-head.png" alt="Girek" width="44" height="44" class="h-full w-full object-contain" />
+      </span>
+      <span class="font-display text-xl tracking-tight">Girek</span>
+    </a>
+
+    <!-- Desktop -->
+    <ul class="hidden items-center gap-1 md:flex">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class:list={[
+                'link-underline relative rounded-lg px-3.5 py-2 text-sm font-medium transition-colors',
+                isActive(l.href)
+                  ? 'text-[var(--color-fox-deep)]'
+                  : 'text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]',
+              ]}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="ml-2">
+        <a href="/portafolio" class="btn btn-primary !py-2.5 !px-4 text-sm">Ver trabajo</a>
+      </li>
+    </ul>
+
+    <!-- Mobile toggle -->
+    <button
+      id="nav-toggle"
+      class="grid h-10 w-10 place-items-center rounded-lg border border-[var(--color-line-strong)] text-[var(--color-ink)] md:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="7" x2="21" y2="7"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="17" x2="21" y2="17"></line>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile panel -->
+  <div
+    id="nav-mobile"
+    class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-300 md:hidden"
+  >
+    <div class="min-h-0">
+      <ul class="mx-4 mb-4 space-y-1 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]/95 p-3 shadow-[var(--shadow-soft)] backdrop-blur-xl">
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                class:list={[
+                  'block rounded-xl px-4 py-3 text-base font-medium transition-colors',
+                  isActive(l.href)
+                    ? 'bg-[var(--color-fox-tint)] text-[var(--color-fox-deep)]'
+                    : 'text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]',
+                ]}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  const cls = ['border-b', 'border-[var(--color-line)]', 'bg-[var(--color-cream)]/85', 'backdrop-blur-xl'];
+  const onScroll = () => {
+    if (window.scrollY > 12) nav?.classList.add(...cls);
+    else nav?.classList.remove(...cls);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('nav-mobile');
+  toggle?.addEventListener('click', () => {
+    const open = panel?.classList.toggle('grid-rows-[1fr]');
+    panel?.classList.toggle('grid-rows-[0fr]', !open);
+    toggle.setAttribute('aria-expanded', String(!!open));
+  });
+</script>

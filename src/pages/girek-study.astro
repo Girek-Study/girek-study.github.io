@@ -1,0 +1,152 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { profile } from '../data/site';
+import { girekStudy, cursos, testimonios } from '../data/courses';
+
+const nivelColor: Record<string, string> = {
+  Inicial: 'text-[var(--color-fox-deep)] bg-[var(--color-fox-tint)]',
+  Intermedio: 'text-[#0e7490] bg-[#cffafe]',
+  Avanzado: 'text-[#92400e] bg-[#fde68a]',
+};
+---
+
+<Layout title={`Girek Study — Enseñanza de QA y automatización`} description={girekStudy.descripcion}>
+  <!-- Hero -->
+  <section class="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-20">
+    <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
+    <div class="blob -z-10 left-1/2 top-12 h-80 w-80 -translate-x-1/2" style="background: var(--color-coral)"></div>
+    <div class="relative mx-auto max-w-3xl px-5 text-center md:px-8">
+      <div class="reveal flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-7">
+        <img
+          src="/brand/girek-fox-full.png"
+          alt="Girek Study"
+          width="288"
+          height="226"
+          class="float w-52 drop-shadow-[0_22px_45px_rgba(224,73,10,0.35)] sm:w-64"
+        />
+        <div class="text-center sm:text-left">
+          <span class="block font-display text-6xl leading-[0.9] tracking-tight sm:text-7xl">GIREK</span>
+          <span class="mt-1 block font-display text-2xl tracking-[0.34em] text-[var(--color-fox-deep)] sm:text-3xl">STUDY</span>
+        </div>
+      </div>
+      <h1 class="sr-only">{girekStudy.titulo}</h1>
+      <p class="reveal mt-7 text-lg leading-relaxed text-[var(--color-ink-soft)] md:text-xl" data-delay="160ms">
+        {girekStudy.lema}
+      </p>
+      <p class="reveal mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[var(--color-ink-soft)]" data-delay="220ms">
+        {girekStudy.descripcion}
+      </p>
+      <div class="reveal mt-9 flex flex-wrap justify-center gap-3" data-delay="280ms">
+        <a href="#cursos" class="btn btn-primary">Ver cursos</a>
+        <a href={`mailto:${profile.email}?subject=Quiero%20info%20de%20Girek%20Study`} class="btn btn-ghost">Quiero inscribirme</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ¿Para quién es? -->
+  <section class="mx-auto max-w-6xl px-5 py-12 md:px-8">
+    <div class="grid gap-4 sm:grid-cols-3">
+      {
+        girekStudy.paraQuien.map((p, i) => (
+          <div class="reveal card card-hover p-6" data-delay={`${i * 80}ms`}>
+            <span
+              class:list={[
+                'grid h-11 w-11 place-items-center rounded-xl font-display text-lg',
+                i % 2 === 0
+                  ? 'bg-[var(--color-fox-tint)] text-[var(--color-fox-deep)]'
+                  : 'bg-[var(--color-cyan-tint)] text-[var(--color-cyan-deep)]',
+              ]}
+            >
+              0{i + 1}
+            </span>
+            <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">{p}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Cursos -->
+  <section id="cursos" class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
+    <SectionHeading
+      eyebrow="Programa"
+      title="Cursos y rutas de aprendizaje"
+      subtitle="De los fundamentos de QA hasta frameworks de automatización listos para producción."
+    />
+    <div class="mt-12 grid gap-5 md:grid-cols-2">
+      {
+        cursos.map((c, i) => (
+          <article class="reveal card card-hover flex flex-col p-7" data-delay={`${(i % 2) * 90}ms`}>
+            <div class="flex items-center justify-between gap-3">
+              <span class:list={['rounded-full px-2.5 py-1 font-mono text-[0.7rem] font-medium', nivelColor[c.nivel]]}>
+                {c.nivel}
+              </span>
+              <span
+                class:list={[
+                  'font-mono text-[0.7rem]',
+                  c.estado === 'Disponible' ? 'text-[var(--color-cyan-deep)]' : 'text-[var(--color-faint)]',
+                ]}
+              >
+                {c.estado === 'Disponible' ? '● Disponible' : '○ Próximamente'}
+              </span>
+            </div>
+            <h3 class="mt-4 font-display text-2xl tracking-tight">{c.titulo}</h3>
+            <p class="mt-1 font-mono text-xs text-[var(--color-faint)]">{c.duracion}</p>
+            <p class="mt-4 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{c.descripcion}</p>
+            <div class="mt-5 flex flex-wrap gap-1.5">
+              {c.temas.map((t) => <span class="chip">{t}</span>)}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Testimonios -->
+  {
+    testimonios.length > 0 && (
+      <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
+        <SectionHeading eyebrow="Comunidad" title="Lo que dicen mis estudiantes" align="center" />
+        <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {testimonios.map((t, i) => (
+            <figure class="reveal card card-hover p-7" data-delay={`${i * 80}ms`}>
+              <span class="font-display text-4xl leading-none text-[var(--color-coral)]">“</span>
+              <blockquote class="-mt-3 text-sm leading-relaxed text-[var(--color-ink)]">{t.texto}</blockquote>
+              <figcaption class="mt-5 flex items-center gap-3">
+                <span class="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-fox-tint)] font-display text-[var(--color-fox-deep)]">
+                  {t.nombre.charAt(0)}
+                </span>
+                <span>
+                  <span class="block text-sm font-semibold">{t.nombre}</span>
+                  <span class="block text-xs text-[var(--color-faint)]">{t.rol}</span>
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- CTA -->
+  <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
+    <div
+      class="reveal relative overflow-hidden rounded-[28px] p-8 text-center text-white shadow-[var(--shadow-warm)] md:p-14"
+      style="background: linear-gradient(125deg, var(--color-fox) 0%, var(--color-fox-deep) 60%, var(--color-fox-dark) 100%)"
+    >
+      <div class="absolute -left-16 -bottom-16 h-64 w-64 rounded-full bg-[var(--color-amber)]/40 blur-3xl"></div>
+      <div class="relative">
+        <h2 class="mx-auto max-w-xl font-display text-3xl tracking-tight sm:text-4xl">
+          ¿Listo para empezar tu carrera en QA?
+        </h2>
+        <p class="mx-auto mt-4 max-w-lg text-white/90">
+          Escríbeme y te cuento cómo unirte a la próxima cohorte de Girek Study.
+        </p>
+        <a href={`mailto:${profile.email}?subject=Quiero%20info%20de%20Girek%20Study`} class="btn mx-auto mt-8 bg-white text-[var(--color-fox-deep)] hover:-translate-y-0.5">
+          Contáctame
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

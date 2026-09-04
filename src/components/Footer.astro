@@ -1,0 +1,55 @@
+---
+import { profile } from '../data/site';
+const year = 2026;
+---
+
+<footer class="relative mt-28 border-t border-[var(--color-line)] bg-[var(--color-cream-2)]">
+  <div class="mx-auto max-w-6xl px-5 py-14 md:px-8">
+    <div class="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+      <div class="max-w-sm">
+        <a href="/" class="flex items-center gap-2.5">
+          <span class="grid h-11 w-11 place-items-center">
+            <img src="/brand/girek-fox-head.png" alt="Girek" width="44" height="44" class="h-full w-full object-contain" />
+          </span>
+          <span class="font-display text-xl">Girek</span>
+        </a>
+        <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+          {profile.titular} · {profile.ubicacion}. Automatización de pruebas y
+          enseñanza de QA con Girek Study.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-10 sm:grid-cols-3">
+        <div>
+          <h3 class="eyebrow mb-3">Navega</h3>
+          <ul class="space-y-2 text-sm text-[var(--color-ink-soft)]">
+            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href="/trayectoria">Trayectoria</a></li>
+            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href="/girek-study">Girek Study</a></li>
+            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href="/portafolio">Portafolio</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="eyebrow mb-3">Conecta</h3>
+          <ul class="space-y-2 text-sm text-[var(--color-ink-soft)]">
+            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href={profile.links.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href={profile.links.github} target="_blank" rel="noopener">GitHub</a></li>
+            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href={`mailto:${profile.email}`}>Email</a></li>
+          </ul>
+        </div>
+        <div class="col-span-2 sm:col-span-1">
+          <h3 class="eyebrow mb-3">Contacto</h3>
+          <a
+            href={`mailto:${profile.email}`}
+            class="text-sm font-medium text-[var(--color-fox-deep)] underline decoration-[var(--color-amber)] decoration-2 underline-offset-4 transition-colors hover:text-[var(--color-fox)]"
+            >{profile.email}</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-2 border-t border-[var(--color-line)] pt-6 text-xs text-[var(--color-faint)] sm:flex-row sm:items-center sm:justify-between">
+      <p class="font-mono">© {year} {profile.nombre} — Girek 🦊</p>
+      <p class="font-mono">Hecho con Astro + Tailwind</p>
+    </div>
+  </div>
+</footer>

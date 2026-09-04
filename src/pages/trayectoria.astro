@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { profile } from '../data/site';
+import { experiencias, certificaciones, educacion } from '../data/experience';
+---
+
+<Layout title={`Trayectoria — ${profile.nombre}`} description="Trayectoria profesional de Giancarlo (Girek) Palomino en QA y automatización de pruebas.">
+  <!-- Encabezado -->
+  <section class="relative overflow-hidden mx-auto max-w-6xl px-5 pt-32 pb-12 md:px-8 md:pt-40">
+    <div class="blob -z-10 right-[-3rem] top-16 h-72 w-72" style="background: var(--color-amber)"></div>
+    <SectionHeading
+      eyebrow="Trayectoria"
+      title="Experiencia profesional"
+      subtitle="Mi recorrido construyendo calidad y automatización en distintos productos y equipos."
+    />
+    {profile.links.cv && (
+      <a href={profile.links.cv} target="_blank" rel="noopener" class="reveal btn btn-ghost mt-8 text-sm">
+        Descargar CV (PDF)
+      </a>
+    )}
+  </section>
+
+  <!-- Timeline -->
+  <section class="mx-auto max-w-6xl px-5 pb-12 md:px-8">
+    <ol class="relative border-l-2 border-[var(--color-line-strong)] pl-6 md:pl-10">
+      {
+        experiencias.map((e, i) => (
+          <li class="reveal relative pb-12 last:pb-0" data-delay={`${i * 60}ms`}>
+            <span class="absolute -left-[33px] top-1.5 grid h-4 w-4 place-items-center rounded-full bg-[var(--color-fox)] shadow-[0_0_0_4px_var(--color-cream)] md:-left-[49px]">
+              <span class="h-1.5 w-1.5 rounded-full bg-white" />
+            </span>
+            <div class="card card-hover p-6 md:p-7">
+              <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <h3 class="font-display text-xl tracking-tight">{e.cargo}</h3>
+                <span class="rounded-full bg-[var(--color-fox-tint)] px-3 py-1 font-mono text-xs text-[var(--color-fox-deep)]">{e.periodo}</span>
+              </div>
+              <p class="mt-1 text-sm font-semibold text-[var(--color-fox-deep)]">
+                {e.empresa}
+                {e.ubicacion && <span class="font-normal text-[var(--color-faint)]"> · {e.ubicacion}</span>}
+              </p>
+              <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">{e.descripcion}</p>
+              <ul class="mt-4 space-y-2">
+                {e.logros.map((l) => (
+                  <li class="flex gap-2.5 text-sm text-[var(--color-ink-soft)]">
+                    <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-[var(--color-fox)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7" /></svg>
+                    <span>{l}</span>
+                  </li>
+                ))}
+              </ul>
+              {e.stack && (
+                <div class="mt-5 flex flex-wrap gap-1.5">
+                  {e.stack.map((s) => <span class="chip">{s}</span>)}
+                </div>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- Educación + Certificaciones -->
+  <section class="mx-auto max-w-6xl px-5 py-12 md:px-8">
+    <div class="grid gap-10 md:grid-cols-2 md:gap-16">
+      <div class="reveal">
+        <h2 class="eyebrow mb-5">Educación</h2>
+        <ul class="space-y-4">
+          {
+            educacion.map((ed) => (
+              <li class="card card-hover p-5">
+                <h3 class="font-display text-lg tracking-tight">{ed.titulo}</h3>
+                <p class="mt-1 text-sm text-[var(--color-ink-soft)]">{ed.institucion}</p>
+                {ed.periodo && <p class="mt-1 font-mono text-xs text-[var(--color-faint)]">{ed.periodo}</p>}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="reveal" data-delay="120ms">
+        <h2 class="eyebrow mb-5">Certificaciones</h2>
+        <ul class="space-y-4">
+          {
+            certificaciones.map((c) => (
+              <li class="card card-hover flex items-center gap-4 p-5">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-deep)]">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6" /><path d="M9 13.5 7 22l5-3 5 3-2-8.5" /></svg>
+                </span>
+                <div>
+                  <h3 class="font-medium">{c.nombre}</h3>
+                  <p class="text-sm text-[var(--color-ink-soft)]">{c.emisor}{c.anio && ` · ${c.anio}`}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout>

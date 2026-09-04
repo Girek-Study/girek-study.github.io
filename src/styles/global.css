@@ -1,0 +1,302 @@
+@import 'tailwindcss';
+
+/* ===========================================================================
+   Sistema de diseño — Girek
+   Identidad: BLANCO + NARANJA ZORRO. Cálido, enérgico y con vida.
+   Tipografía expresiva + toques de monoespaciada (código/QA).
+   =========================================================================== */
+
+@theme {
+  /* Fondos cálidos (blanco) */
+  --color-cream: #fffaf4;
+  --color-cream-2: #fff3e7;
+  --color-surface: #ffffff;
+
+  /* Tinta (texto) — negro cálido */
+  --color-ink: #1d1712;
+  --color-ink-soft: #5b4f45;
+  --color-faint: #9a8c7f;
+
+  /* Naranja zorro (primario) */
+  --color-fox: #ff6a1a;
+  --color-fox-deep: #e0490a;
+  --color-fox-dark: #b83905;
+  --color-amber: #ffa62b;
+  --color-coral: #ff8a52;
+  --color-fox-tint: #ffe6d2;
+
+  /* Cian eléctrico (acento secundario — del logo) */
+  --color-cyan: #06b6d4;
+  --color-cyan-deep: #0e7490;
+  --color-cyan-bright: #22d3ee;
+  --color-cyan-tint: #d4f6fb;
+
+  /* Navy (secciones destacadas — del logo) */
+  --color-navy: #0a0f1e;
+  --color-navy-2: #111c33;
+  --color-navy-line: rgba(120, 200, 230, 0.14);
+
+  /* Líneas */
+  --color-line: rgba(29, 23, 18, 0.1);
+  --color-line-strong: rgba(29, 23, 18, 0.16);
+
+  /* Tipografía */
+  --font-display: 'Clash Display', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --radius-card: 22px;
+
+  /* Sombras cálidas */
+  --shadow-warm: 0 24px 60px -28px rgba(224, 73, 10, 0.4);
+  --shadow-soft: 0 12px 34px -18px rgba(29, 23, 18, 0.25);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Fondo cálido con halos de naranja */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(1100px 540px at 82% -8%, rgba(255, 166, 43, 0.22), transparent 60%),
+    radial-gradient(900px 520px at 0% 8%, rgba(255, 106, 26, 0.12), transparent 55%),
+    radial-gradient(760px 520px at 96% 40%, rgba(6, 182, 212, 0.1), transparent 55%),
+    radial-gradient(800px 600px at 50% 110%, rgba(255, 138, 82, 0.1), transparent 55%);
+  pointer-events: none;
+}
+
+::selection {
+  background: var(--color-fox);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--color-cream-2); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-coral);
+  border-radius: 999px;
+  border: 3px solid var(--color-cream-2);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-fox); }
+
+:focus-visible {
+  outline: 2.5px solid var(--color-fox);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- Utilidades ---------- */
+.font-display { font-family: var(--font-display); font-weight: 600; }
+.font-mono { font-family: var(--font-mono); }
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-fox) 0%, var(--color-amber) 55%, var(--color-fox-deep) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 6s ease infinite;
+}
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+}
+.card-hover {
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 106, 26, 0.5);
+  box-shadow: var(--shadow-warm);
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-cream-2);
+  border-radius: 999px;
+  padding: 0.3rem 0.72rem;
+  color: var(--color-ink-soft);
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.chip:hover {
+  background: var(--color-fox-tint);
+  border-color: var(--color-coral);
+  color: var(--color-fox-deep);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  border-radius: 14px;
+  padding: 0.85rem 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease,
+    border-color 0.25s ease;
+}
+.btn-primary {
+  background: linear-gradient(120deg, var(--color-fox), var(--color-fox-deep));
+  color: #fff;
+  box-shadow: var(--shadow-warm);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 28px 64px -26px rgba(224, 73, 10, 0.6);
+}
+.btn-ghost {
+  border: 1.5px solid var(--color-line-strong);
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
+.btn-ghost:hover {
+  border-color: var(--color-fox);
+  color: var(--color-fox-deep);
+  transform: translateY(-2px);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-fox-deep);
+  font-weight: 500;
+}
+
+/* Enlace con subrayado que crece */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 0;
+  background: var(--color-fox);
+  transition: width 0.3s ease;
+}
+.link-underline:hover::after { width: 100%; }
+
+/* Revelado al hacer scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Blobs animados del hero */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: blob-move 16s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes blob-move {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(28px, -34px) scale(1.12); }
+  66% { transform: translate(-22px, 20px) scale(0.92); }
+}
+
+/* Flotación suave (emblema zorro) */
+.float { animation: float 5.5s ease-in-out infinite; }
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(-2deg); }
+}
+
+/* Marquee infinito */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover .marquee { animation-play-state: paused; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Patrón de cuadrícula sutil */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 38px 38px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 75%);
+}
+
+/* ---------- Acento cian (secundario) ---------- */
+.chip-cyan {
+  border-color: rgba(6, 182, 212, 0.35);
+  background: var(--color-cyan-tint);
+  color: var(--color-cyan-deep);
+}
+.btn-cyan {
+  background: linear-gradient(120deg, var(--color-cyan-bright), var(--color-cyan-deep));
+  color: #fff;
+  box-shadow: 0 18px 44px -22px rgba(6, 182, 212, 0.6);
+}
+.btn-cyan:hover { transform: translateY(-2px); }
+
+/* Banda navy (secciones destacadas — el neón del logo brilla aquí) */
+.band-navy {
+  position: relative;
+  overflow: hidden;
+  color: #eaf2ff;
+  background:
+    radial-gradient(120% 140% at 80% 0%, var(--color-navy-2) 0%, var(--color-navy) 65%);
+  border: 1px solid var(--color-navy-line);
+}
+.band-navy .grid-navy {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(120, 200, 230, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 200, 230, 0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 70% 30%, #000, transparent 80%);
+  mask-image: radial-gradient(ellipse 90% 80% at 70% 30%, #000, transparent 80%);
+  pointer-events: none;
+}
