@@ -2,18 +2,28 @@
 import Layout from '../layouts/Layout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { profile } from '../data/site';
-import { experiencias, certificaciones, educacion } from '../data/experience';
+import { experiencias, certificaciones, educacion, idiomas } from '../data/experience';
 ---
 
-<Layout title={`Trayectoria — ${profile.nombre}`} description="Trayectoria profesional de Giancarlo (Girek) Palomino en QA y automatización de pruebas.">
+<Layout
+  title={`Trayectoria — ${profile.nombreCompleto}`}
+  description={`Trayectoria profesional de ${profile.nombreCompleto} en QA, automatización de pruebas y liderazgo de equipos de calidad.`}
+>
   <!-- Encabezado -->
   <section class="relative overflow-hidden mx-auto max-w-6xl px-5 pt-32 pb-12 md:px-8 md:pt-40">
     <div class="blob -z-10 right-[-3rem] top-16 h-72 w-72" style="background: var(--color-amber)"></div>
     <SectionHeading
       eyebrow="Trayectoria"
-      title="Experiencia profesional"
-      subtitle="Mi recorrido construyendo calidad y automatización en distintos productos y equipos."
+      title={profile.nombreCompleto}
+      subtitle="Diez años en calidad de software: de programar en Java a liderar chapters de QA en banca, fintech, salud y educación."
     />
+
+    <div class="reveal mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm text-[var(--color-faint)]" data-delay="60ms">
+      <span>{profile.cargoActual}</span>
+      <span>{profile.ubicacion}</span>
+      <a href={`mailto:${profile.email}`} class="link-underline text-[var(--color-fox-deep)]">{profile.email}</a>
+    </div>
+
     {profile.links.cv && (
       <a href={profile.links.cv} target="_blank" rel="noopener" class="reveal btn btn-ghost mt-8 text-sm">
         Descargar CV (PDF)
@@ -90,6 +100,18 @@ import { experiencias, certificaciones, educacion } from '../data/experience';
                   <h3 class="font-medium">{c.nombre}</h3>
                   <p class="text-sm text-[var(--color-ink-soft)]">{c.emisor}{c.anio && ` · ${c.anio}`}</p>
                 </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 class="eyebrow mb-5 mt-10">Idiomas</h2>
+        <ul class="space-y-4">
+          {
+            idiomas.map((idioma) => (
+              <li class="card p-5">
+                <h3 class="font-display text-lg tracking-tight">{idioma.nombre}</h3>
+                <p class="mt-1 text-sm text-[var(--color-ink-soft)]">{idioma.nivel}</p>
               </li>
             ))
           }

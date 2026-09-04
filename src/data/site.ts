@@ -1,50 +1,61 @@
 // ============================================================================
-//  PERFIL — Edita aquí tus datos reales (tomados de tu LinkedIn).
-//  Los valores actuales son una base inferida de tu perfil QA Automation.
+//  PERFIL — Datos reales, tomados del CV y del perfil de LinkedIn.
+//  Regla: aquí no entra ninguna cifra que no se pueda sustentar en una
+//  entrevista. Un número inventado desmiente todo lo demás que diga el sitio.
 // ============================================================================
 
 export const profile = {
   nombre: 'Giancarlo Palomino',
+  nombreCompleto: 'Giancarlo Renato Palomino Huallpa',
   alias: 'Girek',
-  // Titular profesional de LinkedIn
-  titular: 'QA Automation Engineer',
+  titular: 'Ingeniero de calidad que codea',
+  cargoActual: 'Quality Engineering & API Testing en Canvia, para Interbank',
   ubicacion: 'Lima, Perú',
-  // Frase corta de impacto para el hero
+
   tagline:
-    'Construyo automatización de pruebas confiable y enseño a otros a hacerlo bien.',
-  // Acerca de / resumen profesional (2-4 frases)
+    'Diez años haciendo que los equipos entreguen más rápido sin romper producción. Ahora escribo y enseño cómo se hace.',
+
   bio:
-    'Ingeniero de automatización QA enfocado en frameworks robustos, pipelines de CI/CD y calidad de software de extremo a extremo. Trabajo con Playwright, Cypress y el patrón Screenplay sobre proyectos web y backend. Además dirijo Girek Study, un proyecto de enseñanza donde comparto QA y automatización de forma práctica.',
+    'Llevo diez años en calidad de software: empecé programando en Java y terminé liderando chapters de QA en banca y fintech. Construyo frameworks de automatización que otros equipos puedan mantener, llevo las pruebas a los pipelines para que el feedback llegue en minutos y no en días, y aplico IA al diseño de escenarios sin soltarle el volante. Girek Study es donde publico todo eso en abierto: el código, las decisiones y el porqué de cada una.',
+
   email: 'ing.palominoh@gmail.com',
-  // Reemplaza con tus enlaces reales
+
   links: {
     linkedin: 'https://www.linkedin.com/in/girekpalomino/',
     github: 'https://github.com/Girek-Study',
-    youtube: '', // TODO: canal de Girek Study si aplica
-    cv: '', // TODO: URL a tu CV en PDF (colócalo en /public/cv.pdf)
+    youtube: '',
+    // Cuando exista el PDF, colócalo en public/cv.pdf y pon aquí '/cv.pdf'.
+    cv: '',
   },
 };
 
-// Métricas del hero. Solo cifras que puedas sustentar en una entrevista:
-// un número inventado aquí desmiente todo lo demás que diga el sitio.
+// Métricas del hero. Las tres son verificables contra la trayectoria.
 export const stats = [
   { valor: '10', etiqueta: 'años en QA y automatización' },
   { valor: '15', etiqueta: 'ingenieros de calidad liderados' },
-  { valor: '3', etiqueta: 'sectores: banca, fintech y salud' },
+  { valor: '4', etiqueta: 'sectores: banca, fintech, salud y educación' },
 ];
 
-// Stack / herramientas principales
+// Stack que se defiende en una entrevista técnica, no una lista de deseos.
 export const stack = [
   'Playwright',
-  'Cypress',
-  'Selenium',
   'TypeScript',
-  'JavaScript',
-  'C# / .NET',
-  'Screenplay Pattern',
-  'Jest',
-  'Postman / API Testing',
-  'CI/CD',
-  'Git',
+  'Selenium',
+  'Cypress',
+  'Appium',
+  'Screenplay',
+  'Cucumber / BDD',
+  'RestAssured',
+  'Karate',
+  'Postman',
+  'k6',
+  'JMeter',
+  'Azure DevOps',
+  'Jenkins',
+  'GitLab CI',
   'Docker',
+  'Kubernetes',
+  'SQL',
+  'Java',
+  'Python',
 ];
