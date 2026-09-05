@@ -107,7 +107,7 @@ const entradas = [
 
 <Layout>
   <!-- ============ HERO ============ -->
-  <section class="seccion relative flex flex-col overflow-hidden pt-28 lg:min-h-screen lg:pt-20">
+  <section class="seccion hero relative flex flex-col overflow-hidden pt-28 lg:min-h-dvh lg:pt-20">
     <!-- Fondo con vida -->
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 left-[-6rem] top-10 h-72 w-72" style="background: var(--color-amber)"></div>
@@ -119,14 +119,14 @@ const entradas = [
           <p class="reveal eyebrow">Bienvenido a Girek Study</p>
 
           <h1
-            class="reveal mt-5 font-display text-[2.8rem] leading-[1.02] tracking-tight sm:text-6xl md:text-[4.4rem]"
+            class="reveal mt-5 font-display leading-[1.02] tracking-tight text-[clamp(2.4rem,4.6vw+0.6rem,4.4rem)]"
             data-delay="80ms"
           >
             La calidad no se repite.<br /><span class="text-gradient">Se programa.</span>
           </h1>
 
           <p
-            class="reveal mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-ink-soft)] md:text-xl"
+            class="reveal mt-5 max-w-xl leading-relaxed text-[var(--color-ink-soft)] text-[clamp(1rem,0.5vw+0.9rem,1.25rem)]"
             data-delay="160ms"
           >
             Probar no es seguir un guion paso a paso. Es escribir el código que recorre lo que ningún
@@ -134,13 +134,17 @@ const entradas = [
           </p>
 
           <p
-            class="reveal mt-7 max-w-xl border-l-2 border-[var(--color-fox)] pl-5 font-display text-lg leading-snug tracking-tight text-[var(--color-ink)] md:text-xl"
+            class="cita reveal mt-6 max-w-xl border-l-2 border-[var(--color-fox)] pl-5 font-display text-lg leading-snug tracking-tight text-[var(--color-ink)] md:text-xl"
             data-delay="200ms"
           >
             Lo que no está en el pipeline no es una prueba: es una esperanza.
           </p>
 
-          <div class="reveal mt-9 flex flex-wrap items-center gap-3" data-delay="260ms">
+          <p class="credito reveal mt-6 font-mono text-xs text-[var(--color-faint)]" data-delay="240ms">
+            Por Giancarlo Palomino · 10 años en QA · Chapter Lead en banca y fintech · ISTQB CTFL
+          </p>
+
+          <div class="acciones reveal mt-6 flex flex-wrap items-center gap-3" data-delay="260ms">
             <a href="/portafolio" class="btn btn-primary">
               Ver el código
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -152,31 +156,29 @@ const entradas = [
 
         <!-- Visual: emblema zorro + tarjeta de código -->
         <div class="reveal relative mx-auto hidden w-full max-w-md self-start lg:block" data-delay="200ms">
-          <div class="float relative z-10 mx-auto -mb-10 -mt-10 w-72">
-            <img src="/brand/girek-fox-full.png" alt="Girek Study" width="288" height="226" class="w-full drop-shadow-[0_22px_45px_rgba(224,73,10,0.35)]" />
+          <div class="float relative z-10 mx-auto -mb-6 -mt-10 w-64 lg:mr-4 lg:ml-auto">
+            <img src="/brand/girek-fox-full.png" alt="" width="288" height="226" class="w-full drop-shadow-[0_22px_45px_rgba(224,73,10,0.35)]" />
           </div>
-          <div class="card overflow-hidden">
+          <div class="card overflow-hidden" aria-hidden="true">
             <div class="flex items-center gap-1.5 border-b border-[var(--color-line)] bg-[var(--color-cream-2)] px-4 py-3">
               <span class="h-3 w-3 rounded-full bg-[#ff5f57]"></span>
               <span class="h-3 w-3 rounded-full bg-[#febc2e]"></span>
               <span class="h-3 w-3 rounded-full bg-[#28c840]"></span>
-              <span class="ml-3 font-mono text-xs text-[var(--color-faint)]">login.spec.ts</span>
+              <span class="ml-3 font-mono text-xs text-[var(--color-faint)]">tareas.spec.ts</span>
             </div>
-            <pre class="overflow-x-auto p-5 font-mono text-[0.8rem] leading-relaxed text-[var(--color-ink-soft)]"><code><span class="text-[var(--color-fox-deep)]">test</span>(<span class="text-[var(--color-amber)]">'usuario inicia sesión'</span>, <span class="text-[var(--color-fox-deep)]">async</span> () =&gt; {'{'}
-  <span class="text-[var(--color-faint)]">// Screenplay Pattern</span>
-  <span class="text-[var(--color-fox-deep)]">await</span> actor.attemptsTo(
-    Login.withValidCredentials(),
+            <pre class="overflow-x-auto p-5 font-mono text-[0.8rem] leading-relaxed text-[var(--color-ink-soft)]"><code><span class="text-[var(--color-fox-deep)]">test</span>(<span class="text-[var(--color-amber)]">'el contador solo cuenta pendientes'</span>, <span class="text-[var(--color-fox-deep)]">async</span> ({'{'} ana {'}'}) =&gt; {'{'}
+  <span class="text-[var(--color-fox-deep)]">await</span> ana.intenta(
+    IniciarSesion.comoUsuarioValido(),
+    AgregarTarea.llamada(<span class="text-[var(--color-amber)]">'Revisar el plan'</span>),
+    Ensure.that(Text.de(Contador), igualA(<span class="text-[var(--color-amber)]">'1 pendiente'</span>)),
   );
-  <span class="text-[var(--color-fox-deep)]">await</span> actor.expects(
-    Dashboard.isVisible(),
-  ).<span class="text-[var(--color-fox-deep)]">toBe</span>(<span class="text-[var(--color-amber)]">true</span>);
 {'}'});
 
 <span class="text-[var(--color-cyan-deep)]">✓</span> <span class="text-[var(--color-faint)]">1 passed (1.2s)</span></code></pre>
           </div>
 
           <!-- Herramientas con las que trabajo -->
-          <div class="mt-7 border-t border-[var(--color-line)] pt-5">
+          <div class="stack mt-7 border-t border-[var(--color-line)] pt-5">
             <p class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">
               El stack con el que construyo
             </p>
@@ -185,7 +187,6 @@ const entradas = [
                 herramientas.map((h) => (
                   <li
                     class="herramienta text-[var(--color-ink-soft)] transition-colors duration-200 hover:text-[var(--color-fox-deep)]"
-                    title={h.nombre}
                     set:html={h.svg}
                   />
                 ))
@@ -196,8 +197,18 @@ const entradas = [
       </div>
     </div>
 
+    <a
+      href="#que-hay-aqui"
+      class="pista-scroll mx-auto mt-8 hidden items-center gap-2 font-mono text-xs text-[var(--color-faint)] transition-colors hover:text-[var(--color-fox-dark)] lg:inline-flex"
+    >
+      <span>Hay más abajo</span>
+      <svg class="flecha-abajo" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path d="M12 5v14M6 13l6 6 6-6" />
+      </svg>
+    </a>
+
     <!-- ============ MARQUEE DE STACK ============ -->
-    <div class="mt-10 border-t border-[var(--color-line)] bg-[var(--color-surface)] py-4">
+    <div class="marquee-fuera mt-6 border-t border-[var(--color-line)] bg-[var(--color-surface)] py-4">
       <div class="marquee-track overflow-hidden">
         <div class="marquee gap-3 pr-3">
           {
@@ -227,7 +238,7 @@ const entradas = [
   </section>
 
   <!-- ============ QUÉ HAY AQUÍ ============ -->
-  <section class="seccion mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+  <section id="que-hay-aqui" class="seccion mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
     <div class="mx-auto max-w-3xl text-center">
       <p class="reveal eyebrow">Qué vas a encontrar</p>
       <h2 class="reveal mt-4 font-display text-3xl leading-tight tracking-tight md:text-4xl" data-delay="60ms">

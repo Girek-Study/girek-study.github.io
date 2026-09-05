@@ -15,7 +15,7 @@
   /* Tinta (texto) — negro cálido */
   --color-ink: #1d1712;
   --color-ink-soft: #5b4f45;
-  --color-faint: #9a8c7f;
+  --color-faint: #7d7064;
 
   /* Naranja zorro (primario) */
   --color-fox: #ff6a1a;
@@ -170,7 +170,10 @@ body::before {
     border-color 0.25s ease;
 }
 .btn-primary {
-  background: linear-gradient(120deg, var(--color-fox), var(--color-fox-deep));
+  /* Contraste con blanco: el naranja vivo daba 2.87:1 y el minimo AA es 4.5:1.
+     Este degradado arranca en #b83905 (5.79:1), asi que ningun punto del boton
+     baja del minimo. El naranja vivo se reserva para acentos, no para texto. */
+  background: linear-gradient(120deg, var(--color-fox-dark), #9c3103);
   color: #fff;
   box-shadow: var(--shadow-warm);
 }
@@ -194,7 +197,8 @@ body::before {
   font-size: 0.78rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-fox-deep);
+  /* #e0490a daba 3.95:1 sobre el crema; este llega a 5.58:1. */
+  color: var(--color-fox-dark);
   font-weight: 500;
 }
 
@@ -335,4 +339,60 @@ html {
 .herramienta-sm svg {
   width: 1.05rem;
   height: 1.05rem;
+}
+
+/* La flecha insinúa el desplazamiento sin llegar a distraer. */
+@keyframes flecha-abajo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+.flecha-abajo {
+  animation: flecha-abajo 1.8s ease-in-out infinite;
+}
+
+/* Pantallas de portátil bajas (1366x768 y 1440x900 dejan 640-720px útiles).
+   La tipografía elástica escala con el ancho, no con el alto, así que sin esto
+   el hero mide 807px y el carrusel se cae fuera de la primera pantalla. */
+@media (min-width: 1024px) and (max-height: 860px) {
+  .hero {
+    padding-top: 5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.1rem, 2.6vw + 0.5rem, 3.1rem);
+  }
+  .hero h1 + p {
+    margin-top: 1rem;
+    font-size: 1rem;
+  }
+  /* La cita y la línea de credibilidad se compactan, no desaparecen. */
+  .hero .cita {
+    margin-top: 1rem;
+    font-size: 1rem;
+    padding-left: 1rem;
+  }
+  .hero .credito {
+    margin-top: 1rem;
+  }
+  .hero .acciones {
+    margin-top: 1.25rem;
+  }
+  .hero pre {
+    padding: 0.9rem 1.1rem;
+    font-size: 0.72rem;
+  }
+  .hero .stack {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+  }
+  .hero .stack .herramienta svg {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  /* Con el espacio justo, la flecha estorba más de lo que ayuda. */
+  .hero .pista-scroll {
+    display: none;
+  }
+  .hero .marquee-fuera {
+    margin-top: 1.25rem;
+  }
 }
