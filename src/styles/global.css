@@ -330,3 +330,9 @@ html {
     scroll-snap-type: none;
   }
 }
+
+/* Variante pequeña para los chips del carrusel. */
+.herramienta-sm svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}

@@ -25,8 +25,34 @@ const herramientas = [
   svg: svgs[`../herramientas/${slug}.svg`],
 }));
 
+// Nombre visible -> archivo de icono. Lo que no tiene icono va solo con texto:
+// preferible a inventar un logo que no es el de la herramienta.
+const ICONOS: Record<string, string> = {
+  Playwright: 'playwright',
+  TypeScript: 'typescript',
+  Selenium: 'selenium',
+  Cypress: 'cypress',
+  Appium: 'appium',
+  'Cucumber / BDD': 'cucumber',
+  Postman: 'postman',
+  k6: 'k6',
+  JMeter: 'apachejmeter',
+  'Azure DevOps': 'azuredevops',
+  Jenkins: 'jenkins',
+  'GitLab CI': 'gitlab',
+  Docker: 'docker',
+  Kubernetes: 'kubernetes',
+  SQL: 'postgresql',
+  Java: 'openjdk',
+  Python: 'python',
+};
+
+const marquee = [...stack, ...stack].map((nombre) => ({
+  nombre,
+  svg: ICONOS[nombre] ? svgs[`../herramientas/${ICONOS[nombre]}.svg`] : null,
+}));
+
 const destacados = proyectos.filter((p) => p.destacado).slice(0, 3);
-const marquee = [...stack, ...stack];
 
 // Los repositorios se cuentan en vivo; las notas, desde la colección. Así los
 // contadores de la bienvenida nunca mienten sobre lo que hay publicado.
@@ -72,7 +98,7 @@ const entradas = [
 
 <Layout>
   <!-- ============ HERO ============ -->
-  <section class="seccion relative flex flex-col justify-center overflow-hidden pt-28 pb-8 lg:min-h-screen lg:justify-between lg:pt-32">
+  <section class="seccion relative flex flex-col justify-center overflow-hidden pt-28 lg:min-h-screen lg:justify-between lg:pt-32">
     <!-- Fondo con vida -->
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 left-[-6rem] top-10 h-72 w-72" style="background: var(--color-amber)"></div>
@@ -162,14 +188,18 @@ const entradas = [
     </div>
 
     <!-- ============ MARQUEE DE STACK ============ -->
-    <div class="mt-10 border-y border-[var(--color-line)] bg-[var(--color-surface)] py-4">
+    <div class="mt-10 border-t border-[var(--color-line)] bg-[var(--color-surface)] py-4">
       <div class="marquee-track overflow-hidden">
         <div class="marquee gap-3 pr-3">
           {
-            marquee.map((s) => (
+            marquee.map((m) => (
               <span class="flex shrink-0 items-center gap-2 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-cream-2)] px-4 py-2 font-mono text-sm text-[var(--color-ink-soft)]">
-                <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan)]" />
-                {s}
+                {m.svg ? (
+                  <span class="herramienta herramienta-sm" set:html={m.svg} />
+                ) : (
+                  <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan)]" />
+                )}
+                {m.nombre}
               </span>
             ))
           }
