@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { formatearFecha } from '../../utils/fechas';
+
+// Los borradores se ven en `npm run dev` pero nunca se publican.
+const notas = (await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador)).sort(
+  (a, b) => b.data.fecha.getTime() - a.data.fecha.getTime(),
+);
+---
+
+<Layout
+  title="Notas — Girek Study"
+  description="Apuntes sobre automatización de pruebas, calidad de software y las decisiones de diseño que sostienen una suite a lo largo del tiempo."
+>
+  <section class="relative overflow-hidden mx-auto max-w-4xl px-5 pt-32 pb-10 md:px-8 md:pt-40">
+    <div class="blob -z-10 right-[-3rem] top-16 h-72 w-72" style="background: var(--color-amber)"></div>
+    <SectionHeading
+      eyebrow="Notas"
+      title="Lo que aprendo escribiendo pruebas"
+      subtitle="Decisiones de diseño, errores que costaron caro y cosas que ojalá me hubieran contado antes. Sin relleno."
+    />
+
+    <a
+      href="/rss.xml"
+      class="reveal mt-6 inline-flex items-center gap-2 font-mono text-xs text-[var(--color-faint)] transition-colors hover:text-[var(--color-fox-deep)]"
+      data-delay="60ms"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <circle cx="6.18" cy="17.82" r="2.18"></circle>
+        <path
+          d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"
+        ></path>
+      </svg>
+      Suscribirse por RSS
+    </a>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-5 pb-20 md:px-8">
+    {
+      notas.length === 0 ? (
+        <p class="font-mono text-sm text-[var(--color-faint)]">Todavía no hay notas publicadas.</p>
+      ) : (
+        <ol class="space-y-5">
+          {notas.map((nota, i) => (
+            <li>
+              <a
+                href={`/notas/${nota.id}/`}
+                class="reveal card card-hover block p-6 md:p-8"
+                data-delay={`${(i % 4) * 70}ms`}
+              >
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-faint)]">
+                  <time datetime={nota.data.fecha.toISOString()}>{formatearFecha(nota.data.fecha)}</time>
+                  {nota.data.etiquetas.map((t) => (
+                    <span>#{t}</span>
+                  ))}
+                  {nota.data.borrador && (
+                    <span class="rounded-full bg-[var(--color-fox-tint)] px-2 py-0.5 text-[var(--color-fox-deep)]">
+                      borrador
+                    </span>
+                  )}
+                </div>
+
+                <h2 class="mt-3 font-display text-2xl leading-tight tracking-tight md:text-3xl">
+                  {nota.data.titulo}
+                </h2>
+                <p class="mt-3 leading-relaxed text-[var(--color-ink-soft)]">{nota.data.resumen}</p>
+                <span class="mt-4 inline-block text-sm font-semibold text-[var(--color-fox-deep)]">Leer →</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </section>
+</Layout>

@@ -88,6 +88,28 @@ los registros DNS en Cloudflare —cuatro `A`, cuatro `AAAA` y un `CNAME` para `
 en **DNS only**. Si alguien activa el proxy naranja, GitHub no puede renovar el certificado
 y el sitio queda con error de HTTPS.
 
+## Notas y RSS
+
+Las notas viven en `src/content/notas/*.md`. Una nota por archivo; el nombre del archivo
+es la URL. El esquema está en `src/content.config.ts` y es estricto a propósito: si falta
+un campo o la fecha está mal escrita, **el build falla** en vez de publicar una nota rota.
+
+```yaml
+---
+titulo: Máximo 90 caracteres
+resumen: Máximo 220. Se usa en el listado, en el RSS y en la vista previa al compartir.
+fecha: 2026-09-05
+etiquetas: [Playwright, CI/CD]
+borrador: false # true = se ve en `npm run dev` pero no se publica
+---
+```
+
+`/rss.xml` se genera solo desde la colección. **El orden importa**: se publica primero aquí
+y desde aquí se sindica a LinkedIn con un enlace de vuelta. Publicar solo en LinkedIn
+regala el contenido a una plataforma de la que no se puede recuperar ni indexar.
+
+Regla de contenido: si una nota no sale de trabajo real de esa semana, no se publica.
+
 ## SEO
 
 El sitio se descubre por su nombre de marca, así que lo que importa es que Google entienda
@@ -119,8 +141,8 @@ npm run preview
 
 - `public/brand/girek-fox-full.png` pesa 799 KB sin optimizar. Pasarlo por `<Image />` de
   Astro reduciría alrededor del 90%.
-- No hay sección de notas ni RSS. Es la pieza que falta para publicar contenido propio
-  antes de sindicarlo a LinkedIn.
+- El pipeline de contenido (cosecha de ideas desde los commits, borradores por lote y
+  publicación asistida a LinkedIn) todavía no existe; las notas se escriben a mano.
 - `profile.links.cv` está vacío; cuando exista el PDF va en `public/cv.pdf`.
 - `fuentes-marca/` guarda los logos originales en alta. Están versionados pero fuera del
   despliegue: Astro solo publica `public/`.

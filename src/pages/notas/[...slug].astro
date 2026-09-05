@@ -1,0 +1,161 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { formatearFecha, minutosDeLectura } from '../../utils/fechas';
+import { profile } from '../../data/site';
+
+export async function getStaticPaths() {
+  const notas = await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador);
+  return notas.map((nota) => ({ params: { slug: nota.id }, props: { nota } }));
+}
+
+const { nota } = Astro.props;
+const { Content } = await render(nota);
+const minutos = nota.data.minutos ?? minutosDeLectura(nota.body ?? '');
+---
+
+<Layout title={`${nota.data.titulo} — Girek Study`} description={nota.data.resumen}>
+  <article class="mx-auto max-w-3xl px-5 pt-32 pb-20 md:px-8 md:pt-40">
+    <a
+      href="/notas"
+      class="link-underline font-mono text-xs text-[var(--color-faint)] transition-colors hover:text-[var(--color-fox-deep)]"
+      >← Todas las notas</a
+    >
+
+    <header class="mt-6">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-faint)]">
+        <time datetime={nota.data.fecha.toISOString()}>{formatearFecha(nota.data.fecha)}</time>
+        <span>·</span>
+        <span>{minutos} min de lectura</span>
+        {nota.data.etiquetas.map((t) => <span>#{t}</span>)}
+      </div>
+
+      <h1 class="mt-4 font-display text-[2.1rem] leading-[1.08] tracking-tight md:text-5xl">
+        {nota.data.titulo}
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-[var(--color-ink-soft)]">{nota.data.resumen}</p>
+    </header>
+
+    <hr class="my-10 border-[var(--color-line)]" />
+
+    <div class="nota">
+      <Content />
+    </div>
+
+    <footer class="mt-14 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 md:p-7">
+      <p class="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        Escrito por <strong class="text-[var(--color-ink)]">{profile.nombreCompleto}</strong>, Quality
+        Engineer. Publico en <a href="/" class="link-underline text-[var(--color-fox-deep)]">Girek Study</a>
+        material abierto sobre automatización de pruebas.
+      </p>
+      <p class="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs">
+        <a href={profile.links.linkedin} target="_blank" rel="noopener" class="link-underline text-[var(--color-fox-deep)]"
+          >LinkedIn</a
+        >
+        <a href={profile.links.github} target="_blank" rel="noopener" class="link-underline text-[var(--color-fox-deep)]"
+          >GitHub</a
+        >
+        <a href="/rss.xml" class="link-underline text-[var(--color-fox-deep)]">RSS</a>
+      </p>
+    </footer>
+  </article>
+</Layout>
+
+<style is:global>
+  /* Tipografía de lectura larga. Se define aquí y no en global.css porque solo
+     aplica al cuerpo de una nota. */
+  .nota {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink-soft);
+  }
+
+  .nota > * + * {
+    margin-top: 1.35em;
+  }
+
+  .nota h2 {
+    margin-top: 2.6em;
+    font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  .nota h3 {
+    margin-top: 2em;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .nota strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .nota a {
+    color: var(--color-fox-deep);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  .nota ol,
+  .nota ul {
+    padding-left: 1.4em;
+  }
+
+  .nota ol {
+    list-style: decimal;
+  }
+
+  .nota ul {
+    list-style: disc;
+  }
+
+  .nota li + li {
+    margin-top: 0.6em;
+  }
+
+  .nota li::marker {
+    color: var(--color-fox);
+  }
+
+  .nota blockquote {
+    border-left: 3px solid var(--color-fox);
+    padding-left: 1.1em;
+    font-style: italic;
+  }
+
+  .nota code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.875em;
+    background: var(--color-cream-2);
+    border-radius: 5px;
+    padding: 0.15em 0.4em;
+  }
+
+  .nota pre {
+    background: var(--color-navy);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+
+  /* Dentro de un bloque, el código hereda el fondo del bloque. */
+  .nota pre code {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  .nota hr {
+    margin: 2.8em 0;
+    border: 0;
+    border-top: 1px solid var(--color-line);
+  }
+</style>
