@@ -5,10 +5,9 @@
 //  cifra de aquí se inventa: cada una se puede sustentar en una entrevista.
 // ============================================================================
 
-/** Cifras del encabezado. Pocas y verificables. */
+/** Cifras del encabezado. Tres bastan: la cuarta diluia las otras. */
 export const cifras = [
   { valor: '10', etiqueta: 'años en calidad de software' },
-  { valor: '15', etiqueta: 'ingenieros de calidad liderados' },
   { valor: '13', etiqueta: 'etapas profesionales' },
   { valor: '4', etiqueta: 'sectores: banca, fintech, salud y educación' },
 ];

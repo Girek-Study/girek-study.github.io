@@ -17,18 +17,20 @@ import { cifras, competencias, logrosDestacados, clientes } from '../data/perfil
 
     <div class="mx-auto grid max-w-6xl items-center gap-10 px-5 md:px-8 lg:grid-cols-[auto_1fr] lg:gap-14">
       <div class="reveal mx-auto lg:mx-0">
-        <div class="relative">
+        <div class="relative grid place-items-center">
+          {/* Halo difuso detrás del recorte: sin él la foto sin fondo queda
+              flotando y se nota que está pegada encima de la página. */}
           <span
-            class="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-[var(--color-amber)] to-[var(--color-fox)] opacity-25 blur-xl"
+            class="pointer-events-none absolute h-[86%] w-[86%] rounded-full bg-[radial-gradient(circle,var(--color-fox-tint)_0%,var(--color-amber)_45%,transparent_72%)] opacity-70 blur-2xl"
           ></span>
           <img
-            src="/girek-foto.jpg"
-            srcset="/girek-foto-sm.jpg 360w, /girek-foto.jpg 720w"
-            sizes="(max-width: 1023px) 200px, 260px"
+            src="/girek-foto.png"
+            srcset="/girek-foto-sm.png 360w, /girek-foto.png 720w"
+            sizes="(max-width: 1023px) 208px, 288px"
             alt="Giancarlo Renato Palomino Huallpa"
             width="720"
             height="720"
-            class="h-48 w-48 rounded-[1.75rem] border border-[var(--color-line)] object-cover shadow-[var(--shadow-soft)] sm:h-56 sm:w-56 lg:h-64 lg:w-64"
+            class="foto-perfil relative h-52 w-52 object-contain sm:h-60 sm:w-60 lg:h-72 lg:w-72"
           />
         </div>
       </div>
