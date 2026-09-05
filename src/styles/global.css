@@ -304,8 +304,29 @@ body::before {
 /* Iconos de herramientas: se inyectan como SVG para poder teñirlos. Los de
    simple-icons no traen fill, así que heredan el color del contenedor. */
 .herramienta svg {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
   fill: currentColor;
   display: block;
+}
+
+/* Desplazamiento por secciones.
+   `proximity` y no `mandatory`: con secciones más altas que la ventana,
+   `mandatory` secuestra el scroll y no deja leer el contenido de en medio.
+   Así el navegador solo ajusta cuando ya estás cerca de un borde. */
+html {
+  scroll-snap-type: y proximity;
+}
+
+.seccion {
+  scroll-snap-align: start;
+  /* La barra es fija: sin esto, cada sección queda medio tapada al encajar. */
+  scroll-margin-top: 4.5rem;
+}
+
+/* Quien pide menos movimiento no quiere que el scroll se le acomode solo. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
 }

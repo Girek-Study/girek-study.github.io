@@ -72,7 +72,7 @@ const entradas = [
 
 <Layout>
   <!-- ============ HERO ============ -->
-  <section class="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+  <section class="seccion relative flex flex-col justify-center overflow-hidden pt-28 pb-8 lg:min-h-screen lg:justify-between lg:pt-32">
     <!-- Fondo con vida -->
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 left-[-6rem] top-10 h-72 w-72" style="background: var(--color-amber)"></div>
@@ -113,23 +113,6 @@ const entradas = [
             <a href="/trayectoria" class="btn btn-ghost">Quién es Girek</a>
           </div>
 
-          <!-- Herramientas con las que trabajo -->
-          <div class="reveal mt-12 border-t border-[var(--color-line)] pt-7" data-delay="320ms">
-            <p class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">
-              El stack con el que construyo
-            </p>
-            <ul class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-5">
-              {
-                herramientas.map((h) => (
-                  <li
-                    class="herramienta text-[var(--color-ink-soft)] transition-colors duration-200 hover:text-[var(--color-fox-deep)]"
-                    title={h.nombre}
-                    set:html={h.svg}
-                  />
-                ))
-              }
-            </ul>
-          </div>
         </div>
 
         <!-- Visual: emblema zorro + tarjeta de código -->
@@ -156,29 +139,47 @@ const entradas = [
 
 <span class="text-[var(--color-cyan-deep)]">✓</span> <span class="text-[var(--color-faint)]">1 passed (1.2s)</span></code></pre>
           </div>
+
+          <!-- Herramientas con las que trabajo -->
+          <div class="mt-7 border-t border-[var(--color-line)] pt-5">
+            <p class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">
+              El stack con el que construyo
+            </p>
+            <ul class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-3">
+              {
+                herramientas.map((h) => (
+                  <li
+                    class="herramienta text-[var(--color-ink-soft)] transition-colors duration-200 hover:text-[var(--color-fox-deep)]"
+                    title={h.nombre}
+                    set:html={h.svg}
+                  />
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ MARQUEE DE STACK ============ -->
+    <div class="mt-10 border-y border-[var(--color-line)] bg-[var(--color-surface)] py-4">
+      <div class="marquee-track overflow-hidden">
+        <div class="marquee gap-3 pr-3">
+          {
+            marquee.map((s) => (
+              <span class="flex shrink-0 items-center gap-2 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-cream-2)] px-4 py-2 font-mono text-sm text-[var(--color-ink-soft)]">
+                <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan)]" />
+                {s}
+              </span>
+            ))
+          }
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ MARQUEE DE STACK ============ -->
-  <section class="border-y border-[var(--color-line)] bg-[var(--color-surface)] py-5">
-    <div class="marquee-track overflow-hidden">
-      <div class="marquee gap-3 pr-3">
-        {
-          marquee.map((s) => (
-            <span class="flex shrink-0 items-center gap-2 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-cream-2)] px-4 py-2 font-mono text-sm text-[var(--color-ink-soft)]">
-              <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan)]" />
-              {s}
-            </span>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
   <!-- ============ QUÉ HAY AQUÍ ============ -->
-  <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+  <section class="seccion mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
     <div class="mx-auto max-w-3xl text-center">
       <p class="reveal eyebrow">Qué vas a encontrar</p>
       <h2 class="reveal mt-4 font-display text-3xl leading-tight tracking-tight md:text-4xl" data-delay="60ms">
@@ -212,7 +213,7 @@ const entradas = [
   </section>
 
   <!-- ============ PROYECTOS DESTACADOS ============ -->
-  <section class="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-16">
+  <section class="seccion mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-16">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <SectionHeading
         eyebrow="Portafolio"
@@ -245,7 +246,7 @@ const entradas = [
   <!-- ============ ÚLTIMAS NOTAS ============ -->
   {
     ultimasNotas.length > 0 && (
-      <section class="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-16">
+      <section class="seccion mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-16">
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="reveal eyebrow">Notas</p>
@@ -284,7 +285,7 @@ const entradas = [
   }
 
   <!-- ============ GIREK STUDY (banda naranja) ============ -->
-  <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
+  <section class="seccion mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
     <div class="band-navy reveal relative rounded-[28px] p-8 shadow-[var(--shadow-soft)] md:p-14">
       <div class="grid-navy"></div>
       <div class="absolute -right-16 -top-20 h-72 w-72 rounded-full bg-[var(--color-cyan)]/25 blur-3xl"></div>
@@ -305,7 +306,7 @@ const entradas = [
   </section>
 
   <!-- ============ CTA CONTACTO ============ -->
-  <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+  <section class="seccion mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
     <div class="reveal text-center">
       <p class="eyebrow">¿Trabajamos juntos?</p>
       <h2 class="mx-auto mt-3 max-w-2xl font-display text-3xl tracking-tight sm:text-5xl">
