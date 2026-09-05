@@ -7,6 +7,11 @@ const links = [
   { href: '/portafolio', label: 'Portafolio' },
 ];
 
+// El botón de la barra será el acceso a la zona de alumnos. Hasta que exista
+// el flujo de autenticación se queda oculto: un botón que no lleva a ninguna
+// parte cuesta más confianza de la que aporta.
+const MOSTRAR_ACCESO = false;
+
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href);
@@ -42,9 +47,15 @@ const isActive = (href: string) =>
           </li>
         ))
       }
-      <li class="ml-2">
-        <a href="/portafolio" class="btn btn-primary !py-2.5 !px-4 text-sm">Ver el código</a>
-      </li>
+      {
+        MOSTRAR_ACCESO && (
+          <li class="ml-2">
+            <a href="/acceso" class="btn btn-primary !py-2.5 !px-4 text-sm">
+              Iniciar sesión
+            </a>
+          </li>
+        )
+      }
     </ul>
 
     <!-- Mobile toggle -->
