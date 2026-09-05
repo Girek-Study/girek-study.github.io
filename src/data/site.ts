@@ -20,11 +20,13 @@ export const profile = {
 
   email: 'ing.palominoh@gmail.com',
 
-  // WhatsApp en formato internacional, sin espacios ni signos: es lo que espera
-  // wa.me. El texto previo ahorra el "hola, ¿con quién hablo?".
-  whatsapp: '+51 949 168 421',
+  // Se enlaza por nombre de usuario y no por número: wa.me lo resuelve
+  // (redirige a api.whatsapp.com/send/?username=...&type=username) y así el
+  // móvil no queda expuesto a los rastreadores de spam que barren páginas
+  // públicas. El texto previo ahorra el "hola, ¿con quién hablo?".
+  whatsapp: '@ing.palominoh',
   whatsappUrl:
-    'https://wa.me/51949168421?text=' +
+    'https://wa.me/ing.palominoh?text=' +
     encodeURIComponent('Hola Giancarlo, te escribo desde girek-study.com.'),
 
   links: {
