@@ -13,10 +13,30 @@
  * rotación— y "sectores", que el visitante ya lee dos líneas más abajo.
  */
 export const cifras = [
-  { valor: '10', etiqueta: 'años en calidad de software' },
-  { valor: '8', etiqueta: 'agentes de IA construidos y en uso' },
-  { valor: '−70%', etiqueta: 'tiempo de validación por release' },
-  { valor: '4', etiqueta: 'países: Perú, México, Chile y Puerto Rico' },
+  {
+    valor: '10',
+    etiqueta: 'años en calidad de software',
+    detalle: 'De programador Java a líder de práctica',
+    icono: 'reloj',
+  },
+  {
+    valor: '8',
+    etiqueta: 'agentes de IA construidos',
+    detalle: 'En uso por equipos, no demos',
+    icono: 'chip',
+  },
+  {
+    valor: '−70%',
+    etiqueta: 'tiempo de validación por release',
+    detalle: 'Ejecución paralela en contenedores',
+    icono: 'grafico',
+  },
+  {
+    valor: '4',
+    etiqueta: 'países donde he trabajado',
+    detalle: 'Perú, México, Chile y Puerto Rico',
+    icono: 'globo',
+  },
 ];
 
 export interface Competencia {

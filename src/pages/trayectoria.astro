@@ -19,6 +19,14 @@ const modelos = [
   { slug: 'cursor', nombre: 'Cursor' },
   { slug: 'githubcopilot', nombre: 'GitHub Copilot' },
 ].map((m) => ({ ...m, svg: svgs[`../herramientas/${m.slug}.svg`] }));
+
+// Trazos de los iconos de las cifras. Inline y no una librería: son cuatro.
+const ICONOS: Record<string, string> = {
+  reloj: 'M12 7v5l3 2 M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+  chip: 'M9 3v2 M15 3v2 M9 19v2 M15 19v2 M3 9h2 M3 15h2 M19 9h2 M19 15h2 M6 6h12v12H6z M10 10h4v4h-4z',
+  grafico: 'M3 6l7 7 4-4 7 7 M21 16v4h-4',
+  globo: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z M3.6 9h16.8 M3.6 15h16.8 M12 3a14 14 0 0 1 0 18 M12 3a14 14 0 0 0 0 18',
+};
 ---
 
 <Layout
@@ -60,10 +68,17 @@ const modelos = [
           fintech, salud y educación.
         </p>
 
-        <div class="reveal mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-[var(--color-faint)]" data-delay="140ms">
-          <span>{profile.cargoActual}</span>
-          <span>{profile.ubicacion}</span>
-        </div>
+        <p class="reveal mt-6 inline-flex items-center gap-2 font-mono text-sm text-[var(--color-ink-soft)]" data-delay="140ms">
+          <img
+            src="/paises/pe.png"
+            alt="Bandera del Perú"
+            width="20"
+            height="14"
+            loading="lazy"
+            class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/10"
+          />
+          Lima, Perú
+        </p>
 
         <div class="reveal mt-7 flex flex-wrap gap-3" data-delay="180ms">
           <a href={`mailto:${profile.email}`} class="btn btn-primary text-sm">Escríbeme</a>
@@ -81,12 +96,38 @@ const modelos = [
 
   <!-- ============ CIFRAS ============ -->
   <section class="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
-    <dl class="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-8 px-5 py-10 md:grid-cols-4 md:px-8">
+    <dl class="mx-auto grid max-w-6xl grid-cols-1 gap-px overflow-hidden bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-4">
       {
         cifras.map((c, i) => (
-          <div class="reveal" data-delay={`${i * 70}ms`}>
-            <dt class="font-display text-4xl text-[var(--color-fox-dark)]">{c.valor}</dt>
-            <dd class="mt-1 text-sm leading-snug text-[var(--color-ink-soft)]">{c.etiqueta}</dd>
+          <div
+            class="reveal group bg-[var(--color-surface)] px-6 py-8 transition-colors duration-300 hover:bg-[var(--color-cream-2)] md:px-8 md:py-10"
+            data-delay={`${i * 70}ms`}
+          >
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)] transition-transform duration-300 group-hover:-translate-y-0.5">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                set:html={ICONOS[c.icono]
+                  .split(' M')
+                  .map((d, n) => `<path d="${n === 0 ? d : 'M' + d}"/>`)
+                  .join('')}
+              />
+            </span>
+
+            <dt class="mt-5 font-display text-[2.6rem] leading-none tracking-tight text-[var(--color-fox-dark)]">
+              {c.valor}
+            </dt>
+            <dd class="mt-2">
+              <span class="block font-semibold leading-snug text-[var(--color-ink)]">{c.etiqueta}</span>
+              <span class="mt-1 block text-sm leading-snug text-[var(--color-ink-soft)]">{c.detalle}</span>
+            </dd>
           </div>
         ))
       }
