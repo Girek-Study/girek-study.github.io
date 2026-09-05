@@ -9,9 +9,12 @@ interface Props {
   description?: string;
 }
 
+// Lo que se ve al compartir el enlace en WhatsApp, LinkedIn o Slack. Antes
+// heredaba el titular personal y la biografía; ahora dice lo mismo que la
+// portada, que es la promesa de la marca.
 const {
-  title = `Girek Study — ${profile.nombre}, ${profile.titular}`,
-  description = profile.bio,
+  title = 'Girek Study — Automatización de pruebas y QA en español',
+  description = 'La calidad no se repite: se programa. Frameworks abiertos que puedes clonar, con las decisiones de diseño explicadas. Por Giancarlo Palomino, Quality Engineer con 10 años en banca, fintech y salud.',
 } = Astro.props;
 
 const canonica = new URL(Astro.url.pathname, Astro.site).href;
