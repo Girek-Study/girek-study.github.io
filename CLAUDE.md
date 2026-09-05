@@ -44,12 +44,17 @@ Todo el texto vive en `src/data/`. Las páginas no llevan contenido embebido.
 | `courses.ts` | Girek Study: descripción, cursos, testimonios |
 | `github.ts` | Lectura de la API de GitHub — no se edita a mano |
 
-Cada experiencia lleva logo, bandera del país, enlace a la web de la empresa y los clientes
-donde trabajó. Los logos se bajan con `node scripts/bajar-logos.js` y quedan versionados en
-`public/logos/`: el sitio no depende de servidores ajenos en tiempo de carga. Canvia y BCP
-no exponen un logo usable, así que su `logo` es `null` y la tarjeta dibuja un monograma.
-Las banderas son SVG propios en `public/paises/` — los emoji de bandera no se dibujan en
-Windows.
+Cada experiencia lleva logo, bandera del país, enlace a la web de la empresa y sus clientes,
+también con logo. Todo se descarga con `node scripts/bajar-activos.js` y queda versionado en
+`public/logos/` y `public/paises/`: la página no depende de servidores ajenos al cargar, y si
+una empresa cambia su logo el sitio no se altera solo.
+
+- `logo` guarda el **nombre de archivo con extensión** (`canvia.svg`, `interbank.jpg`),
+  porque cada fuente devuelve un formato distinto.
+- BCP no expone ningún icono servible, así que su `logo` es `null` y la tarjeta dibuja un
+  monograma con la inicial. Si algún día se consigue el PNG, basta con ponerlo.
+- Las banderas son PNG de 80px de flagcdn, no SVG ni emoji: el SVG de México pesa 143 KB por
+  el escudo y a 18px no se distingue, y Windows no dibuja los emoji de bandera.
 
 **La fuente de verdad de los datos profesionales está fuera de este repo**, en
 `c:\Works\Girek.Study\Agente_Searchs_Work\datos\` (`cv/cv-datos.json`, `perfil/*.json`).

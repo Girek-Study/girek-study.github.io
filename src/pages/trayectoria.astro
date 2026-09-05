@@ -46,7 +46,7 @@ import { experiencias, certificaciones, educacion, idiomas } from '../data/exper
                 <span class="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-xl border border-[var(--color-line)] bg-white p-2">
                   {e.logo ? (
                     <img
-                      src={`/logos/${e.logo}.png`}
+                      src={`/logos/${e.logo}`}
                       alt={`Logo de ${e.empresa}`}
                       width="40"
                       height="40"
@@ -77,7 +77,7 @@ import { experiencias, certificaciones, educacion, idiomas } from '../data/exper
 
                     <span class="inline-flex items-center gap-1.5 text-[var(--color-faint)]">
                       <img
-                        src={`/paises/${e.pais}.svg`}
+                        src={`/paises/${e.pais}.png`}
                         alt={`Bandera de ${e.paisNombre}`}
                         width="18"
                         height="12"
@@ -95,14 +95,30 @@ import { experiencias, certificaciones, educacion, idiomas } from '../data/exper
               </div>
 
               {e.clientes && (
-                <p class="mt-4 flex flex-wrap items-center gap-2 text-sm">
-                  <span class="font-mono text-xs uppercase tracking-wide text-[var(--color-faint)]">Cliente</span>
+                <div class="mt-4 flex flex-wrap items-center gap-2">
+                  <span class="font-mono text-xs uppercase tracking-wide text-[var(--color-faint)]">
+                    {e.clientes.length > 1 ? 'Clientes' : 'Cliente'}
+                  </span>
                   {e.clientes.map((c) => (
-                    <span class="rounded-full bg-[var(--color-fox-tint)] px-2.5 py-0.5 text-xs font-semibold text-[var(--color-fox-deep)]">
-                      {c}
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-fox-tint)] py-1 pl-1 pr-3">
+                      <span class="grid h-6 w-6 place-items-center overflow-hidden rounded-full bg-white">
+                        {c.logo ? (
+                          <img
+                            src={`/logos/${c.logo}`}
+                            alt={`Logo de ${c.nombre}`}
+                            width="18"
+                            height="18"
+                            loading="lazy"
+                            class="h-[18px] w-[18px] object-contain"
+                          />
+                        ) : (
+                          <span class="font-display text-xs text-[var(--color-fox-deep)]">{c.nombre.charAt(0)}</span>
+                        )}
+                      </span>
+                      <span class="text-xs font-semibold text-[var(--color-fox-deep)]">{c.nombre}</span>
                     </span>
                   ))}
-                </p>
+                </div>
               )}
 
               <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">{e.descripcion}</p>
