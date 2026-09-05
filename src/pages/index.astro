@@ -8,6 +8,23 @@ import { obtenerRepos } from '../data/github';
 import { getCollection } from 'astro:content';
 import { formatearFecha } from '../utils/fechas';
 
+// Los iconos se inlinean para poder teñirlos con `currentColor`. Con <img> no
+// se puede: quedarían en su color de marca y la fila se vería como un collage.
+const svgs = import.meta.glob<string>('../herramientas/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+const herramientas = [
+  'playwright', 'typescript', 'cypress', 'selenium', 'appium',
+  'cucumber', 'k6', 'postman', 'azuredevops', 'docker',
+].map((slug) => ({
+  slug,
+  nombre: slug === 'azuredevops' ? 'Azure DevOps' : slug,
+  svg: svgs[`../herramientas/${slug}.svg`],
+}));
+
 const destacados = proyectos.filter((p) => p.destacado).slice(0, 3);
 const marquee = [...stack, ...stack];
 
@@ -96,24 +113,28 @@ const entradas = [
             <a href="/trayectoria" class="btn btn-ghost">Quién es Girek</a>
           </div>
 
-          <!-- Stats -->
-          <dl class="reveal mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-[var(--color-line)] pt-8" data-delay="320ms">
-            {
-              stats.map((s) => (
-                <div>
-                  <dt class="font-display text-3xl text-[var(--color-fox-deep)] md:text-4xl" data-count={s.valor}>
-                    {s.valor}
-                  </dt>
-                  <dd class="mt-1 text-xs leading-snug text-[var(--color-ink-soft)] md:text-sm">{s.etiqueta}</dd>
-                </div>
-              ))
-            }
-          </dl>
+          <!-- Herramientas con las que trabajo -->
+          <div class="reveal mt-12 border-t border-[var(--color-line)] pt-7" data-delay="320ms">
+            <p class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">
+              El stack con el que construyo
+            </p>
+            <ul class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-5">
+              {
+                herramientas.map((h) => (
+                  <li
+                    class="herramienta text-[var(--color-ink-soft)] transition-colors duration-200 hover:text-[var(--color-fox-deep)]"
+                    title={h.nombre}
+                    set:html={h.svg}
+                  />
+                ))
+              }
+            </ul>
+          </div>
         </div>
 
         <!-- Visual: emblema zorro + tarjeta de código -->
-        <div class="reveal relative mx-auto hidden w-full max-w-md lg:block" data-delay="200ms">
-          <div class="float relative z-10 mx-auto -mb-8 -mt-6 w-72">
+        <div class="reveal relative mx-auto hidden w-full max-w-md self-start lg:block" data-delay="200ms">
+          <div class="float relative z-10 mx-auto -mb-10 -mt-10 w-72">
             <img src="/brand/girek-fox-full.png" alt="Girek Study" width="288" height="226" class="w-full drop-shadow-[0_22px_45px_rgba(224,73,10,0.35)]" />
           </div>
           <div class="card overflow-hidden">

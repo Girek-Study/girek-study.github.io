@@ -300,3 +300,12 @@ body::before {
   mask-image: radial-gradient(ellipse 90% 80% at 70% 30%, #000, transparent 80%);
   pointer-events: none;
 }
+
+/* Iconos de herramientas: se inyectan como SVG para poder teñirlos. Los de
+   simple-icons no traen fill, así que heredan el color del contenedor. */
+.herramienta svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  fill: currentColor;
+  display: block;
+}
