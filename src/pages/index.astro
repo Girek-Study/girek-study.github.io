@@ -107,7 +107,7 @@ const entradas = [
 
 <Layout>
   <!-- ============ HERO ============ -->
-  <section class="seccion hero relative flex flex-col overflow-hidden pt-28 lg:min-h-dvh lg:pt-20">
+  <section class="seccion hero relative flex flex-col overflow-hidden pt-24 lg:min-h-dvh lg:pt-20">
     <!-- Fondo con vida -->
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 left-[-6rem] top-10 h-72 w-72" style="background: var(--color-amber)"></div>
@@ -116,10 +116,18 @@ const entradas = [
     <div class="mx-auto flex w-full max-w-6xl flex-1 items-center px-5 md:px-8">
       <div class="grid w-full items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
+          <img
+            src="/brand/girek-fox-full.png"
+            alt=""
+            width="288"
+            height="226"
+            class="reveal float mb-3 ml-auto w-24 drop-shadow-[0_16px_32px_rgba(224,73,10,0.3)] sm:w-36 lg:hidden"
+          />
+
           <p class="reveal eyebrow">Bienvenido a Girek Study</p>
 
           <h1
-            class="reveal mt-5 font-display leading-[1.02] tracking-tight text-[clamp(2.4rem,4.6vw+0.6rem,4.4rem)]"
+            class="reveal mt-5 font-display leading-[1.02] tracking-tight text-[clamp(2.05rem,4.6vw+0.6rem,4.4rem)]"
             data-delay="80ms"
           >
             La calidad no se repite.<br /><span class="text-gradient">Se programa.</span>
@@ -140,16 +148,16 @@ const entradas = [
             Lo que no está en el pipeline no es una prueba: es una esperanza.
           </p>
 
-          <div class="acciones reveal mt-6 flex flex-wrap items-center gap-3" data-delay="260ms">
-            <a href="/portafolio" class="btn btn-primary">
+          <div class="acciones reveal mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" data-delay="260ms">
+            <a href="/portafolio" class="btn btn-primary justify-center">
               Ver el código
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
-            <a href="/trayectoria" class="btn btn-ghost">Conoce a Girek</a>
+            <a href="/trayectoria" class="btn btn-ghost justify-center">Conoce a Girek</a>
           </div>
 
           <p class="credito reveal mt-5 font-mono text-xs leading-relaxed text-[var(--color-faint)]" data-delay="300ms">
-            Giancarlo Palomino · 10 años en QA · Chapter Lead en banca y fintech · ISTQB CTFL
+            10 años de experiencia en QA · IA QE Automation Lead · ISTQB
           </p>
 
         </div>

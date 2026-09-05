@@ -406,3 +406,20 @@ html {
     margin-top: 1.25rem;
   }
 }
+
+/* Teléfonos pequeños (iPhone SE y similares, 667px de alto). Sin esto los
+   botones caen por debajo del pliegue y el visitante ve el mensaje pero no
+   qué hacer con él. */
+@media (max-width: 420px) {
+  .hero .cita {
+    margin-top: 1.1rem;
+    font-size: 1rem;
+    padding-left: 1rem;
+  }
+  .hero h1 + p {
+    margin-top: 1.1rem;
+  }
+  .hero .acciones {
+    margin-top: 1.25rem;
+  }
+}
