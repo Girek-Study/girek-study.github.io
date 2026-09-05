@@ -5,11 +5,18 @@
 //  cifra de aquí se inventa: cada una se puede sustentar en una entrevista.
 // ============================================================================
 
-/** Cifras del encabezado. Tres bastan: la cuarta diluia las otras. */
+/**
+ * Cifras del encabezado.
+ *
+ * Criterio: que sean raras (pocos las tienen), de resultado (no de actividad) y
+ * verificables. Por eso salieron "etapas profesionales" —que se lee como
+ * rotación— y "sectores", que el visitante ya lee dos líneas más abajo.
+ */
 export const cifras = [
   { valor: '10', etiqueta: 'años en calidad de software' },
-  { valor: '13', etiqueta: 'etapas profesionales' },
-  { valor: '4', etiqueta: 'sectores: banca, fintech, salud y educación' },
+  { valor: '8', etiqueta: 'agentes de IA construidos y en uso' },
+  { valor: '−70%', etiqueta: 'tiempo de validación por release' },
+  { valor: '4', etiqueta: 'países: Perú, México, Chile y Puerto Rico' },
 ];
 
 export interface Competencia {
