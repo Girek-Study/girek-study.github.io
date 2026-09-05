@@ -226,7 +226,7 @@ const entradas = [
             marquee.map((m) => (
               <span class="flex shrink-0 items-center gap-2 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-cream-2)] px-4 py-2 font-mono text-sm text-[var(--color-ink-soft)]">
                 {m.svg ? (
-                  <span class="herramienta herramienta-sm" set:html={m.svg} />
+                  <span class="herramienta herramienta-sm" aria-hidden="true" set:html={m.svg} />
                 ) : m.imagen ? (
                   <img
                     src={m.imagen}

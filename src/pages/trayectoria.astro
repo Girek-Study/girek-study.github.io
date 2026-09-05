@@ -20,6 +20,12 @@ const modelos = [
   { slug: 'githubcopilot', nombre: 'GitHub Copilot' },
 ].map((m) => ({ ...m, svg: svgs[`../herramientas/${m.slug}.svg`] }));
 
+const contacto = [
+  { slug: 'whatsapp', texto: 'Escríbeme', href: profile.whatsappUrl, principal: true },
+  { slug: 'linkedin', texto: 'LinkedIn', href: profile.links.linkedin, principal: false },
+  { slug: 'github', texto: 'GitHub', href: profile.links.github, principal: false },
+].map((c) => ({ ...c, svg: svgs[`../herramientas/${c.slug}.svg`] }));
+
 // Trazos de los iconos de las cifras. Inline y no una librería: son cuatro.
 const ICONOS: Record<string, string> = {
   reloj: 'M12 7v5l3 2 M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
@@ -83,15 +89,45 @@ const ICONOS: Record<string, string> = {
         </p>
 
         <div class="acciones-perfil reveal mt-7 flex flex-wrap gap-3" data-delay="180ms">
-          <a href={`mailto:${profile.email}`} class="btn btn-primary text-sm">Escríbeme</a>
-          <a href={profile.links.linkedin} target="_blank" rel="noopener" class="btn btn-ghost text-sm">LinkedIn</a>
-          <a href={profile.links.github} target="_blank" rel="noopener" class="btn btn-ghost text-sm">GitHub</a>
+          {
+            contacto.map((c) => (
+              <a
+                href={c.href}
+                target="_blank"
+                rel="noopener"
+                class:list={['btn text-sm', c.principal ? 'btn-primary' : 'btn-ghost']}
+              >
+                <span class="herramienta herramienta-sm" aria-hidden="true" set:html={c.svg} />
+                {c.texto}
+              </a>
+            ))
+          }
           {profile.links.cv && (
             <a href={profile.links.cv} target="_blank" rel="noopener" class="btn btn-ghost text-sm">
               CV en PDF
             </a>
           )}
         </div>
+
+        <p class="reveal mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs text-[var(--color-faint)]" data-delay="220ms">
+          <a
+            href={`mailto:${profile.email}`}
+            class="link-underline inline-flex items-center gap-1.5 transition-colors hover:text-[var(--color-fox-dark)]"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 6h16v12H4z" /><path d="m4 7 8 6 8-6" />
+            </svg>
+            {profile.email}
+          </a>
+          <a
+            href={profile.whatsappUrl}
+            target="_blank"
+            rel="noopener"
+            class="link-underline transition-colors hover:text-[var(--color-fox-dark)]"
+          >
+            {profile.whatsapp}
+          </a>
+        </p>
         </div>
       </div>
     </div>
@@ -129,6 +165,21 @@ const ICONOS: Record<string, string> = {
             <dd class="mt-2">
               <span class="block font-semibold leading-snug text-[var(--color-ink)]">{c.etiqueta}</span>
               <span class="mt-1 block text-sm leading-snug text-[var(--color-ink-soft)]">{c.detalle}</span>
+              {'banderas' in c && (
+                <span class="mt-2.5 flex flex-wrap items-center gap-1.5">
+                  {c.banderas.map((b) => (
+                    <img
+                      src={`/paises/${b.codigo}.png`}
+                      alt={`Bandera de ${b.nombre}`}
+                      title={b.nombre}
+                      width="22"
+                      height="15"
+                      loading="lazy"
+                      class="h-[15px] w-[22px] rounded-[2px] object-cover ring-1 ring-black/10"
+                    />
+                  ))}
+                </span>
+              )}
             </dd>
           </div>
         ))
@@ -217,7 +268,7 @@ const ICONOS: Record<string, string> = {
         {
           modelos.map((m) => (
             <li class="flex items-center gap-2.5 text-[var(--color-ink-soft)]">
-              <span class="herramienta herramienta-md" set:html={m.svg} />
+              <span class="herramienta herramienta-md" aria-hidden="true" set:html={m.svg} />
               <span class="text-sm font-medium">{m.nombre}</span>
             </li>
           ))

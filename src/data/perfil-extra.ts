@@ -36,6 +36,13 @@ export const cifras = [
     etiqueta: 'países donde he trabajado',
     detalle: 'Perú, México, Chile y Puerto Rico',
     icono: 'globo',
+    // Los archivos están en public/paises/, los mismos de la línea de tiempo.
+    banderas: [
+      { codigo: 'pe', nombre: 'Perú' },
+      { codigo: 'mx', nombre: 'México' },
+      { codigo: 'cl', nombre: 'Chile' },
+      { codigo: 'pr', nombre: 'Puerto Rico' },
+    ],
   },
 ];
 

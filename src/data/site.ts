@@ -20,6 +20,13 @@ export const profile = {
 
   email: 'ing.palominoh@gmail.com',
 
+  // WhatsApp en formato internacional, sin espacios ni signos: es lo que espera
+  // wa.me. El texto previo ahorra el "hola, ¿con quién hablo?".
+  whatsapp: '+51 949 168 421',
+  whatsappUrl:
+    'https://wa.me/51949168421?text=' +
+    encodeURIComponent('Hola Giancarlo, te escribo desde girek-study.com.'),
+
   links: {
     linkedin: 'https://www.linkedin.com/in/girekpalomino/',
     github: 'https://github.com/Girek-Study',
