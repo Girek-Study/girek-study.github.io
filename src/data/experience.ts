@@ -1,12 +1,26 @@
 // ============================================================================
 //  TRAYECTORIA PROFESIONAL — Datos reales. De más reciente a más antigua.
+//
+//  Sin fechas por decisión propia: el orden cronológico se sostiene solo.
+//  Las fechas exactas viven en el CV
+//  (Agente_Searchs_Work/datos/cv/cv-datos.json) por si hay que reponerlas.
+//
+//  `logo` es el nombre del archivo en public/logos/ (sin extensión). Si la
+//  empresa no tiene logo descargable, se deja en null y la tarjeta dibuja un
+//  monograma con la inicial. Los logos se bajan con: node scripts/bajar-logos.js
 // ============================================================================
+
+export type CodigoPais = 'pe' | 'cl' | 'pr';
 
 export interface Experiencia {
   empresa: string;
   cargo: string;
-  periodo: string;
-  ubicacion?: string;
+  logo: string | null;
+  web?: string;
+  pais: CodigoPais;
+  paisNombre: string;
+  modalidad?: string;
+  clientes?: string[];
   descripcion: string;
   logros: string[];
   stack?: string[];
@@ -14,25 +28,51 @@ export interface Experiencia {
 
 export const experiencias: Experiencia[] = [
   {
-    empresa: 'Canvia — cliente Interbank',
+    empresa: 'Elipgo Technology',
+    cargo: 'Tech Lead IA Automation',
+    logo: 'elipgo',
+    web: 'https://elipgo.com',
+    pais: 'pe',
+    paisNombre: 'Perú',
+    modalidad: 'Remoto',
+    descripcion:
+      'Liderazgo técnico de la automatización de calidad de un producto de analítica de video: detección y analítica sobre cámaras con inteligencia artificial.',
+    logros: [
+      'Lidero la estrategia de automatización del producto y las decisiones de arquitectura de la suite.',
+      'Framework en Playwright con Cucumber y patrón Screenplay sobre TypeScript, diseñado para que la suite siga siendo mantenible a medida que el producto crece.',
+      'Gestión de datos de prueba y reportería propia, con tablero de resultados para el equipo.',
+      'Aplico IA al diseño y al análisis de escenarios, siempre con revisión humana antes de convertirse en caso ejecutable.',
+    ],
+    stack: ['Playwright', 'TypeScript', 'Cucumber', 'Screenplay', 'IA aplicada'],
+  },
+  {
+    empresa: 'Canvia',
     cargo: 'Quality Engineering & API Testing',
-    periodo: 'jun. 2026 — actualidad',
-    ubicacion: 'Lima, Perú · Remoto',
+    logo: null,
+    web: 'https://canvia.com',
+    pais: 'pe',
+    paisNombre: 'Perú',
+    modalidad: 'Remoto',
+    clientes: ['Interbank'],
     descripcion:
       'Certificación de calidad de los servicios críticos del banco en su modernización de XML a JSON.',
     logros: [
       'Valido contratos, mapeo de campos, reglas de negocio e integridad de datos entre el servicio legacy y el migrado.',
       'Diseño y ejecuto pruebas funcionales, de integración, regresión y E2E sobre APIs y backend, priorizando el riesgo de liberación.',
       'Gestiono defectos con evidencia técnica —request/response, esperado contra obtenido— y coordino la resolución con Desarrollo, Arquitectura y Negocio.',
-      'Aplico IA y LLMs al análisis de requerimientos y a la revisión de estructuras JSON y XML, siempre bajo revisión humana.',
+      'Aplico IA y LLMs al análisis de requerimientos y a la revisión de estructuras JSON y XML, bajo revisión humana.',
     ],
     stack: ['APIs REST y SOAP', 'JSON', 'XML', 'SQL', 'Postman', 'Azure DevOps'],
   },
   {
-    empresa: 'Soho — cliente RedSalud',
+    empresa: 'Soho Humantech',
     cargo: 'AI Quality Engineering Specialist',
-    periodo: 'jun. 2025 — jun. 2026',
-    ubicacion: 'Remoto · Chile',
+    logo: 'soho',
+    web: 'https://soho.cl',
+    pais: 'cl',
+    paisNombre: 'Chile',
+    modalidad: 'Remoto',
+    clientes: ['RedSalud'],
     descripcion:
       'Aseguramiento de los procesos críticos de agenda y agendamiento médico de una de las mayores redes de salud privada de Chile.',
     logros: [
@@ -44,10 +84,30 @@ export const experiencias: Experiencia[] = [
     stack: ['Playwright', 'TypeScript', 'Cucumber', 'Screenplay', 'k6', 'SQL', 'Azure DevOps'],
   },
   {
+    empresa: 'IDM Technology',
+    cargo: 'SDET — Starbucks Rewards Platform',
+    logo: 'idm',
+    web: 'https://idmtechnology.com',
+    pais: 'pe',
+    paisNombre: 'Perú',
+    modalidad: 'Híbrido · proyecto temporal',
+    clientes: ['Starbucks'],
+    descripcion:
+      'Aseguramiento de calidad del programa de recompensas en web, Android e iOS.',
+    logros: [
+      'Automaticé de extremo a extremo los flujos críticos del programa: OTP, beneficios, acumulación de estrellas, canje e historial transaccional.',
+      'Validé APIs REST, integraciones de backend y la consistencia entre los tres canales contra los criterios de aceptación y los diseños.',
+      'Fortalecí el framework, la regresión y el release readiness con evidencia trazable y análisis de defectos.',
+    ],
+    stack: ['Web', 'Android', 'iOS', 'API Testing', 'Regresión'],
+  },
+  {
     empresa: 'Prestamype',
     cargo: 'Head Automation QA · QE Lead',
-    periodo: 'jun. 2024 — jun. 2025',
-    ubicacion: 'Lima, Perú',
+    logo: 'prestamype',
+    web: 'https://prestamype.com',
+    pais: 'pe',
+    paisNombre: 'Perú',
     descripcion:
       'Dirección de la práctica de automatización de calidad para los productos web y móviles de una fintech de financiamiento con garantía hipotecaria.',
     logros: [
@@ -61,8 +121,12 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'Nagnoi, LLC',
     cargo: 'Automation Specialist QE',
-    periodo: 'nov. 2023 — jun. 2024',
-    ubicacion: 'Puerto Rico · Remoto, en inglés',
+    logo: 'nagnoi',
+    web: 'https://nagnoi.com',
+    pais: 'pr',
+    paisNombre: 'Puerto Rico',
+    modalidad: 'Remoto, en inglés',
+    clientes: ['Edulogica'],
     descripcion:
       'Automatización de pruebas sobre los productos de los clientes finales de una consultora de datos y analítica.',
     logros: [
@@ -71,13 +135,15 @@ export const experiencias: Experiencia[] = [
       'Automaticé pruebas de APIs REST con RestAssured, Karate y Postman, incluyendo validación de contratos.',
       'Incorporé análisis de seguridad con OWASP ZAP dentro del ciclo de pruebas.',
     ],
-    stack: ['Playwright', 'Specflow', 'Karate', 'RestAssured', 'JMeter', 'OWASP ZAP', 'Azure DevOps'],
+    stack: ['Playwright', 'Specflow', 'Karate', 'RestAssured', 'JMeter', 'OWASP ZAP'],
   },
   {
     empresa: 'Banco de Crédito BCP',
     cargo: 'Chapter Lead Quality Engineer',
-    periodo: 'oct. 2022 — ago. 2023',
-    ubicacion: 'Lima, Perú',
+    logo: null,
+    web: 'https://www.viabcp.com',
+    pais: 'pe',
+    paisNombre: 'Perú',
     descripcion:
       'Liderazgo del chapter de calidad al servicio de varias tribus de producto digital del banco más grande del Perú.',
     logros: [
@@ -91,8 +157,10 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'UTP — Universidad Tecnológica del Perú',
     cargo: 'Senior Quality Engineer',
-    periodo: 'feb. 2022 — sept. 2022',
-    ubicacion: 'Lima, Perú',
+    logo: 'utp',
+    web: 'https://www.utp.edu.pe',
+    pais: 'pe',
+    paisNombre: 'Perú',
     descripcion: 'Calidad de UTP+Class, la plataforma de clases digitales de la universidad.',
     logros: [
       'Lideré y coordiné al equipo de QA de la tribu, promoviendo buenas prácticas de testing.',
@@ -105,13 +173,16 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'Canvia',
     cargo: 'Technical Lead DevTestOps',
-    periodo: 'nov. 2018 — mar. 2022',
-    ubicacion: 'Lima, Perú',
+    logo: null,
+    web: 'https://canvia.com',
+    pais: 'pe',
+    paisNombre: 'Perú',
+    clientes: ['Claro', 'Interbank Medios de Pago'],
     descripcion:
       'Roles sucesivos de DevOps Architect, Lead Technical Specialist y Presales Consultant en un integrador de tecnología para banca, telecomunicaciones y sector público.',
     logros: [
       'Diseñé soluciones DevOps para entornos cloud e híbridos e implementé pipelines de CI/CD de extremo a extremo.',
-      'Dirigí un equipo multidisciplinario de 15 personas —arquitectos, desarrollo, QA y UX— en la transformación del proceso de calidad del área TMO de Claro.',
+      'Dirigí un equipo multidisciplinario de 15 personas —arquitectura, desarrollo, QA y UX— en la transformación del proceso de calidad del área TMO de Claro.',
       'Construí frameworks de automatización funcional, de API y de rendimiento integrados a los pipelines de entrega.',
       'En Interbank Medios de Pago migré pipelines y releases a Jenkins, integré el simulador VISA y capacité a un squad de 35 personas.',
     ],
@@ -120,10 +191,13 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'Delaware Perú',
     cargo: 'Consultor de Calidad de Software',
-    periodo: 'abr. 2017 — nov. 2018',
-    ubicacion: 'Lima, Perú',
+    logo: 'delaware',
+    web: 'https://www.delaware.pro',
+    pais: 'pe',
+    paisNombre: 'Perú',
+    clientes: ['Interbank'],
     descripcion:
-      'Servicios de QA y DevOps para clientes del sector financiero y público, entre ellos Interbank, en una consultora belga de tecnología empresarial.',
+      'Servicios de QA y DevOps para clientes del sector financiero y público en una consultora belga de tecnología empresarial.',
     logros: [
       'Definí y ejecuté estrategias de aseguramiento de calidad en proyectos de implantación compleja.',
       'Diseñé planes de prueba funcionales, de regresión, de rendimiento e integración continua de extremo a extremo.',
@@ -135,9 +209,12 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'Q System',
     cargo: 'Analista QA',
-    periodo: 'dic. 2015 — mar. 2017',
-    ubicacion: 'Lima, Perú',
-    descripcion: 'Consultoría de testing en tres clientes: Yanbal, Pacífico Seguros e Interbank.',
+    logo: 'qsystem',
+    web: 'https://qsystem.com.pe',
+    pais: 'pe',
+    paisNombre: 'Perú',
+    clientes: ['Yanbal', 'Pacífico Seguros', 'Interbank'],
+    descripcion: 'Consultoría de testing como consultor en tres clientes del país.',
     logros: [
       'Automaticé con Selenium las funcionalidades críticas del negocio y validé el sistema core de Yanbal.',
       'Diseñé, ejecuté y estimé planes de prueba para el core asegurador de Pacífico Vida, en web, Android y cliente-servidor.',

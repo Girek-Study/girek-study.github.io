@@ -25,7 +25,11 @@ tenga entradas reales. No rellenar.
 nivel de problema, decisión y resultado. Nada de credenciales, capturas internas, nombres
 de personas ni enlaces a sistemas del cliente.
 
-**5. Español en todo** — contenido, comentarios y commits (conventional commits en español,
+**5. La trayectoria va sin fechas**, por decisión del autor (2026-09-04). El orden
+cronológico se sostiene solo. Las fechas exactas siguen en `cv-datos.json` por si hay que
+reponerlas.
+
+**6. Español en todo** — contenido, comentarios y commits (conventional commits en español,
 sin `Co-Authored-By`).
 
 ## Dónde se edita el contenido
@@ -39,6 +43,13 @@ Todo el texto vive en `src/data/`. Las páginas no llevan contenido embebido.
 | `projects.ts` | Casos de trabajo de cliente (NO los repos) |
 | `courses.ts` | Girek Study: descripción, cursos, testimonios |
 | `github.ts` | Lectura de la API de GitHub — no se edita a mano |
+
+Cada experiencia lleva logo, bandera del país, enlace a la web de la empresa y los clientes
+donde trabajó. Los logos se bajan con `node scripts/bajar-logos.js` y quedan versionados en
+`public/logos/`: el sitio no depende de servidores ajenos en tiempo de carga. Canvia y BCP
+no exponen un logo usable, así que su `logo` es `null` y la tarjeta dibuja un monograma.
+Las banderas son SVG propios en `public/paises/` — los emoji de bandera no se dibujan en
+Windows.
 
 **La fuente de verdad de los datos profesionales está fuera de este repo**, en
 `c:\Works\Girek.Study\Agente_Searchs_Work\datos\` (`cv/cv-datos.json`, `perfil/*.json`).

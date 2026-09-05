@@ -41,14 +41,70 @@ import { experiencias, certificaciones, educacion, idiomas } from '../data/exper
               <span class="h-1.5 w-1.5 rounded-full bg-white" />
             </span>
             <div class="card card-hover p-6 md:p-7">
-              <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                <h3 class="font-display text-xl tracking-tight">{e.cargo}</h3>
-                <span class="rounded-full bg-[var(--color-fox-tint)] px-3 py-1 font-mono text-xs text-[var(--color-fox-deep)]">{e.periodo}</span>
+              <div class="flex items-start gap-4">
+                {/* Logo de la empresa, o monograma cuando no hay uno usable */}
+                <span class="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-xl border border-[var(--color-line)] bg-white p-2">
+                  {e.logo ? (
+                    <img
+                      src={`/logos/${e.logo}.png`}
+                      alt={`Logo de ${e.empresa}`}
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                      class="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <span class="font-display text-2xl text-[var(--color-fox-deep)]">{e.empresa.charAt(0)}</span>
+                  )}
+                </span>
+
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-display text-xl leading-tight tracking-tight">{e.cargo}</h3>
+
+                  <p class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm">
+                    {e.web ? (
+                      <a
+                        href={e.web}
+                        target="_blank"
+                        rel="noopener"
+                        class="link-underline font-semibold text-[var(--color-fox-deep)]"
+                      >
+                        {e.empresa}
+                      </a>
+                    ) : (
+                      <span class="font-semibold text-[var(--color-fox-deep)]">{e.empresa}</span>
+                    )}
+
+                    <span class="inline-flex items-center gap-1.5 text-[var(--color-faint)]">
+                      <img
+                        src={`/paises/${e.pais}.svg`}
+                        alt={`Bandera de ${e.paisNombre}`}
+                        width="18"
+                        height="12"
+                        loading="lazy"
+                        class="h-3 w-[18px] rounded-[2px] object-cover ring-1 ring-black/10"
+                      />
+                      <span class="font-mono text-xs">{e.paisNombre}</span>
+                    </span>
+
+                    {e.modalidad && (
+                      <span class="font-mono text-xs text-[var(--color-faint)]">· {e.modalidad}</span>
+                    )}
+                  </p>
+                </div>
               </div>
-              <p class="mt-1 text-sm font-semibold text-[var(--color-fox-deep)]">
-                {e.empresa}
-                {e.ubicacion && <span class="font-normal text-[var(--color-faint)]"> · {e.ubicacion}</span>}
-              </p>
+
+              {e.clientes && (
+                <p class="mt-4 flex flex-wrap items-center gap-2 text-sm">
+                  <span class="font-mono text-xs uppercase tracking-wide text-[var(--color-faint)]">Cliente</span>
+                  {e.clientes.map((c) => (
+                    <span class="rounded-full bg-[var(--color-fox-tint)] px-2.5 py-0.5 text-xs font-semibold text-[var(--color-fox-deep)]">
+                      {c}
+                    </span>
+                  ))}
+                </p>
+              )}
+
               <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">{e.descripcion}</p>
               <ul class="mt-4 space-y-2">
                 {e.logros.map((l) => (
