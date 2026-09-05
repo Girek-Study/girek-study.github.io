@@ -10,9 +10,56 @@ interface Props {
 }
 
 const {
-  title = `${profile.nombre} — ${profile.titular}`,
+  title = `Girek Study — ${profile.nombre}, ${profile.titular}`,
   description = profile.bio,
 } = Astro.props;
+
+const canonica = new URL(Astro.url.pathname, Astro.site).href;
+const portada = new URL('/og.png', Astro.site).href;
+
+/**
+ * Datos estructurados. Sin esto, para Google el sitio es texto suelto; con
+ * esto entiende que "Girek Study" es el nombre de un sitio, que detrás hay una
+ * persona concreta y que sus perfiles de LinkedIn y GitHub son la misma
+ * entidad. Es lo que separa aparecer por el nombre de marca de no aparecer.
+ */
+const datosEstructurados = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${Astro.site}#sitio`,
+      url: Astro.site?.href,
+      name: 'Girek Study',
+      alternateName: ['Girek Study — automatización de pruebas', 'Girek'],
+      description:
+        'Automatización de pruebas y QA en español: frameworks abiertos, decisiones de diseño explicadas y, próximamente, clases.',
+      inLanguage: 'es',
+      publisher: { '@id': `${Astro.site}#persona` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${Astro.site}#persona`,
+      name: profile.nombreCompleto,
+      alternateName: ['Giancarlo Palomino', 'Girek'],
+      url: Astro.site?.href,
+      email: `mailto:${profile.email}`,
+      jobTitle: 'Quality Engineer · Test Automation Lead',
+      description: profile.bio,
+      knowsAbout: [
+        'Automatización de pruebas',
+        'Quality Engineering',
+        'Playwright',
+        'TypeScript',
+        'Patrón Screenplay',
+        'Pruebas de APIs',
+        'CI/CD',
+      ],
+      address: { '@type': 'PostalAddress', addressLocality: 'Lima', addressCountry: 'PE' },
+      sameAs: [profile.links.linkedin, profile.links.github],
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -27,14 +74,27 @@ const {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonica} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Girek Study" />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:url" content={canonica} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={portada} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={portada} />
 
     <meta name="theme-color" content="#ff6a1a" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(datosEstructurados)} />
 
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

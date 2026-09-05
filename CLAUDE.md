@@ -88,6 +88,24 @@ los registros DNS en Cloudflare —cuatro `A`, cuatro `AAAA` y un `CNAME` para `
 en **DNS only**. Si alguien activa el proxy naranja, GitHub no puede renovar el certificado
 y el sitio queda con error de HTTPS.
 
+## SEO
+
+El sitio se descubre por su nombre de marca, así que lo que importa es que Google entienda
+que "Girek Study" es una entidad:
+
+- `sitemap-index.xml` lo genera `@astrojs/sitemap` en cada build; `public/robots.txt` lo
+  apunta.
+- `Layout.astro` emite JSON-LD con un `WebSite` llamado Girek Study y una `Person` con
+  `sameAs` hacia LinkedIn y GitHub. Ese `sameAs` es lo que une los tres perfiles como una
+  sola entidad — no quitarlo.
+- `public/og.png` (1200x630) es la vista previa al compartir el enlace. Se generó a mano
+  renderizando un HTML con Playwright; si hay que rehacerla, mismo tamaño y mismo nombre.
+- Cada página emite `canonical` y `og:url` absolutos, que dependen de `site` en
+  `astro.config.mjs`. Si el dominio cambia, se cambia ahí y todo lo demás sigue.
+
+Lo que no está en el repo y hay que hacer una vez: verificar el dominio en Google Search
+Console y en Bing Webmaster Tools, y enviar el sitemap.
+
 ## Comandos
 
 ```bash

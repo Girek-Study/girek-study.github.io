@@ -1,0 +1,5 @@
+# Todo el sitio es público: no hay nada que ocultar a los buscadores.
+User-agent: *
+Allow: /
+
+Sitemap: https://girek-study.com/sitemap-index.xml
