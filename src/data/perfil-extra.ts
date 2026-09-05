@@ -67,8 +67,17 @@ export const competencias: Competencia[] = [
   {
     area: 'IA aplicada al testing',
     detalle:
-      'Diseño de escenarios, análisis de cobertura y revisión de estructuras — siempre bajo revisión humana.',
-    items: ['GPT', 'Claude', 'Gemini', 'Copilot', 'Diseño de casos', 'Análisis de defectos'],
+      'Desde asistir el diseño de pruebas hasta construir agentes que hacen el trabajo repetitivo del chapter. Siempre bajo revisión humana.',
+    items: [
+      'GPT',
+      'Claude',
+      'Gemini',
+      'Copilot',
+      'Agentes',
+      'Machine learning',
+      'Análisis predictivo',
+      'Automatización de procesos',
+    ],
   },
   {
     area: 'Liderazgo y estrategia',
@@ -136,4 +145,93 @@ export const clientes = [
   { nombre: 'Pacífico Seguros', logo: 'pacifico.png' },
   { nombre: 'Edulogica', logo: 'edulogica.png' },
   { nombre: 'UTP', logo: null },
+];
+
+
+// ============================================================================
+//  IA APLICADA
+//
+//  Tres capas distintas, y conviene no mezclarlas: usar modelos dentro del
+//  ciclo de pruebas, construir herramientas propias que hagan el trabajo
+//  repetitivo, y probar productos que llevan IA dentro.
+// ============================================================================
+
+export interface AplicacionIA {
+  titulo: string;
+  detalle: string;
+  contexto: string;
+}
+
+/** Herramientas y agentes construidos, no solo modelos consumidos. */
+export const agentesIA: AplicacionIA[] = [
+  {
+    titulo: 'Panel de agentes para un chapter de QA',
+    detalle:
+      'Consola web local desde la que el equipo lanza los agentes, sigue el progreso en vivo y consulta el historial, sin tocar una terminal. Los agentes comparten una sola fuente de credenciales y se interconectan entre sí.',
+    contexto: 'Sector salud',
+  },
+  {
+    titulo: 'Agente auditor de casos de prueba',
+    detalle:
+      'Audita la sección de validación de un documento de requerimientos, redacta los casos, los inserta en su tabla y publica el resumen en la herramienta de gestión del equipo. Lo que antes era una tarde de copiar y pegar.',
+    contexto: 'Sector salud',
+  },
+  {
+    titulo: 'Agente de estado de ejecución',
+    detalle:
+      'Lee el resultado y la evidencia de cada caso ejecutado, informa el avance y mueve el tícket a certificación o a correctivo según lo encontrado.',
+    contexto: 'Sector salud',
+  },
+  {
+    titulo: 'Generador de casos para la herramienta de gestión',
+    detalle:
+      'Convierte criterios de aceptación, historias de usuario e imágenes de flujo en casos estructurados, y los empaqueta listos para importación masiva. Versiona cada entrega por tícket y genera el diff contra la anterior, así se ve qué cambió y por qué.',
+    contexto: 'Sector retail',
+  },
+];
+
+/** IA dentro del ciclo de pruebas, en proyectos de cliente. */
+export const iaEnElCiclo: AplicacionIA[] = [
+  {
+    titulo: 'Análisis de requerimientos',
+    detalle:
+      'Leer un documento largo y extraer los campos, las reglas y los criterios que hay que verificar, antes de escribir un solo caso.',
+    contexto: 'Banca',
+  },
+  {
+    titulo: 'Revisión de estructuras JSON y XML',
+    detalle:
+      'Comparar el contrato del servicio legado contra el migrado y señalar dónde difieren, campo por campo, en migraciones de cientos de servicios.',
+    contexto: 'Banca',
+  },
+  {
+    titulo: 'Diseño de casos y análisis de cobertura',
+    detalle:
+      'Generar escenarios a partir de los criterios de aceptación y detectar qué quedó sin cubrir, acortando el tiempo de diseño y el de mantenimiento.',
+    contexto: 'Salud',
+  },
+  {
+    titulo: 'Priorización basada en riesgo',
+    detalle:
+      'Decidir qué se ejecuta primero y qué se automatiza, en función del riesgo de liberación y no del orden en que llegaron los requerimientos.',
+    contexto: 'Salud y fintech',
+  },
+  {
+    titulo: 'Mantenimiento predictivo de la suite',
+    detalle:
+      'Machine learning aplicado al mantenimiento de scripts y al análisis predictivo de fallos, que redujo los falsos positivos que hacían que el equipo dejara de mirar los reportes.',
+    contexto: 'Fintech',
+  },
+  {
+    titulo: 'Análisis de defectos',
+    detalle:
+      'Agrupar fallos, acelerar el diagnóstico y separar el defecto real del ruido de infraestructura.',
+    contexto: 'Banca y fintech',
+  },
+  {
+    titulo: 'Probar productos que llevan IA dentro',
+    detalle:
+      'Analítica de video con inteligencia artificial: aquí la prueba no termina en que la interfaz responda — hay que verificar que el modelo detecte lo que debe y que la analítica cuadre con lo que pasó frente a la cámara.',
+    contexto: 'Producto propio',
+  },
 ];
