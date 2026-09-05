@@ -3,39 +3,174 @@ import Layout from '../layouts/Layout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { profile } from '../data/site';
 import { experiencias, certificaciones, educacion, idiomas } from '../data/experience';
+import { cifras, competencias, logrosDestacados, clientes } from '../data/perfil-extra';
 ---
 
 <Layout
   title={`Trayectoria — ${profile.nombreCompleto}`}
   description={`Trayectoria profesional de ${profile.nombreCompleto} en QA, automatización de pruebas y liderazgo de equipos de calidad.`}
 >
-  <!-- Encabezado -->
-  <section class="relative overflow-hidden mx-auto max-w-6xl px-5 pt-32 pb-12 md:px-8 md:pt-40">
-    <div class="blob -z-10 right-[-3rem] top-16 h-72 w-72" style="background: var(--color-amber)"></div>
-    <SectionHeading
-      eyebrow="Trayectoria"
-      title={profile.nombreCompleto}
-      subtitle="Diez años en calidad de software: de programar en Java a liderar chapters de QA en banca, fintech, salud y educación."
-    />
+  <!-- ============ ENCABEZADO CON FOTO ============ -->
+  <section class="relative overflow-hidden pt-28 pb-12 md:pt-36">
+    <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
+    <div class="blob -z-10 right-[-4rem] top-16 h-80 w-80" style="background: var(--color-amber)"></div>
 
-    <div class="reveal mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm text-[var(--color-faint)]" data-delay="60ms">
-      <span>{profile.cargoActual}</span>
-      <span>{profile.ubicacion}</span>
-      <a href={`mailto:${profile.email}`} class="link-underline text-[var(--color-fox-deep)]">{profile.email}</a>
+    <div class="mx-auto grid max-w-6xl items-center gap-10 px-5 md:px-8 lg:grid-cols-[auto_1fr] lg:gap-14">
+      <div class="reveal mx-auto lg:mx-0">
+        <div class="relative">
+          <span
+            class="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-[var(--color-amber)] to-[var(--color-fox)] opacity-25 blur-xl"
+          ></span>
+          <img
+            src="/girek-foto.jpg"
+            srcset="/girek-foto-sm.jpg 360w, /girek-foto.jpg 720w"
+            sizes="(max-width: 1023px) 200px, 260px"
+            alt="Giancarlo Renato Palomino Huallpa"
+            width="720"
+            height="720"
+            class="h-48 w-48 rounded-[1.75rem] border border-[var(--color-line)] object-cover shadow-[var(--shadow-soft)] sm:h-56 sm:w-56 lg:h-64 lg:w-64"
+          />
+        </div>
+      </div>
+
+      <div class="min-w-0">
+        <p class="reveal eyebrow">Trayectoria</p>
+        <h1 class="reveal mt-3 font-display text-[clamp(2rem,3.4vw+0.9rem,3.2rem)] leading-[1.05] tracking-tight" data-delay="60ms">
+          {profile.nombreCompleto}
+        </h1>
+        <p class="reveal mt-4 text-lg leading-relaxed text-[var(--color-ink-soft)]" data-delay="100ms">
+          Diez años en calidad de software: de programar en Java a liderar chapters de QA en banca,
+          fintech, salud y educación.
+        </p>
+
+        <div class="reveal mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-[var(--color-faint)]" data-delay="140ms">
+          <span>{profile.cargoActual}</span>
+          <span>{profile.ubicacion}</span>
+        </div>
+
+        <div class="reveal mt-7 flex flex-wrap gap-3" data-delay="180ms">
+          <a href={`mailto:${profile.email}`} class="btn btn-primary text-sm">Escríbeme</a>
+          <a href={profile.links.linkedin} target="_blank" rel="noopener" class="btn btn-ghost text-sm">LinkedIn</a>
+          <a href={profile.links.github} target="_blank" rel="noopener" class="btn btn-ghost text-sm">GitHub</a>
+          {profile.links.cv && (
+            <a href={profile.links.cv} target="_blank" rel="noopener" class="btn btn-ghost text-sm">
+              CV en PDF
+            </a>
+          )}
+        </div>
+      </div>
     </div>
+  </section>
 
-    <p
-      class="reveal mt-8 max-w-3xl text-xl leading-snug tracking-tight text-[var(--color-ink)] md:text-[1.6rem]"
-      data-delay="120ms"
-    >
+  <!-- ============ CIFRAS ============ -->
+  <section class="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
+    <dl class="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-8 px-5 py-10 md:grid-cols-4 md:px-8">
+      {
+        cifras.map((c, i) => (
+          <div class="reveal" data-delay={`${i * 70}ms`}>
+            <dt class="font-display text-4xl text-[var(--color-fox-dark)]">{c.valor}</dt>
+            <dd class="mt-1 text-sm leading-snug text-[var(--color-ink-soft)]">{c.etiqueta}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- ============ QUIÉN SOY ============ -->
+  <section class="mx-auto max-w-4xl px-5 py-14 md:px-8 md:py-20">
+    <p class="reveal text-xl leading-snug tracking-tight text-[var(--color-ink)] md:text-[1.6rem]">
       {profile.bio}
     </p>
+  </section>
 
-    {profile.links.cv && (
-      <a href={profile.links.cv} target="_blank" rel="noopener" class="reveal btn btn-ghost mt-8 text-sm">
-        Descargar CV (PDF)
-      </a>
-    )}
+  <!-- ============ LOGROS DESTACADOS ============ -->
+  <section class="mx-auto max-w-6xl px-5 pb-14 md:px-8 md:pb-20">
+    <SectionHeading
+      eyebrow="Resultados"
+      title="Lo que se movió cuando estuve"
+      subtitle="Cifras del CV, cada una con el contexto en el que ocurrió."
+    />
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        logrosDestacados.map((l, i) => (
+          <article class="reveal card p-6" data-delay={`${i * 70}ms`}>
+            <p class="font-display text-3xl text-[var(--color-fox-dark)]">{l.cifra}</p>
+            <h3 class="mt-3 font-semibold leading-snug">{l.titulo}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">{l.detalle}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ============ CLIENTES ============ -->
+  <section class="mx-auto max-w-6xl px-5 pb-14 md:px-8 md:pb-20">
+    <SectionHeading
+      eyebrow="Dónde"
+      title="Productos que pasaron por mis manos"
+      subtitle="Clientes finales de las consultoras y empresas donde trabajé."
+    />
+    <ul class="mt-10 flex flex-wrap gap-3">
+      {
+        clientes.map((c, i) => (
+          <li
+            class="reveal card flex items-center gap-3 px-4 py-3"
+            data-delay={`${(i % 5) * 60}ms`}
+          >
+            {c.logo ? (
+              <span class="grid h-7 w-12 shrink-0 place-items-center overflow-hidden rounded-md bg-white px-1">
+                <img
+                  src={`/logos/${c.logo}`}
+                  alt={`Logo de ${c.nombre}`}
+                  width="44"
+                  height="22"
+                  loading="lazy"
+                  class="h-full w-full object-contain"
+                />
+              </span>
+            ) : (
+              <span class="grid h-7 w-12 shrink-0 place-items-center rounded-md bg-[var(--color-fox-tint)] font-display text-sm text-[var(--color-fox-dark)]">
+                {c.nombre.slice(0, 3)}
+              </span>
+            )}
+            <span class="text-sm font-medium">{c.nombre}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- ============ COMPETENCIAS ============ -->
+  <section class="mx-auto max-w-6xl px-5 pb-14 md:px-8 md:pb-20">
+    <SectionHeading
+      eyebrow="Qué sé hacer"
+      title="Competencias"
+      subtitle="Lo que defiendo en una entrevista técnica, agrupado por para qué sirve."
+    />
+    <div class="mt-10 grid gap-5 md:grid-cols-2">
+      {
+        competencias.map((c, i) => (
+          <article class="reveal card p-6 md:p-7" data-delay={`${(i % 2) * 80}ms`}>
+            <h3 class="font-display text-xl tracking-tight">{c.area}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">{c.detalle}</p>
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              {c.items.map((it) => (
+                <span class="chip">{it}</span>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ============ LÍNEA DE TIEMPO ============ -->
+  <section class="mx-auto max-w-6xl px-5 pb-6 md:px-8">
+    <SectionHeading
+      eyebrow="Recorrido"
+      title="Etapa por etapa"
+      subtitle="De las primeras prácticas al liderazgo técnico, en orden."
+    />
   </section>
 
   <!-- Timeline -->
