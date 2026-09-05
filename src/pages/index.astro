@@ -64,31 +64,33 @@ const entradas = [
     <div class="mx-auto max-w-6xl px-5 md:px-8">
       <div class="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
-          <div class="reveal">
-            <span class="chip inline-flex items-center">
-              <span class="mr-2 inline-block h-2 w-2 animate-pulse rounded-full bg-[var(--color-fox)]"></span>
-              Disponible para nuevos proyectos
-            </span>
-          </div>
+          <p class="reveal eyebrow">Bienvenido a Girek Study</p>
 
           <h1
-            class="reveal mt-6 font-display text-[2.8rem] leading-[1.02] tracking-tight sm:text-6xl md:text-[4.4rem]"
+            class="reveal mt-5 font-display text-[2.8rem] leading-[1.02] tracking-tight sm:text-6xl md:text-[4.4rem]"
             data-delay="80ms"
           >
-            Hola, soy <span class="text-gradient">{profile.alias}</span>.<br />
-            {profile.titular}.
+            La calidad no se repite.<br /><span class="text-gradient">Se programa.</span>
           </h1>
 
           <p
             class="reveal mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-ink-soft)] md:text-xl"
             data-delay="160ms"
           >
-            {profile.tagline}
+            Probar no es seguir un guion paso a paso. Es escribir el código que recorre lo que ningún
+            guion alcanzaría, y que lo vuelve a hacer en cada release sin cansarse.
           </p>
 
-          <div class="reveal mt-8 flex flex-wrap items-center gap-3" data-delay="240ms">
+          <p
+            class="reveal mt-7 max-w-xl border-l-2 border-[var(--color-fox)] pl-5 font-display text-lg leading-snug tracking-tight text-[var(--color-ink)] md:text-xl"
+            data-delay="200ms"
+          >
+            Lo que no está en el pipeline no es una prueba: es una esperanza.
+          </p>
+
+          <div class="reveal mt-9 flex flex-wrap items-center gap-3" data-delay="260ms">
             <a href="/portafolio" class="btn btn-primary">
-              Ver portafolio
+              Ver el código
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
             <a href="/trayectoria" class="btn btn-ghost">Quién es Girek</a>
@@ -154,32 +156,18 @@ const entradas = [
     </div>
   </section>
 
-  <!-- ============ BIENVENIDA ============ -->
+  <!-- ============ QUÉ HAY AQUÍ ============ -->
   <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
     <div class="mx-auto max-w-3xl text-center">
-      <p class="reveal eyebrow">Bienvenido a Girek Study</p>
-
-      <h2 class="reveal mt-5 font-display text-[2.6rem] leading-[1.02] tracking-tight md:text-6xl" data-delay="60ms">
-        La calidad no se repite.<br /><span class="text-gradient">Se programa.</span>
+      <p class="reveal eyebrow">Qué vas a encontrar</p>
+      <h2 class="reveal mt-4 font-display text-3xl leading-tight tracking-tight md:text-4xl" data-delay="60ms">
+        Lo que falta es lo de después
       </h2>
-
-      <p class="reveal mt-7 text-xl leading-snug text-[var(--color-ink)] md:text-2xl" data-delay="120ms">
-        Probar no es seguir un guion paso a paso. Es escribir el código que recorre lo que ningún guion
-        alcanzaría, y que lo vuelve a hacer en cada release sin cansarse.
-      </p>
-
-      <p
-        class="reveal mx-auto mt-8 max-w-xl border-l-2 border-[var(--color-fox)] pl-5 text-left font-display text-lg leading-snug tracking-tight text-[var(--color-ink-soft)] md:text-xl"
-        data-delay="180ms"
-      >
-        Lo que no está en el pipeline no es una prueba: es una esperanza.
-      </p>
-
-      <p class="reveal mt-9 leading-relaxed text-[var(--color-ink-soft)]" data-delay="240ms">
+      <p class="reveal mt-6 leading-relaxed text-[var(--color-ink-soft)]" data-delay="120ms">
         Casi todo el buen material sobre automatización está en inglés, y lo que hay en español se queda
-        en el «hola mundo»: instalar la herramienta, escribir un test, fin. Lo que falta es lo de después
-        —cómo se sostiene una suite de trescientas pruebas y qué decisiones evitan que se vuelva
-        inmantenible—. Eso es lo que publico acá, con el código a la vista y el porqué de cada decisión.
+        en el «hola mundo»: instalar la herramienta, escribir un test, fin. Lo que falta es cómo se
+        sostiene una suite de trescientas pruebas, por qué se vuelve inmantenible y qué decisiones evitan
+        llegar ahí. Eso es lo que publico acá, con el código a la vista y el porqué de cada decisión.
       </p>
     </div>
 
@@ -199,23 +187,6 @@ const entradas = [
           </a>
         ))
       }
-    </div>
-  </section>
-
-  <!-- ============ ACERCA DE ============ -->
-  <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
-    <div class="grid gap-10 md:grid-cols-[auto_1fr] md:gap-14">
-      <div class="reveal">
-        <span class="grid h-20 w-20 place-items-center">
-          <img src="/brand/girek-fox-head.png" alt="Girek" width="80" height="80" class="h-full w-full object-contain" />
-        </span>
-      </div>
-      <div class="reveal" data-delay="100ms">
-        <p class="eyebrow">Acerca de</p>
-        <p class="mt-4 text-2xl font-medium leading-snug tracking-tight md:text-[1.9rem]">
-          {profile.bio}
-        </p>
-      </div>
     </div>
   </section>
 

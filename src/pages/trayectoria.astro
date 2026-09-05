@@ -24,6 +24,13 @@ import { experiencias, certificaciones, educacion, idiomas } from '../data/exper
       <a href={`mailto:${profile.email}`} class="link-underline text-[var(--color-fox-deep)]">{profile.email}</a>
     </div>
 
+    <p
+      class="reveal mt-8 max-w-3xl text-xl leading-snug tracking-tight text-[var(--color-ink)] md:text-[1.6rem]"
+      data-delay="120ms"
+    >
+      {profile.bio}
+    </p>
+
     {profile.links.cv && (
       <a href={profile.links.cv} target="_blank" rel="noopener" class="reveal btn btn-ghost mt-8 text-sm">
         Descargar CV (PDF)
