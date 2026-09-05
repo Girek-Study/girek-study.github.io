@@ -47,9 +47,18 @@ const ICONOS: Record<string, string> = {
   Python: 'python',
 };
 
+// Estas tres no existen como icono monocromo, así que van como imagen desde
+// su propia fuente oficial. Se sirven de public/herramientas/.
+const IMAGENES: Record<string, string> = {
+  Screenplay: 'serenity.png',
+  RestAssured: 'restassured.png',
+  Karate: 'karate.png',
+};
+
 const marquee = [...stack, ...stack].map((nombre) => ({
   nombre,
   svg: ICONOS[nombre] ? svgs[`../herramientas/${ICONOS[nombre]}.svg`] : null,
+  imagen: IMAGENES[nombre] ? `/herramientas/${IMAGENES[nombre]}` : null,
 }));
 
 const destacados = proyectos.filter((p) => p.destacado).slice(0, 3);
@@ -196,6 +205,15 @@ const entradas = [
               <span class="flex shrink-0 items-center gap-2 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-cream-2)] px-4 py-2 font-mono text-sm text-[var(--color-ink-soft)]">
                 {m.svg ? (
                   <span class="herramienta herramienta-sm" set:html={m.svg} />
+                ) : m.imagen ? (
+                  <img
+                    src={m.imagen}
+                    alt={`Logo de ${m.nombre}`}
+                    width="17"
+                    height="17"
+                    loading="lazy"
+                    class="h-[1.05rem] w-[1.05rem] object-contain"
+                  />
                 ) : (
                   <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan)]" />
                 )}
