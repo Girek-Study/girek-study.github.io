@@ -51,8 +51,12 @@ una empresa cambia su logo el sitio no se altera solo.
 
 - `logo` guarda el **nombre de archivo con extensión** (`canvia.svg`, `interbank.jpg`),
   porque cada fuente devuelve un formato distinto.
-- BCP no expone ningún icono servible, así que su `logo` es `null` y la tarjeta dibuja un
-  monograma con la inicial. Si algún día se consigue el PNG, basta con ponerlo.
+- **Los logos hay que verlos antes de darlos por buenos.** Los favicons mienten: el de
+  idmtechnology.com no es el logo de IDM y el de Interbank devolvía una imagen ajena. El
+  método que funciona es descargar candidatos, montarlos en una hoja de contactos HTML,
+  capturarla con Playwright y revisarla a ojo.
+- Sin logo verificado y con monograma: **IDM Technology, UTP, BCP y GMD**. Si aparece el
+  archivo correcto, se copia a `public/logos/` y se pone su nombre en `logo`.
 - Las banderas son PNG de 80px de flagcdn, no SVG ni emoji: el SVG de México pesa 143 KB por
   el escudo y a 18px no se distingue, y Windows no dibuja los emoji de bandera.
 

@@ -59,7 +59,7 @@ export const experiencias: Experiencia[] = [
     pais: 'pe',
     paisNombre: 'Perú',
     modalidad: 'Remoto',
-    clientes: [{ nombre: 'Interbank', logo: 'interbank.jpg' }],
+    clientes: [{ nombre: 'Interbank', logo: 'interbank.png' }],
     descripcion:
       'Certifico la calidad de los servicios críticos de Interbank durante su modernización de XML a JSON. Una migración de este tipo no cambia funcionalidad: cambia el contrato. El riesgo no está en lo que se ve, sino en un campo que cambió de tipo, un opcional que dejó de serlo o un error que ahora se devuelve distinto — y todo eso llega a producción sin que la interfaz muestre nada raro.',
     logros: [
@@ -74,7 +74,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'Soho Humantech',
     cargo: 'AI Quality Engineering Specialist',
-    logo: 'soho.png',
+    logo: 'soho.svg',
     web: 'https://soho.cl',
     pais: 'cl',
     paisNombre: 'Chile',
@@ -95,7 +95,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'IDM Technology',
     cargo: 'SDET — Starbucks Rewards Platform',
-    logo: 'idm.png',
+    logo: null,
     web: 'https://idmtechnology.com',
     pais: 'pe',
     paisNombre: 'Perú',
@@ -114,7 +114,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'Prestamype',
     cargo: 'Head Automation QA · QE Lead',
-    logo: 'prestamype.png',
+    logo: 'prestamype.svg',
     web: 'https://prestamype.com',
     pais: 'pe',
     paisNombre: 'Perú',
@@ -172,7 +172,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'UTP — Universidad Tecnológica del Perú',
     cargo: 'Senior Quality Engineer',
-    logo: 'utp.png',
+    logo: null,
     web: 'https://www.utp.edu.pe',
     pais: 'pe',
     paisNombre: 'Perú',
@@ -195,8 +195,8 @@ export const experiencias: Experiencia[] = [
     pais: 'pe',
     paisNombre: 'Perú',
     clientes: [
-      { nombre: 'Claro', logo: 'claro.png' },
-      { nombre: 'Interbank', logo: 'interbank.jpg' },
+      { nombre: 'Claro', logo: 'claro.svg' },
+      { nombre: 'Interbank', logo: 'interbank.png' },
       { nombre: 'BBVA', logo: 'bbva.png' },
     ],
     descripcion:
@@ -218,7 +218,7 @@ export const experiencias: Experiencia[] = [
     web: 'https://www.delaware.pro',
     pais: 'pe',
     paisNombre: 'Perú',
-    clientes: [{ nombre: 'Interbank', logo: 'interbank.jpg' }],
+    clientes: [{ nombre: 'Interbank', logo: 'interbank.png' }],
     descripcion:
       'Consultora belga de tecnología empresarial. Lideré servicios de QA y DevOps para clientes del sector financiero y público, en proyectos de implantación donde la calidad se decide en el plan y no en la ejecución.',
     logros: [
@@ -240,7 +240,7 @@ export const experiencias: Experiencia[] = [
     clientes: [
       { nombre: 'Yanbal', logo: 'yanbal.png' },
       { nombre: 'Pacífico Seguros', logo: 'pacifico.png' },
-      { nombre: 'Interbank', logo: 'interbank.jpg' },
+      { nombre: 'Interbank', logo: 'interbank.png' },
     ],
     descripcion:
       'Consultoría de testing. Trabajé como consultor en tres clientes de sectores distintos —cosmética, seguros y banca—, que fue la mejor escuela posible para entender que el riesgo no se parece en ningún dominio al anterior.',
@@ -250,6 +250,36 @@ export const experiencias: Experiencia[] = [
       'En Interbank certifiqué cajeros automáticos, verificando sincronización y seguridad de la información bancaria según la normativa del sector.',
     ],
     stack: ['Selenium', 'JIRA', 'Pruebas móviles iOS y Android'],
+  },
+  {
+    empresa: 'GMD — Grupo Graña y Montero',
+    cargo: 'Programador Java',
+    logo: null,
+    pais: 'pe',
+    paisNombre: 'Perú',
+    descripcion:
+      'La filial de tecnología del Grupo Graña y Montero. Aquí escribí software antes de dedicarme a probarlo, y esa es la razón de que hoy discuta un pipeline o un contrato de API de igual a igual con desarrollo: sé lo que cuesta el otro lado.',
+    logros: [
+      'Desarrollé y mantuve servicios de backend en Java y Spring Boot, incluyendo APIs REST de integración entre sistemas.',
+      'Escribí pruebas unitarias y de integración con JUnit y Mockito — mi primer contacto real con la idea de que el código se verifica solo.',
+      'Trabajé sobre bases de datos relacionales con JPA e Hibernate dentro de un equipo Scrum.',
+    ],
+    stack: ['Java', 'Spring Boot', 'JUnit', 'Mockito', 'MySQL', 'PostgreSQL', 'Docker'],
+  },
+  {
+    empresa: 'GMD — Grupo Graña y Montero',
+    cargo: 'Practicante de Programación',
+    logo: null,
+    pais: 'pe',
+    paisNombre: 'Perú',
+    descripcion:
+      'Mis primeras prácticas profesionales, en el área de sistemas internos del grupo. El punto de partida de todo lo demás.',
+    logros: [
+      'Desarrollé y di mantenimiento al ERP de Recursos Humanos, incluyendo la carga de planillas y la integridad de sus datos.',
+      'Colaboré en desarrollo web de front-end y back-end para proyectos internos.',
+      'Escribí mis primeras pruebas unitarias con JUnit y aprendí control de versiones con Git.',
+    ],
+    stack: ['Java', 'Spring', 'JUnit', 'MySQL', 'PostgreSQL', 'Git'],
   },
 ];
 
