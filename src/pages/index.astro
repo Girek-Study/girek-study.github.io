@@ -4,9 +4,53 @@ import SectionHeading from '../components/SectionHeading.astro';
 import { profile, stats, stack } from '../data/site';
 import { proyectos } from '../data/projects';
 import { girekStudy } from '../data/courses';
+import { obtenerRepos } from '../data/github';
+import { getCollection } from 'astro:content';
+import { formatearFecha } from '../utils/fechas';
 
 const destacados = proyectos.filter((p) => p.destacado).slice(0, 3);
 const marquee = [...stack, ...stack];
+
+// Los repositorios se cuentan en vivo; las notas, desde la colección. Así los
+// contadores de la bienvenida nunca mienten sobre lo que hay publicado.
+const repos = await obtenerRepos();
+const notas = (await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador)).sort(
+  (a, b) => b.data.fecha.getTime() - a.data.fecha.getTime(),
+);
+const ultimasNotas = notas.slice(0, 3);
+
+const plural = (n: number, singular: string, plural_: string) =>
+  `${n} ${n === 1 ? singular : plural_}`;
+
+const entradas = [
+  {
+    etiqueta: 'Código',
+    contador: plural(repos.length, 'repositorio', 'repositorios'),
+    titulo: 'Frameworks que puedes clonar',
+    texto:
+      'Implementaciones completas y funcionando, con su CI en verde. No fragmentos de tutorial: el esqueleto que uso para arrancar una suite de verdad.',
+    accion: 'Ver el código',
+    href: '/portafolio',
+  },
+  {
+    etiqueta: 'Escritura',
+    contador: plural(notas.length, 'nota', 'notas'),
+    titulo: 'Decisiones y errores caros',
+    texto:
+      'Por qué una suite se vuelve inmantenible, cuándo un patrón no vale la pena y qué se rompe en producción sin que la interfaz muestre nada.',
+    accion: 'Leer las notas',
+    href: '/notas',
+  },
+  {
+    etiqueta: 'Enseñanza',
+    contador: 'en preparación',
+    titulo: 'Clases en vivo',
+    texto:
+      'Rutas guiadas de automatización, de los fundamentos a un framework listo para producción. Todavía no abren; el material abierto ya está aquí.',
+    accion: 'Ver el temario',
+    href: '/girek-study',
+  },
+];
 ---
 
 <Layout>
@@ -110,6 +154,41 @@ const marquee = [...stack, ...stack];
     </div>
   </section>
 
+  <!-- ============ BIENVENIDA ============ -->
+  <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="reveal eyebrow">Bienvenido</p>
+      <h2 class="reveal mt-4 font-display text-4xl leading-[1.06] tracking-tight md:text-5xl" data-delay="60ms">
+        Esto es <span class="text-gradient">Girek Study</span>
+      </h2>
+      <p class="reveal mt-6 text-lg leading-relaxed text-[var(--color-ink-soft)]" data-delay="120ms">
+        Casi todo el buen material sobre automatización de pruebas está en inglés, y casi todo lo que hay
+        en español se queda en el «hola mundo»: instalar la herramienta, escribir un test, fin. Lo que
+        falta es lo de después —cómo se sostiene una suite de trescientas pruebas, por qué se vuelve
+        inmantenible y qué decisiones evitan llegar ahí—. Eso es lo que publico acá, con el código a la
+        vista y el porqué de cada decisión.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-5 md:grid-cols-3">
+      {
+        entradas.map((e, i) => (
+          <a href={e.href} class="reveal card card-hover group flex flex-col p-7" data-delay={`${i * 90}ms`}>
+            <div class="flex items-center justify-between gap-3">
+              <span class="chip">{e.etiqueta}</span>
+              <span class="font-mono text-xs text-[var(--color-faint)]">{e.contador}</span>
+            </div>
+            <h3 class="mt-5 font-display text-xl tracking-tight group-hover:text-[var(--color-fox-deep)]">
+              {e.titulo}
+            </h3>
+            <p class="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{e.texto}</p>
+            <span class="mt-5 text-sm font-semibold text-[var(--color-fox-deep)]">{e.accion} →</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
   <!-- ============ ACERCA DE ============ -->
   <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
     <div class="grid gap-10 md:grid-cols-[auto_1fr] md:gap-14">
@@ -157,6 +236,47 @@ const marquee = [...stack, ...stack];
       }
     </div>
   </section>
+
+  <!-- ============ ÚLTIMAS NOTAS ============ -->
+  {
+    ultimasNotas.length > 0 && (
+      <section class="mx-auto max-w-6xl px-5 py-12 md:px-8 md:py-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="reveal eyebrow">Notas</p>
+            <h2 class="reveal mt-3 font-display text-3xl tracking-tight md:text-4xl" data-delay="60ms">
+              Lo último que escribí
+            </h2>
+          </div>
+          <a href="/notas" class="reveal btn btn-ghost text-sm" data-delay="120ms">
+            Todas las notas
+          </a>
+        </div>
+
+        <div class="mt-9 grid gap-5 md:grid-cols-3">
+          {ultimasNotas.map((nota, i) => (
+            <a
+              href={`/notas/${nota.id}/`}
+              class="reveal card card-hover group flex flex-col p-6"
+              data-delay={`${i * 80}ms`}
+            >
+              <div class="flex flex-wrap items-center gap-x-2.5 font-mono text-xs text-[var(--color-faint)]">
+                <time datetime={nota.data.fecha.toISOString()}>{formatearFecha(nota.data.fecha)}</time>
+                {nota.data.etiquetas.slice(0, 2).map((t) => (
+                  <span>#{t}</span>
+                ))}
+              </div>
+              <h3 class="mt-4 font-display text-xl leading-tight tracking-tight group-hover:text-[var(--color-fox-deep)]">
+                {nota.data.titulo}
+              </h3>
+              <p class="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{nota.data.resumen}</p>
+              <span class="mt-5 text-sm font-semibold text-[var(--color-fox-deep)]">Leer →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   <!-- ============ GIREK STUDY (banda naranja) ============ -->
   <section class="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">

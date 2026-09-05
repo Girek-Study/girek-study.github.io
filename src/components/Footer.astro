@@ -11,7 +11,9 @@ const year = 2026;
           <span class="grid h-11 w-11 place-items-center">
             <img src="/brand/girek-fox-head.png" alt="Girek" width="44" height="44" class="h-full w-full object-contain" />
           </span>
-          <span class="font-display text-xl">Girek</span>
+          <span class="font-display text-xl leading-none">
+            Girek <span class="text-[var(--color-fox-deep)]">Study</span>
+          </span>
         </a>
         <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
           {profile.titular} · {profile.ubicacion}. Automatización de pruebas y
@@ -48,7 +50,7 @@ const year = 2026;
     </div>
 
     <div class="mt-12 flex flex-col gap-2 border-t border-[var(--color-line)] pt-6 text-xs text-[var(--color-faint)] sm:flex-row sm:items-center sm:justify-between">
-      <p class="font-mono">© {year} {profile.nombre} — Girek 🦊</p>
+      <p class="font-mono">© {year} {profile.nombre} — Girek Study 🦊</p>
       <p class="font-mono">Hecho con Astro + Tailwind</p>
     </div>
   </div>
