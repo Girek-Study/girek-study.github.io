@@ -34,11 +34,12 @@ const ICONOS: Record<string, string> = {
   description={`Trayectoria profesional de ${profile.nombreCompleto} en QA, automatización de pruebas y liderazgo de equipos de calidad.`}
 >
   <!-- ============ ENCABEZADO CON FOTO ============ -->
-  <section class="relative overflow-hidden pt-28 pb-12 md:pt-36">
+  <section class="perfil relative flex flex-col overflow-hidden pt-28 lg:min-h-dvh lg:pt-24">
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 right-[-4rem] top-16 h-80 w-80" style="background: var(--color-amber)"></div>
 
-    <div class="mx-auto grid max-w-6xl items-center gap-10 px-5 md:px-8 lg:grid-cols-[auto_1fr] lg:gap-14">
+    <div class="mx-auto flex w-full max-w-6xl flex-1 items-center px-5 py-6 md:px-8">
+      <div class="grid w-full items-center gap-10 lg:grid-cols-[auto_1fr] lg:gap-16">
       <div class="reveal mx-auto lg:mx-0">
         <div class="relative grid place-items-center">
           {/* Halo difuso detrás del recorte: sin él la foto sin fondo queda
@@ -53,19 +54,20 @@ const ICONOS: Record<string, string> = {
             alt="Giancarlo Renato Palomino Huallpa"
             width="720"
             height="720"
-            class="foto-perfil relative h-52 w-52 object-contain sm:h-60 sm:w-60 lg:h-72 lg:w-72"
+            class="foto-perfil relative h-56 w-56 object-contain sm:h-72 sm:w-72 lg:h-[22rem] lg:w-[22rem]"
           />
         </div>
       </div>
 
       <div class="min-w-0">
         <p class="reveal eyebrow">Trayectoria</p>
-        <h1 class="reveal mt-3 font-display text-[clamp(2rem,3.4vw+0.9rem,3.2rem)] leading-[1.05] tracking-tight" data-delay="60ms">
+        <h1 class="reveal mt-3 font-display text-[clamp(2.1rem,4vw+0.9rem,4rem)] leading-[1.03] tracking-tight" data-delay="60ms">
           {profile.nombreCompleto}
         </h1>
-        <p class="reveal mt-4 text-lg leading-relaxed text-[var(--color-ink-soft)]" data-delay="100ms">
-          Diez años en calidad de software: de programar en Java a liderar chapters de QA en banca,
-          fintech, salud y educación.
+        <p class="reveal mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)] md:text-xl" data-delay="100ms">
+          Diseño la infraestructura de calidad de productos donde fallar cuesta caro: frameworks que
+          otro equipo pueda mantener, pruebas que corren en cada build y agentes de IA que absorben
+          el trabajo repetitivo. Empecé escribiendo código y nunca lo solté.
         </p>
 
         <p class="reveal mt-6 inline-flex items-center gap-2 font-mono text-sm text-[var(--color-ink-soft)]" data-delay="140ms">
@@ -80,7 +82,7 @@ const ICONOS: Record<string, string> = {
           Lima, Perú
         </p>
 
-        <div class="reveal mt-7 flex flex-wrap gap-3" data-delay="180ms">
+        <div class="acciones-perfil reveal mt-7 flex flex-wrap gap-3" data-delay="180ms">
           <a href={`mailto:${profile.email}`} class="btn btn-primary text-sm">Escríbeme</a>
           <a href={profile.links.linkedin} target="_blank" rel="noopener" class="btn btn-ghost text-sm">LinkedIn</a>
           <a href={profile.links.github} target="_blank" rel="noopener" class="btn btn-ghost text-sm">GitHub</a>
@@ -90,13 +92,13 @@ const ICONOS: Record<string, string> = {
             </a>
           )}
         </div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <!-- ============ CIFRAS ============ -->
-  <section class="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
-    <dl class="mx-auto grid max-w-6xl grid-cols-1 gap-px overflow-hidden bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-4">
+    <!-- ============ CIFRAS ============ -->
+    <div class="border-t border-[var(--color-line)] bg-[var(--color-surface)]">
+      <dl class="mx-auto grid max-w-6xl grid-cols-1 gap-px overflow-hidden bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-4">
       {
         cifras.map((c, i) => (
           <div
@@ -131,7 +133,8 @@ const ICONOS: Record<string, string> = {
           </div>
         ))
       }
-    </dl>
+      </dl>
+    </div>
   </section>
 
   <!-- ============ QUIÉN SOY ============ -->
