@@ -24,6 +24,7 @@ const contacto = [
   { slug: 'whatsapp', texto: 'Escríbeme', href: profile.whatsappUrl, principal: true },
   { slug: 'linkedin', texto: 'LinkedIn', href: profile.links.linkedin, principal: false },
   { slug: 'github', texto: 'GitHub', href: profile.links.github, principal: false },
+  { slug: 'gmail', texto: profile.email, href: `mailto:${profile.email}`, principal: false },
 ].map((c) => ({ ...c, svg: svgs[`../herramientas/${c.slug}.svg`] }));
 
 // Trazos de los iconos de las cifras. Inline y no una librería: son cuatro.
@@ -109,25 +110,6 @@ const ICONOS: Record<string, string> = {
           )}
         </div>
 
-        <p class="reveal mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs text-[var(--color-faint)]" data-delay="220ms">
-          <a
-            href={`mailto:${profile.email}`}
-            class="link-underline inline-flex items-center gap-1.5 transition-colors hover:text-[var(--color-fox-dark)]"
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M4 6h16v12H4z" /><path d="m4 7 8 6 8-6" />
-            </svg>
-            {profile.email}
-          </a>
-          <a
-            href={profile.whatsappUrl}
-            target="_blank"
-            rel="noopener"
-            class="link-underline transition-colors hover:text-[var(--color-fox-dark)]"
-          >
-            {profile.whatsapp}
-          </a>
-        </p>
         </div>
       </div>
     </div>
