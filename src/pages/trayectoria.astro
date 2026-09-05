@@ -45,7 +45,7 @@ const ICONOS: Record<string, string> = {
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 right-[-4rem] top-16 h-80 w-80" style="background: var(--color-amber)"></div>
 
-    <div class="mx-auto flex w-full max-w-6xl flex-1 items-center px-5 py-6 md:px-8">
+    <div class="mx-auto flex w-full max-w-[86rem] flex-1 items-center px-5 py-6 md:px-8">
       <div class="grid w-full items-center gap-10 lg:grid-cols-[auto_1fr] lg:gap-16">
       <div class="reveal mx-auto lg:mx-0">
         <div class="relative grid place-items-center">
@@ -61,30 +61,30 @@ const ICONOS: Record<string, string> = {
             alt="Giancarlo Renato Palomino Huallpa"
             width="720"
             height="720"
-            class="foto-perfil relative h-56 w-56 object-contain sm:h-72 sm:w-72 lg:h-[22rem] lg:w-[22rem]"
+            class="foto-perfil relative h-60 w-60 object-contain sm:h-80 sm:w-80 lg:h-[26rem] lg:w-[26rem]"
           />
         </div>
       </div>
 
       <div class="min-w-0">
         <p class="reveal eyebrow">Trayectoria</p>
-        <h1 class="reveal mt-3 font-display text-[clamp(2.1rem,4vw+0.9rem,4rem)] leading-[1.03] tracking-tight" data-delay="60ms">
+        <h1 class="reveal mt-3 font-display text-[clamp(2.1rem,4.4vw+0.9rem,4.8rem)] leading-[1.03] tracking-tight" data-delay="60ms">
           {profile.nombreCompleto}
         </h1>
-        <p class="reveal mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)] md:text-xl" data-delay="100ms">
+        <p class="reveal mt-6 max-w-3xl text-lg leading-relaxed text-[var(--color-ink-soft)] md:text-[1.3rem]" data-delay="100ms">
           Diseño la infraestructura de calidad de productos donde fallar cuesta caro: frameworks que
           otro equipo pueda mantener, pruebas que corren en cada build y agentes de IA que absorben
           el trabajo repetitivo. Empecé escribiendo código y nunca lo solté.
         </p>
 
-        <p class="reveal mt-6 inline-flex items-center gap-2 font-mono text-sm text-[var(--color-ink-soft)]" data-delay="140ms">
+        <p class="reveal mt-7 inline-flex items-center gap-2.5 font-mono text-base text-[var(--color-ink-soft)]" data-delay="140ms">
           <img
             src="/paises/pe.png"
             alt="Bandera del Perú"
-            width="20"
-            height="14"
+            width="24"
+            height="16"
             loading="lazy"
-            class="h-3.5 w-5 rounded-[2px] object-cover ring-1 ring-black/10"
+            class="h-4 w-6 rounded-[2px] object-cover ring-1 ring-black/10"
           />
           Lima, Perú
         </p>
@@ -96,7 +96,7 @@ const ICONOS: Record<string, string> = {
                 href={c.href}
                 target="_blank"
                 rel="noopener"
-                class:list={['btn text-sm', c.principal ? 'btn-primary' : 'btn-ghost']}
+                class:list={['btn text-[0.95rem] !px-5 !py-3', c.principal ? 'btn-primary' : 'btn-ghost']}
               >
                 <span class="herramienta herramienta-sm" aria-hidden="true" set:html={c.svg} />
                 {c.texto}
@@ -116,14 +116,14 @@ const ICONOS: Record<string, string> = {
 
     <!-- ============ CIFRAS ============ -->
     <div class="border-t border-[var(--color-line)] bg-[var(--color-surface)]">
-      <dl class="mx-auto grid max-w-6xl grid-cols-1 gap-px overflow-hidden bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-4">
+      <dl class="mx-auto grid max-w-[86rem] grid-cols-1 gap-px overflow-hidden bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-4">
       {
         cifras.map((c, i) => (
           <div
-            class="reveal group bg-[var(--color-surface)] px-6 py-8 transition-colors duration-300 hover:bg-[var(--color-cream-2)] md:px-8 md:py-10"
+            class="reveal group bg-[var(--color-surface)] px-6 py-8 transition-colors duration-300 hover:bg-[var(--color-cream-2)] md:px-8 md:py-11"
             data-delay={`${i * 70}ms`}
           >
-            <span class="grid h-11 w-11 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)] transition-transform duration-300 group-hover:-translate-y-0.5">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)] transition-transform duration-300 group-hover:-translate-y-0.5">
               <svg
                 width="22"
                 height="22"
@@ -141,7 +141,7 @@ const ICONOS: Record<string, string> = {
               />
             </span>
 
-            <dt class="mt-5 font-display text-[2.6rem] leading-none tracking-tight text-[var(--color-fox-dark)]">
+            <dt class="mt-5 font-display text-[3rem] leading-none tracking-tight text-[var(--color-fox-dark)]">
               {c.valor}
             </dt>
             <dd class="mt-2">
