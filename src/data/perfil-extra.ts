@@ -188,6 +188,30 @@ export const agentesIA: AplicacionIA[] = [
       'Convierte criterios de aceptación, historias de usuario e imágenes de flujo en casos estructurados, y los empaqueta listos para importación masiva. Versiona cada entrega por tícket y genera el diff contra la anterior, así se ve qué cambió y por qué.',
     contexto: 'Sector retail',
   },
+  {
+    titulo: 'Agente de análisis de historias de usuario',
+    detalle:
+      'Lee la historia y sus criterios de aceptación, señala ambigüedades y vacíos, y propone los escenarios que faltan — antes de que alguien escriba código. Es Shift-Left hecho herramienta.',
+    contexto: 'Producto de IA',
+  },
+  {
+    titulo: 'Agente generador de datos de prueba',
+    detalle:
+      'Produce los datos válidos, de borde y de error que cada flujo necesita, respetando las reglas del dominio. Deja de depender de un juego de datos que alguien preparó a mano hace meses.',
+    contexto: 'Sector salud',
+  },
+  {
+    titulo: 'Agente de rendimiento con k6',
+    detalle:
+      'Genera los escenarios de carga a partir de los servicios a probar y analiza los resultados: dónde está el punto de quiebre, qué percentil se degrada primero y si el hallazgo es del sistema o del entorno.',
+    contexto: 'Sector salud',
+  },
+  {
+    titulo: 'Agente depurador de fallos web',
+    detalle:
+      'Cuando un test se pone rojo, investiga la causa raíz: si el selector dejó de existir tras un cambio de la aplicación, si el fallo es intermitente o si es un defecto real. Ataca el mayor consumo de tiempo de cualquier suite grande.',
+    contexto: 'Producto de IA',
+  },
 ];
 
 /** IA dentro del ciclo de pruebas, en proyectos de cliente. */
