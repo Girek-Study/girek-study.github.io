@@ -4,13 +4,16 @@ interface Props {
   title: string;
   subtitle?: string;
   align?: 'left' | 'center';
+  /** Ancho máximo del bloque. En columnas anchas conviene soltarlo. */
+  ancho?: string;
 }
-const { eyebrow, title, subtitle, align = 'left' } = Astro.props;
+const { eyebrow, title, subtitle, align = 'left', ancho = 'max-w-2xl' } = Astro.props;
 ---
 
 <div
   class:list={[
-    'reveal max-w-2xl',
+    'reveal',
+    ancho,
     align === 'center' && 'mx-auto text-center',
   ]}
 >

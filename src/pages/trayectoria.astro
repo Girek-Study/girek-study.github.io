@@ -27,9 +27,11 @@ const contacto = [
   { slug: 'gmail', texto: profile.email, href: `mailto:${profile.email}`, principal: false },
 ].map((c) => ({ ...c, svg: svgs[`../herramientas/${c.slug}.svg`] }));
 
+// Nueve entran en una fila del ancho de la columna; con diez, la última
+// caía sola a un segundo renglón.
 const herramientasDiarias = [
   'playwright', 'typescript', 'cucumber', 'k6', 'postman',
-  'azuredevops', 'docker', 'jenkins', 'gitlab', 'python',
+  'azuredevops', 'docker', 'jenkins', 'gitlab',
 ].map((slug) => svgs[`../herramientas/${slug}.svg`]);
 
 // Trazos de los iconos de las cifras. Inline y no una librería: son cuatro.
@@ -294,6 +296,7 @@ const ICONOS: Record<string, string> = {
       eyebrow="Presentación"
       title="Cómo trabajo"
       subtitle="Diez años, cuatro países y una forma de trabajar que no depende de la herramienta de turno."
+      ancho="max-w-4xl"
     />
 
     <div class="mt-6 grid gap-7 lg:grid-cols-[1.18fr_1fr] lg:gap-10">
@@ -314,6 +317,23 @@ const ICONOS: Record<string, string> = {
           que el feedback llegue en minutos y no en días, y aplico IA al diseño y al análisis sin
           soltarle el volante.
         </p>
+
+        <div class="reveal mt-7 border-t border-[var(--color-line)] pt-4" data-delay="240ms">
+          <p class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">
+            Con lo que construyo a diario
+          </p>
+          <ul class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+            {
+              herramientasDiarias.map((h) => (
+                <li
+                  class="herramienta text-[var(--color-ink-soft)] transition-colors duration-200 hover:text-[var(--color-fox-dark)]"
+                  aria-hidden="true"
+                  set:html={h}
+                />
+              ))
+            }
+          </ul>
+        </div>
       </div>
 
       <div>
@@ -370,22 +390,6 @@ const ICONOS: Record<string, string> = {
       </div>
     </div>
 
-    <div class="reveal mt-6 border-t border-[var(--color-line)] pt-4" data-delay="240ms">
-      <p class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">
-        Con lo que construyo a diario
-      </p>
-      <ul class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-4">
-        {
-          herramientasDiarias.map((h) => (
-            <li
-              class="herramienta text-[var(--color-ink-soft)] transition-colors duration-200 hover:text-[var(--color-fox-dark)]"
-              aria-hidden="true"
-              set:html={h}
-            />
-          ))
-        }
-      </ul>
-    </div>
   </section>
 
   <!-- ============ LOGROS DESTACADOS ============ -->
