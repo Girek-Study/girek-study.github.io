@@ -30,6 +30,17 @@ const modelos = [
 
 const clientesParaModal = clientes.map((c) => ({ ...c, paisNombre: NOMBRE_PAIS[c.pais] }));
 
+// Se calculan de la lista para que nunca se contradigan con la rejilla.
+const metricasClientes = [
+  { valor: String(clientes.length), etiqueta: 'clientes finales' },
+  {
+    valor: String(clientes.filter((c) => c.sector === 'Banca' || c.sector === 'Seguros').length),
+    etiqueta: 'del sistema financiero',
+  },
+  { valor: String(clientes.filter((c) => c.sector === 'Gobierno').length), etiqueta: 'organismos del Estado' },
+  { valor: String(new Set(clientes.map((c) => c.pais)).size), etiqueta: 'países' },
+];
+
 const contacto = [
   { slug: 'whatsapp', texto: 'Escríbeme', href: profile.whatsappUrl, principal: true },
   { slug: 'linkedin', texto: 'LinkedIn', href: profile.links.linkedin, principal: false },
@@ -526,6 +537,19 @@ const ICONOS: Record<string, string> = {
       subtitle="Diecinueve clientes finales en nueve sectores y cuatro países. Cada uno lleva a su sitio."
       ancho="max-w-4xl"
     />
+    {/* Contadores calculados de la propia lista: si mañana se suma un cliente,
+        las cifras se actualizan solas y nunca se contradicen con la rejilla. */}
+    <dl class="reveal mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-[var(--color-line)] sm:grid-cols-4">
+      {
+        metricasClientes.map((m) => (
+          <div class="bg-[var(--color-surface)] px-5 py-4">
+            <dt class="font-display text-[1.75rem] leading-none text-[var(--color-fox-dark)]">{m.valor}</dt>
+            <dd class="mt-1.5 text-[0.78rem] leading-snug text-[var(--color-ink-soft)]">{m.etiqueta}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
     {/* Muro de logotipos. Sin una caja por cliente: diecinueve recuadros
         dentro de otro competían entre sí. En gris para que ninguno domine, y a
         color al pasar el cursor. Al pulsar se abre el detalle. */}
@@ -575,47 +599,53 @@ const ICONOS: Record<string, string> = {
         diálogos en el HTML pesarían sin que nadie los llegue a abrir. */}
     <dialog
       id="dialogo-cliente"
-      class="m-auto w-[min(34rem,92vw)] rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-0 shadow-[var(--shadow-soft)] backdrop:bg-[rgba(29,23,18,0.45)] backdrop:backdrop-blur-sm"
+      class="dialogo-cliente m-auto w-[min(38rem,92vw)] overflow-hidden rounded-[28px] border border-[var(--color-line)] bg-[var(--color-surface)] p-0 shadow-[0_40px_90px_-30px_rgba(29,23,18,0.45)] backdrop:bg-[rgba(29,23,18,0.5)] backdrop:backdrop-blur-sm"
     >
-      <div class="p-7 md:p-8">
-        <div class="flex items-start justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <span id="dc-logo" class="grid h-10 w-24 place-items-center"></span>
-            <div>
-              <h3 id="dc-nombre" class="font-display text-2xl leading-tight tracking-tight"></h3>
-              <p id="dc-meta" class="mt-1 flex items-center gap-2 font-mono text-xs text-[var(--color-faint)]"></p>
-            </div>
+      <header class="relative border-b border-[var(--color-line)] bg-gradient-to-br from-[var(--color-cream-2)] to-[var(--color-cream)] px-7 py-6 md:px-8">
+        <button
+          type="button"
+          id="dc-cerrar"
+          aria-label="Cerrar"
+          class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] transition-colors hover:border-[var(--color-fox)] hover:text-[var(--color-fox-dark)]"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="flex items-center gap-5 pr-12">
+          <span
+            id="dc-logo"
+            class="grid h-16 w-24 shrink-0 place-items-center rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3 shadow-[var(--shadow-soft)]"
+          ></span>
+
+          <div class="min-w-0">
+            <h3 id="dc-nombre" class="font-display text-[1.7rem] leading-tight tracking-tight"></h3>
+            <p id="dc-meta" class="mt-2 flex flex-wrap items-center gap-2"></p>
           </div>
-
-          <button
-            type="button"
-            id="dc-cerrar"
-            aria-label="Cerrar"
-            class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--color-line)] text-[var(--color-ink-soft)] transition-colors hover:border-[var(--color-fox)] hover:text-[var(--color-fox-dark)]"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-              <path d="M18 6 6 18M6 6l12 12" />
-            </svg>
-          </button>
         </div>
+      </header>
 
-        <p id="dc-via" class="mt-5 rounded-xl bg-[var(--color-cream-2)] px-4 py-2.5 text-sm text-[var(--color-ink-soft)]"></p>
+      <div class="max-h-[60vh] overflow-y-auto px-7 py-6 md:px-8">
+        <div id="dc-via" class="mb-6"></div>
+        <div id="dc-logros"></div>
+      </div>
 
-        <div id="dc-logros" class="mt-5"></div>
-
+      <footer class="flex items-center justify-between gap-4 border-t border-[var(--color-line)] bg-[var(--color-cream)] px-7 py-4 md:px-8">
+        <span id="dc-dominio" class="truncate font-mono text-xs text-[var(--color-faint)]"></span>
         <a
           id="dc-web"
           href="#"
           target="_blank"
           rel="noopener"
-          class="btn btn-primary mt-6 w-full justify-center text-sm"
+          class="btn btn-primary shrink-0 !px-5 !py-2.5 text-sm"
         >
-          Ir al sitio del cliente
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+          Visitar el sitio
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
             <path d="M7 17 17 7M9 7h8v8" />
           </svg>
         </a>
-      </div>
+      </footer>
     </dialog>
   </section>
 
@@ -958,6 +988,8 @@ const ICONOS: Record<string, string> = {
 
     if (dialogo && CLIENTES) {
       const pon = (id, html) => (document.getElementById(id).innerHTML = html);
+      const chip = (contenido) =>
+        `<span class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 text-[0.7rem] font-medium text-[var(--color-ink-soft)]">${contenido}</span>`;
 
       document.querySelectorAll('[data-cliente]').forEach((boton) => {
         boton.addEventListener('click', () => {
@@ -967,37 +999,47 @@ const ICONOS: Record<string, string> = {
           pon(
             'dc-logo',
             c.logo
-              ? `<img src="/logos/${c.logo}" alt="Logo de ${c.nombre}" class="max-h-10 w-auto max-w-[6rem] object-contain">`
-              : `<span class="font-display text-xl text-[var(--color-ink-soft)]">${c.nombre.slice(0, 3)}</span>`
+              ? `<img src="/logos/${c.logo}" alt="Logo de ${c.nombre}" class="max-h-10 w-auto max-w-[4.5rem] object-contain">`
+              : `<span class="font-display text-lg text-[var(--color-ink-soft)]">${c.nombre.slice(0, 3)}</span>`
           );
           pon('dc-nombre', c.nombre);
           pon(
             'dc-meta',
-            `<img src="/paises/${c.pais}.png" alt="" width="15" height="10" class="h-2.5 w-[15px] rounded-[1px] object-cover ring-1 ring-black/10">
-             <span>${c.paisNombre}</span><span>·</span><span>${c.sector}</span>`
+            chip(
+              `<img src="/paises/${c.pais}.png" alt="" width="15" height="10" class="h-2.5 w-[15px] rounded-[1px] object-cover ring-1 ring-black/10"> ${c.paisNombre}`
+            ) + chip(c.sector)
           );
+
           pon(
             'dc-via',
             c.via
-              ? `<span class="font-mono text-[0.68rem] uppercase tracking-wide text-[var(--color-faint)]">Desde</span> ${c.via}`
-              : `<span class="font-mono text-[0.68rem] uppercase tracking-wide text-[var(--color-faint)]">Sector</span> ${c.sector}`
+              ? `<p class="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">Desde</p>
+                 <p class="mt-1.5 font-display text-lg tracking-tight">${c.via}</p>`
+              : ''
           );
+
           pon(
             'dc-logros',
             c.logros && c.logros.length
-              ? `<p class="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--color-faint)]">Qué hice ahí</p>
-                 <ul class="mt-3 space-y-2.5">${c.logros
+              ? `<p class="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">Qué hice ahí</p>
+                 <ul class="mt-3 space-y-3">${c.logros
                    .map(
                      (l) =>
-                       `<li class="flex gap-2.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                          <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-[var(--color-fox)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+                       `<li class="flex gap-3 text-[0.92rem] leading-relaxed text-[var(--color-ink-soft)]">
+                          <span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[var(--color-fox-tint)]">
+                            <svg class="h-3 w-3 text-[var(--color-fox-dark)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2"><path d="M5 12l5 5L20 7"/></svg>
+                          </span>
                           <span>${l}</span>
                         </li>`
                    )
                    .join('')}</ul>`
-              : ''
+              : `<p class="rounded-2xl border border-dashed border-[var(--color-line-strong)] px-5 py-4 text-sm leading-relaxed text-[var(--color-faint)]">
+                   Trabajo de aseguramiento de calidad en ${c.sector.toLowerCase()}. El detalle de esta cuenta no está publicado.
+                 </p>`
           );
+
           document.getElementById('dc-web').href = c.web;
+          pon('dc-dominio', new URL(c.web).hostname.replace(/^www\./, ''));
 
           dialogo.showModal();
         });
