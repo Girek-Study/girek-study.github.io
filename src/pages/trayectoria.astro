@@ -887,7 +887,7 @@ const ICONOS_AGENTE: Record<string, string> = {
     {/* La regla ocupa el ancho entero, como el panel de abajo: encogida a media
         columna dejaba medio sector vacío. Y va con su icono porque no es una
         entradilla, es la condición bajo la que se aplica todo lo de abajo. */}
-    <div class="reveal mt-3.5 flex items-start gap-4 border-y border-[var(--color-line-strong)] py-3" data-delay="60ms">
+    <div class="reveal banda-regla mt-3.5 flex items-start gap-4 rounded-2xl py-3.5 pl-5 pr-6" data-delay="60ms">
       <span class="icono-regla" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3 4.5 6v5.5c0 4.4 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5.1 7.5-9.5V6L12 3Z M9 12l2 2 4-4" />
@@ -903,7 +903,7 @@ const ICONOS_AGENTE: Record<string, string> = {
         texto seguidos se leían lavados. Las divisiones son huecos de 1px que
         dejan ver el color del panel, así que cuadran solas en cualquier
         reacomodo y no hay bordes que se dupliquen. */}
-    <div class="panel-fases mt-5 overflow-hidden rounded-[26px]">
+    <div class="panel-fases mt-4 overflow-hidden rounded-[26px]">
       <ol class="grid gap-px bg-[var(--color-line-strong)] sm:grid-cols-2 xl:grid-cols-3">
         {
           ciclo.map((a, i) => (
@@ -937,7 +937,7 @@ const ICONOS_AGENTE: Record<string, string> = {
 
     {/* La séptima no ocurre dentro del ciclo: es probar un producto que lleva
         IA. Meterla en la misma fila la haría pasar por una fase más. */}
-    <div class="reveal aparte mt-3.5 flex flex-col gap-4 rounded-3xl p-5 md:flex-row md:items-center md:gap-8 md:p-6">
+    <div class="reveal aparte mt-3 flex flex-col gap-4 rounded-3xl p-5 md:flex-row md:items-center md:gap-8 md:p-6">
       <div class="flex items-center gap-4 md:w-64 md:shrink-0">
         <span class="icono-aparte" aria-hidden="true">
           <svg

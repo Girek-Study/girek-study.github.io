@@ -998,3 +998,14 @@ html {
   width: 1.15rem;
   height: 1.15rem;
 }
+
+/* Banda de la regla. Entre filetes la cuadrícula del fondo se colaba por
+   detrás y el texto se lavaba; necesita superficie opaca como el panel de las
+   fases. El filete lateral en naranja la marca como condición, no como
+   entradilla, y la distingue del panel sin repetir su tratamiento. */
+.banda-regla {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-strong);
+  border-left: 3px solid var(--color-fox);
+  box-shadow: var(--shadow-soft);
+}
