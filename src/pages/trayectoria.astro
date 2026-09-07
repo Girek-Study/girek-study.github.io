@@ -184,8 +184,8 @@ const ICONOS: Record<string, string> = {
         {/* Ficha compacta que acompaña la lectura. Solo desde lg: en pantallas
             estrechas robaría el espacio de lectura, y arriba ya está el
             encabezado completo. */}
-        <aside id="ficha" class="ficha hidden lg:sticky lg:top-24 lg:block lg:self-start lg:pb-10">
-          <div class="rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)]">
+        <aside id="ficha" class="ficha hidden lg:sticky lg:top-1/2 lg:block lg:-translate-y-1/2 lg:self-start">
+          <div class="ficha-cuerpo rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)]">
             <div class="flex items-center gap-4">
               <div class="relative shrink-0">
                 <span
@@ -284,14 +284,14 @@ const ICONOS: Record<string, string> = {
 
         <div class="min-w-0">
   <!-- ============ QUIÉN SOY ============ -->
-  <section id="presentacion" class="pt-2 pb-12 md:pb-14">
+  <section id="presentacion" class="sector">
     <p class="reveal text-xl leading-snug tracking-tight text-[var(--color-ink)] md:text-[1.6rem]">
       {profile.bio}
     </p>
   </section>
 
   <!-- ============ LOGROS DESTACADOS ============ -->
-  <section id="resultados" class="pb-12 md:pb-16">
+  <section id="resultados" class="sector">
     <SectionHeading
       eyebrow="Resultados"
       title="Lo que se movió cuando estuve"
@@ -311,7 +311,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ CLIENTES ============ -->
-  <section id="clientes" class="pb-12 md:pb-16">
+  <section id="clientes" class="sector">
     <SectionHeading
       eyebrow="Dónde"
       title="Productos que pasaron por mis manos"
@@ -348,7 +348,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ IA APLICADA ============ -->
-  <section id="ia" class="pb-12 md:pb-16">
+  <section id="ia" class="sector">
     <SectionHeading
       eyebrow="IA aplicada"
       title="Dónde entra la IA en mi trabajo"
@@ -376,40 +376,46 @@ const ICONOS: Record<string, string> = {
       </p>
     </div>
 
-    <h3 class="reveal mt-12 font-display text-2xl tracking-tight">Agentes y herramientas que construí</h3>
+  </section>
+
+  <section id="agentes" class="sector">
+    <h3 class="reveal font-display text-3xl tracking-tight md:text-4xl">Agentes y herramientas que construí</h3>
     <p class="reveal mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]" data-delay="60ms">
       Software propio, en producción y en uso por el equipo. No demos.
     </p>
-    <div class="mt-7 grid gap-5 xl:grid-cols-2">
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {
         agentesIA.map((a, i) => (
-          <article class="reveal card p-6 md:p-7" data-delay={`${(i % 2) * 80}ms`}>
+          <article class="reveal card p-5" data-delay={`${(i % 4) * 60}ms`}>
             <div class="flex items-start justify-between gap-4">
-              <h4 class="font-display text-lg leading-snug tracking-tight">{a.titulo}</h4>
+              <h4 class="font-display text-base leading-snug tracking-tight">{a.titulo}</h4>
               <span class="shrink-0 rounded-full bg-[var(--color-fox-tint)] px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-fox-dark)]">
                 {a.contexto}
               </span>
             </div>
-            <p class="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">{a.detalle}</p>
+            <p class="mt-2.5 text-[0.82rem] leading-relaxed text-[var(--color-ink-soft)]">{a.detalle}</p>
           </article>
         ))
       }
     </div>
 
-    <h3 class="reveal mt-14 font-display text-2xl tracking-tight">IA dentro del ciclo de pruebas</h3>
+  </section>
+
+  <section id="ciclo" class="sector">
+    <h3 class="reveal font-display text-3xl tracking-tight md:text-4xl">IA dentro del ciclo de pruebas</h3>
     <p class="reveal mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]" data-delay="60ms">
       Aplicado en proyectos de cliente, con una regla fija: ninguna salida del modelo se
       convierte en un caso ejecutable ni en un defecto reportado sin revisión humana.
     </p>
-    <ul class="mt-7 grid gap-4 sm:grid-cols-2">
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {
         iaEnElCiclo.map((a, i) => (
-          <li class="reveal card flex flex-col p-6" data-delay={`${(i % 3) * 70}ms`}>
+          <li class="reveal card flex flex-col p-5" data-delay={`${(i % 4) * 60}ms`}>
             <span class="font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-faint)]">
               {a.contexto}
             </span>
             <h4 class="mt-2 font-semibold leading-snug">{a.titulo}</h4>
-            <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">{a.detalle}</p>
+            <p class="mt-2 text-[0.82rem] leading-relaxed text-[var(--color-ink-soft)]">{a.detalle}</p>
           </li>
         ))
       }
@@ -417,18 +423,18 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ COMPETENCIAS ============ -->
-  <section id="competencias" class="pb-12 md:pb-16">
+  <section id="competencias" class="sector">
     <SectionHeading
       eyebrow="Qué sé hacer"
       title="Competencias"
       subtitle="Lo que defiendo en una entrevista técnica, agrupado por para qué sirve."
     />
-    <div class="mt-8 grid gap-5 xl:grid-cols-2">
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {
         competencias.map((c, i) => (
-          <article class="reveal card p-6 md:p-7" data-delay={`${(i % 2) * 80}ms`}>
-            <h3 class="font-display text-xl tracking-tight">{c.area}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">{c.detalle}</p>
+          <article class="reveal card p-5" data-delay={`${(i % 4) * 60}ms`}>
+            <h3 class="font-display text-lg tracking-tight">{c.area}</h3>
+            <p class="mt-2 text-[0.82rem] leading-relaxed text-[var(--color-ink-soft)]">{c.detalle}</p>
             <div class="mt-4 flex flex-wrap gap-1.5">
               {c.items.map((it) => (
                 <span class="chip">{it}</span>
@@ -441,24 +447,21 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ LÍNEA DE TIEMPO ============ -->
-  <section id="recorrido" class="pb-12 md:pb-16">
+  <section id="recorrido" class="sector">
     <SectionHeading
       eyebrow="Recorrido"
       title="Etapa por etapa"
-      subtitle="De las primeras prácticas al liderazgo técnico, en orden."
+      subtitle="De las primeras prácticas al liderazgo técnico. Desplázate en horizontal."
     />
-  </section>
 
-  <!-- Timeline -->
-  <section class="pb-12 md:pb-16">
-    <ol class="relative border-l-2 border-[var(--color-line-strong)] pl-6 md:pl-10">
+    <ol class="carrusel mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
       {
         experiencias.map((e, i) => (
-          <li class="reveal relative pb-12 last:pb-0" data-delay={`${i * 60}ms`}>
-            <span class="absolute -left-[33px] top-1.5 grid h-4 w-4 place-items-center rounded-full bg-[var(--color-fox)] shadow-[0_0_0_4px_var(--color-cream)] md:-left-[49px]">
-              <span class="h-1.5 w-1.5 rounded-full bg-white" />
-            </span>
-            <div class="card card-hover p-6 md:p-7">
+          <li class="w-[20rem] shrink-0 snap-start md:w-[23rem]">
+            <div class="card flex h-full flex-col p-6">
+              <span class="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-[var(--color-fox-tint)] px-3 py-1 font-mono text-[0.7rem] text-[var(--color-fox-dark)]">
+                Etapa {experiencias.length - i}
+              </span>
               <div class="flex items-start gap-4">
                 {/* Logo de la empresa, o monograma cuando no hay uno usable.
                     El hueco es rectangular a propósito: unos logos son
@@ -563,7 +566,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- Educación + Certificaciones -->
-  <section id="formacion" class="pb-12 md:pb-16">
+  <section id="formacion" class="sector">
     <div class="grid gap-10 xl:grid-cols-2 xl:gap-14">
       <div class="reveal">
         <h2 class="eyebrow mb-5">Educación</h2>
@@ -694,57 +697,71 @@ const ICONOS: Record<string, string> = {
       window.addEventListener('scroll', marcarActivo, { passive: true });
     }
 
-    /* Salto entre las tres partes de la página.
+
+    /* Navegación por sectores.
      *
-     * El anclaje de CSS no sirve aquí: la sección del medio mide quince
-     * pantallas, y el navegador ignora el anclaje de un elemento más alto que
-     * la ventana. Con `mandatory` el lector queda atrapado —medido: 10 de 14
-     * gestos no lograban avanzar— y con `proximity` el scroll se queda a medio
-     * camino, que es justo lo que se veía.
+     * Un gesto lleva al sector siguiente. Los sectores que no caben en una
+     * pantalla —los agentes, las competencias y el recorrido— se recorren
+     * primero por dentro y solo saltan cuando se llega a su final: lo
+     * contrario obligaría a comprimir el contenido hasta hacerlo ilegible.
      *
-     * Así que el salto solo se fuerza en los dos bordes: al salir de la
-     * presentación y al entrar en el cierre. Dentro del contenido el
-     * desplazamiento es libre, porque ahí lo que se hace es leer.
+     * Va en JavaScript y no con scroll-snap de CSS porque `mandatory` no puede
+     * anclar un elemento más alto que la ventana, que es justo el caso de esos
+     * tres sectores.
      */
-    const bordes = () => {
-      const cierre = document.getElementById('cierre');
-      return [
-        Math.round(encabezado.offsetTop + encabezado.offsetHeight),
-        Math.round(cierre.offsetTop - 72),
-      ];
-    };
+    const sectores = [document.querySelector('.perfil'), ...document.querySelectorAll('.sector'), document.getElementById('cierre')].filter(Boolean);
 
-    const finoParaSaltar = window.matchMedia('(min-width: 1024px)');
+    const anchoSuficiente = window.matchMedia('(min-width: 1024px)');
     const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let saltando = false;
+    let navegando = false;
 
-    function irA(destino) {
-      saltando = true;
-      window.scrollTo({ top: destino, behavior: 'smooth' });
-      // El desbloqueo va por tiempo: no hay evento fiable de "terminó el
-      // desplazamiento suave" en todos los navegadores.
-      setTimeout(() => (saltando = false), 700);
+    const topeDe = (el) => Math.round(el.getBoundingClientRect().top + window.scrollY);
+
+    function sectorActual() {
+      const y = window.scrollY + 4;
+      let indice = 0;
+      sectores.forEach((s, i) => {
+        if (topeDe(s) <= y) indice = i;
+      });
+      return indice;
+    }
+
+    function irASector(indice) {
+      const destino = sectores[indice];
+      if (!destino) return;
+      navegando = true;
+      window.scrollTo({ top: topeDe(destino), behavior: 'smooth' });
+      setTimeout(() => (navegando = false), 750);
     }
 
     window.addEventListener(
       'wheel',
       (evento) => {
-        if (saltando || !finoParaSaltar.matches || sinMovimiento.matches) return;
+        if (navegando || !anchoSuficiente.matches || sinMovimiento.matches) return;
         if (Math.abs(evento.deltaY) < 4) return;
+        // Dentro del carrusel del recorrido el gesto es para moverlo a él.
+        if (evento.target.closest('.carrusel')) return;
 
-        const y = window.scrollY;
-        const [salidaEncabezado, entradaCierre] = bordes();
-        const margen = window.innerHeight * 0.75;
+        const i = sectorActual();
+        const actual = sectores[i];
+        const arriba = topeDe(actual);
+        const alto = actual.getBoundingClientRect().height;
+        const sobraPorDentro = alto - window.innerHeight;
+        const recorrido = window.scrollY - arriba;
 
-        if (evento.deltaY > 0 && y < salidaEncabezado - 8) {
-          evento.preventDefault();
-          irA(salidaEncabezado);
-        } else if (evento.deltaY < 0 && y > 8 && y <= salidaEncabezado + margen) {
-          evento.preventDefault();
-          irA(0);
-        } else if (evento.deltaY > 0 && y > entradaCierre - margen && y < entradaCierre - 8) {
-          evento.preventDefault();
-          irA(entradaCierre);
+        if (evento.deltaY > 0) {
+          // Si el sector es más alto que la ventana, primero se termina de leer.
+          if (sobraPorDentro > 8 && recorrido < sobraPorDentro - 8) return;
+          if (i < sectores.length - 1) {
+            evento.preventDefault();
+            irASector(i + 1);
+          }
+        } else {
+          if (sobraPorDentro > 8 && recorrido > 8) return;
+          if (i > 0) {
+            evento.preventDefault();
+            irASector(i - 1);
+          }
         }
       },
       { passive: false }

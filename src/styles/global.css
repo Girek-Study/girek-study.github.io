@@ -516,22 +516,21 @@ html {
 
 /* La ficha lateral se desliza desde la izquierda cuando el encabezado sale de
    pantalla. Sin esto aparece de golpe a media página y se siente un salto. */
-.ficha {
+.ficha-cuerpo {
   opacity: 0;
-  transform: translateX(-1.5rem) scale(0.97);
+  transform: translateX(-1.5rem);
   transition:
     opacity 0.55s ease,
     transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-origin: left center;
 }
 
-.ficha-visible {
+.ficha-visible .ficha-cuerpo {
   opacity: 1;
   transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ficha {
+  .ficha-cuerpo {
     opacity: 1;
     transform: none;
     transition: none;
@@ -547,4 +546,41 @@ html {
 
 .indice-enlace.activo .indice-marca {
   background: var(--color-fox-dark);
+}
+
+/* Sectores de pantalla completa. Cada bloque ocupa una pantalla y el contenido
+   se centra, así el desplazamiento avanza de un sector al siguiente. */
+.sector {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 6rem;
+  padding-bottom: 3rem;
+}
+
+@media (max-width: 1023px) {
+  .sector {
+    min-height: 0;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* El carrusel del recorrido: trece etapas no caben en vertical en una
+   pantalla, así que se recorren de lado. */
+.carrusel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-fox) var(--color-cream-2);
+}
+.carrusel::-webkit-scrollbar {
+  height: 8px;
+}
+.carrusel::-webkit-scrollbar-track {
+  background: var(--color-cream-2);
+  border-radius: 99px;
+}
+.carrusel::-webkit-scrollbar-thumb {
+  background: var(--color-fox);
+  border-radius: 99px;
 }
