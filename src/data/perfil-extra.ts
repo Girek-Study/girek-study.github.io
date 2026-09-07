@@ -430,6 +430,8 @@ export interface AplicacionIA {
   contexto: string;
   /** Clave del icono de línea con que se rotula la tarjeta. */
   icono?: string;
+  /** Fase del ciclo de pruebas en la que entra. */
+  etapa?: string;
   /** Modelo conceptual: qué entra, qué hace y qué sale. */
   flujo?: {
     entrada: string[];
@@ -545,41 +547,48 @@ export const iaEnElCiclo: AplicacionIA[] = [
     detalle:
       'Leer un documento largo y extraer los campos, las reglas y los criterios que hay que verificar, antes de escribir un solo caso.',
     contexto: 'Banca',
-  },
-  {
-    titulo: 'Revisión de estructuras JSON y XML',
-    detalle:
-      'Comparar el contrato del servicio legado contra el migrado y señalar dónde difieren, campo por campo, en migraciones de cientos de servicios.',
-    contexto: 'Banca',
+    etapa: 'Requisitos',
   },
   {
     titulo: 'Diseño de casos y análisis de cobertura',
     detalle:
       'Generar escenarios a partir de los criterios de aceptación y detectar qué quedó sin cubrir, acortando el tiempo de diseño y el de mantenimiento.',
     contexto: 'Salud',
+    etapa: 'Diseño',
   },
   {
     titulo: 'Priorización basada en riesgo',
     detalle:
       'Decidir qué se ejecuta primero y qué se automatiza, en función del riesgo de liberación y no del orden en que llegaron los requerimientos.',
     contexto: 'Salud y fintech',
+    etapa: 'Priorización',
   },
   {
-    titulo: 'Mantenimiento predictivo de la suite',
+    titulo: 'Revisión de estructuras JSON y XML',
     detalle:
-      'Machine learning aplicado al mantenimiento de scripts y al análisis predictivo de fallos, que redujo los falsos positivos que hacían que el equipo dejara de mirar los reportes.',
-    contexto: 'Fintech',
+      'Comparar el contrato del servicio legado contra el migrado y señalar dónde difieren, campo por campo, en migraciones de cientos de servicios.',
+    contexto: 'Banca',
+    etapa: 'Verificación',
   },
   {
     titulo: 'Análisis de defectos',
     detalle:
       'Agrupar fallos, acelerar el diagnóstico y separar el defecto real del ruido de infraestructura.',
     contexto: 'Banca y fintech',
+    etapa: 'Defectos',
+  },
+  {
+    titulo: 'Mantenimiento predictivo de la suite',
+    detalle:
+      'Machine learning aplicado al mantenimiento de scripts y al análisis predictivo de fallos, que redujo los falsos positivos que hacían que el equipo dejara de mirar los reportes.',
+    contexto: 'Fintech',
+    etapa: 'Mantenimiento',
   },
   {
     titulo: 'Probar productos que llevan IA dentro',
     detalle:
       'Analítica de video con inteligencia artificial: aquí la prueba no termina en que la interfaz responda — hay que verificar que el modelo detecte lo que debe y que la analítica cuadre con lo que pasó frente a la cámara.',
     contexto: 'Producto propio',
+    etapa: 'Caso aparte',
   },
 ];

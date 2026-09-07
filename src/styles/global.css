@@ -838,3 +838,47 @@ html {
 .dialogo-agente:focus-visible {
   outline: none;
 }
+
+/* Riel del ciclo. El filete superior de cada fase es continuo entre columnas
+   porque la rejilla no lleva hueco horizontal: se lee como una línea de tiempo
+   y no como tres cajas sueltas. */
+.fase {
+  border-top: 1px solid var(--color-line-strong);
+}
+
+/* El nodo se monta sobre la línea, que es lo que la convierte en un riel. */
+.fase-nodo {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-fox);
+  box-shadow: 0 0 0 4px var(--color-cream);
+}
+
+
+/* El caso aparte: no es una fase, y el fondo lo dice antes que el texto. */
+.aparte {
+  background: linear-gradient(120deg, var(--color-fox-tint) 0%, rgba(255, 255, 255, 0) 65%),
+    var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-soft);
+}
+
+.icono-aparte {
+  display: grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  flex: none;
+  border-radius: 14px;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+}
+
+.icono-aparte svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}

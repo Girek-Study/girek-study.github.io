@@ -76,6 +76,11 @@ const ICONOS: Record<string, string> = {
 
 // Un trazo por agente. Line-icons de 24x24, mismo grosor que el resto del
 // sitio: rotulan la tarjeta de un vistazo sin competir con el titular.
+// La última de iaEnElCiclo no es una fase del ciclo sino un producto que
+// lleva IA dentro; se saca aquí para que la plantilla no tenga que saberlo.
+const ciclo = iaEnElCiclo.slice(0, -1);
+const aparte = iaEnElCiclo[iaEnElCiclo.length - 1];
+
 const ICONOS_AGENTE: Record<string, string> = {
   panel: 'M3 5h18v14H3z M3 9h18 M7 13h5 M7 16h8',
   auditoria: 'M9 3h6v3H9z M9 4.5H6.5A1.5 1.5 0 0 0 5 6v14a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V6a1.5 1.5 0 0 0-1.5-1.5H15 M9 13.5l2 2 4-4',
@@ -870,24 +875,75 @@ const ICONOS_AGENTE: Record<string, string> = {
   </section>
 
   <section id="ciclo" class="sector">
-    <h3 class="reveal font-display text-3xl tracking-tight md:text-4xl">IA dentro del ciclo de pruebas</h3>
-    <p class="reveal mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]" data-delay="60ms">
-      Aplicado en proyectos de cliente, con una regla fija: ninguna salida del modelo se
-      convierte en un caso ejecutable ni en un defecto reportado sin revisión humana.
-    </p>
-    <ul class="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    {/* Antes era una parrilla de tarjetas de altura desigual, que no decía nada
+        sobre el ciclo — justo lo que titula la sección. Ahora son las seis
+        fases en su orden real, colgadas de un riel numerado. La séptima no es
+        una fase y va aparte, que es lo que de verdad es. */}
+    <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
+      <h3 class="reveal max-w-xl font-display text-3xl tracking-tight md:text-4xl">
+        IA dentro del ciclo de pruebas
+      </h3>
+      <p
+        class="reveal texto-justo max-w-md text-sm leading-relaxed text-[var(--color-ink-soft)]"
+        data-delay="60ms"
+      >
+        Aplicado en proyectos de cliente, con una regla fija: ninguna salida del modelo se
+        convierte en un caso ejecutable ni en un defecto reportado sin revisión humana.
+      </p>
+    </div>
+
+    {/* Sin hueco horizontal: así el filete superior es una línea continua que
+        atraviesa la fila y se lee como un riel, no como tres cajas. */}
+    <ol class="mt-8 grid gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
       {
-        iaEnElCiclo.map((a, i) => (
-          <li class="reveal card flex flex-col p-5" data-delay={`${(i % 4) * 60}ms`}>
-            <span class="font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-faint)]">
-              {a.contexto}
+        ciclo.map((a, i) => (
+          <li class="reveal fase relative pr-0 pt-6 sm:pr-9" data-delay={`${(i % 3) * 70}ms`}>
+            <span class="fase-nodo" aria-hidden="true" />
+            <span class="absolute -top-[0.42rem] left-[1.15rem] font-mono text-[0.62rem] tracking-[0.1em] text-[var(--color-fox-dark)]">
+              {String(i + 1).padStart(2, '0')}
             </span>
-            <h4 class="mt-2 font-semibold leading-snug">{a.titulo}</h4>
-            <p class="mt-2 text-[0.82rem] leading-relaxed text-[var(--color-ink-soft)]">{a.detalle}</p>
+
+            <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
+              {a.etapa}
+              <span class="mx-1.5 text-[var(--color-line-strong)]">/</span>
+              {a.contexto}
+            </p>
+            <h4 class="mt-1.5 font-display text-[1.15rem] leading-snug tracking-tight">{a.titulo}</h4>
+            <p class="texto-justo mt-2 text-[0.85rem] leading-relaxed text-[var(--color-ink-soft)]">
+              {a.detalle}
+            </p>
           </li>
         ))
       }
-    </ul>
+    </ol>
+
+    {/* La séptima no ocurre dentro del ciclo: es probar un producto que lleva
+        IA. Meterla en la misma fila la haría pasar por una fase más. */}
+    <div class="reveal aparte mt-8 flex flex-col gap-5 rounded-3xl p-6 md:flex-row md:items-center md:gap-8 md:p-7">
+      <div class="flex items-center gap-4 md:w-64 md:shrink-0">
+        <span class="icono-aparte" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 7.5h14v9H3z M17 11l4-2.5v7L17 13 M7 3.5h1 M11 3.5h1" />
+          </svg>
+        </span>
+        <div>
+          <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-fox-dark)]">
+            {aparte.etapa}
+          </p>
+          <h4 class="mt-1 font-display text-[1.2rem] leading-snug tracking-tight">{aparte.titulo}</h4>
+        </div>
+      </div>
+      <p class="texto-justo text-[0.88rem] leading-relaxed text-[var(--color-ink-soft)]">
+        {aparte.detalle}
+      </p>
+    </div>
   </section>
 
   <!-- ============ COMPETENCIAS ============ -->
