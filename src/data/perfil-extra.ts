@@ -196,18 +196,35 @@ export const logrosDestacados: LogroDestacado[] = [
   },
 ];
 
-/** Los clientes finales donde se hizo el trabajo. Los logos ya están en public/logos/. */
-export const clientes = [
-  { nombre: 'Interbank', logo: 'interbank.png' },
-  { nombre: 'BCP', logo: null },
-  { nombre: 'BBVA', logo: 'bbva.png' },
-  { nombre: 'Starbucks', logo: 'starbucks.png' },
-  { nombre: 'RedSalud', logo: 'redsalud.png' },
-  { nombre: 'Claro', logo: 'claro.svg' },
-  { nombre: 'Yanbal', logo: 'yanbal.png' },
-  { nombre: 'Pacífico Seguros', logo: 'pacifico.png' },
-  { nombre: 'Edulogica', logo: 'edulogica.png' },
-  { nombre: 'UTP', logo: null },
+/**
+ * Los clientes finales donde se hizo el trabajo, agrupados por sector.
+ * Los logos viven en public/logos/; `logo: null` dibuja un monograma.
+ */
+export interface Cliente {
+  nombre: string;
+  sector: string;
+  logo: string | null;
+}
+
+export const clientes: Cliente[] = [
+  { nombre: 'Interbank', sector: 'Banca', logo: 'interbank.png' },
+  { nombre: 'BCP', sector: 'Banca', logo: null },
+  { nombre: 'BBVA', sector: 'Banca', logo: 'bbva.png' },
+  { nombre: 'Scotiabank', sector: 'Banca', logo: 'scotiabank.png' },
+  { nombre: 'Citibank', sector: 'Banca', logo: 'citibank.png' },
+  { nombre: 'MiBanco', sector: 'Banca', logo: 'mibanco.png' },
+  { nombre: 'Pacífico Seguros', sector: 'Seguros', logo: 'pacifico.png' },
+  { nombre: 'SUNAT', sector: 'Gobierno', logo: 'sunat.png' },
+  { nombre: 'SMV', sector: 'Gobierno', logo: null },
+  { nombre: 'Contraloría', sector: 'Gobierno', logo: null },
+  { nombre: 'Claro', sector: 'Telecomunicaciones', logo: 'claro.svg' },
+  { nombre: 'Starlink', sector: 'Telecomunicaciones', logo: 'starlink.png' },
+  { nombre: 'Distriluz', sector: 'Energía', logo: null },
+  { nombre: 'Starbucks', sector: 'Retail', logo: 'starbucks.png' },
+  { nombre: 'Yanbal', sector: 'Retail', logo: 'yanbal.png' },
+  { nombre: 'RedSalud', sector: 'Salud', logo: 'redsalud.png' },
+  { nombre: 'UTP', sector: 'Educación', logo: null },
+  { nombre: 'Edulogika', sector: 'Educación', logo: 'edulogica.png' },
 ];
 
 

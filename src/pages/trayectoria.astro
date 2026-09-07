@@ -513,32 +513,38 @@ const ICONOS: Record<string, string> = {
     <SectionHeading
       eyebrow="Dónde"
       title="Productos que pasaron por mis manos"
-      subtitle="Clientes finales de las consultoras y empresas donde trabajé."
+      subtitle="Dieciocho clientes finales de las consultoras y empresas donde trabajé, en banca, gobierno, telecomunicaciones, retail, salud y educación."
+      ancho="max-w-4xl"
     />
-    <ul class="mt-10 flex flex-wrap gap-3">
+    <ul class="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-4 xl:grid-cols-6">
       {
         clientes.map((c, i) => (
           <li
-            class="reveal card flex items-center gap-3 px-4 py-3"
-            data-delay={`${(i % 5) * 60}ms`}
+            class="reveal card flex flex-col items-center justify-between gap-3 px-3 py-4 text-center"
+            data-delay={`${(i % 6) * 50}ms`}
           >
-            {c.logo ? (
-              <span class="grid h-7 w-12 shrink-0 place-items-center overflow-hidden rounded-md bg-white px-1">
+            <span class="grid h-10 w-full place-items-center">
+              {c.logo ? (
                 <img
                   src={`/logos/${c.logo}`}
                   alt={`Logo de ${c.nombre}`}
-                  width="44"
-                  height="22"
+                  width="88"
+                  height="36"
                   loading="lazy"
-                  class="h-full w-full object-contain"
+                  class="max-h-9 w-auto max-w-full object-contain"
                 />
+              ) : (
+                <span class="grid h-9 w-full place-items-center rounded-lg bg-[var(--color-fox-tint)] font-display text-sm text-[var(--color-fox-dark)]">
+                  {c.nombre.slice(0, 4)}
+                </span>
+              )}
+            </span>
+            <span>
+              <span class="block text-[0.8rem] font-semibold leading-tight">{c.nombre}</span>
+              <span class="mt-1 block font-mono text-[0.6rem] uppercase tracking-wide text-[var(--color-faint)]">
+                {c.sector}
               </span>
-            ) : (
-              <span class="grid h-7 w-12 shrink-0 place-items-center rounded-md bg-[var(--color-fox-tint)] font-display text-sm text-[var(--color-fox-dark)]">
-                {c.nombre.slice(0, 3)}
-              </span>
-            )}
-            <span class="text-sm font-medium">{c.nombre}</span>
+            </span>
           </li>
         ))
       }
