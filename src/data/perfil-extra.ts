@@ -244,7 +244,7 @@ export const clientesPorSector: SectorClientes[] = [
   },
   {
     sector: 'Seguros',
-    clientes: [{ nombre: 'Pacífico Seguros', logo: 'pacifico.png', web: 'https://www.pacifico.com.pe', pais: 'pe' }],
+    clientes: [{ nombre: 'Pacífico', logo: 'pacifico.png', web: 'https://www.pacifico.com.pe', pais: 'pe' }],
   },
   {
     sector: 'Telecomunicaciones',

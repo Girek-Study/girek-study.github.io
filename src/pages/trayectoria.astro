@@ -524,15 +524,18 @@ const ICONOS: Record<string, string> = {
       subtitle="Diecinueve clientes finales en nueve sectores y cuatro países. Cada uno lleva a su sitio."
       ancho="max-w-4xl"
     />
-    {/* Todo dentro de un panel sólido: sobre la cuadrícula del fondo, las
-        líneas divisorias se cruzaban con ella y se veía sucio. */}
+    {/* Panel sólido: sobre la cuadrícula del fondo las líneas divisorias se
+        cruzaban con ella y ensuciaban la sección. Las tarjetas van a ancho
+        fijo para que formen columnas; con ancho automático el bloque quedaba
+        irregular según el largo de cada nombre. */}
     <div class="reveal mt-7 rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
-      <div class="space-y-4">
+      <div class="space-y-3.5">
         {
           clientesPorSector.map((grupo) => (
-            <div class="grid gap-2.5 sm:grid-cols-[10rem_1fr] sm:items-start">
-              <p class="pt-2 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--color-fox-dark)]">
+            <div class="grid gap-2 sm:grid-cols-[9.5rem_1fr] sm:items-start">
+              <p class="flex items-baseline gap-2 pt-3 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--color-ink-soft)] sm:justify-end sm:pr-1">
                 {grupo.sector}
+                <span class="text-[var(--color-faint)]">{grupo.clientes.length}</span>
               </p>
 
               <ul class="flex flex-wrap gap-2">
@@ -543,15 +546,15 @@ const ICONOS: Record<string, string> = {
                       target="_blank"
                       rel="noopener"
                       title={`Visitar el sitio de ${c.nombre}`}
-                      class="flex items-center gap-2.5 rounded-xl border border-[var(--color-line)] bg-[var(--color-cream)] px-3 py-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--color-fox)] hover:shadow-[var(--shadow-soft)]"
+                      class="group flex h-11 w-[11.75rem] items-center gap-2.5 rounded-xl border border-[var(--color-line)] bg-[var(--color-cream)] px-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--color-fox)] hover:bg-[var(--color-surface)] hover:shadow-[var(--shadow-soft)]"
                     >
                       <span class="grid h-6 w-11 shrink-0 place-items-center">
                         {c.logo ? (
                           <img
                             src={`/logos/${c.logo}`}
                             alt={`Logo de ${c.nombre}`}
-                            width="44"
-                            height="24"
+                            width="48"
+                            height="28"
                             loading="lazy"
                             class="max-h-6 w-auto max-w-full object-contain"
                           />
@@ -560,16 +563,18 @@ const ICONOS: Record<string, string> = {
                         )}
                       </span>
 
-                      <span class="text-[0.82rem] font-medium">{c.nombre}</span>
+                      {/* Una sola línea: el nombre del país repetido quince
+                          veces era ruido, y la bandera ya lo dice. */}
+                      <span class="min-w-0 flex-1 truncate text-[0.82rem] font-medium">{c.nombre}</span>
 
                       <img
                         src={`/paises/${c.pais}.png`}
                         alt={`Trabajo realizado en ${NOMBRE_PAIS[c.pais]}`}
                         title={NOMBRE_PAIS[c.pais]}
-                        width="18"
+                        width="17"
                         height="12"
                         loading="lazy"
-                        class="h-3 w-[18px] shrink-0 rounded-[2px] object-cover ring-1 ring-black/10"
+                        class="h-3 w-[17px] shrink-0 rounded-[2px] object-cover ring-1 ring-black/10"
                       />
                     </a>
                   </li>
