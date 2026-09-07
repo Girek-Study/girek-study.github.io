@@ -656,14 +656,65 @@ const ICONOS: Record<string, string> = {
     <SectionHeading
       eyebrow="IA aplicada"
       title="Dónde entra la IA en mi trabajo"
-      subtitle="No solo generar casos: construir las herramientas que hacen el trabajo repetitivo del equipo, meter modelos dentro del ciclo, y probar productos que llevan IA por dentro."
+      subtitle="Tres capas distintas, y conviene no mezclarlas: construir herramientas propias, meter modelos dentro del ciclo de pruebas, y probar productos que llevan IA por dentro."
+      ancho="max-w-4xl"
     />
 
-    <div class="reveal mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 md:p-7">
-      <p class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">
+    <div class="mt-8 grid gap-5 lg:grid-cols-3">
+      {
+        [
+          {
+            valor: String(agentesIA.length),
+            titulo: 'Agentes y herramientas construidos',
+            texto: 'Software propio, en producción y en uso por equipos. No prototipos.',
+            icono: 'M9 3v2 M15 3v2 M9 19v2 M15 19v2 M3 9h2 M3 15h2 M19 9h2 M19 15h2 M6 6h12v12H6z M10 10h4v4h-4z',
+          },
+          {
+            valor: String(iaEnElCiclo.length),
+            titulo: 'Usos dentro del ciclo de pruebas',
+            texto: 'Del análisis de requerimientos al mantenimiento predictivo de la suite.',
+            icono: 'M6 3v12 M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6 M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6 M18 9a9 9 0 0 1-9 9',
+          },
+          {
+            valor: '100%',
+            titulo: 'Bajo revisión humana',
+            texto: 'Ninguna salida del modelo se convierte en caso ejecutable ni en defecto sin que alguien la valide.',
+            icono: 'M12 3 4 6v6c0 4.4 3.4 8.5 8 9.5 4.6-1 8-5.1 8-9.5V6l-8-3Z M9 12l2 2 4-4',
+          },
+        ].map((c, i) => (
+          <article class="reveal card flex flex-col p-6" data-delay={`${i * 80}ms`}>
+            <div class="flex items-center gap-3">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)]">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  set:html={c.icono
+                    .split(' M')
+                    .map((d, n) => `<path d="${n === 0 ? d : 'M' + d}"/>`)
+                    .join('')}
+                />
+              </span>
+              <p class="font-display text-[2rem] leading-none text-[var(--color-fox-dark)]">{c.valor}</p>
+            </div>
+            <h3 class="mt-4 font-semibold leading-snug">{c.titulo}</h3>
+            <p class="mt-2 text-[0.86rem] leading-relaxed text-[var(--color-ink-soft)]">{c.texto}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="reveal mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] px-6 py-5" data-delay="240ms">
+      <p class="font-mono text-[0.68rem] uppercase tracking-wider text-[var(--color-faint)]">
         Modelos y herramientas con los que trabajo
       </p>
-      <ul class="mt-5 flex flex-wrap items-center gap-x-7 gap-y-4">
+      <ul class="mt-4 flex flex-wrap items-center gap-x-7 gap-y-3">
         {
           modelos.map((m) => (
             <li class="flex items-center gap-2.5 text-[var(--color-ink-soft)]">
@@ -673,13 +724,7 @@ const ICONOS: Record<string, string> = {
           ))
         }
       </ul>
-      <p class="mt-5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-        Los uso donde cada uno rinde: razonamiento largo sobre requerimientos, generación de
-        código de pruebas dentro del editor, y comparación de estructuras. La herramienta cambia
-        cada seis meses; el criterio para decidir qué se acepta y qué se descarta, no.
-      </p>
     </div>
-
   </section>
 
   <section id="agentes" class="sector">
@@ -687,22 +732,19 @@ const ICONOS: Record<string, string> = {
     <p class="reveal mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]" data-delay="60ms">
       Software propio, en producción y en uso por el equipo. No demos.
     </p>
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <ol class="carrusel mt-7 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
       {
-        agentesIA.map((a, i) => (
-          <article class="reveal card p-5" data-delay={`${(i % 4) * 60}ms`}>
-            <div class="flex items-start justify-between gap-4">
-              <h4 class="font-display text-base leading-snug tracking-tight">{a.titulo}</h4>
-              <span class="shrink-0 rounded-full bg-[var(--color-fox-tint)] px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-fox-dark)]">
-                {a.contexto}
-              </span>
-            </div>
-            <p class="mt-2.5 text-[0.82rem] leading-relaxed text-[var(--color-ink-soft)]">{a.detalle}</p>
-          </article>
+        agentesIA.map((a) => (
+          <li class="card flex w-[19rem] shrink-0 snap-start flex-col p-6 md:w-[21rem]">
+            <span class="w-fit rounded-full bg-[var(--color-fox-tint)] px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-wide text-[var(--color-fox-dark)]">
+              {a.contexto}
+            </span>
+            <h4 class="mt-3 font-display text-lg leading-snug tracking-tight">{a.titulo}</h4>
+            <p class="mt-3 text-[0.88rem] leading-relaxed text-[var(--color-ink-soft)]">{a.detalle}</p>
+          </li>
         ))
       }
-    </div>
-
+    </ol>
   </section>
 
   <section id="ciclo" class="sector">
@@ -711,7 +753,7 @@ const ICONOS: Record<string, string> = {
       Aplicado en proyectos de cliente, con una regla fija: ninguna salida del modelo se
       convierte en un caso ejecutable ni en un defecto reportado sin revisión humana.
     </p>
-    <ul class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <ul class="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {
         iaEnElCiclo.map((a, i) => (
           <li class="reveal card flex flex-col p-5" data-delay={`${(i % 4) * 60}ms`}>
