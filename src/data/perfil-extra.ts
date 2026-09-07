@@ -250,7 +250,7 @@ export const clientesPorSector: SectorClientes[] = [
     sector: 'Telecomunicaciones',
     clientes: [
       { nombre: 'Claro', logo: 'claro.svg', web: 'https://www.claro.com.pe', pais: 'pe' },
-      { nombre: 'Starlink', logo: 'starlink.png', web: 'https://www.starlink.com', pais: 'pe' },
+      { nombre: 'Starlink', logo: 'starlink.png', web: 'https://www.starlink.com', pais: 'mx' },
     ],
   },
   {
