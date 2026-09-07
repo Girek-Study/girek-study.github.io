@@ -594,3 +594,52 @@ html {
   -webkit-hyphens: auto;
   text-wrap: pretty;
 }
+
+/* Muro de logotipos: en gris para que ninguno domine sobre los demás, y a
+   color al pasar el cursor. Es lo que evita que un listado de marcas se vea
+   como un collage. */
+.marca img[alt^='Logo'] {
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition:
+    filter 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.marca:hover img[alt^='Logo'] {
+  filter: none;
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marca img[alt^='Logo'] {
+    transition: none;
+  }
+}
+
+/* Muro de logotipos: en gris para que ninguno domine sobre los demás, y a
+   color al pasar el cursor. Es lo que evita que un listado de marcas se vea
+   como un collage de colores. */
+.marca img[alt^='Logo'] {
+  filter: grayscale(1);
+  opacity: 0.5;
+  transition:
+    filter 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.marca:hover img[alt^='Logo'],
+.marca:focus-visible img[alt^='Logo'] {
+  filter: none;
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marca img[alt^='Logo'] {
+    transition: none;
+  }
+}

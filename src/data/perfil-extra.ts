@@ -200,14 +200,6 @@ export const logrosDestacados: LogroDestacado[] = [
  * Los clientes finales donde se hizo el trabajo, agrupados por sector.
  * Los logos viven en public/logos/; `logo: null` dibuja un monograma.
  */
-export interface Cliente {
-  nombre: string;
-  logo: string | null;
-  web: string;
-  /** País donde se hizo el trabajo, no la sede del cliente. */
-  pais: CodigoPais;
-}
-
 export type CodigoPais = 'pe' | 'mx' | 'cl' | 'pr';
 
 export const NOMBRE_PAIS: Record<CodigoPais, string> = {
@@ -217,66 +209,193 @@ export const NOMBRE_PAIS: Record<CodigoPais, string> = {
   pr: 'Puerto Rico',
 };
 
-export interface SectorClientes {
+export interface Cliente {
+  nombre: string;
   sector: string;
-  clientes: Cliente[];
+  logo: string | null;
+  web: string;
+  /** País donde se hizo el trabajo, no la sede del cliente. */
+  pais: CodigoPais;
+  /** Empresa o consultora desde la que se trabajó para ese cliente. */
+  via?: string;
+  /** Qué se hizo ahí. Solo lo documentado en el CV; nunca se rellena a ojo. */
+  logros?: string[];
 }
 
-export const clientesPorSector: SectorClientes[] = [
+/** Ordenados por sector para que la rejilla los agrupe sin cortar filas. */
+export const clientes: Cliente[] = [
   {
+    nombre: 'Interbank',
     sector: 'Banca',
-    clientes: [
-      { nombre: 'Interbank', logo: 'interbank.png', web: 'https://interbank.pe', pais: 'pe' },
-      { nombre: 'BCP', logo: 'bcp.png', web: 'https://www.viabcp.com', pais: 'pe' },
-      { nombre: 'BBVA', logo: 'bbva.png', web: 'https://www.bbva.pe', pais: 'pe' },
-      { nombre: 'Scotiabank', logo: 'scotiabank.png', web: 'https://www.scotiabank.com.pe', pais: 'pe' },
-      { nombre: 'Citibank', logo: 'citibank.png', web: 'https://www.citibank.com', pais: 'pe' },
-      { nombre: 'MiBanco', logo: 'mibanco.png', web: 'https://www.mibanco.com.pe', pais: 'pe' },
+    logo: 'interbank.png',
+    web: 'https://interbank.pe',
+    pais: 'pe',
+    via: 'Canvia · Delaware · Q System',
+    logros: [
+      'Certificación de los servicios críticos en su modernización de XML a JSON: contratos, mapeo de campos, reglas de negocio e integridad de datos entre el servicio legado y el migrado.',
+      'En Medios de Pago, migración de pipelines y releases a Jenkins, integración del simulador VISA y capacitación de un squad de 35 personas.',
+      'Certificación funcional de cajeros automáticos, verificando sincronización y seguridad de la información según la normativa del sector.',
     ],
   },
   {
+    nombre: 'BCP',
+    sector: 'Banca',
+    logo: 'bcp.png',
+    web: 'https://www.viabcp.com',
+    pais: 'pe',
+    via: 'Chapter Lead Quality Engineer',
+    logros: [
+      'Coordinación de 15 ingenieros de calidad repartidos en varias tribus de producto digital, con estándares comunes de framework, nomenclatura y reportería.',
+      'Un 20% más de cobertura automatizada con frameworks en Selenium, JUnit, Appium y SerenityBDD con patrón Screenplay.',
+      'Integración de pruebas de rendimiento y seguridad dentro de los pipelines, y un programa de mentoría propio para los ingenieros junior.',
+    ],
+  },
+  {
+    nombre: 'BBVA',
+    sector: 'Banca',
+    logo: 'bbva.png',
+    web: 'https://www.bbva.pe',
+    pais: 'pe',
+    via: 'Canvia',
+    logros: ['Apoyo a la migración a cloud con métricas, tableros e integración de JIRA con Jenkins.'],
+  },
+  {
+    nombre: 'Scotiabank',
+    sector: 'Banca',
+    logo: 'scotiabank.png',
+    web: 'https://www.scotiabank.com.pe',
+    pais: 'pe',
+  },
+  {
+    nombre: 'Citibank',
+    sector: 'Banca',
+    logo: 'citibank.png',
+    web: 'https://www.citibank.com',
+    pais: 'pe',
+  },
+  {
+    nombre: 'MiBanco',
+    sector: 'Banca',
+    logo: 'mibanco.png',
+    web: 'https://www.mibanco.com.pe',
+    pais: 'pe',
+  },
+  { nombre: 'SUNAT', sector: 'Gobierno', logo: 'sunat.png', web: 'https://www.sunat.gob.pe', pais: 'pe' },
+  { nombre: 'SMV', sector: 'Gobierno', logo: 'smv.png', web: 'https://www.smv.gob.pe', pais: 'pe' },
+  {
+    nombre: 'Contraloría',
     sector: 'Gobierno',
-    clientes: [
-      { nombre: 'SUNAT', logo: 'sunat.png', web: 'https://www.sunat.gob.pe', pais: 'pe' },
-      { nombre: 'SMV', logo: 'smv.png', web: 'https://www.smv.gob.pe', pais: 'pe' },
-      { nombre: 'Contraloría', logo: 'contraloria.png', web: 'https://www.gob.pe/contraloria', pais: 'pe' },
-    ],
+    logo: 'contraloria.png',
+    web: 'https://www.gob.pe/contraloria',
+    pais: 'pe',
   },
   {
+    nombre: 'Pacífico',
     sector: 'Seguros',
-    clientes: [{ nombre: 'Pacífico', logo: 'pacifico.png', web: 'https://www.pacifico.com.pe', pais: 'pe' }],
+    logo: 'pacifico.png',
+    web: 'https://www.pacifico.com.pe',
+    pais: 'pe',
+    via: 'Q System',
+    logros: [
+      'Diseño, ejecución y estimación de los planes de prueba del core asegurador de Pacífico Vida, en web, móvil Android y aplicaciones cliente-servidor.',
+    ],
   },
   {
+    nombre: 'Claro',
     sector: 'Telecomunicaciones',
-    clientes: [
-      { nombre: 'Claro', logo: 'claro.svg', web: 'https://www.claro.com.pe', pais: 'pe' },
-      { nombre: 'Starlink', logo: 'starlink.png', web: 'https://www.starlink.com', pais: 'mx' },
+    logo: 'claro.svg',
+    web: 'https://www.claro.com.pe',
+    pais: 'pe',
+    via: 'Canvia',
+    logros: [
+      'Rediseño del proceso de calidad de software del área TMO, adaptando las metodologías a su operación real.',
+      'Gobierno de los ciclos funcionales, de regresión, smoke y UAT de las entregas, dirigiendo un equipo multidisciplinario de 15 personas.',
     ],
   },
   {
+    nombre: 'Starlink',
+    sector: 'Telecomunicaciones',
+    logo: 'starlink.png',
+    web: 'https://www.starlink.com',
+    pais: 'mx',
+  },
+  {
+    nombre: 'Distriluz',
     sector: 'Energía',
-    clientes: [{ nombre: 'Distriluz', logo: 'distriluz.png', web: 'https://www.distriluz.com.pe', pais: 'pe' }],
+    logo: 'distriluz.png',
+    web: 'https://www.distriluz.com.pe',
+    pais: 'pe',
   },
   {
+    nombre: 'Starbucks',
     sector: 'Retail',
-    clientes: [
-      { nombre: 'Starbucks', logo: 'starbucks.png', web: 'https://www.starbucks.com', pais: 'pe' },
-      { nombre: 'Yanbal', logo: 'yanbal.png', web: 'https://www.yanbal.com', pais: 'pe' },
+    logo: 'starbucks.png',
+    web: 'https://www.starbucks.com',
+    pais: 'pe',
+    via: 'IDM Technology',
+    logros: [
+      'Automatización de extremo a extremo de los flujos críticos del programa de recompensas en web, Android e iOS: OTP, beneficios, acumulación de estrellas, canje e historial transaccional.',
+      'Validación de APIs REST, integraciones de backend y consistencia entre los tres canales contra los criterios de aceptación.',
     ],
   },
   {
+    nombre: 'Yanbal',
+    sector: 'Retail',
+    logo: 'yanbal.png',
+    web: 'https://www.yanbal.com',
+    pais: 'pe',
+    via: 'Q System',
+    logros: [
+      'Automatización con Selenium de las funcionalidades críticas del negocio y validación del sistema core.',
+    ],
+  },
+  {
+    nombre: 'RedSalud',
     sector: 'Salud',
-    clientes: [{ nombre: 'RedSalud', logo: 'redsalud.png', web: 'https://www.redsalud.cl', pais: 'cl' }],
+    logo: 'redsalud.png',
+    web: 'https://www.redsalud.cl',
+    pais: 'cl',
+    via: 'Soho Humantech',
+    logros: [
+      'Estrategia y automatización E2E de los flujos de agenda, disponibilidad y agendamiento médico, con Playwright y TypeScript bajo patrón Screenplay.',
+      'Validación de APIs y consistencia de datos con SQL, y pruebas de carga con k6 sobre los servicios de agenda.',
+      'Flujo asistido por IA para generar casos, analizar cobertura y priorizar escenarios.',
+    ],
   },
   {
+    nombre: 'Elipgo',
     sector: 'Tecnología',
-    clientes: [{ nombre: 'Elipgo', logo: 'elipgo.png', web: 'https://elipgo.com', pais: 'mx' }],
+    logo: 'elipgo.png',
+    web: 'https://elipgo.com',
+    pais: 'mx',
+    via: 'Tech Lead IA Automation',
+    logros: [
+      'Liderazgo técnico de la automatización de calidad de un producto de analítica de video con inteligencia artificial.',
+      'Framework en Playwright con Cucumber y patrón Screenplay sobre TypeScript, con gestión de datos de prueba y tablero de resultados propio.',
+    ],
   },
   {
+    nombre: 'UTP',
     sector: 'Educación',
-    clientes: [
-      { nombre: 'UTP', logo: 'utp.png', web: 'https://www.utp.edu.pe', pais: 'pe' },
-      { nombre: 'Edulogika', logo: 'edulogica.png', web: 'https://www.edulogika.com', pais: 'pr' },
+    logo: 'utp.png',
+    web: 'https://www.utp.edu.pe',
+    pais: 'pe',
+    via: 'Senior Quality Engineer',
+    logros: [
+      'Calidad de UTP+Class, la plataforma de clases digitales: coordinación del equipo de QA de la tribu y optimización de la suite de automatización.',
+      'Automatización de APIs con Karate y RestAssured, y de flujos web con Cypress, Selenium y TestCafe.',
+    ],
+  },
+  {
+    nombre: 'Edulogika',
+    sector: 'Educación',
+    logo: 'edulogica.png',
+    web: 'https://www.edulogika.com',
+    pais: 'pr',
+    via: 'Nagnoi, LLC',
+    logros: [
+      'Un 70% más de cobertura automatizada con suites en Playwright y Specflow, con una caída notoria de los errores críticos que llegaban a producción.',
+      'Un 40% menos de tiempo de ejecución mediante paralelización y optimización de scripts.',
     ],
   },
 ];
