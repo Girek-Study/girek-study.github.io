@@ -880,14 +880,20 @@ const ICONOS_AGENTE: Record<string, string> = {
         sobre el ciclo — justo lo que titula la sección. Ahora son las seis
         fases en su orden real, colgadas de un riel numerado. La séptima no es
         una fase y va aparte, que es lo que de verdad es. */}
-    <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
-      <h3 class="reveal max-w-xl font-display text-3xl tracking-tight md:text-[2.2rem]">
-        IA dentro del ciclo de pruebas
-      </h3>
-      <p
-        class="reveal texto-justo max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]"
-        data-delay="60ms"
-      >
+    <h3 class="reveal font-display text-3xl tracking-tight md:text-[2.2rem]">
+      IA dentro del ciclo de pruebas
+    </h3>
+
+    {/* La regla ocupa el ancho entero, como el panel de abajo: encogida a media
+        columna dejaba medio sector vacío. Y va con su icono porque no es una
+        entradilla, es la condición bajo la que se aplica todo lo de abajo. */}
+    <div class="reveal mt-3.5 flex items-start gap-4 border-y border-[var(--color-line-strong)] py-3" data-delay="60ms">
+      <span class="icono-regla" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 4.5 6v5.5c0 4.4 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5.1 7.5-9.5V6L12 3Z M9 12l2 2 4-4" />
+        </svg>
+      </span>
+      <p class="texto-justo text-[0.9rem] leading-relaxed text-[var(--color-ink-soft)]">
         Aplicado en proyectos de cliente, con una regla fija: ninguna salida del modelo se
         convierte en un caso ejecutable ni en un defecto reportado sin revisión humana.
       </p>
@@ -897,12 +903,12 @@ const ICONOS_AGENTE: Record<string, string> = {
         texto seguidos se leían lavados. Las divisiones son huecos de 1px que
         dejan ver el color del panel, así que cuadran solas en cualquier
         reacomodo y no hay bordes que se dupliquen. */}
-    <div class="panel-fases mt-6 overflow-hidden rounded-[26px]">
+    <div class="panel-fases mt-5 overflow-hidden rounded-[26px]">
       <ol class="grid gap-px bg-[var(--color-line-strong)] sm:grid-cols-2 xl:grid-cols-3">
         {
           ciclo.map((a, i) => (
             <li
-              class="reveal fase flex flex-col bg-[var(--color-surface)] px-5 py-3.5"
+              class="reveal fase flex flex-col bg-[var(--color-surface)] px-5 py-3"
               data-delay={`${(i % 3) * 70}ms`}
             >
               {/* El sector baja al pie: arriba partía el rótulo en dos líneas y
@@ -915,8 +921,8 @@ const ICONOS_AGENTE: Record<string, string> = {
                 </p>
               </div>
 
-              <h4 class="mt-3 font-display text-[1.06rem] leading-snug tracking-tight">{a.titulo}</h4>
-              <p class="texto-justo mt-2 text-[0.82rem] leading-[1.55] text-[var(--color-ink-soft)]">
+              <h4 class="mt-2.5 font-display text-[1.06rem] leading-snug tracking-tight">{a.titulo}</h4>
+              <p class="texto-justo mt-2 text-[0.82rem] leading-[1.5] text-[var(--color-ink-soft)]">
                 {a.detalle}
               </p>
 
@@ -931,7 +937,7 @@ const ICONOS_AGENTE: Record<string, string> = {
 
     {/* La séptima no ocurre dentro del ciclo: es probar un producto que lleva
         IA. Meterla en la misma fila la haría pasar por una fase más. */}
-    <div class="reveal aparte mt-4 flex flex-col gap-4 rounded-3xl p-5 md:flex-row md:items-center md:gap-8 md:p-6">
+    <div class="reveal aparte mt-3.5 flex flex-col gap-4 rounded-3xl p-5 md:flex-row md:items-center md:gap-8 md:p-6">
       <div class="flex items-center gap-4 md:w-64 md:shrink-0">
         <span class="icono-aparte" aria-hidden="true">
           <svg
