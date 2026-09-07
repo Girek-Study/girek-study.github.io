@@ -153,7 +153,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'Banco de Crédito BCP',
     cargo: 'Chapter Lead Quality Engineer',
-    logo: null,
+    logo: 'bcp.png',
     web: 'https://www.viabcp.com',
     pais: 'pe',
     paisNombre: 'Perú',
@@ -172,7 +172,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'UTP — Universidad Tecnológica del Perú',
     cargo: 'Senior Quality Engineer',
-    logo: null,
+    logo: 'utp.png',
     web: 'https://www.utp.edu.pe',
     pais: 'pe',
     paisNombre: 'Perú',

@@ -208,22 +208,22 @@ export interface Cliente {
 
 export const clientes: Cliente[] = [
   { nombre: 'Interbank', sector: 'Banca', logo: 'interbank.png' },
-  { nombre: 'BCP', sector: 'Banca', logo: null },
+  { nombre: 'BCP', sector: 'Banca', logo: 'bcp.png' },
   { nombre: 'BBVA', sector: 'Banca', logo: 'bbva.png' },
   { nombre: 'Scotiabank', sector: 'Banca', logo: 'scotiabank.png' },
   { nombre: 'Citibank', sector: 'Banca', logo: 'citibank.png' },
   { nombre: 'MiBanco', sector: 'Banca', logo: 'mibanco.png' },
   { nombre: 'Pacífico Seguros', sector: 'Seguros', logo: 'pacifico.png' },
   { nombre: 'SUNAT', sector: 'Gobierno', logo: 'sunat.png' },
-  { nombre: 'SMV', sector: 'Gobierno', logo: null },
-  { nombre: 'Contraloría', sector: 'Gobierno', logo: null },
+  { nombre: 'SMV', sector: 'Gobierno', logo: 'smv.png' },
+  { nombre: 'Contraloría', sector: 'Gobierno', logo: 'contraloria.png' },
   { nombre: 'Claro', sector: 'Telecomunicaciones', logo: 'claro.svg' },
   { nombre: 'Starlink', sector: 'Telecomunicaciones', logo: 'starlink.png' },
-  { nombre: 'Distriluz', sector: 'Energía', logo: null },
+  { nombre: 'Distriluz', sector: 'Energía', logo: 'distriluz.png' },
   { nombre: 'Starbucks', sector: 'Retail', logo: 'starbucks.png' },
   { nombre: 'Yanbal', sector: 'Retail', logo: 'yanbal.png' },
   { nombre: 'RedSalud', sector: 'Salud', logo: 'redsalud.png' },
-  { nombre: 'UTP', sector: 'Educación', logo: null },
+  { nombre: 'UTP', sector: 'Educación', logo: 'utp.png' },
   { nombre: 'Edulogika', sector: 'Educación', logo: 'edulogica.png' },
 ];
 
