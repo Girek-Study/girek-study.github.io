@@ -530,7 +530,7 @@ const ICONOS: Record<string, string> = {
         dentro de otro competían entre sí. En gris para que ninguno domine, y a
         color al pasar el cursor. Al pulsar se abre el detalle. */}
     <div class="reveal mt-9">
-      <ul class="grid grid-cols-3 gap-x-6 gap-y-9 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      <ul class="grid grid-cols-3 gap-x-8 gap-y-10 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {
           clientes.map((c) => (
             <li>
@@ -540,33 +540,29 @@ const ICONOS: Record<string, string> = {
                 data-cliente={c.nombre}
                 aria-haspopup="dialog"
               >
-                <span class="grid h-10 w-full place-items-center">
+                {/* Altura según el tipo de logo: un isotipo cuadrado necesita
+                    más que un logotipo largo para pesar lo mismo. Sin esto
+                    unos se ven diminutos junto a otros. */}
+                <span class="grid h-14 w-full place-items-center">
                   {c.logo ? (
                     <img
                       src={`/logos/${c.logo}`}
                       alt={`Logo de ${c.nombre}`}
-                      width="140"
-                      height="40"
+                      width="150"
+                      height="56"
                       loading="lazy"
-                      class="max-h-10 w-auto max-w-[8.5rem] object-contain"
+                      class:list={[
+                        'w-auto max-w-[9rem] object-contain',
+                        c.iso ? 'max-h-[3.25rem]' : 'max-h-8',
+                      ]}
                     />
                   ) : (
-                    <span class="font-display text-xl text-[var(--color-ink-soft)]">{c.nombre.slice(0, 3)}</span>
+                    <span class="font-display text-2xl text-[var(--color-ink-soft)]">{c.nombre.slice(0, 3)}</span>
                   )}
                 </span>
 
-                <span class="flex items-center gap-1.5">
-                  <img
-                    src={`/paises/${c.pais}.png`}
-                    alt=""
-                    width="14"
-                    height="10"
-                    loading="lazy"
-                    class="h-2.5 w-3.5 shrink-0 rounded-[1px] object-cover ring-1 ring-black/10"
-                  />
-                  <span class="text-[0.72rem] text-[var(--color-faint)] transition-colors group-hover:text-[var(--color-fox-dark)]">
-                    {c.nombre}
-                  </span>
+                <span class="text-[0.72rem] text-[var(--color-faint)] transition-colors group-hover:text-[var(--color-fox-dark)]">
+                  {c.nombre}
                 </span>
               </button>
             </li>

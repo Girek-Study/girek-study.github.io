@@ -218,6 +218,12 @@ export interface Cliente {
   pais: CodigoPais;
   /** Empresa o consultora desde la que se trabajó para ese cliente. */
   via?: string;
+  /**
+   * Marca los logos que son solo símbolo, sin texto. Un isotipo cuadrado
+   * necesita más altura que un logotipo largo para pesar lo mismo en la
+   * página; sin esto unos se ven diminutos junto a otros.
+   */
+  iso?: boolean;
   /** Qué se hizo ahí. Solo lo documentado en el CV; nunca se rellena a ojo. */
   logros?: string[];
 }
@@ -253,6 +259,7 @@ export const clientes: Cliente[] = [
   {
     nombre: 'BBVA',
     sector: 'Banca',
+    iso: true,
     logo: 'bbva.png',
     web: 'https://www.bbva.pe',
     pais: 'pe',
@@ -262,6 +269,7 @@ export const clientes: Cliente[] = [
   {
     nombre: 'Scotiabank',
     sector: 'Banca',
+    iso: true,
     logo: 'scotiabank.png',
     web: 'https://www.scotiabank.com.pe',
     pais: 'pe',
@@ -276,11 +284,12 @@ export const clientes: Cliente[] = [
   {
     nombre: 'MiBanco',
     sector: 'Banca',
+    iso: true,
     logo: 'mibanco.png',
     web: 'https://www.mibanco.com.pe',
     pais: 'pe',
   },
-  { nombre: 'SUNAT', sector: 'Gobierno', logo: 'sunat.png', web: 'https://www.sunat.gob.pe', pais: 'pe' },
+  { nombre: 'SUNAT', sector: 'Gobierno', iso: true, logo: 'sunat.png', web: 'https://www.sunat.gob.pe', pais: 'pe' },
   { nombre: 'SMV', sector: 'Gobierno', logo: 'smv.png', web: 'https://www.smv.gob.pe', pais: 'pe' },
   {
     nombre: 'Contraloría',
@@ -315,6 +324,7 @@ export const clientes: Cliente[] = [
   {
     nombre: 'Starlink',
     sector: 'Telecomunicaciones',
+    iso: true,
     logo: 'starlink.png',
     web: 'https://www.starlink.com',
     pais: 'mx',
@@ -322,6 +332,7 @@ export const clientes: Cliente[] = [
   {
     nombre: 'Distriluz',
     sector: 'Energía',
+    iso: true,
     logo: 'distriluz.png',
     web: 'https://www.distriluz.com.pe',
     pais: 'pe',
@@ -329,6 +340,7 @@ export const clientes: Cliente[] = [
   {
     nombre: 'Starbucks',
     sector: 'Retail',
+    iso: true,
     logo: 'starbucks.png',
     web: 'https://www.starbucks.com',
     pais: 'pe',
@@ -341,6 +353,7 @@ export const clientes: Cliente[] = [
   {
     nombre: 'Yanbal',
     sector: 'Retail',
+    iso: true,
     logo: 'yanbal.png',
     web: 'https://www.yanbal.com',
     pais: 'pe',
@@ -352,6 +365,7 @@ export const clientes: Cliente[] = [
   {
     nombre: 'RedSalud',
     sector: 'Salud',
+    iso: true,
     logo: 'redsalud.png',
     web: 'https://www.redsalud.cl',
     pais: 'cl',
@@ -365,6 +379,7 @@ export const clientes: Cliente[] = [
   {
     nombre: 'Elipgo',
     sector: 'Tecnología',
+    iso: true,
     logo: 'elipgo.png',
     web: 'https://elipgo.com',
     pais: 'mx',
