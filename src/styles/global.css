@@ -650,36 +650,40 @@ html {
   align-items: stretch;
 }
 
-/* Sin inclinación: en una sección que habla de trabajo serio, las tarjetas
-   torcidas restan en vez de sumar. El relieve lo da la sombra. */
+/* Las tarjetas viven dentro del panel oscuro, así que no son papel: son
+   superficies levantadas sobre él. Sin inclinación —en contenido serio resta—
+   y el relieve lo da el propio contraste, no una sombra que ahí no se vería. */
 .tarjeta-agente {
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   transition:
     transform 0.25s ease,
-    box-shadow 0.25s ease,
+    background 0.25s ease,
     border-color 0.25s ease;
 }
 
 .tarjeta-agente:hover {
   transform: translateY(-4px);
-  border-color: var(--color-fox-tint);
-  box-shadow: 0 22px 40px -26px rgba(28, 22, 18, 0.4);
+  background: rgba(255, 255, 255, 0.075);
+  border-color: rgba(255, 166, 43, 0.35);
 }
 
-/* Rótulo de la tarjeta: el icono en su propia loseta, no suelto sobre el papel. */
+/* Rótulo de la tarjeta: el icono en su propia loseta, no suelto sobre el fondo. */
 .icono-agente {
   display: grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.4rem;
+  height: 2.4rem;
   flex: none;
   border-radius: 12px;
-  background: var(--color-fox-tint);
-  color: var(--color-fox-dark);
+  background: rgba(255, 166, 43, 0.13);
+  color: var(--color-amber);
 }
 
 .icono-agente svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 /* La cinta entraba y salía cortando las palabras a la mitad, que se leía como
