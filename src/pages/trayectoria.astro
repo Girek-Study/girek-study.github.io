@@ -38,7 +38,7 @@ const metricasClientes = [
     etiqueta: 'del sistema financiero',
   },
   { valor: String(clientes.filter((c) => c.sector === 'Gobierno').length), etiqueta: 'organismos del Estado' },
-  { valor: String(new Set(clientes.map((c) => c.pais)).size), etiqueta: 'países' },
+  { valor: String(new Set(clientes.map((c) => c.sector)).size), etiqueta: 'sectores distintos' },
 ];
 
 const contacto = [
@@ -534,17 +534,17 @@ const ICONOS: Record<string, string> = {
     <SectionHeading
       eyebrow="Dónde"
       title="Productos que pasaron por mis manos"
-      subtitle="Diecinueve clientes finales en nueve sectores y cuatro países. Cada uno lleva a su sitio."
+      subtitle="Pulsa cualquier logotipo para ver desde qué empresa trabajé para ese cliente y qué se hizo ahí."
       ancho="max-w-4xl"
     />
     {/* Contadores calculados de la propia lista: si mañana se suma un cliente,
         las cifras se actualizan solas y nunca se contradicen con la rejilla. */}
-    <dl class="reveal mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-[var(--color-line)] sm:grid-cols-4">
+    <dl class="reveal mt-8 flex flex-wrap items-start gap-x-10 gap-y-5 border-y border-[var(--color-line)] py-5">
       {
-        metricasClientes.map((m) => (
-          <div class="bg-[var(--color-surface)] px-5 py-4">
-            <dt class="font-display text-[1.75rem] leading-none text-[var(--color-fox-dark)]">{m.valor}</dt>
-            <dd class="mt-1.5 text-[0.78rem] leading-snug text-[var(--color-ink-soft)]">{m.etiqueta}</dd>
+        metricasClientes.map((m, i) => (
+          <div class:list={['flex items-baseline gap-2.5', i > 0 && 'sm:border-l sm:border-[var(--color-line)] sm:pl-10']}>
+            <dt class="font-display text-[2rem] leading-none text-[var(--color-fox-dark)]">{m.valor}</dt>
+            <dd class="max-w-[8rem] text-[0.8rem] leading-tight text-[var(--color-ink-soft)]">{m.etiqueta}</dd>
           </div>
         ))
       }
