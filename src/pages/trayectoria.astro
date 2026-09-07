@@ -184,7 +184,7 @@ const ICONOS: Record<string, string> = {
         {/* Ficha compacta que acompaña la lectura. Solo desde lg: en pantallas
             estrechas robaría el espacio de lectura, y arriba ya está el
             encabezado completo. */}
-        <aside class="hidden lg:sticky lg:top-24 lg:block lg:self-start lg:pb-10">
+        <aside id="ficha" class="ficha hidden lg:sticky lg:top-24 lg:block lg:self-start lg:pb-10">
           <div class="relative w-fit">
             <span
               class="pointer-events-none absolute -inset-2 -z-10 rounded-full bg-[radial-gradient(circle,var(--color-fox-tint)_0%,var(--color-amber)_50%,transparent_74%)] opacity-60 blur-xl"
@@ -577,5 +577,63 @@ const ICONOS: Record<string, string> = {
         </div>
       </div>
     </div>
+
+    <!-- ============ SIGUIENTE PASO ============ -->
+    <section class="mx-auto max-w-[94rem] px-5 pb-24 pt-8 md:px-8 md:pb-32">
+      <div class="reveal overflow-hidden rounded-[28px] bg-gradient-to-br from-[var(--color-fox-dark)] to-[#9c3103] p-9 text-white shadow-[var(--shadow-warm)] md:p-14">
+        <div class="grid items-center gap-8 lg:grid-cols-[1.3fr_auto] lg:gap-14">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-white/70">Girek Study</p>
+            <h2 class="mt-4 font-display text-3xl leading-tight tracking-tight md:text-[2.6rem]">
+              Todo esto lo publico en abierto
+            </h2>
+            <p class="mt-5 max-w-2xl leading-relaxed text-white/85">
+              Los frameworks que construyo, las decisiones de diseño detrás de cada uno y lo que
+              aprendo por el camino. El código se puede clonar y las notas se leen sin registrarse.
+              Las clases vienen después.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-3 lg:flex-col">
+            <a
+              href="/notas"
+              class="btn justify-center bg-white !px-6 !py-3.5 text-[var(--color-fox-dark)] hover:bg-white/90"
+            >
+              Leer las notas
+            </a>
+            <a
+              href="/girek-study"
+              class="btn justify-center border-2 border-white/40 !px-6 !py-3.5 text-white hover:border-white"
+            >
+              Ver el temario
+            </a>
+            <a
+              href="/portafolio"
+              class="btn justify-center border-2 border-white/40 !px-6 !py-3.5 text-white hover:border-white"
+            >
+              Ver el código
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
+
+  <script>
+    // La ficha lateral aparece cuando el encabezado deja la pantalla: da la
+    // sensación de que la presentación se recoge a un lado en vez de
+    // materializarse de golpe a media página.
+    const encabezado = document.querySelector('.perfil');
+    const ficha = document.getElementById('ficha');
+
+    if (encabezado && ficha && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        ([entrada]) => ficha.classList.toggle('ficha-visible', !entrada.isIntersecting),
+        { threshold: 0, rootMargin: '-30% 0px 0px 0px' }
+      );
+      io.observe(encabezado);
+    } else {
+      ficha?.classList.add('ficha-visible');
+    }
+  </script>
 </Layout>
