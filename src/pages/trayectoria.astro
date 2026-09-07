@@ -41,7 +41,7 @@ const ICONOS: Record<string, string> = {
   description={`Trayectoria profesional de ${profile.nombreCompleto} en QA, automatización de pruebas y liderazgo de equipos de calidad.`}
 >
   <!-- ============ ENCABEZADO CON FOTO ============ -->
-  <section class="seccion perfil relative flex flex-col overflow-hidden pt-28 lg:min-h-dvh lg:pt-24">
+  <section class="perfil relative flex flex-col overflow-hidden pt-28 lg:min-h-dvh lg:pt-24">
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 right-[-4rem] top-16 h-80 w-80" style="background: var(--color-amber)"></div>
 
@@ -171,7 +171,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ CONTENIDO CON FICHA FIJA ============ -->
-  <div class="seccion relative pt-12 md:pt-16">
+  <div class="relative pt-12 md:pt-16">
     {/* El fondo se recorta en su propia capa: un overflow-hidden aquí
         convertiría a este div en el contenedor de desplazamiento y
         `position: sticky` dejaría de funcionar. */}
@@ -579,7 +579,7 @@ const ICONOS: Record<string, string> = {
     </div>
 
     <!-- ============ SIGUIENTE PASO ============ -->
-    <section class="seccion mx-auto max-w-[94rem] px-5 pt-8 md:px-8">
+    <section id="cierre" class="mx-auto max-w-[94rem] px-5 pt-8 md:px-8">
       <div class="reveal overflow-hidden rounded-[28px] bg-gradient-to-br from-[var(--color-fox-dark)] to-[#9c3103] p-9 text-white shadow-[var(--shadow-warm)] md:p-14">
         <div class="grid items-center gap-8 lg:grid-cols-[1.3fr_auto] lg:gap-14">
           <div>
@@ -649,7 +649,7 @@ const ICONOS: Record<string, string> = {
      * desplazamiento es libre, porque ahí lo que se hace es leer.
      */
     const bordes = () => {
-      const cierre = document.querySelector('.seccion.mx-auto');
+      const cierre = document.getElementById('cierre');
       return [
         Math.round(encabezado.offsetTop + encabezado.offsetHeight),
         Math.round(cierre.offsetTop - 72),
