@@ -202,29 +202,72 @@ export const logrosDestacados: LogroDestacado[] = [
  */
 export interface Cliente {
   nombre: string;
-  sector: string;
   logo: string | null;
+  web: string;
 }
 
-export const clientes: Cliente[] = [
-  { nombre: 'Interbank', sector: 'Banca', logo: 'interbank.png' },
-  { nombre: 'BCP', sector: 'Banca', logo: 'bcp.png' },
-  { nombre: 'BBVA', sector: 'Banca', logo: 'bbva.png' },
-  { nombre: 'Scotiabank', sector: 'Banca', logo: 'scotiabank.png' },
-  { nombre: 'Citibank', sector: 'Banca', logo: 'citibank.png' },
-  { nombre: 'MiBanco', sector: 'Banca', logo: 'mibanco.png' },
-  { nombre: 'Pacífico Seguros', sector: 'Seguros', logo: 'pacifico.png' },
-  { nombre: 'SUNAT', sector: 'Gobierno', logo: 'sunat.png' },
-  { nombre: 'SMV', sector: 'Gobierno', logo: 'smv.png' },
-  { nombre: 'Contraloría', sector: 'Gobierno', logo: 'contraloria.png' },
-  { nombre: 'Claro', sector: 'Telecomunicaciones', logo: 'claro.svg' },
-  { nombre: 'Starlink', sector: 'Telecomunicaciones', logo: 'starlink.png' },
-  { nombre: 'Distriluz', sector: 'Energía', logo: 'distriluz.png' },
-  { nombre: 'Starbucks', sector: 'Retail', logo: 'starbucks.png' },
-  { nombre: 'Yanbal', sector: 'Retail', logo: 'yanbal.png' },
-  { nombre: 'RedSalud', sector: 'Salud', logo: 'redsalud.png' },
-  { nombre: 'UTP', sector: 'Educación', logo: 'utp.png' },
-  { nombre: 'Edulogika', sector: 'Educación', logo: 'edulogica.png' },
+export interface SectorClientes {
+  sector: string;
+  clientes: Cliente[];
+}
+
+export const clientesPorSector: SectorClientes[] = [
+  {
+    sector: 'Banca',
+    clientes: [
+      { nombre: 'Interbank', logo: 'interbank.png', web: 'https://interbank.pe' },
+      { nombre: 'BCP', logo: 'bcp.png', web: 'https://www.viabcp.com' },
+      { nombre: 'BBVA', logo: 'bbva.png', web: 'https://www.bbva.pe' },
+      { nombre: 'Scotiabank', logo: 'scotiabank.png', web: 'https://www.scotiabank.com.pe' },
+      { nombre: 'Citibank', logo: 'citibank.png', web: 'https://www.citibank.com' },
+      { nombre: 'MiBanco', logo: 'mibanco.png', web: 'https://www.mibanco.com.pe' },
+    ],
+  },
+  {
+    sector: 'Gobierno',
+    clientes: [
+      { nombre: 'SUNAT', logo: 'sunat.png', web: 'https://www.sunat.gob.pe' },
+      { nombre: 'SMV', logo: 'smv.png', web: 'https://www.smv.gob.pe' },
+      { nombre: 'Contraloría', logo: 'contraloria.png', web: 'https://www.gob.pe/contraloria' },
+    ],
+  },
+  {
+    sector: 'Seguros',
+    clientes: [{ nombre: 'Pacífico Seguros', logo: 'pacifico.png', web: 'https://www.pacifico.com.pe' }],
+  },
+  {
+    sector: 'Telecomunicaciones',
+    clientes: [
+      { nombre: 'Claro', logo: 'claro.svg', web: 'https://www.claro.com.pe' },
+      { nombre: 'Starlink', logo: 'starlink.png', web: 'https://www.starlink.com' },
+    ],
+  },
+  {
+    sector: 'Energía',
+    clientes: [{ nombre: 'Distriluz', logo: 'distriluz.png', web: 'https://www.distriluz.com.pe' }],
+  },
+  {
+    sector: 'Retail',
+    clientes: [
+      { nombre: 'Starbucks', logo: 'starbucks.png', web: 'https://www.starbucks.com' },
+      { nombre: 'Yanbal', logo: 'yanbal.png', web: 'https://www.yanbal.com' },
+    ],
+  },
+  {
+    sector: 'Salud',
+    clientes: [{ nombre: 'RedSalud', logo: 'redsalud.png', web: 'https://www.redsalud.cl' }],
+  },
+  {
+    sector: 'Tecnología',
+    clientes: [{ nombre: 'Elipgo', logo: 'elipgo.png', web: 'https://elipgo.com' }],
+  },
+  {
+    sector: 'Educación',
+    clientes: [
+      { nombre: 'UTP', logo: 'utp.png', web: 'https://www.utp.edu.pe' },
+      { nombre: 'Edulogika', logo: 'edulogica.png', web: 'https://www.edulogika.com' },
+    ],
+  },
 ];
 
 

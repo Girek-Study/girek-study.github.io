@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { profile } from '../data/site';
 import { experiencias, certificaciones, educacion, idiomas } from '../data/experience';
-import { cifras, competencias, logrosDestacados, clientes, agentesIA, iaEnElCiclo } from '../data/perfil-extra';
+import { cifras, competencias, logrosDestacados, clientesPorSector, agentesIA, iaEnElCiclo } from '../data/perfil-extra';
 
 // Los iconos se inlinean para poder teñirlos con el color del texto.
 const svgs = import.meta.glob<string>('../herramientas/*.svg', {
@@ -513,42 +513,52 @@ const ICONOS: Record<string, string> = {
     <SectionHeading
       eyebrow="Dónde"
       title="Productos que pasaron por mis manos"
-      subtitle="Dieciocho clientes finales de las consultoras y empresas donde trabajé, en banca, gobierno, telecomunicaciones, retail, salud y educación."
+      subtitle="Diecinueve clientes finales de las consultoras y empresas donde trabajé, en nueve sectores. Cada uno lleva a su sitio."
       ancho="max-w-4xl"
     />
-    <ul class="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-4 xl:grid-cols-6">
+    {/* Agrupados por sector, en filas: el sector a la izquierda y sus
+        clientes a la derecha. Cada tarjeta lleva a la web del cliente. */}
+    <div class="mt-7 divide-y divide-[var(--color-line)]">
       {
-        clientes.map((c, i) => (
-          <li
-            class="reveal card flex flex-col items-center justify-between gap-3 px-3 py-4 text-center"
-            data-delay={`${(i % 6) * 50}ms`}
-          >
-            <span class="grid h-10 w-full place-items-center">
-              {c.logo ? (
-                <img
-                  src={`/logos/${c.logo}`}
-                  alt={`Logo de ${c.nombre}`}
-                  width="88"
-                  height="36"
-                  loading="lazy"
-                  class="max-h-9 w-auto max-w-full object-contain"
-                />
-              ) : (
-                <span class="grid h-9 w-full place-items-center rounded-lg bg-[var(--color-fox-tint)] font-display text-sm text-[var(--color-fox-dark)]">
-                  {c.nombre.slice(0, 4)}
-                </span>
-              )}
-            </span>
-            <span>
-              <span class="block text-[0.8rem] font-semibold leading-tight">{c.nombre}</span>
-              <span class="mt-1 block font-mono text-[0.6rem] uppercase tracking-wide text-[var(--color-faint)]">
-                {c.sector}
-              </span>
-            </span>
-          </li>
+        clientesPorSector.map((grupo, i) => (
+          <div class="reveal grid gap-2 py-2.5 sm:grid-cols-[9rem_1fr] sm:items-center" data-delay={`${i * 40}ms`}>
+            <p class="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--color-faint)]">
+              {grupo.sector}
+            </p>
+
+            <ul class="flex flex-wrap gap-2">
+              {grupo.clientes.map((c) => (
+                <li>
+                  <a
+                    href={c.web}
+                    target="_blank"
+                    rel="noopener"
+                    title={`Visitar el sitio de ${c.nombre}`}
+                    class="card card-hover flex items-center gap-2.5 px-3 py-1.5"
+                  >
+                    <span class="grid h-6 w-12 shrink-0 place-items-center">
+                      {c.logo ? (
+                        <img
+                          src={`/logos/${c.logo}`}
+                          alt={`Logo de ${c.nombre}`}
+                          width="48"
+                          height="24"
+                          loading="lazy"
+                          class="max-h-6 w-auto max-w-full object-contain"
+                        />
+                      ) : (
+                        <span class="font-display text-xs text-[var(--color-fox-dark)]">{c.nombre.slice(0, 3)}</span>
+                      )}
+                    </span>
+                    <span class="text-[0.82rem] font-medium">{c.nombre}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))
       }
-    </ul>
+    </div>
   </section>
 
   <!-- ============ IA APLICADA ============ -->
