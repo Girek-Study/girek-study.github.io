@@ -545,7 +545,7 @@ html {
 }
 
 .indice-enlace.activo .indice-marca {
-  background: var(--color-fox-dark);
+  color: var(--color-fox-dark);
 }
 
 /* Sectores de pantalla completa. Cada bloque ocupa una pantalla y el contenido
