@@ -154,6 +154,8 @@ export interface LogroDestacado {
   sector: string;
   icono: string;
   barra?: { antes: number; despues: number; etiquetaAntes: string; etiquetaDespues: string };
+  /** Alternativa a la barra cuando la cifra es un recuento de personas. */
+  puntos?: { cantidad: number; etiqueta: string };
 }
 
 export const logrosDestacados: LogroDestacado[] = [
@@ -190,6 +192,7 @@ export const logrosDestacados: LogroDestacado[] = [
       'Chapter al servicio de varias tribus del banco más grande del Perú, con estándares comunes y un programa de mentoría propio.',
     sector: 'Banca',
     icono: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
+    puntos: { cantidad: 15, etiqueta: 'Un chapter, varias tribus' },
   },
 ];
 

@@ -481,6 +481,22 @@ const ICONOS: Record<string, string> = {
                 </div>
               </div>
             )}
+
+            {l.puntos && (
+              /* Sin este remate la tarjeta quedaba más corta que las de al lado
+                 y la fila se descuadraba. Además, quince puntos se leen antes
+                 que el número. */
+              <div class="mt-4 border-t border-[var(--color-line)] pt-3.5">
+                <p class="font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-faint)]">
+                  {l.puntos.etiqueta}
+                </p>
+                <div class="mt-2.5 flex flex-wrap gap-1.5">
+                  {Array.from({ length: l.puntos.cantidad }).map(() => (
+                    <span class="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-[var(--color-fox)] to-[var(--color-fox-dark)]" />
+                  ))}
+                </div>
+              </div>
+            )}
           </article>
         ))
       }
