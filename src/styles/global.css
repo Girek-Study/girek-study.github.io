@@ -584,3 +584,13 @@ html {
   background: var(--color-fox);
   border-radius: 99px;
 }
+
+/* Texto justificado para los párrafos largos.
+   La partición de palabras es imprescindible aquí: justificar sin ella abre
+   huecos enormes entre palabras en español, que tiene palabras largas. */
+.texto-justo {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-wrap: pretty;
+}
