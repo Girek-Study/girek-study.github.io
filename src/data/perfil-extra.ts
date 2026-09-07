@@ -140,30 +140,56 @@ export const competencias: Competencia[] = [
   },
 ];
 
-/** Los resultados que más peso tienen, con su contexto. */
-export const logrosDestacados = [
+/**
+ * Los resultados que más peso tienen, con su contexto.
+ *
+ * `barra` representa la misma métrica antes y después, en relativo: un −70%
+ * es pasar de 100 a 30. No son valores absolutos —esos son del cliente— sino
+ * la proporción que la cifra ya declara.
+ */
+export interface LogroDestacado {
+  cifra: string;
+  titulo: string;
+  detalle: string;
+  sector: string;
+  icono: string;
+  barra?: { antes: number; despues: number; etiquetaAntes: string; etiquetaDespues: string };
+}
+
+export const logrosDestacados: LogroDestacado[] = [
   {
     cifra: '−70%',
     titulo: 'Tiempo de validación por release',
     detalle:
-      'Ejecución paralela y distribuida en contenedores Docker sobre Jenkins y GitLab CI, en una fintech.',
+      'Ejecución paralela y distribuida en contenedores Docker sobre Jenkins y GitLab CI.',
+    sector: 'Fintech',
+    icono: 'M12 7v5l3 2 M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+    barra: { antes: 100, despues: 30, etiquetaAntes: 'Antes', etiquetaDespues: 'Después' },
   },
   {
     cifra: '+70%',
     titulo: 'Cobertura automatizada',
     detalle:
       'Suites en Playwright y Specflow que redujeron de forma notoria los errores críticos que llegaban a producción.',
+    sector: 'Datos y analítica',
+    icono: 'M3 17l6-6 4 4 8-8 M21 7v5h-5',
+    barra: { antes: 30, despues: 100, etiquetaAntes: 'Al llegar', etiquetaDespues: 'Al salir' },
   },
   {
     cifra: '−40%',
     titulo: 'Tiempo de ejecución de la suite',
     detalle: 'Paralelización y optimización de scripts, sin perder cobertura.',
+    sector: 'Datos y analítica',
+    icono: 'M13 2 3 14h9l-1 8 10-12h-9l1-8Z',
+    barra: { antes: 100, despues: 60, etiquetaAntes: 'Antes', etiquetaDespues: 'Después' },
   },
   {
     cifra: '15',
-    titulo: 'Ingenieros coordinados en el BCP',
+    titulo: 'Ingenieros de calidad coordinados',
     detalle:
-      'Chapter de calidad al servicio de varias tribus, con estándares comunes y un programa de mentoría propio.',
+      'Chapter al servicio de varias tribus del banco más grande del Perú, con estándares comunes y un programa de mentoría propio.',
+    sector: 'Banca',
+    icono: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
   },
 ];
 
