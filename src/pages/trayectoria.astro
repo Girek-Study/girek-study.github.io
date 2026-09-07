@@ -27,6 +27,11 @@ const contacto = [
   { slug: 'gmail', texto: profile.email, href: `mailto:${profile.email}`, principal: false },
 ].map((c) => ({ ...c, svg: svgs[`../herramientas/${c.slug}.svg`] }));
 
+const herramientasDiarias = [
+  'playwright', 'typescript', 'cucumber', 'k6', 'postman',
+  'azuredevops', 'docker', 'jenkins', 'gitlab', 'python',
+].map((slug) => svgs[`../herramientas/${slug}.svg`]);
+
 // Trazos de los iconos de las cifras. Inline y no una librería: son cuatro.
 const ICONOS: Record<string, string> = {
   reloj: 'M12 7v5l3 2 M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
@@ -283,11 +288,100 @@ const ICONOS: Record<string, string> = {
         </aside>
 
         <div class="min-w-0">
-  <!-- ============ QUIÉN SOY ============ -->
+  <!-- ============ PRESENTACIÓN ============ -->
   <section id="presentacion" class="sector">
-    <p class="reveal text-xl leading-snug tracking-tight text-[var(--color-ink)] md:text-[1.6rem]">
-      {profile.bio}
-    </p>
+    <SectionHeading
+      eyebrow="Presentación"
+      title="Cómo trabajo"
+      subtitle="Diez años en calidad de software me dejaron tres convicciones. Todo lo demás —herramientas, frameworks, modelos— cambia cada dos años."
+    />
+
+    <div class="mt-7 grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
+      <div class="reveal">
+        <p class="border-l-2 border-[var(--color-fox)] pl-5 font-display text-2xl leading-snug tracking-tight text-[var(--color-ink)] md:text-[1.75rem]">
+          Empecé escribiendo código y nunca lo solté. Por eso discuto un pipeline o un contrato de API
+          con desarrollo de igual a igual.
+        </p>
+
+        <p class="mt-6 leading-relaxed text-[var(--color-ink-soft)]">
+          Empecé programando en Java y terminé liderando chapters de calidad en banca y fintech. En el
+          camino aprendí que una suite no vale por cuántas pruebas tiene, sino por cuántas siguen
+          corriendo dos años después sin que nadie las pelee.
+        </p>
+
+        <p class="mt-4 leading-relaxed text-[var(--color-ink-soft)]">
+          Hoy construyo frameworks que otro equipo pueda mantener, llevo las pruebas al pipeline para
+          que el feedback llegue en minutos y no en días, y aplico IA al diseño y al análisis sin
+          soltarle el volante.
+        </p>
+      </div>
+
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+        {
+          [
+            {
+              icono: 'M12 3v18 M5 8l7-5 7 5 M5 16l7 5 7-5',
+              titulo: 'El framework lo mantiene el equipo, no yo',
+              texto:
+                'Si para tocar una prueba hay que preguntarme, el diseño falló. Nombres de negocio, capas separadas y decisiones explicadas.',
+            },
+            {
+              icono: 'M4 7h16 M4 12h10 M4 17h7 M18 14l3 3-3 3',
+              titulo: 'Lo que no está en el pipeline no existe',
+              texto:
+                'Una prueba que alguien tiene que acordarse de ejecutar no protege nada. Corre en cada build o no cuenta.',
+            },
+            {
+              icono: 'M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4Z M6 21v-1a6 6 0 0 1 12 0v1 M9 11l1.5 1.5L15 8',
+              titulo: 'La IA propone, la decisión es humana',
+              texto:
+                'Ningún modelo sabe si una diferencia es el cambio acordado o el defecto. Esa clasificación es donde está el criterio.',
+            },
+          ].map((pilar, i) => (
+            <li class="reveal card flex gap-4 p-5" data-delay={`${i * 80}ms`}>
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)]">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  set:html={pilar.icono
+                    .split(' M')
+                    .map((d, n) => `<path d="${n === 0 ? d : 'M' + d}"/>`)
+                    .join('')}
+                />
+              </span>
+              <div>
+                <h3 class="font-semibold leading-snug">{pilar.titulo}</h3>
+                <p class="mt-1.5 text-[0.85rem] leading-relaxed text-[var(--color-ink-soft)]">{pilar.texto}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="reveal mt-7 border-t border-[var(--color-line)] pt-5" data-delay="240ms">
+      <p class="font-mono text-xs uppercase tracking-wider text-[var(--color-faint)]">
+        Con lo que construyo a diario
+      </p>
+      <ul class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-4">
+        {
+          herramientasDiarias.map((h) => (
+            <li
+              class="herramienta text-[var(--color-ink-soft)] transition-colors duration-200 hover:text-[var(--color-fox-dark)]"
+              aria-hidden="true"
+              set:html={h}
+            />
+          ))
+        }
+      </ul>
+    </div>
   </section>
 
   <!-- ============ LOGROS DESTACADOS ============ -->
