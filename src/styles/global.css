@@ -664,3 +664,24 @@ html {
     transform: none;
   }
 }
+
+/* Bloque oscuro de IA. Es el único de la página: eso es justamente lo que
+   marca que ahí hay algo distinto del resto de la trayectoria. */
+.bloque-ia {
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--color-navy-2) 0%, var(--color-navy) 55%),
+    var(--color-navy);
+  border: 1px solid var(--color-navy-line);
+  box-shadow: 0 34px 70px -34px rgba(10, 15, 30, 0.55);
+}
+
+.brillo-ia {
+  background: radial-gradient(circle, rgba(255, 166, 43, 0.22) 0%, transparent 68%);
+  filter: blur(28px);
+}
+
+/* Sobre fondo oscuro los logotipos van en blanco: en su color de marca unos
+   desaparecerían y otros gritarían. */
+.bloque-ia .herramienta svg {
+  fill: rgba(255, 255, 255, 0.85);
+}
