@@ -684,7 +684,7 @@ const ICONOS_AGENTE: Record<string, string> = {
         >
           Dónde entra la IA en mi trabajo
         </h2>
-        <p class="reveal mt-3 max-w-3xl leading-relaxed text-white/65" data-delay="100ms">
+        <p class="reveal texto-justo mt-3 max-w-3xl leading-relaxed text-white/65" data-delay="100ms">
           Tres capas distintas, y conviene no mezclarlas: construir herramientas propias, meter
           modelos dentro del ciclo de pruebas, y probar productos que llevan IA por dentro.
         </p>
@@ -722,7 +722,7 @@ const ICONOS_AGENTE: Record<string, string> = {
         </div>
       </div>
 
-      <div id="agentes" class="relative mt-6 border-t border-white/10 pt-5">
+      <div id="agentes" class="relative mt-6 border-t border-white/10 pt-4">
         <div class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
           <h3 class="font-display text-xl tracking-tight text-white md:text-[1.4rem]">
             Agentes y herramientas que construí
@@ -734,12 +734,18 @@ const ICONOS_AGENTE: Record<string, string> = {
 
         {/* La cinta sangra hasta los bordes del panel y se desvanece contra él;
             recortada por dentro se leería como una caja más. */}
-        <div class="marquee-track marquee-difuminado -mx-7 mt-4 overflow-hidden md:-mx-10">
+        <div class="marquee-track marquee-difuminado -mx-7 mt-3 overflow-hidden md:-mx-10">
           <ol class="marquee marquee-agentes gap-3.5 pl-7 md:pl-10">
             {
               [...agentesIA, ...agentesIA].map((a, i) => (
-                <li class="tarjeta-agente flex w-[17.5rem] shrink-0 flex-col p-4 md:w-[19rem]">
-                  <div class="flex items-start justify-between gap-3">
+                <li class="flex shrink-0">
+                <button
+                  type="button"
+                  data-agente={a.titulo}
+                  aria-haspopup="dialog"
+                  class="tarjeta-agente flex w-[17.5rem] flex-col p-4 text-left md:w-[19rem]"
+                >
+                  <div class="flex w-full items-start justify-between gap-3">
                     <span class="icono-agente" aria-hidden="true">
                       <svg
                         viewBox="0 0 24 24"
@@ -763,14 +769,104 @@ const ICONOS_AGENTE: Record<string, string> = {
                   <h4 class="mt-1.5 font-display text-[1.02rem] leading-snug tracking-tight text-white">
                     {a.titulo}
                   </h4>
-                  <p class="mt-2 text-[0.82rem] leading-relaxed text-white/55">{a.detalle}</p>
-                </li>
+                  <p class="texto-justo mt-2 text-[0.82rem] leading-relaxed text-white/55">{a.detalle}</p>
+
+                  <span class="mt-auto flex items-center gap-1.5 pt-3 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-white/35 transition-colors">
+                    Ver el modelo
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.6"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                </button>
+              </li>
               ))
             }
           </ol>
         </div>
       </div>
     </div>
+
+    {/* Modelo conceptual del agente. Uno solo que se rellena al pulsar, igual
+        que el de clientes: ocho diálogos en el HTML pesarían sin que nadie los
+        abra. Va en oscuro porque sale del bloque oscuro. */}
+    <dialog
+      id="dialogo-agente"
+      tabindex="-1"
+      class="dialogo-agente m-auto w-[min(46rem,94vw)] overflow-hidden rounded-[28px] p-0 backdrop:bg-[rgba(6,10,20,0.62)] backdrop:backdrop-blur-sm"
+    >
+      <header class="relative border-b border-white/10 px-7 py-6 md:px-8">
+        <button
+          type="button"
+          id="da-cerrar"
+          aria-label="Cerrar"
+          class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full border border-white/15 text-white/60 transition-colors hover:border-[var(--color-amber)] hover:text-[var(--color-amber)]"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="flex items-start gap-4 pr-12">
+          <span id="da-icono" class="icono-agente !h-12 !w-12 !rounded-[14px]" aria-hidden="true"></span>
+          <div class="min-w-0">
+            <p id="da-contexto" class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-amber)]/80"></p>
+            <h3 id="da-titulo" class="mt-1.5 font-display text-[1.55rem] leading-tight tracking-tight text-white"></h3>
+          </div>
+        </div>
+      </header>
+
+      <div class="max-h-[62vh] overflow-y-auto px-7 py-6 md:px-8">
+        <p id="da-detalle" class="texto-justo text-[0.92rem] leading-relaxed text-white/65"></p>
+
+        <p class="mt-7 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-white/35">Modelo conceptual</p>
+
+        {/* Tres etapas y dos flechas. Es un diagrama de verdad, no una lista
+            con adornos: se entiende de un vistazo qué entra y qué sale. */}
+        <div class="modelo mt-4">
+          <div class="etapa" data-etapa="entrada">
+            <p class="etapa-rotulo">Entra</p>
+            <ul id="da-entrada" class="etapa-lista"></ul>
+          </div>
+
+          <span class="flecha" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12h15M13 6l6 6-6 6" />
+            </svg>
+          </span>
+
+          <div class="etapa etapa-proceso" data-etapa="proceso">
+            <p class="etapa-rotulo">El agente</p>
+            <ol id="da-proceso" class="etapa-lista etapa-pasos"></ol>
+          </div>
+
+          <span class="flecha" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12h15M13 6l6 6-6 6" />
+            </svg>
+          </span>
+
+          <div class="etapa" data-etapa="salida">
+            <p class="etapa-rotulo">Sale</p>
+            <ul id="da-salida" class="etapa-lista"></ul>
+          </div>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between gap-4 border-t border-white/10 px-7 py-4 md:px-8">
+        <span id="da-indice" class="font-mono text-xs text-white/30"></span>
+        <span class="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-white/30">
+          Bajo revisión humana
+        </span>
+      </footer>
+    </dialog>
   </section>
 
   <section id="ciclo" class="sector">
@@ -1031,6 +1127,8 @@ const ICONOS_AGENTE: Record<string, string> = {
     </section>
   </div>
 
+  <script type="application/json" id="datos-agentes" set:html={JSON.stringify(agentesIA)} is:inline />
+  <script type="application/json" id="datos-agentes-iconos" set:html={JSON.stringify(ICONOS_AGENTE)} is:inline />
   <script type="application/json" id="datos-clientes" set:html={JSON.stringify(clientesParaModal)} is:inline />
 
   <script>
@@ -1048,6 +1146,53 @@ const ICONOS_AGENTE: Record<string, string> = {
       io.observe(encabezado);
     } else {
       ficha?.classList.add('ficha-visible');
+    }
+
+
+    /* Modelo conceptual del agente. Mismo patrón que el de clientes: los
+     * datos viajan en un JSON y el diálogo se rellena al pulsar. */
+    const AGENTES = JSON.parse(document.getElementById('datos-agentes').textContent);
+    const TRAZOS = JSON.parse(document.getElementById('datos-agentes-iconos').textContent);
+    const dlgAgente = document.getElementById('dialogo-agente');
+
+    if (dlgAgente && AGENTES) {
+      const ponA = (id, html) => (document.getElementById(id).innerHTML = html);
+      const puntos = (xs) => xs.map((x) => `<li>${x}</li>`).join('');
+
+      document.querySelectorAll('[data-agente]').forEach((boton) => {
+        boton.addEventListener('click', () => {
+          const i = AGENTES.findIndex((x) => x.titulo === boton.dataset.agente);
+          const a = AGENTES[i];
+          if (!a) return;
+
+          ponA(
+            'da-icono',
+            `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"><path d="${TRAZOS[a.icono || 'panel']}"/></svg>`
+          );
+          ponA('da-contexto', a.contexto);
+          ponA('da-titulo', a.titulo);
+          ponA('da-detalle', a.detalle);
+
+          const f = a.flujo || { entrada: [], proceso: [], salida: [] };
+          ponA('da-entrada', puntos(f.entrada));
+          ponA('da-proceso', puntos(f.proceso));
+          ponA('da-salida', puntos(f.salida));
+          ponA(
+            'da-indice',
+            `${String(i + 1).padStart(2, '0')} / ${String(AGENTES.length).padStart(2, '0')}`
+          );
+
+          dlgAgente.showModal();
+          dlgAgente.focus();
+        });
+      });
+
+      document.getElementById('da-cerrar').addEventListener('click', () => dlgAgente.close());
+      // Pulsar fuera de la tarjeta cierra: el backdrop es el propio <dialog>.
+      dlgAgente.addEventListener('click', (e) => {
+        if (e.target === dlgAgente) dlgAgente.close();
+      });
     }
 
 
