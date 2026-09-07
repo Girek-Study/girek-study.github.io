@@ -537,3 +537,14 @@ html {
     transition: none;
   }
 }
+
+/* Índice de la ficha lateral: se resalta el bloque que está en pantalla. */
+.indice-enlace.activo {
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+  font-weight: 600;
+}
+
+.indice-enlace.activo .indice-marca {
+  background: var(--color-fox-dark);
+}
