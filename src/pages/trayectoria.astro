@@ -539,60 +539,62 @@ const ICONOS: Record<string, string> = {
     />
     {/* Contadores calculados de la propia lista: si mañana se suma un cliente,
         las cifras se actualizan solas y nunca se contradicen con la rejilla. */}
-    <dl class="reveal mt-8 flex flex-wrap items-start gap-x-10 gap-y-5 border-y border-[var(--color-line)] py-5">
-      {
-        metricasClientes.map((m, i) => (
-          <div class:list={['flex items-baseline gap-2.5', i > 0 && 'sm:border-l sm:border-[var(--color-line)] sm:pl-10']}>
-            <dt class="font-display text-[2rem] leading-none text-[var(--color-fox-dark)]">{m.valor}</dt>
-            <dd class="max-w-[8rem] text-[0.8rem] leading-tight text-[var(--color-ink-soft)]">{m.etiqueta}</dd>
-          </div>
-        ))
-      }
-    </dl>
-
-    {/* Muro de logotipos. Sin una caja por cliente: diecinueve recuadros
-        dentro de otro competían entre sí. En gris para que ninguno domine, y a
-        color al pasar el cursor. Al pulsar se abre el detalle. */}
-    <div class="reveal mt-9">
-      <ul class="grid grid-cols-3 gap-x-8 gap-y-10 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+    <div class="reveal mt-8 rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] px-7 py-6 shadow-[var(--shadow-soft)] md:px-9 md:py-7">
+          <dl class="grid grid-cols-2 gap-x-6 gap-y-5 border-b border-[var(--color-line)] pb-5 sm:grid-cols-4">
         {
-          clientes.map((c) => (
-            <li>
-              <button
-                type="button"
-                class="marca group flex w-full flex-col items-center gap-2.5"
-                data-cliente={c.nombre}
-                aria-haspopup="dialog"
-              >
-                {/* Altura según el tipo de logo: un isotipo cuadrado necesita
-                    más que un logotipo largo para pesar lo mismo. Sin esto
-                    unos se ven diminutos junto a otros. */}
-                <span class="grid h-14 w-full place-items-center">
-                  {c.logo ? (
-                    <img
-                      src={`/logos/${c.logo}`}
-                      alt={`Logo de ${c.nombre}`}
-                      width="150"
-                      height="56"
-                      loading="lazy"
-                      class:list={[
-                        'w-auto max-w-[9rem] object-contain',
-                        c.iso ? 'max-h-[3.25rem]' : 'max-h-8',
-                      ]}
-                    />
-                  ) : (
-                    <span class="font-display text-2xl text-[var(--color-ink-soft)]">{c.nombre.slice(0, 3)}</span>
-                  )}
-                </span>
-
-                <span class="text-[0.72rem] text-[var(--color-faint)] transition-colors group-hover:text-[var(--color-fox-dark)]">
-                  {c.nombre}
-                </span>
-              </button>
-            </li>
+          metricasClientes.map((m, i) => (
+            <div class:list={['flex items-baseline gap-2.5', i > 0 && 'sm:border-l sm:border-[var(--color-line)] sm:pl-6']}>
+              <dt class="font-display text-[1.9rem] leading-none text-[var(--color-fox-dark)]">{m.valor}</dt>
+              <dd class="max-w-[8rem] text-[0.8rem] leading-tight text-[var(--color-ink-soft)]">{m.etiqueta}</dd>
+            </div>
           ))
         }
-      </ul>
+      </dl>
+
+      {/* Muro de logotipos. Sin una caja por cliente: diecinueve recuadros
+          dentro de otro competían entre sí. En gris para que ninguno domine, y a
+          color al pasar el cursor. Al pulsar se abre el detalle. */}
+        <div class="mt-7">
+        <ul class="grid grid-cols-3 gap-x-8 gap-y-8 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          {
+            clientes.map((c) => (
+              <li>
+                <button
+                  type="button"
+                  class="marca group flex w-full flex-col items-center gap-2.5"
+                  data-cliente={c.nombre}
+                  aria-haspopup="dialog"
+                >
+                  {/* Altura según el tipo de logo: un isotipo cuadrado necesita
+                      más que un logotipo largo para pesar lo mismo. Sin esto
+                      unos se ven diminutos junto a otros. */}
+                  <span class="grid h-14 w-full place-items-center">
+                    {c.logo ? (
+                      <img
+                        src={`/logos/${c.logo}`}
+                        alt={`Logo de ${c.nombre}`}
+                        width="150"
+                        height="56"
+                        loading="lazy"
+                        class:list={[
+                          'w-auto max-w-[9rem] object-contain',
+                          c.iso ? 'max-h-[3.25rem]' : 'max-h-8',
+                        ]}
+                      />
+                    ) : (
+                      <span class="font-display text-2xl text-[var(--color-ink-soft)]">{c.nombre.slice(0, 3)}</span>
+                    )}
+                  </span>
+
+                  <span class="text-[0.72rem] text-[var(--color-faint)] transition-colors group-hover:text-[var(--color-fox-dark)]">
+                    {c.nombre}
+                  </span>
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
 
     {/* Detalle del cliente. Uno solo, que se rellena al pulsar: diecinueve
