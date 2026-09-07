@@ -247,14 +247,14 @@ const ICONOS: Record<string, string> = {
 
         <div class="min-w-0">
   <!-- ============ QUIÉN SOY ============ -->
-  <section class="pt-2 pb-12 md:pb-14">
+  <section class="seccion pt-2 pb-12 md:pb-14">
     <p class="reveal text-xl leading-snug tracking-tight text-[var(--color-ink)] md:text-[1.6rem]">
       {profile.bio}
     </p>
   </section>
 
   <!-- ============ LOGROS DESTACADOS ============ -->
-  <section class="pb-12 md:pb-16">
+  <section class="seccion pb-12 md:pb-16">
     <SectionHeading
       eyebrow="Resultados"
       title="Lo que se movió cuando estuve"
@@ -274,7 +274,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ CLIENTES ============ -->
-  <section class="pb-12 md:pb-16">
+  <section class="seccion pb-12 md:pb-16">
     <SectionHeading
       eyebrow="Dónde"
       title="Productos que pasaron por mis manos"
@@ -311,7 +311,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ IA APLICADA ============ -->
-  <section class="pb-12 md:pb-16">
+  <section class="seccion pb-12 md:pb-16">
     <SectionHeading
       eyebrow="IA aplicada"
       title="Dónde entra la IA en mi trabajo"
@@ -339,7 +339,7 @@ const ICONOS: Record<string, string> = {
       </p>
     </div>
 
-    <h3 class="reveal mt-12 font-display text-2xl tracking-tight">Agentes y herramientas que construí</h3>
+    <h3 class="seccion reveal mt-12 font-display text-2xl tracking-tight">Agentes y herramientas que construí</h3>
     <p class="reveal mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]" data-delay="60ms">
       Software propio, en producción y en uso por el equipo. No demos.
     </p>
@@ -359,7 +359,7 @@ const ICONOS: Record<string, string> = {
       }
     </div>
 
-    <h3 class="reveal mt-14 font-display text-2xl tracking-tight">IA dentro del ciclo de pruebas</h3>
+    <h3 class="seccion reveal mt-14 font-display text-2xl tracking-tight">IA dentro del ciclo de pruebas</h3>
     <p class="reveal mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]" data-delay="60ms">
       Aplicado en proyectos de cliente, con una regla fija: ninguna salida del modelo se
       convierte en un caso ejecutable ni en un defecto reportado sin revisión humana.
@@ -380,7 +380,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ COMPETENCIAS ============ -->
-  <section class="pb-12 md:pb-16">
+  <section class="seccion pb-12 md:pb-16">
     <SectionHeading
       eyebrow="Qué sé hacer"
       title="Competencias"
@@ -404,7 +404,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- ============ LÍNEA DE TIEMPO ============ -->
-  <section class="pb-12 md:pb-16">
+  <section class="seccion pb-12 md:pb-16">
     <SectionHeading
       eyebrow="Recorrido"
       title="Etapa por etapa"
@@ -413,11 +413,11 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- Timeline -->
-  <section class="pb-12 md:pb-16">
+  <section class="seccion pb-12 md:pb-16">
     <ol class="relative border-l-2 border-[var(--color-line-strong)] pl-6 md:pl-10">
       {
         experiencias.map((e, i) => (
-          <li class="reveal relative pb-12 last:pb-0" data-delay={`${i * 60}ms`}>
+          <li class="seccion reveal relative pb-12 last:pb-0" data-delay={`${i * 60}ms`}>
             <span class="absolute -left-[33px] top-1.5 grid h-4 w-4 place-items-center rounded-full bg-[var(--color-fox)] shadow-[0_0_0_4px_var(--color-cream)] md:-left-[49px]">
               <span class="h-1.5 w-1.5 rounded-full bg-white" />
             </span>
@@ -526,7 +526,7 @@ const ICONOS: Record<string, string> = {
   </section>
 
   <!-- Educación + Certificaciones -->
-  <section class="pb-12 md:pb-16">
+  <section class="seccion pb-12 md:pb-16">
     <div class="grid gap-10 xl:grid-cols-2 xl:gap-14">
       <div class="reveal">
         <h2 class="eyebrow mb-5">Educación</h2>

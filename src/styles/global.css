@@ -315,17 +315,33 @@ body::before {
 }
 
 /* Desplazamiento por secciones.
-   `proximity` y no `mandatory`: con secciones más altas que la ventana,
-   `mandatory` secuestra el scroll y no deja leer el contenido de en medio.
-   Así el navegador solo ajusta cuando ya estás cerca de un borde. */
+   `mandatory` para que un gesto lleve de una sección a la siguiente en vez de
+   dejar el scroll a medio camino. Las secciones más altas que la ventana no
+   son un problema: el navegador omite el anclaje mientras estás dentro de
+   ellas, así que el contenido largo se sigue leyendo con normalidad. */
 html {
   scroll-snap-type: y proximity;
 }
 
 .seccion {
+  position: relative;
+}
+
+/* Marca invisible en el inicio de cada sección. El navegador ignora el anclaje
+   de un elemento más alto que la ventana, así que anclar la sección entera no
+   servía: con secciones de quince pantallas el scroll se quedaba a medias.
+   Una marca de 1px siempre se puede anclar. */
+.seccion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
   scroll-snap-align: start;
-  /* La barra es fija: sin esto, cada sección queda medio tapada al encajar. */
+  /* La barra es fija: sin esto la sección queda medio tapada al encajar. */
   scroll-margin-top: 4.5rem;
+  pointer-events: none;
 }
 
 /* Quien pide menos movimiento no quiere que el scroll se le acomode solo. */
