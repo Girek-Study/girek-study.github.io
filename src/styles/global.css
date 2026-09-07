@@ -643,3 +643,24 @@ html {
     transition: none;
   }
 }
+
+/* Cinta de agentes: más lenta que la del stack porque aquí hay que leer. */
+.marquee-agentes {
+  animation-duration: 70s;
+  align-items: stretch;
+}
+
+/* Inclinación mínima y alterna: da vida a la cinta sin estorbar la lectura. */
+.tarjeta-agente:nth-child(odd) {
+  transform: rotate(-0.7deg);
+}
+
+.tarjeta-agente:nth-child(even) {
+  transform: rotate(0.7deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta-agente {
+    transform: none;
+  }
+}
