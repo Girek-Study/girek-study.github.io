@@ -3,7 +3,15 @@ import Layout from '../layouts/Layout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { profile } from '../data/site';
 import { experiencias, certificaciones, educacion, idiomas } from '../data/experience';
-import { cifras, competencias, logrosDestacados, clientesPorSector, agentesIA, iaEnElCiclo } from '../data/perfil-extra';
+import {
+  cifras,
+  competencias,
+  logrosDestacados,
+  clientesPorSector,
+  NOMBRE_PAIS,
+  agentesIA,
+  iaEnElCiclo,
+} from '../data/perfil-extra';
 
 // Los iconos se inlinean para poder teñirlos con el color del texto.
 const svgs = import.meta.glob<string>('../herramientas/*.svg', {
@@ -513,51 +521,64 @@ const ICONOS: Record<string, string> = {
     <SectionHeading
       eyebrow="Dónde"
       title="Productos que pasaron por mis manos"
-      subtitle="Diecinueve clientes finales de las consultoras y empresas donde trabajé, en nueve sectores. Cada uno lleva a su sitio."
+      subtitle="Diecinueve clientes finales en nueve sectores y cuatro países. Cada uno lleva a su sitio."
       ancho="max-w-4xl"
     />
-    {/* Agrupados por sector, en filas: el sector a la izquierda y sus
-        clientes a la derecha. Cada tarjeta lleva a la web del cliente. */}
-    <div class="mt-7 divide-y divide-[var(--color-line)]">
-      {
-        clientesPorSector.map((grupo, i) => (
-          <div class="reveal grid gap-2 py-2.5 sm:grid-cols-[9rem_1fr] sm:items-center" data-delay={`${i * 40}ms`}>
-            <p class="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--color-faint)]">
-              {grupo.sector}
-            </p>
+    {/* Todo dentro de un panel sólido: sobre la cuadrícula del fondo, las
+        líneas divisorias se cruzaban con ella y se veía sucio. */}
+    <div class="reveal mt-7 rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
+      <div class="space-y-4">
+        {
+          clientesPorSector.map((grupo) => (
+            <div class="grid gap-2.5 sm:grid-cols-[10rem_1fr] sm:items-start">
+              <p class="pt-2 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--color-fox-dark)]">
+                {grupo.sector}
+              </p>
 
-            <ul class="flex flex-wrap gap-2">
-              {grupo.clientes.map((c) => (
-                <li>
-                  <a
-                    href={c.web}
-                    target="_blank"
-                    rel="noopener"
-                    title={`Visitar el sitio de ${c.nombre}`}
-                    class="card card-hover flex items-center gap-2.5 px-3 py-1.5"
-                  >
-                    <span class="grid h-6 w-12 shrink-0 place-items-center">
-                      {c.logo ? (
-                        <img
-                          src={`/logos/${c.logo}`}
-                          alt={`Logo de ${c.nombre}`}
-                          width="48"
-                          height="24"
-                          loading="lazy"
-                          class="max-h-6 w-auto max-w-full object-contain"
-                        />
-                      ) : (
-                        <span class="font-display text-xs text-[var(--color-fox-dark)]">{c.nombre.slice(0, 3)}</span>
-                      )}
-                    </span>
-                    <span class="text-[0.82rem] font-medium">{c.nombre}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
+              <ul class="flex flex-wrap gap-2">
+                {grupo.clientes.map((c) => (
+                  <li>
+                    <a
+                      href={c.web}
+                      target="_blank"
+                      rel="noopener"
+                      title={`Visitar el sitio de ${c.nombre}`}
+                      class="flex items-center gap-2.5 rounded-xl border border-[var(--color-line)] bg-[var(--color-cream)] px-3 py-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--color-fox)] hover:shadow-[var(--shadow-soft)]"
+                    >
+                      <span class="grid h-6 w-11 shrink-0 place-items-center">
+                        {c.logo ? (
+                          <img
+                            src={`/logos/${c.logo}`}
+                            alt={`Logo de ${c.nombre}`}
+                            width="44"
+                            height="24"
+                            loading="lazy"
+                            class="max-h-6 w-auto max-w-full object-contain"
+                          />
+                        ) : (
+                          <span class="font-display text-xs text-[var(--color-fox-dark)]">{c.nombre.slice(0, 3)}</span>
+                        )}
+                      </span>
+
+                      <span class="text-[0.82rem] font-medium">{c.nombre}</span>
+
+                      <img
+                        src={`/paises/${c.pais}.png`}
+                        alt={`Trabajo realizado en ${NOMBRE_PAIS[c.pais]}`}
+                        title={NOMBRE_PAIS[c.pais]}
+                        width="18"
+                        height="12"
+                        loading="lazy"
+                        class="h-3 w-[18px] shrink-0 rounded-[2px] object-cover ring-1 ring-black/10"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 

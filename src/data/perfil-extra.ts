@@ -204,7 +204,18 @@ export interface Cliente {
   nombre: string;
   logo: string | null;
   web: string;
+  /** País donde se hizo el trabajo, no la sede del cliente. */
+  pais: CodigoPais;
 }
+
+export type CodigoPais = 'pe' | 'mx' | 'cl' | 'pr';
+
+export const NOMBRE_PAIS: Record<CodigoPais, string> = {
+  pe: 'Perú',
+  mx: 'México',
+  cl: 'Chile',
+  pr: 'Puerto Rico',
+};
 
 export interface SectorClientes {
   sector: string;
@@ -215,57 +226,57 @@ export const clientesPorSector: SectorClientes[] = [
   {
     sector: 'Banca',
     clientes: [
-      { nombre: 'Interbank', logo: 'interbank.png', web: 'https://interbank.pe' },
-      { nombre: 'BCP', logo: 'bcp.png', web: 'https://www.viabcp.com' },
-      { nombre: 'BBVA', logo: 'bbva.png', web: 'https://www.bbva.pe' },
-      { nombre: 'Scotiabank', logo: 'scotiabank.png', web: 'https://www.scotiabank.com.pe' },
-      { nombre: 'Citibank', logo: 'citibank.png', web: 'https://www.citibank.com' },
-      { nombre: 'MiBanco', logo: 'mibanco.png', web: 'https://www.mibanco.com.pe' },
+      { nombre: 'Interbank', logo: 'interbank.png', web: 'https://interbank.pe', pais: 'pe' },
+      { nombre: 'BCP', logo: 'bcp.png', web: 'https://www.viabcp.com', pais: 'pe' },
+      { nombre: 'BBVA', logo: 'bbva.png', web: 'https://www.bbva.pe', pais: 'pe' },
+      { nombre: 'Scotiabank', logo: 'scotiabank.png', web: 'https://www.scotiabank.com.pe', pais: 'pe' },
+      { nombre: 'Citibank', logo: 'citibank.png', web: 'https://www.citibank.com', pais: 'pe' },
+      { nombre: 'MiBanco', logo: 'mibanco.png', web: 'https://www.mibanco.com.pe', pais: 'pe' },
     ],
   },
   {
     sector: 'Gobierno',
     clientes: [
-      { nombre: 'SUNAT', logo: 'sunat.png', web: 'https://www.sunat.gob.pe' },
-      { nombre: 'SMV', logo: 'smv.png', web: 'https://www.smv.gob.pe' },
-      { nombre: 'Contraloría', logo: 'contraloria.png', web: 'https://www.gob.pe/contraloria' },
+      { nombre: 'SUNAT', logo: 'sunat.png', web: 'https://www.sunat.gob.pe', pais: 'pe' },
+      { nombre: 'SMV', logo: 'smv.png', web: 'https://www.smv.gob.pe', pais: 'pe' },
+      { nombre: 'Contraloría', logo: 'contraloria.png', web: 'https://www.gob.pe/contraloria', pais: 'pe' },
     ],
   },
   {
     sector: 'Seguros',
-    clientes: [{ nombre: 'Pacífico Seguros', logo: 'pacifico.png', web: 'https://www.pacifico.com.pe' }],
+    clientes: [{ nombre: 'Pacífico Seguros', logo: 'pacifico.png', web: 'https://www.pacifico.com.pe', pais: 'pe' }],
   },
   {
     sector: 'Telecomunicaciones',
     clientes: [
-      { nombre: 'Claro', logo: 'claro.svg', web: 'https://www.claro.com.pe' },
-      { nombre: 'Starlink', logo: 'starlink.png', web: 'https://www.starlink.com' },
+      { nombre: 'Claro', logo: 'claro.svg', web: 'https://www.claro.com.pe', pais: 'pe' },
+      { nombre: 'Starlink', logo: 'starlink.png', web: 'https://www.starlink.com', pais: 'pe' },
     ],
   },
   {
     sector: 'Energía',
-    clientes: [{ nombre: 'Distriluz', logo: 'distriluz.png', web: 'https://www.distriluz.com.pe' }],
+    clientes: [{ nombre: 'Distriluz', logo: 'distriluz.png', web: 'https://www.distriluz.com.pe', pais: 'pe' }],
   },
   {
     sector: 'Retail',
     clientes: [
-      { nombre: 'Starbucks', logo: 'starbucks.png', web: 'https://www.starbucks.com' },
-      { nombre: 'Yanbal', logo: 'yanbal.png', web: 'https://www.yanbal.com' },
+      { nombre: 'Starbucks', logo: 'starbucks.png', web: 'https://www.starbucks.com', pais: 'pe' },
+      { nombre: 'Yanbal', logo: 'yanbal.png', web: 'https://www.yanbal.com', pais: 'pe' },
     ],
   },
   {
     sector: 'Salud',
-    clientes: [{ nombre: 'RedSalud', logo: 'redsalud.png', web: 'https://www.redsalud.cl' }],
+    clientes: [{ nombre: 'RedSalud', logo: 'redsalud.png', web: 'https://www.redsalud.cl', pais: 'cl' }],
   },
   {
     sector: 'Tecnología',
-    clientes: [{ nombre: 'Elipgo', logo: 'elipgo.png', web: 'https://elipgo.com' }],
+    clientes: [{ nombre: 'Elipgo', logo: 'elipgo.png', web: 'https://elipgo.com', pais: 'mx' }],
   },
   {
     sector: 'Educación',
     clientes: [
-      { nombre: 'UTP', logo: 'utp.png', web: 'https://www.utp.edu.pe' },
-      { nombre: 'Edulogika', logo: 'edulogica.png', web: 'https://www.edulogika.com' },
+      { nombre: 'UTP', logo: 'utp.png', web: 'https://www.utp.edu.pe', pais: 'pe' },
+      { nombre: 'Edulogika', logo: 'edulogica.png', web: 'https://www.edulogika.com', pais: 'pr' },
     ],
   },
 ];
