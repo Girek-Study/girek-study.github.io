@@ -432,6 +432,8 @@ export interface AplicacionIA {
   icono?: string;
   /** Fase del ciclo de pruebas en la que entra. */
   etapa?: string;
+  /** Fases del ciclo en las que actúa, para el mapa del diálogo. */
+  fases?: string[];
   /** Modelo conceptual: qué entra, qué hace y qué sale. */
   flujo?: {
     entrada: string[];
@@ -448,6 +450,7 @@ export const agentesIA: AplicacionIA[] = [
       'Consola web local desde la que el equipo lanza los agentes, sigue el progreso en vivo y consulta el historial, sin tocar una terminal. Los agentes comparten una sola fuente de credenciales y se interconectan entre sí.',
     contexto: 'Sector salud',
     icono: 'panel',
+    fases: ['Requisitos', 'Diseño', 'Priorización', 'Verificación', 'Defectos', 'Mantenimiento'],
     flujo: {
       entrada: ['Orden lanzada desde la consola', 'Una sola fuente de credenciales'],
       proceso: ['Arranca el agente pedido', 'Transmite el progreso en vivo', 'Archiva la corrida'],
@@ -460,6 +463,7 @@ export const agentesIA: AplicacionIA[] = [
       'Audita la sección de validación de un documento de requerimientos, redacta los casos, los inserta en su tabla y publica el resumen en la herramienta de gestión del equipo. Lo que antes era una tarde de copiar y pegar.',
     contexto: 'Sector salud',
     icono: 'auditoria',
+    fases: ['Requisitos', 'Diseño'],
     flujo: {
       entrada: ['Documento de requerimientos', 'Su sección de validación'],
       proceso: ['Audita la sección', 'Redacta los casos', 'Los inserta en su tabla'],
@@ -472,6 +476,7 @@ export const agentesIA: AplicacionIA[] = [
       'Lee el resultado y la evidencia de cada caso ejecutado, informa el avance y mueve el tícket a certificación o a correctivo según lo encontrado.',
     contexto: 'Sector salud',
     icono: 'ejecucion',
+    fases: ['Verificación', 'Defectos'],
     flujo: {
       entrada: ['Resultado de cada caso', 'Evidencia adjunta'],
       proceso: ['Lee resultado y evidencia', 'Calcula el avance', 'Decide el destino del tícket'],
@@ -484,6 +489,7 @@ export const agentesIA: AplicacionIA[] = [
       'Convierte criterios de aceptación, historias de usuario e imágenes de flujo en casos estructurados, y los empaqueta listos para importación masiva. Versiona cada entrega por tícket y genera el diff contra la anterior, así se ve qué cambió y por qué.',
     contexto: 'Sector retail',
     icono: 'generador',
+    fases: ['Diseño'],
     flujo: {
       entrada: ['Criterios de aceptación', 'Historias de usuario', 'Imágenes de flujo'],
       proceso: ['Convierte a casos estructurados', 'Versiona la entrega por tícket', 'Compara contra la anterior'],
@@ -496,6 +502,7 @@ export const agentesIA: AplicacionIA[] = [
       'Lee la historia y sus criterios de aceptación, señala ambigüedades y vacíos, y propone los escenarios que faltan — antes de que alguien escriba código. Es Shift-Left hecho herramienta.',
     contexto: 'Producto de IA',
     icono: 'lupa',
+    fases: ['Requisitos'],
     flujo: {
       entrada: ['La historia de usuario', 'Sus criterios de aceptación'],
       proceso: ['Señala ambigüedades', 'Detecta vacíos', 'Propone lo que falta'],
@@ -508,6 +515,7 @@ export const agentesIA: AplicacionIA[] = [
       'Produce los datos válidos, de borde y de error que cada flujo necesita, respetando las reglas del dominio. Deja de depender de un juego de datos que alguien preparó a mano hace meses.',
     contexto: 'Sector salud',
     icono: 'datos',
+    fases: ['Diseño'],
     flujo: {
       entrada: ['El flujo a probar', 'Las reglas del dominio'],
       proceso: ['Deriva los datos válidos', 'Deriva los de borde', 'Deriva los de error'],
@@ -520,6 +528,7 @@ export const agentesIA: AplicacionIA[] = [
       'Genera los escenarios de carga a partir de los servicios a probar y analiza los resultados: dónde está el punto de quiebre, qué percentil se degrada primero y si el hallazgo es del sistema o del entorno.',
     contexto: 'Sector salud',
     icono: 'rendimiento',
+    fases: ['Verificación'],
     flujo: {
       entrada: ['Los servicios a probar', 'Resultados de la corrida'],
       proceso: ['Genera los escenarios de carga', 'Busca el punto de quiebre', 'Compara percentiles'],
@@ -532,6 +541,7 @@ export const agentesIA: AplicacionIA[] = [
       'Cuando un test se pone rojo, investiga la causa raíz: si el selector dejó de existir tras un cambio de la aplicación, si el fallo es intermitente o si es un defecto real. Ataca el mayor consumo de tiempo de cualquier suite grande.',
     contexto: 'Producto de IA',
     icono: 'bug',
+    fases: ['Defectos', 'Mantenimiento'],
     flujo: {
       entrada: ['Un test en rojo', 'Su traza y su evidencia'],
       proceso: ['Contrasta el selector con la app', 'Distingue intermitencia de defecto', 'Ubica la causa raíz'],

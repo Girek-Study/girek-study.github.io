@@ -805,7 +805,7 @@ const ICONOS_AGENTE: Record<string, string> = {
     <dialog
       id="dialogo-agente"
       tabindex="-1"
-      class="dialogo-agente m-auto w-[min(46rem,94vw)] overflow-hidden rounded-[28px] p-0 backdrop:bg-[rgba(6,10,20,0.62)] backdrop:backdrop-blur-sm"
+      class="dialogo-agente m-auto w-[min(52rem,94vw)] overflow-hidden rounded-[28px] p-0 backdrop:bg-[rgba(6,10,20,0.62)] backdrop:backdrop-blur-sm"
     >
       <header class="relative border-b border-white/10 px-7 py-6 md:px-8">
         <button
@@ -828,41 +828,42 @@ const ICONOS_AGENTE: Record<string, string> = {
         </div>
       </header>
 
-      <div class="max-h-[62vh] overflow-y-auto px-7 py-6 md:px-8">
+      <div class="max-h-[66vh] overflow-y-auto px-7 py-6 md:px-8">
         <p id="da-detalle" class="texto-justo text-[0.92rem] leading-relaxed text-white/65"></p>
 
-        <p class="mt-7 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-white/35">Modelo conceptual</p>
+        <p class="mt-7 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-white/35">
+          Cómo funciona
+        </p>
 
-        {/* Tres etapas y dos flechas. Es un diagrama de verdad, no una lista
-            con adornos: se entiende de un vistazo qué entra y qué sale. */}
-        <div class="modelo mt-4">
-          <div class="etapa" data-etapa="entrada">
-            <p class="etapa-rotulo">Entra</p>
-            <ul id="da-entrada" class="etapa-lista"></ul>
+        {/* Diagrama de flujo. Los conectores se dibujan en SVG desde el guion,
+            porque su trazado depende de cuántas entradas y salidas tenga cada
+            agente: con dos o con tres el abanico no es el mismo. */}
+        <div class="diagrama mt-4">
+          <div class="columna-nodos" id="da-entrada" data-lado="entrada"></div>
+          <div class="conector" id="da-con-1"></div>
+
+          <div class="nucleo">
+            <div class="flex items-center gap-2.5">
+              <span id="da-nucleo-icono" class="nucleo-icono" aria-hidden="true"></span>
+              <p class="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--color-amber)]">
+                El agente
+              </p>
+            </div>
+            <ol id="da-proceso" class="pasos"></ol>
           </div>
 
-          <span class="flecha" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 12h15M13 6l6 6-6 6" />
-            </svg>
-          </span>
-
-          <div class="etapa etapa-proceso" data-etapa="proceso">
-            <p class="etapa-rotulo">El agente</p>
-            <ol id="da-proceso" class="etapa-lista etapa-pasos"></ol>
-          </div>
-
-          <span class="flecha" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 12h15M13 6l6 6-6 6" />
-            </svg>
-          </span>
-
-          <div class="etapa" data-etapa="salida">
-            <p class="etapa-rotulo">Sale</p>
-            <ul id="da-salida" class="etapa-lista"></ul>
-          </div>
+          <div class="conector" id="da-con-2"></div>
+          <div class="columna-nodos" id="da-salida" data-lado="salida"></div>
         </div>
+
+        <p class="mt-7 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-white/35">
+          Dónde actúa en el ciclo
+        </p>
+
+        {/* Mapa del ciclo: las mismas seis fases de la sección de abajo, con
+            las que toca este agente encendidas. Es lo que sitúa la herramienta
+            dentro del proceso en vez de dejarla suelta. */}
+        <ol id="da-mapa" class="mapa-ciclo mt-3.5"></ol>
       </div>
 
       <footer class="flex items-center justify-between gap-4 border-t border-white/10 px-7 py-4 md:px-8">
@@ -880,11 +881,11 @@ const ICONOS_AGENTE: Record<string, string> = {
         fases en su orden real, colgadas de un riel numerado. La séptima no es
         una fase y va aparte, que es lo que de verdad es. */}
     <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
-      <h3 class="reveal max-w-xl font-display text-3xl tracking-tight md:text-4xl">
+      <h3 class="reveal max-w-xl font-display text-3xl tracking-tight md:text-[2.2rem]">
         IA dentro del ciclo de pruebas
       </h3>
       <p
-        class="reveal texto-justo max-w-md text-sm leading-relaxed text-[var(--color-ink-soft)]"
+        class="reveal texto-justo max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]"
         data-delay="60ms"
       >
         Aplicado en proyectos de cliente, con una regla fija: ninguna salida del modelo se
@@ -892,34 +893,45 @@ const ICONOS_AGENTE: Record<string, string> = {
       </p>
     </div>
 
-    {/* Sin hueco horizontal: así el filete superior es una línea continua que
-        atraviesa la fila y se lee como un riel, no como tres cajas. */}
-    <ol class="mt-8 grid gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
-      {
-        ciclo.map((a, i) => (
-          <li class="reveal fase relative pr-0 pt-6 sm:pr-9" data-delay={`${(i % 3) * 70}ms`}>
-            <span class="fase-nodo" aria-hidden="true" />
-            <span class="absolute -top-[0.42rem] left-[1.15rem] font-mono text-[0.62rem] tracking-[0.1em] text-[var(--color-fox-dark)]">
-              {String(i + 1).padStart(2, '0')}
-            </span>
+    {/* Sobre panel sólido: encima de la cuadrícula del fondo, seis bloques de
+        texto seguidos se leían lavados. Las divisiones son huecos de 1px que
+        dejan ver el color del panel, así que cuadran solas en cualquier
+        reacomodo y no hay bordes que se dupliquen. */}
+    <div class="panel-fases mt-6 overflow-hidden rounded-[26px]">
+      <ol class="grid gap-px bg-[var(--color-line-strong)] sm:grid-cols-2 xl:grid-cols-3">
+        {
+          ciclo.map((a, i) => (
+            <li
+              class="reveal fase flex flex-col bg-[var(--color-surface)] px-5 py-3.5"
+              data-delay={`${(i % 3) * 70}ms`}
+            >
+              {/* El sector baja al pie: arriba partía el rótulo en dos líneas y
+                  descuadraba los titulares, y abajo ocupa el hueco que dejaban
+                  las fases de texto corto. */}
+              <div class="flex items-center gap-3">
+                <span class="ficha-fase">{String(i + 1).padStart(2, '0')}</span>
+                <p class="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[var(--color-faint)]">
+                  {a.etapa}
+                </p>
+              </div>
 
-            <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
-              {a.etapa}
-              <span class="mx-1.5 text-[var(--color-line-strong)]">/</span>
-              {a.contexto}
-            </p>
-            <h4 class="mt-1.5 font-display text-[1.15rem] leading-snug tracking-tight">{a.titulo}</h4>
-            <p class="texto-justo mt-2 text-[0.85rem] leading-relaxed text-[var(--color-ink-soft)]">
-              {a.detalle}
-            </p>
-          </li>
-        ))
-      }
-    </ol>
+              <h4 class="mt-3 font-display text-[1.06rem] leading-snug tracking-tight">{a.titulo}</h4>
+              <p class="texto-justo mt-2 text-[0.82rem] leading-[1.55] text-[var(--color-ink-soft)]">
+                {a.detalle}
+              </p>
+
+              <p class="mt-auto pt-3 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[var(--color-faint)]">
+                {a.contexto}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
 
     {/* La séptima no ocurre dentro del ciclo: es probar un producto que lleva
         IA. Meterla en la misma fila la haría pasar por una fase más. */}
-    <div class="reveal aparte mt-8 flex flex-col gap-5 rounded-3xl p-6 md:flex-row md:items-center md:gap-8 md:p-7">
+    <div class="reveal aparte mt-4 flex flex-col gap-4 rounded-3xl p-5 md:flex-row md:items-center md:gap-8 md:p-6">
       <div class="flex items-center gap-4 md:w-64 md:shrink-0">
         <span class="icono-aparte" aria-hidden="true">
           <svg
@@ -1183,6 +1195,7 @@ const ICONOS_AGENTE: Record<string, string> = {
     </section>
   </div>
 
+  <script type="application/json" id="datos-fases" set:html={JSON.stringify(ciclo.map((c) => c.etapa))} is:inline />
   <script type="application/json" id="datos-agentes" set:html={JSON.stringify(agentesIA)} is:inline />
   <script type="application/json" id="datos-agentes-iconos" set:html={JSON.stringify(ICONOS_AGENTE)} is:inline />
   <script type="application/json" id="datos-clientes" set:html={JSON.stringify(clientesParaModal)} is:inline />
@@ -1209,11 +1222,34 @@ const ICONOS_AGENTE: Record<string, string> = {
      * datos viajan en un JSON y el diálogo se rellena al pulsar. */
     const AGENTES = JSON.parse(document.getElementById('datos-agentes').textContent);
     const TRAZOS = JSON.parse(document.getElementById('datos-agentes-iconos').textContent);
+    const FASES_CICLO = JSON.parse(document.getElementById('datos-fases').textContent);
     const dlgAgente = document.getElementById('dialogo-agente');
 
     if (dlgAgente && AGENTES) {
       const ponA = (id, html) => (document.getElementById(id).innerHTML = html);
-      const puntos = (xs) => xs.map((x) => `<li>${x}</li>`).join('');
+
+      /* Abanico de conectores. El trazado depende de cuántos nodos haya al
+       * lado ancho, así que se calcula aquí y no se deja fijo en el CSS.
+       * El lienzo se estira con preserveAspectRatio="none"; el grosor del
+       * trazo se salva de esa deformación con vector-effect. */
+      const abanico = (n, hacia) => {
+        const curvas = Array.from({ length: n }, (_, i) => {
+          const y = ((i + 0.5) / n) * 100;
+          return hacia === 'nucleo'
+            ? `M0 ${y} C 55 ${y}, 45 50, 100 50`
+            : `M0 50 C 55 50, 45 ${y}, 100 ${y}`;
+        })
+          .map(
+            (d) =>
+              `<path d="${d}" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.25" vector-effect="non-scaling-stroke"/>`
+          )
+          .join('');
+
+        return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${curvas}</svg>`;
+      };
+
+      const nodos = (xs) =>
+        xs.map((x) => `<div class="nodo"><span></span>${x}</div>`).join('');
 
       document.querySelectorAll('[data-agente]').forEach((boton) => {
         boton.addEventListener('click', () => {
@@ -1221,19 +1257,36 @@ const ICONOS_AGENTE: Record<string, string> = {
           const a = AGENTES[i];
           if (!a) return;
 
-          ponA(
-            'da-icono',
-            `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-                  stroke-linecap="round" stroke-linejoin="round"><path d="${TRAZOS[a.icono || 'panel']}"/></svg>`
-          );
+          const trazo = TRAZOS[a.icono || 'panel'];
+          const icono = (clase) =>
+            `<svg class="${clase}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"><path d="${trazo}"/></svg>`;
+
+          ponA('da-icono', icono(''));
+          ponA('da-nucleo-icono', icono(''));
           ponA('da-contexto', a.contexto);
           ponA('da-titulo', a.titulo);
           ponA('da-detalle', a.detalle);
 
           const f = a.flujo || { entrada: [], proceso: [], salida: [] };
-          ponA('da-entrada', puntos(f.entrada));
-          ponA('da-proceso', puntos(f.proceso));
-          ponA('da-salida', puntos(f.salida));
+          ponA('da-entrada', nodos(f.entrada));
+          ponA('da-salida', nodos(f.salida));
+          ponA('da-proceso', f.proceso.map((x) => `<li>${x}</li>`).join(''));
+          ponA('da-con-1', abanico(f.entrada.length, 'nucleo'));
+          ponA('da-con-2', abanico(f.salida.length, 'salida'));
+
+          const suyas = a.fases || [];
+          ponA(
+            'da-mapa',
+            FASES_CICLO.map(
+              (fase, n) =>
+                `<li class="paso-ciclo${suyas.includes(fase) ? ' activo' : ''}">
+                   <span class="paso-num">${String(n + 1).padStart(2, '0')}</span>
+                   <span class="paso-nombre">${fase}</span>
+                 </li>`
+            ).join('')
+          );
+
           ponA(
             'da-indice',
             `${String(i + 1).padStart(2, '0')} / ${String(AGENTES.length).padStart(2, '0')}`
