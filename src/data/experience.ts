@@ -25,6 +25,8 @@ export interface Experiencia {
   pais: CodigoPais;
   paisNombre: string;
   modalidad?: string;
+  /** Matiz del puesto que no cabe en la tabla: se ve en el detalle. */
+  nota?: string;
   clientes?: Cliente[];
   /** Dos o tres frases: qué era la empresa, qué se me confió y qué estaba en juego. */
   descripcion: string;
@@ -99,7 +101,8 @@ export const experiencias: Experiencia[] = [
     web: 'https://idmtechnology.com',
     pais: 'pe',
     paisNombre: 'Perú',
-    modalidad: 'Híbrido · proyecto temporal',
+    modalidad: 'Híbrido',
+    nota: 'Proyecto temporal',
     clientes: [{ nombre: 'Starbucks', logo: 'starbucks.png' }],
     descripcion:
       'Calidad del programa de recompensas de Starbucks en web, Android e iOS. El reto real no era automatizar tres plataformas, sino garantizar que las tres contaran lo mismo: una estrella acumulada en la app tenía que reflejarse igual en la web y en el historial transaccional.',
@@ -137,7 +140,8 @@ export const experiencias: Experiencia[] = [
     web: 'https://nagnoi.com',
     pais: 'pr',
     paisNombre: 'Puerto Rico',
-    modalidad: 'Remoto, en inglés',
+    modalidad: 'Remoto',
+    nota: 'En inglés',
     clientes: [{ nombre: 'Edulogica', logo: 'edulogica.png' }],
     descripcion:
       'Consultora de datos y analítica con sede en Puerto Rico. Trabajé en remoto y en inglés sobre los productos de sus clientes finales, integrado a sus equipos y a sus ceremonias.',

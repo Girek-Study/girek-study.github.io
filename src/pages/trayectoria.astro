@@ -1086,14 +1086,35 @@ const ICONOS_AGENTE: Record<string, string> = {
     <SectionHeading
       eyebrow="Recorrido"
       title="Etapa por etapa"
-      subtitle="De las primeras prácticas al liderazgo técnico. Pulsa una etapa para ver qué hice ahí."
+      subtitle="De las primeras prácticas al liderazgo técnico."
     />
 
     {/* Antes era un carrusel horizontal de trece tarjetas largas: para ver la
         cuarta había que arrastrar, y quien revisa un perfil no arrastra. Ahora
-        la carrera entra entera de un vistazo y el detalle se abre al pulsar. */}
-    <div class="panel-fases mt-4 overflow-hidden rounded-[26px]">
-      <ol class="grid gap-px bg-[var(--color-line-strong)]">
+        la carrera entra entera de un vistazo y el detalle se abre al pulsar.
+
+        Las columnas son pistas fijas de una rejilla, no cajas que se acomodan
+        como caen: así la ubicación de las trece filas empieza en el mismo sitio
+        y el bloque se lee como una tabla y no como una lista de trozos. */}
+    <div class="panel-fases mt-5 overflow-hidden rounded-[26px]">
+      <div class="rejilla-etapas cabecera-etapas bg-[var(--color-cream)] px-5 py-1.5">
+        <span />
+        <span />
+        <span class="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[var(--color-faint)]">
+          Puesto y empresa
+        </span>
+        <span class="hidden font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[var(--color-faint)] md:block">
+          Dónde
+        </span>
+        <span class="hidden font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[var(--color-faint)] lg:block">
+          Cliente
+        </span>
+        <span class="justify-self-end font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[var(--color-faint)]">
+          Ver
+        </span>
+      </div>
+
+      <ol class="grid gap-px border-t border-[var(--color-line-strong)] bg-[var(--color-line-strong)]">
         {
           experiencias.map((e, i) => (
             <li>
@@ -1101,66 +1122,64 @@ const ICONOS_AGENTE: Record<string, string> = {
                 type="button"
                 data-etapa={e.cargo}
                 aria-haspopup="dialog"
-                class="fila-etapa flex w-full items-center gap-4 bg-[var(--color-surface)] px-4 py-1 text-left"
+                class="fila-etapa rejilla-etapas w-full bg-[var(--color-surface)] px-5 py-1 text-left"
               >
-                <span class="w-7 shrink-0 font-mono text-[0.62rem] text-[var(--color-faint)]">
+                <span class="font-mono text-[0.66rem] tabular-nums text-[var(--color-faint)]">
                   {String(experiencias.length - i).padStart(2, '0')}
                 </span>
 
                 {/* Hueco rectangular: unos logos son isotipos cuadrados y otros
                     logotipos largos, y en un círculo se aplastarían. */}
-                <span class="grid h-[30px] w-[58px] shrink-0 place-items-center overflow-hidden rounded-lg border border-[var(--color-line)] bg-white px-1.5 py-1">
+                <span class="grid h-[34px] w-[72px] place-items-center overflow-hidden rounded-lg border border-[var(--color-line)] bg-white px-2 py-1">
                   {e.logo ? (
                     <img
                       src={`/logos/${e.logo}`}
                       alt={`Logo de ${e.empresa}`}
-                      width="54"
-                      height="24"
+                      width="56"
+                      height="28"
                       loading="lazy"
-                      class="max-h-[22px] max-w-[46px] object-contain"
+                      class="max-h-[26px] max-w-[56px] object-contain"
                     />
                   ) : (
-                    /* Tres empresas no exponen un logo servible; el monograma
-                       es mejor que un hueco roto. */
                     <span class="font-display text-sm text-[var(--color-fox-deep)]">
                       {e.empresa.slice(0, 3)}
                     </span>
                   )}
                 </span>
 
-                <span class="min-w-0 flex-1">
-                  <span class="block truncate font-display text-[0.92rem] leading-tight tracking-tight">
+                <span class="min-w-0">
+                  <span class="block truncate font-display text-[0.95rem] leading-tight tracking-tight">
                     {e.cargo}
                   </span>
-                  <span class="block truncate text-[0.74rem] text-[var(--color-ink-soft)]">
+                  <span class="mt-[1px] block truncate text-[0.75rem] leading-tight text-[var(--color-ink-soft)]">
                     {e.empresa}
                   </span>
                 </span>
 
-                <span class="hidden shrink-0 items-center gap-1.5 md:flex">
+                <span class="hidden min-w-0 items-center gap-2 md:flex">
                   <img
                     src={`/paises/${e.pais}.png`}
                     alt={`Bandera de ${e.paisNombre}`}
-                    width="17"
-                    height="11"
+                    width="18"
+                    height="12"
                     loading="lazy"
-                    class="h-[11px] w-[17px] rounded-[2px] object-cover ring-1 ring-black/10"
+                    class="h-3 w-[18px] shrink-0 rounded-[2px] object-cover ring-1 ring-black/10"
                   />
-                  <span class="font-mono text-[0.68rem] text-[var(--color-faint)]">
+                  <span class="truncate font-mono text-[0.68rem] text-[var(--color-faint)]">
                     {e.paisNombre}
                     {e.modalidad && ` · ${e.modalidad}`}
                   </span>
                 </span>
 
-                <span class="hidden w-[8.5rem] shrink-0 justify-end lg:flex">
+                <span class="hidden min-w-0 lg:block">
                   {e.clientes && (
-                    <span class="truncate rounded-full bg-[var(--color-fox-tint)] px-2.5 py-1 font-mono text-[0.62rem] text-[var(--color-fox-dark)]">
+                    <span class="block truncate rounded-full bg-[var(--color-fox-tint)] px-2.5 py-1 text-center font-mono text-[0.62rem] text-[var(--color-fox-dark)]">
                       {e.clientes.map((c) => c.nombre).join(' · ')}
                     </span>
                   )}
                 </span>
 
-                <span class="flecha-etapa shrink-0" aria-hidden="true">
+                <span class="flecha-etapa" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
                   </svg>
@@ -1372,7 +1391,8 @@ const ICONOS_AGENTE: Record<string, string> = {
               chipE(
                 `<img src="/paises/${e.pais}.png" alt="" width="15" height="10" class="h-2.5 w-[15px] rounded-[1px] object-cover ring-1 ring-black/10"> ${e.paisNombre}`
               ) +
-              (e.modalidad ? chipE(e.modalidad) : '')
+              (e.modalidad ? chipE(e.modalidad) : '') +
+              (e.nota ? chipE(e.nota) : '')
           );
 
           ponE(

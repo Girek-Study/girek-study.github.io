@@ -8,6 +8,15 @@
 
 const USUARIO = 'Girek-Study';
 
+/**
+ * Repositorios que no van al portafolio aunque sean públicos.
+ *
+ * El homónimo solo guarda el README del perfil, y el del sitio es este mismo
+ * sitio: enseñar su código en su propio portafolio no dice nada del trabajo y
+ * además deja a la vista cómo está montada la página.
+ */
+const FUERA_DEL_PORTAFOLIO = [USUARIO.toLowerCase(), `${USUARIO.toLowerCase()}.github.io`];
+
 export interface RepoPublico {
   nombre: string;
   descripcion: string;
@@ -64,8 +73,7 @@ export async function obtenerRepos(): Promise<RepoPublico[]> {
 
     return datos
       .filter((r) => !r.fork && !r.archived && !r.private)
-      // El repositorio homónimo solo contiene el README del perfil.
-      .filter((r) => r.name.toLowerCase() !== USUARIO.toLowerCase())
+      .filter((r) => !FUERA_DEL_PORTAFOLIO.includes(r.name.toLowerCase()))
       .map((r) => ({
         nombre: r.name,
         descripcion: r.description ?? 'Sin descripción todavía.',
