@@ -1314,3 +1314,61 @@ html {
   width: 1.15rem;
   height: 1.15rem;
 }
+
+/* Bloque de cierre. El naranja de marca, pero con relieve: un degradado en
+   diagonal, una trama fina que le quita el aire de mancha plana y un brillo
+   que nace en la esquina superior. */
+.bloque-cierre {
+  background:
+    radial-gradient(120% 120% at 85% 0%, #c24a10 0%, rgba(0, 0, 0, 0) 55%),
+    linear-gradient(135deg, var(--color-fox-dark) 0%, #9c3103 100%);
+  box-shadow: var(--shadow-warm);
+}
+
+.trama-cierre {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 34px 34px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 20% 0%, #000 10%, transparent 72%);
+  mask-image: radial-gradient(ellipse 90% 80% at 20% 0%, #000 10%, transparent 72%);
+}
+
+.brillo-cierre {
+  background: radial-gradient(circle, rgba(255, 196, 138, 0.3) 0%, transparent 68%);
+  filter: blur(30px);
+}
+
+/* Cada destino, una tarjeta: el botón suelto no decía a dónde llevaba. */
+.tarjeta-cierre {
+  display: block;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 1.15rem 1.25rem 1.3rem;
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.tarjeta-cierre:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.icono-cierre {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.icono-cierre svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
