@@ -1132,3 +1132,48 @@ html {
 #dialogo-etapa:focus-visible {
   outline: none;
 }
+
+/* Mapa de cobertura del detalle de la etapa: las diez capas posibles, con las
+   que se tocaron encendidas. Las demás se quedan tenues en vez de desaparecer,
+   porque el contraste entre unas y otras es justamente lo que informa. */
+.mapa-capas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.mapa-capas .capa {
+  border-radius: 8px;
+  border: 1px dashed var(--color-line-strong);
+  padding: 0.25rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--color-faint);
+}
+
+.mapa-capas .capa.activa {
+  border-style: solid;
+  border-color: var(--color-fox);
+  background: var(--color-fox-tint);
+  color: var(--color-fox-deep);
+}
+
+/* Barra del recorrido: un tramo por etapa. Las anteriores quedan en tinte
+   suave, la actual en naranja y las posteriores en gris, así se ve de un
+   vistazo en qué punto de la carrera cae este puesto. */
+.barra-recorrido {
+  display: flex;
+  gap: 3px;
+}
+
+.barra-recorrido .tramo {
+  height: 7px;
+  flex: 1;
+  border-radius: 99px;
+  background: var(--color-fox-tint);
+}
+
+.barra-recorrido .tramo.actual {
+  background: var(--color-fox);
+  box-shadow: 0 0 0 3px rgba(232, 106, 42, 0.16);
+}

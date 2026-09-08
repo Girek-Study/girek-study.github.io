@@ -32,6 +32,11 @@ export interface Experiencia {
   descripcion: string;
   logros: string[];
   stack?: string[];
+  /**
+   * Capas de prueba que cubrí en esa etapa. Se deducen de su propio stack y de
+   * sus logros; sirven para el mapa de cobertura del detalle.
+   */
+  capas?: string[];
 }
 
 export const experiencias: Experiencia[] = [
@@ -43,15 +48,18 @@ export const experiencias: Experiencia[] = [
     pais: 'mx',
     paisNombre: 'México',
     modalidad: 'Remoto',
+    clientes: [{ nombre: 'Starlink México', logo: 'starlink.png' }],
     descripcion:
       'Elipgo desarrolla un producto de analítica de video: detección y análisis sobre cámaras con inteligencia artificial. Lidero técnicamente la automatización de calidad de ese producto, un dominio donde la prueba no se limita a que la interfaz responda —hay que verificar que el modelo detecte lo que debe, que los eventos se registren y que la analítica cuadre con lo que ocurrió frente a la cámara.',
     logros: [
       'Lidero la estrategia de automatización y las decisiones de arquitectura de la suite, definiendo qué se automatiza, en qué nivel y con qué criterio de valor.',
+      'Automatizo la cuenta de Starlink México en sus cuatro frentes —web, escritorio, móvil y APIs— con una sola suite y los mismos criterios, para que un fallo se detecte en la capa más barata y no al final del flujo.',
       'Diseñé el framework en Playwright con Cucumber y patrón Screenplay sobre TypeScript, separando intención de negocio, interacción y localizadores para que la suite siga siendo mantenible a medida que el producto crece.',
       'Monté la gestión de datos de prueba y la reportería propia, con un tablero de resultados que el equipo consulta después de cada ejecución.',
       'Aplico IA al diseño y al análisis de escenarios, con una regla fija: ninguna salida del modelo se convierte en caso ejecutable sin revisión humana.',
     ],
-    stack: ['Playwright', 'TypeScript', 'Cucumber', 'Screenplay', 'IA aplicada'],
+    stack: ['Playwright', 'TypeScript', 'Cucumber', 'Screenplay', 'Appium', 'IA aplicada'],
+    capas: ['Web', 'Escritorio', 'Móvil', 'API'],
   },
   {
     empresa: 'Canvia',
@@ -72,6 +80,7 @@ export const experiencias: Experiencia[] = [
       'Aplico IA y LLMs al análisis de requerimientos y a la revisión de estructuras JSON y XML, bajo revisión humana.',
     ],
     stack: ['APIs REST y SOAP', 'JSON', 'XML', 'SQL', 'Postman', 'Azure DevOps'],
+    capas: ['API', 'Datos'],
   },
   {
     empresa: 'Soho Humantech',
@@ -93,6 +102,7 @@ export const experiencias: Experiencia[] = [
       'Integré la ejecución a los pipelines de Azure DevOps para tener señal de calidad en cada build.',
     ],
     stack: ['Playwright', 'TypeScript', 'Cucumber', 'Screenplay', 'k6', 'SQL', 'Azure DevOps'],
+    capas: ['Web', 'API', 'Datos', 'Rendimiento'],
   },
   {
     empresa: 'IDM Technology',
@@ -113,6 +123,7 @@ export const experiencias: Experiencia[] = [
       'Trabajé de cerca con Producto, Desarrollo y Diseño para que la testabilidad entrara en la conversación antes de escribir el código.',
     ],
     stack: ['Web', 'Android', 'iOS', 'API Testing', 'Regresión'],
+    capas: ['Web', 'Móvil', 'API'],
   },
   {
     empresa: 'Prestamype',
@@ -132,6 +143,7 @@ export const experiencias: Experiencia[] = [
       'Impulsé Shift-Left con desarrollo y producto, definiendo criterios de aceptación antes de escribir código.',
     ],
     stack: ['Playwright', 'TypeScript', 'Jenkins', 'GitLab CI', 'Docker', 'AWS', 'Azure'],
+    capas: ['Web', 'CI/CD'],
   },
   {
     empresa: 'Nagnoi, LLC',
@@ -153,6 +165,7 @@ export const experiencias: Experiencia[] = [
       'Participé en refinamientos y ceremonias Scrum para asegurar testabilidad y criterios de aceptación desde el inicio.',
     ],
     stack: ['Playwright', 'Specflow', 'Karate', 'RestAssured', 'JMeter', 'OWASP ZAP'],
+    capas: ['Web', 'API', 'Rendimiento', 'Seguridad'],
   },
   {
     empresa: 'Banco de Crédito BCP',
@@ -172,6 +185,7 @@ export const experiencias: Experiencia[] = [
       'Hice troubleshooting con logs de AKS en DEV y UAT, y sostuve la trazabilidad de punta a punta en JIRA y Xray.',
     ],
     stack: ['Selenium', 'JUnit', 'Appium', 'SerenityBDD', 'Jenkins', 'AKS', 'JIRA', 'Xray'],
+    capas: ['Web', 'Móvil', 'CI/CD'],
   },
   {
     empresa: 'UTP — Universidad Tecnológica del Perú',
@@ -190,6 +204,7 @@ export const experiencias: Experiencia[] = [
       'Participé en mesas Lean impulsando mejora continua en calidad y entrega.',
     ],
     stack: ['Cypress', 'Selenium', 'TestCafe', 'Karate', 'RestAssured', 'JMeter', 'Qmetry'],
+    capas: ['Web', 'API', 'Rendimiento'],
   },
   {
     empresa: 'Canvia',
@@ -214,6 +229,7 @@ export const experiencias: Experiencia[] = [
       'Diseñé la propuesta y el roadmap de un Centro de Excelencia de Quality & Automation orientado a gobierno, estandarización y escalabilidad.',
     ],
     stack: ['Jenkins', 'Kubernetes', 'Docker', 'Terraform', 'Ansible', 'Prometheus', 'Grafana'],
+    capas: ['CI/CD', 'Infraestructura'],
   },
   {
     empresa: 'Delaware Perú',
@@ -233,6 +249,7 @@ export const experiencias: Experiencia[] = [
       'Elaboré métricas y reportes gerenciales en JIRA, Qmetry y TestRail para sustentar decisiones de release ante el cliente.',
     ],
     stack: ['Selenium', 'Cypress', 'TestCafe', 'JMeter', 'Gatling', 'LoadRunner', 'TestRail'],
+    capas: ['Web', 'Rendimiento'],
   },
   {
     empresa: 'Q System',
@@ -254,6 +271,7 @@ export const experiencias: Experiencia[] = [
       'En Interbank certifiqué cajeros automáticos, verificando sincronización y seguridad de la información bancaria según la normativa del sector.',
     ],
     stack: ['Selenium', 'JIRA', 'Pruebas móviles iOS y Android'],
+    capas: ['Web', 'Móvil'],
   },
   {
     empresa: 'GMD — Grupo Graña y Montero',
@@ -269,6 +287,7 @@ export const experiencias: Experiencia[] = [
       'Trabajé sobre bases de datos relacionales con JPA e Hibernate dentro de un equipo Scrum.',
     ],
     stack: ['Java', 'Spring Boot', 'JUnit', 'Mockito', 'MySQL', 'PostgreSQL', 'Docker'],
+    capas: ['Desarrollo', 'Datos'],
   },
   {
     empresa: 'GMD — Grupo Graña y Montero',
@@ -284,6 +303,7 @@ export const experiencias: Experiencia[] = [
       'Escribí mis primeras pruebas unitarias con JUnit y aprendí control de versiones con Git.',
     ],
     stack: ['Java', 'Spring', 'JUnit', 'MySQL', 'PostgreSQL', 'Git'],
+    capas: ['Desarrollo', 'Datos'],
   },
 ];
 

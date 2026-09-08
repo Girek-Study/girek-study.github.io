@@ -116,7 +116,35 @@ const LOGOS_ITEM: Record<string, string> = {
   Java: 'openjdk',
   Python: 'python',
   'C#': 'csharp',
+  // Nombres tal y como aparecen en el stack de cada etapa.
+  Cucumber: 'cucumber',
+  Kubernetes: 'kubernetes',
+  Grafana: 'grafana',
+  Prometheus: 'prometheus',
+  Ansible: 'ansible',
+  PostgreSQL: 'postgresql',
+  MySQL: 'mysql',
+  JIRA: 'jira',
+  JUnit: 'junit5',
+  Spring: 'spring',
+  'Spring Boot': 'springboot',
+  TestRail: 'testrail',
+  'IA aplicada': 'anthropic',
 };
+
+/** Las capas posibles, en el orden en que se recorren las pruebas. */
+const CAPAS = [
+  'Web',
+  'Escritorio',
+  'Móvil',
+  'API',
+  'Datos',
+  'Rendimiento',
+  'Seguridad',
+  'CI/CD',
+  'Infraestructura',
+  'Desarrollo',
+];
 
 const marcaDe = (item: string) => {
   const slug = LOGOS_ITEM[item];
@@ -1198,11 +1226,32 @@ const ICONOS_AGENTE: Record<string, string> = {
       <div class="max-h-[62vh] overflow-y-auto px-7 py-6 md:px-8">
         <div id="de-clientes" class="mb-5"></div>
         <p id="de-descripcion" class="texto-justo text-[0.92rem] leading-relaxed text-[var(--color-ink-soft)]"></p>
+        {/* Mapa de cobertura: las diez capas posibles, con las que toqué en
+            esa etapa encendidas. Se deducen del stack y de los logros de la
+            propia etapa, no se declaran a mano por fuera. */}
+        <p class="mt-6 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
+          Qué cubrí
+        </p>
+        <ol id="de-capas" class="mapa-capas mt-3"></ol>
+
         <p class="mt-6 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
           Qué hice ahí
         </p>
         <ul id="de-logros" class="mt-3 space-y-2.5"></ul>
         <div id="de-stack" class="mt-6 flex flex-wrap gap-1.5"></div>
+
+        {/* Barra del recorrido: trece tramos, uno por etapa, con el de esta
+            encendido. Ubica el puesto en la carrera sin escribir una fecha. */}
+        <p class="mt-7 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
+          Dónde cae en el recorrido
+        </p>
+        <div class="mt-2.5">
+          <ol id="de-barra" class="barra-recorrido"></ol>
+          <div class="mt-1.5 flex justify-between font-mono text-[0.58rem] uppercase tracking-[0.12em] text-[var(--color-faint)]">
+            <span>Primeras prácticas</span>
+            <span>Hoy</span>
+          </div>
+        </div>
       </div>
 
       <footer class="flex items-center justify-between gap-4 border-t border-[var(--color-line)] bg-[var(--color-cream)] px-7 py-3.5 md:px-8">
@@ -1317,6 +1366,8 @@ const ICONOS_AGENTE: Record<string, string> = {
     </section>
   </div>
 
+  <script type="application/json" id="datos-capas" set:html={JSON.stringify(CAPAS)} is:inline />
+  <script type="application/json" id="datos-marcas" set:html={JSON.stringify(Object.fromEntries(Object.keys(LOGOS_ITEM).map((k) => [k, marcaDe(k)]).filter(([, v]) => v)))} is:inline />
   <script type="application/json" id="datos-etapas" set:html={JSON.stringify(experiencias)} is:inline />
   <script type="application/json" id="datos-fases" set:html={JSON.stringify(ciclo.map((c) => c.etapa))} is:inline />
   <script type="application/json" id="datos-agentes" set:html={JSON.stringify(agentesIA)} is:inline />
@@ -1344,6 +1395,8 @@ const ICONOS_AGENTE: Record<string, string> = {
     /* Detalle de la etapa. Mismo patrón que los otros dos diálogos: un solo
      * <dialog> que se rellena al pulsar, y los datos en un JSON. */
     const ETAPAS = JSON.parse(document.getElementById('datos-etapas').textContent);
+    const LISTA_CAPAS = JSON.parse(document.getElementById('datos-capas').textContent);
+    const MARCAS_ITEM = JSON.parse(document.getElementById('datos-marcas').textContent);
     const dlgEtapa = document.getElementById('dialogo-etapa');
 
     if (dlgEtapa && ETAPAS) {
@@ -1405,7 +1458,33 @@ const ICONOS_AGENTE: Record<string, string> = {
           );
           ponE(
             'de-stack',
-            (e.stack || []).map((x) => `<span class="chip chip-sm">${x}</span>`).join('')
+            (e.stack || [])
+              .map((x) => {
+                const marca = MARCAS_ITEM[x];
+                return `<span class="chip chip-sm${marca ? '' : ' chip-practica'}">${
+                  marca ? `<span class="chip-marca" aria-hidden="true">${marca}</span>` : ''
+                }${x}</span>`;
+              })
+              .join('')
+          );
+
+          const suyas = e.capas || [];
+          ponE(
+            'de-capas',
+            LISTA_CAPAS.map(
+              (capa) =>
+                `<li class="capa${suyas.includes(capa) ? ' activa' : ''}">${capa}</li>`
+            ).join('')
+          );
+
+          // Todos los tramos iguales salvo el de esta etapa: distinguir
+          // "antes" de "después" no significa nada en una carrera ya recorrida,
+          // y la barra solo tiene que situar el puesto en la secuencia.
+          ponE(
+            'de-barra',
+            ETAPAS.map((_, n) => `<li class="tramo${n === i ? ' actual' : ''}"></li>`)
+              .reverse()
+              .join('')
           );
           ponE('de-indice', `Etapa ${ETAPAS.length - i} de ${ETAPAS.length}`);
 
