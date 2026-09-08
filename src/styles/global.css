@@ -1177,3 +1177,79 @@ html {
   background: var(--color-fox);
   box-shadow: 0 0 0 3px rgba(232, 106, 42, 0.16);
 }
+
+/* Fondo quieto mientras hay un diálogo abierto. El relleno compensa el ancho
+   de la barra de desplazamiento para que la página no pegue un salto al
+   ocultarla. */
+.con-dialogo,
+.con-dialogo body {
+  /* Los dos: <body> lleva su propio overflow-y y, si solo se frena <html>,
+     el desplazamiento se va a él y el fondo sigue moviéndose igual. */
+  overflow: hidden;
+}
+
+.con-dialogo {
+  padding-right: var(--compensa-barra, 0px);
+}
+
+/* Diálogo de la etapa. Va aparte del de cliente porque aquí el cuerpo se
+   reparte en dos planos y necesita su propio armazón. */
+.dialogo-etapa {
+  color: var(--color-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow:
+    0 2px 4px rgba(29, 23, 18, 0.04),
+    0 12px 24px -12px rgba(29, 23, 18, 0.18),
+    0 60px 110px -40px rgba(29, 23, 18, 0.5);
+}
+
+.dialogo-etapa:focus,
+.dialogo-etapa:focus-visible {
+  outline: none;
+}
+
+/* Cabecera: el degradado nace en la esquina del logotipo, que es donde el ojo
+   entra. */
+.cabecera-etapa {
+  background:
+    radial-gradient(120% 180% at 0% 0%, var(--color-fox-tint) 0%, rgba(255, 255, 255, 0) 58%),
+    linear-gradient(180deg, var(--color-cream-2) 0%, var(--color-cream) 100%);
+  border-bottom: 1px solid var(--color-line);
+}
+
+/* En pantalla ancha el contenido cabe entero y no aparece barra alguna; en
+   estrecha se apila y hay que poder llegar al final. El display se declara
+   sobre [open] porque un <dialog> cerrado está en display:none y ponerle flex
+   a secas lo dejaría visible. */
+.dialogo-etapa[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.cuerpo-etapa {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+@media (min-width: 60rem) {
+  .cuerpo-etapa {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+}
+
+/* La ficha técnica va en su propio plano, un punto más oscuro que el relato:
+   dos superficies distintas se leen antes que dos titulares distintos. */
+.ficha-etapa {
+  background: var(--color-cream);
+  border-top: 1px solid var(--color-line);
+}
+
+@media (min-width: 60rem) {
+  .ficha-etapa {
+    border-top: 0;
+    border-left: 1px solid var(--color-line);
+  }
+}

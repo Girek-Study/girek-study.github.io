@@ -1197,9 +1197,9 @@ const ICONOS_AGENTE: Record<string, string> = {
     <dialog
       id="dialogo-etapa"
       tabindex="-1"
-      class="dialogo-cliente m-auto w-[min(44rem,94vw)] overflow-hidden rounded-[28px] border border-[var(--color-line)] bg-[var(--color-surface)] p-0 shadow-[0_40px_90px_-30px_rgba(29,23,18,0.45)] backdrop:bg-[rgba(29,23,18,0.5)] backdrop:backdrop-blur-sm"
+      class="dialogo-etapa m-auto w-[min(62rem,94vw)] overflow-hidden rounded-[28px] p-0 backdrop:bg-[rgba(29,23,18,0.55)] backdrop:backdrop-blur-[3px]"
     >
-      <header class="relative border-b border-[var(--color-line)] bg-gradient-to-br from-[var(--color-cream-2)] to-[var(--color-cream)] px-7 py-5 md:px-8">
+      <header class="cabecera-etapa relative px-7 py-6 md:px-8">
         <button
           type="button"
           id="de-cerrar"
@@ -1214,44 +1214,57 @@ const ICONOS_AGENTE: Record<string, string> = {
         <div class="flex items-center gap-5 pr-12">
           <span
             id="de-logo"
-            class="grid h-14 w-24 shrink-0 place-items-center rounded-2xl border border-[var(--color-line)] bg-white p-2.5"
+            class="grid h-16 w-28 shrink-0 place-items-center rounded-2xl border border-[var(--color-line)] bg-white p-3 shadow-[0_10px_24px_-14px_rgba(29,23,18,0.5)]"
           ></span>
           <div class="min-w-0">
-            <h3 id="de-cargo" class="font-display text-[1.5rem] leading-tight tracking-tight"></h3>
+            <h3 id="de-cargo" class="font-display text-[1.6rem] leading-tight tracking-tight md:text-[1.8rem]"></h3>
             <p id="de-meta" class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1"></p>
           </div>
         </div>
       </header>
 
-      <div class="max-h-[62vh] overflow-y-auto px-7 py-6 md:px-8">
-        <div id="de-clientes" class="mb-5"></div>
-        <p id="de-descripcion" class="texto-justo text-[0.92rem] leading-relaxed text-[var(--color-ink-soft)]"></p>
-        {/* Mapa de cobertura: las diez capas posibles, con las que toqué en
-            esa etapa encendidas. Se deducen del stack y de los logros de la
-            propia etapa, no se declaran a mano por fuera. */}
-        <p class="mt-6 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
-          Qué cubrí
-        </p>
-        <ol id="de-capas" class="mapa-capas mt-3"></ol>
+      {/* Dos columnas: el relato a la izquierda y la ficha técnica a la
+          derecha, sobre su propio plano. Apilado obligaba a desplazar dentro
+          del cuadro para llegar a los gráficos, y lo que no se ve no cuenta. */}
+      <div class="cuerpo-etapa">
+        <div class="min-w-0 px-7 py-6 md:px-8">
+          <p id="de-descripcion" class="texto-justo text-[0.92rem] leading-relaxed text-[var(--color-ink-soft)]"></p>
 
-        <p class="mt-6 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
-          Qué hice ahí
-        </p>
-        <ul id="de-logros" class="mt-3 space-y-2.5"></ul>
-        <div id="de-stack" class="mt-6 flex flex-wrap gap-1.5"></div>
-
-        {/* Barra del recorrido: trece tramos, uno por etapa, con el de esta
-            encendido. Ubica el puesto en la carrera sin escribir una fecha. */}
-        <p class="mt-7 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
-          Dónde cae en el recorrido
-        </p>
-        <div class="mt-2.5">
-          <ol id="de-barra" class="barra-recorrido"></ol>
-          <div class="mt-1.5 flex justify-between font-mono text-[0.58rem] uppercase tracking-[0.12em] text-[var(--color-faint)]">
-            <span>Primeras prácticas</span>
-            <span>Hoy</span>
-          </div>
+          <p class="mt-6 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
+            Qué hice ahí
+          </p>
+          <ul id="de-logros" class="mt-3 space-y-2.5"></ul>
         </div>
+
+        <aside class="ficha-etapa px-7 py-6 md:px-7">
+          <div id="de-clientes" class="mb-5"></div>
+
+          {/* Mapa de cobertura: las diez capas posibles, con las que toqué en
+              esa etapa encendidas. Se deducen del stack y de los logros de la
+              propia etapa, no se declaran a mano por fuera. */}
+          <p class="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
+            Qué cubrí
+          </p>
+          <ol id="de-capas" class="mapa-capas mt-2.5"></ol>
+
+          <p class="mt-5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
+            Herramientas
+          </p>
+          <div id="de-stack" class="mt-2.5 flex flex-wrap gap-1.5"></div>
+
+          {/* Barra del recorrido: trece tramos, uno por etapa, con el de esta
+              encendido. Ubica el puesto en la carrera sin escribir una fecha. */}
+          <p class="mt-5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
+            Dónde cae en el recorrido
+          </p>
+          <div class="mt-2.5">
+            <ol id="de-barra" class="barra-recorrido"></ol>
+            <div class="mt-1.5 flex justify-between font-mono text-[0.56rem] uppercase tracking-[0.1em] text-[var(--color-faint)]">
+              <span>Primeras prácticas</span>
+              <span>Hoy</span>
+            </div>
+          </div>
+        </aside>
       </div>
 
       <footer class="flex items-center justify-between gap-4 border-t border-[var(--color-line)] bg-[var(--color-cream)] px-7 py-3.5 md:px-8">
@@ -1410,7 +1423,7 @@ const ICONOS_AGENTE: Record<string, string> = {
           const e = ETAPAS[i];
           if (!e) return;
 
-          ponE('de-logo', `<img src="/logos/${e.logo}" alt="Logo de ${e.empresa}" class="max-h-9 max-w-[76px] object-contain">`);
+          ponE('de-logo', `<img src="/logos/${e.logo}" alt="Logo de ${e.empresa}" class="max-h-10 max-w-[88px] object-contain">`);
           ponE('de-cargo', e.cargo);
           ponE(
             'de-meta',
@@ -1662,6 +1675,33 @@ const ICONOS_AGENTE: Record<string, string> = {
       });
     }
 
+    /* Bloqueo del fondo mientras hay un diálogo abierto.
+     *
+     * showModal() atrapa el foco y pinta el backdrop, pero no impide que la
+     * rueda siga desplazando la página: el sector de detrás se movía bajo el
+     * cuadro. Se observa el atributo `open` porque <dialog> no emite ningún
+     * evento al abrirse, solo al cerrarse. */
+    const raiz = document.documentElement;
+
+    function ajustarFondo() {
+      const hayDialogo = !!document.querySelector('dialog[open]');
+      if (hayDialogo) {
+        // Al ocultar la barra de desplazamiento el ancho útil crece y la página
+        // pega un salto; se compensa con el hueco que deja.
+        const hueco = window.innerWidth - raiz.clientWidth;
+        raiz.style.setProperty('--compensa-barra', `${hueco}px`);
+      }
+      raiz.classList.toggle('con-dialogo', hayDialogo);
+    }
+
+    document.querySelectorAll('dialog').forEach((cuadro) => {
+      new MutationObserver(ajustarFondo).observe(cuadro, {
+        attributes: true,
+        attributeFilter: ['open'],
+      });
+    });
+
+
     /* El índice resalta el bloque que se está leyendo. Se elige el que está
      * más arriba dentro de la pantalla, no el primero que entra: con bloques
      * de varias pantallas, lo segundo salta de un lado a otro. */
@@ -1724,6 +1764,8 @@ const ICONOS_AGENTE: Record<string, string> = {
       'wheel',
       (evento) => {
         if (navegando || !anchoSuficiente.matches || sinMovimiento.matches) return;
+        // Con un diálogo abierto la rueda es para el diálogo, no para la página.
+        if (document.querySelector('dialog[open]')) return;
         if (Math.abs(evento.deltaY) < 4) return;
         const i = sectorActual();
         const actual = sectores[i];
