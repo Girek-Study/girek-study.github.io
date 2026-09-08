@@ -1937,5 +1937,57 @@ const ICONOS_AGENTE: Record<string, string> = {
       },
       { passive: false }
     );
+
+    /* Lo mismo en táctil, por otro camino.
+     *
+     * En un móvil no hay rueda que interceptar, y frenar el dedo a media
+     * pasada pelea con el desplazamiento por inercia: se siente como si la
+     * página se resistiera. Así que aquí no se intercepta el gesto — se espera
+     * a que termine y, solo si el sector quedó cerca, se termina de encajar.
+     *
+     * El imán tiene alcance corto a propósito: si alguien paró en mitad de un
+     * sector para leer, ahí se queda. */
+    const IMAN = 0.2; // proporción de la ventana dentro de la que sí se ajusta
+
+    function encajarSector() {
+      if (navegando || anchoSuficiente.matches || sinMovimiento.matches) return;
+      if (document.querySelector('dialog[open]')) return;
+
+      const y = window.scrollY;
+      // Abajo del todo no hay nada que encajar: se quedaría peleando con el
+      // tope de la página.
+      if (y + window.innerHeight >= document.body.scrollHeight - 2) return;
+
+      let cerca = null;
+      sectores.forEach((sector) => {
+        const distancia = topeDe(sector) - y;
+        if (Math.abs(distancia) < window.innerHeight * IMAN) {
+          if (!cerca || Math.abs(distancia) < Math.abs(cerca.distancia)) {
+            cerca = { sector, distancia };
+          }
+        }
+      });
+
+      if (!cerca || Math.abs(cerca.distancia) < 6) return;
+      navegando = true;
+      window.scrollTo({ top: topeDe(cerca.sector), behavior: 'smooth' });
+      setTimeout(() => (navegando = false), 700);
+    }
+
+    // `scrollend` avisa cuando el gesto y su inercia terminaron. Donde no
+    // existe todavía, se aproxima con un respiro sin movimiento.
+    if ('onscrollend' in window) {
+      window.addEventListener('scrollend', encajarSector);
+    } else {
+      let reposo;
+      window.addEventListener(
+        'scroll',
+        () => {
+          clearTimeout(reposo);
+          reposo = setTimeout(encajarSector, 140);
+        },
+        { passive: true }
+      );
+    }
   </script>
 </Layout>
