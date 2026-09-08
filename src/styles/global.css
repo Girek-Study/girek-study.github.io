@@ -1482,6 +1482,27 @@ html {
   }
 }
 
+/* El sector de presentación también respira según el alto: en un teléfono
+   alto la primera mitad se quedaba en 593px de 1040 y volvía el hueco. */
+@media (max-width: 47.99rem) {
+  #presentacion blockquote,
+  #presentacion .grid > div:first-child > p:first-of-type {
+    font-size: min(calc(1.25rem + (100vh - 740px) * 0.02), 1.7rem);
+  }
+
+  #presentacion .grid > div:first-child > p + p,
+  #presentacion .grid > div:first-child > div {
+    margin-top: min(calc(0.75rem + (100vh - 740px) * 0.06), 2.5rem);
+  }
+
+  /* Nueve marcas en un renglón: por encima de 1.6rem la novena cae sola a una
+     segunda fila y se ve como un descuido. */
+  #presentacion li.herramienta svg {
+    width: min(calc(1.35rem + (100vh - 740px) * 0.012), 1.6rem);
+    height: min(calc(1.35rem + (100vh - 740px) * 0.012), 1.6rem);
+  }
+}
+
 /* Móviles muy bajos de pantalla —el iPhone SE deja 667px útiles, cien menos
    que un teléfono actual—. En vez de dejar la última fila de cifras cortada
    por la mitad, se aprieta lo justo para que entre entera. */
@@ -1515,5 +1536,20 @@ html {
 
   .perfil dl dd span {
     font-size: 0.78rem;
+  }
+}
+
+/* Bloques que en móvil se leen como una pantalla propia. Su sector completo no
+   cabe en un teléfono —el de presentación mide 1357px en uno de 740— y
+   recortarlo significaría borrar texto, así que se parte en dos mitades que sí
+   llenan pantalla cada una. En escritorio vuelven a ser una columna más. */
+@media (max-width: 43.99rem) {
+  .pantalla-movil {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    scroll-margin-top: 4.5rem;
+    padding-bottom: 2rem;
   }
 }
