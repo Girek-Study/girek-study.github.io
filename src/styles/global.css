@@ -1420,6 +1420,68 @@ html {
   }
 }
 
+/* El encabezado escala con el alto de la pantalla, no solo con el ancho.
+   Sin esto, en un móvil alto el contenido se quedaba del tamaño de uno bajo y
+   todo el aire sobrante se juntaba en un único hueco entre los botones y las
+   cifras: 183px en un Pixel 7 Pro frente a 10 en un Galaxy A.
+
+   El patrón es `base + (100vh - 740px) * factor`: en 740px —el piso del
+   diseño— cada propiedad vale lo de hoy, y de ahí para arriba crece. Los
+   factores suman ~1, así que el bloque gana justo lo que gana la pantalla y
+   el hueco no se abre. El `min()` pone tope para que no se desmadre en una
+   tablet muy alta. */
+@media (max-width: 63.99rem) {
+  .perfil .foto-perfil {
+    height: min(calc(5.3rem + (100vh - 740px) * 0.28), 13rem);
+    width: min(calc(5.3rem + (100vh - 740px) * 0.28), 13rem);
+  }
+
+  .perfil h1 {
+    font-size: min(calc(1.5rem + (100vh - 740px) * 0.05 + 0.5vw), 3.4rem);
+  }
+
+  .perfil h1 + p {
+    font-size: min(calc(0.88rem + (100vh - 740px) * 0.015), 1.3rem);
+  }
+
+  /* Párrafo, ubicación y botones comparten el mismo respiro. */
+  .perfil h1 + p,
+  .perfil h1 + p + p,
+  .acciones-perfil {
+    margin-top: min(calc(0.625rem + (100vh - 740px) * 0.07), 2.5rem);
+  }
+
+  .acciones-perfil a {
+    padding-block: min(calc(0.5rem + (100vh - 740px) * 0.03), 1.1rem);
+  }
+
+  .perfil dl > div {
+    padding-block: min(calc(0.5rem + (100vh - 740px) * 0.045), 1.9rem);
+  }
+
+  .perfil dl dt {
+    font-size: min(calc(1.6rem + (100vh - 740px) * 0.04), 3rem);
+  }
+}
+
+/* Lo mismo en escritorio, anclado a 900px de alto: en un monitor QHD el hueco
+   entre los botones y las cifras llegaba a 299px porque la foto y los espacios
+   estaban fijos mientras la pantalla crecía. */
+@media (min-width: 64rem) {
+  .perfil .foto-perfil {
+    height: min(calc(21rem + (100vh - 900px) * 0.62), 40rem);
+    width: min(calc(21rem + (100vh - 900px) * 0.62), 40rem);
+  }
+
+  .perfil dl > div {
+    padding-block: min(calc(2.75rem + (100vh - 900px) * 0.09), 6rem);
+  }
+
+  .acciones-perfil {
+    margin-top: min(calc(1.75rem + (100vh - 900px) * 0.08), 4.5rem);
+  }
+}
+
 /* Móviles muy bajos de pantalla —el iPhone SE deja 667px útiles, cien menos
    que un teléfono actual—. En vez de dejar la última fila de cifras cortada
    por la mitad, se aprieta lo justo para que entre entera. */
