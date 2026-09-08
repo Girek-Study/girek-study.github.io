@@ -30,9 +30,10 @@ export interface Experiencia {
   clientes?: Cliente[];
   /**
    * Productos sobre los que trabajé dentro de la empresa. No son clientes:
-   * son las piezas del propio negocio que me tocó asegurar.
+   * son las piezas del propio negocio que me tocó asegurar. `logo` en null
+   * cuando la marca no publica uno verificable; dibuja monograma.
    */
-  productos?: string[];
+  productos?: Cliente[];
   /** Dos o tres frases: qué era la empresa, qué se me confió y qué estaba en juego. */
   descripcion: string;
   logros: string[];
@@ -140,7 +141,16 @@ export const experiencias: Experiencia[] = [
     web: 'https://prestamype.com',
     pais: 'pe',
     paisNombre: 'Perú',
-    productos: ['Prestamype Préstamos', 'Prestamype Factoring', 'Cambio Seguro', 'Tandia', 'Recadia'],
+    productos: [
+      // Préstamos y Factoring son líneas de la propia Prestamype y usan su
+      // marca. Tandia y Recadia van sin logotipo: no publican uno verificable
+      // —tandiashop.com carga vacío— y poner el de otro sería falsear la marca.
+      { nombre: 'Prestamype Préstamos', logo: 'prestamype.svg' },
+      { nombre: 'Prestamype Factoring', logo: 'prestamype.svg' },
+      { nombre: 'Cambio Seguro', logo: 'cambioseguro.png' },
+      { nombre: 'Tandia', logo: null },
+      { nombre: 'Recadia', logo: null },
+    ],
     descripcion:
       'Fintech de financiamiento con garantía hipotecaria y cambio de divisas. Dirigí la práctica de automatización de calidad de sus productos web y móviles: no solo construir la suite, sino formar al equipo que la iba a sostener cuando yo no estuviera.',
     logros: [
