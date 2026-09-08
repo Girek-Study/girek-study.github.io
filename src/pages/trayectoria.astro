@@ -1086,118 +1086,148 @@ const ICONOS_AGENTE: Record<string, string> = {
     <SectionHeading
       eyebrow="Recorrido"
       title="Etapa por etapa"
-      subtitle="De las primeras prácticas al liderazgo técnico. Desplázate en horizontal."
+      subtitle="De las primeras prácticas al liderazgo técnico. Pulsa una etapa para ver qué hice ahí."
     />
 
-    <ol class="carrusel mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
-      {
-        experiencias.map((e, i) => (
-          <li class="w-[20rem] shrink-0 snap-start md:w-[23rem]">
-            <div class="card flex h-full flex-col p-6">
-              <span class="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-[var(--color-fox-tint)] px-3 py-1 font-mono text-[0.7rem] text-[var(--color-fox-dark)]">
-                Etapa {experiencias.length - i}
-              </span>
-              <div class="flex items-start gap-4">
-                {/* Logo de la empresa, o monograma cuando no hay uno usable.
-                    El hueco es rectangular a propósito: unos logos son
-                    isotipos cuadrados y otros son logotipos largos. */}
-                <span class="grid h-14 w-[92px] shrink-0 place-items-center overflow-hidden rounded-xl border border-[var(--color-line)] bg-white px-2 py-1.5">
+    {/* Antes era un carrusel horizontal de trece tarjetas largas: para ver la
+        cuarta había que arrastrar, y quien revisa un perfil no arrastra. Ahora
+        la carrera entra entera de un vistazo y el detalle se abre al pulsar. */}
+    <div class="panel-fases mt-4 overflow-hidden rounded-[26px]">
+      <ol class="grid gap-px bg-[var(--color-line-strong)]">
+        {
+          experiencias.map((e, i) => (
+            <li>
+              <button
+                type="button"
+                data-etapa={e.cargo}
+                aria-haspopup="dialog"
+                class="fila-etapa flex w-full items-center gap-4 bg-[var(--color-surface)] px-4 py-1 text-left"
+              >
+                <span class="w-7 shrink-0 font-mono text-[0.62rem] text-[var(--color-faint)]">
+                  {String(experiencias.length - i).padStart(2, '0')}
+                </span>
+
+                {/* Hueco rectangular: unos logos son isotipos cuadrados y otros
+                    logotipos largos, y en un círculo se aplastarían. */}
+                <span class="grid h-[30px] w-[58px] shrink-0 place-items-center overflow-hidden rounded-lg border border-[var(--color-line)] bg-white px-1.5 py-1">
                   {e.logo ? (
                     <img
                       src={`/logos/${e.logo}`}
                       alt={`Logo de ${e.empresa}`}
-                      width="84"
-                      height="44"
+                      width="54"
+                      height="24"
                       loading="lazy"
                       class="h-full w-full object-contain"
                     />
                   ) : (
-                    <span class="font-display text-2xl text-[var(--color-fox-deep)]">{e.empresa.charAt(0)}</span>
+                    /* Tres empresas no exponen un logo servible; el monograma
+                       es mejor que un hueco roto. */
+                    <span class="font-display text-sm text-[var(--color-fox-deep)]">
+                      {e.empresa.slice(0, 3)}
+                    </span>
                   )}
                 </span>
 
-                <div class="min-w-0 flex-1">
-                  <h3 class="font-display text-xl leading-tight tracking-tight">{e.cargo}</h3>
-
-                  <p class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm">
-                    {e.web ? (
-                      <a
-                        href={e.web}
-                        target="_blank"
-                        rel="noopener"
-                        class="link-underline font-semibold text-[var(--color-fox-deep)]"
-                      >
-                        {e.empresa}
-                      </a>
-                    ) : (
-                      <span class="font-semibold text-[var(--color-fox-deep)]">{e.empresa}</span>
-                    )}
-
-                    <span class="inline-flex items-center gap-1.5 text-[var(--color-faint)]">
-                      <img
-                        src={`/paises/${e.pais}.png`}
-                        alt={`Bandera de ${e.paisNombre}`}
-                        width="18"
-                        height="12"
-                        loading="lazy"
-                        class="h-3 w-[18px] rounded-[2px] object-cover ring-1 ring-black/10"
-                      />
-                      <span class="font-mono text-xs">{e.paisNombre}</span>
-                    </span>
-
-                    {e.modalidad && (
-                      <span class="font-mono text-xs text-[var(--color-faint)]">· {e.modalidad}</span>
-                    )}
-                  </p>
-                </div>
-              </div>
-
-              {e.clientes && (
-                <div class="mt-4 flex flex-wrap items-center gap-2">
-                  <span class="font-mono text-xs uppercase tracking-wide text-[var(--color-faint)]">
-                    {e.clientes.length > 1 ? 'Clientes' : 'Cliente'}
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate font-display text-[0.92rem] leading-tight tracking-tight">
+                    {e.cargo}
                   </span>
-                  {e.clientes.map((c) => (
-                    <span class="inline-flex items-center gap-2 rounded-full bg-[var(--color-fox-tint)] py-1 pl-1.5 pr-3">
-                      {c.logo && (
-                        /* Rectangular, no circular: varios logos de cliente son
-                           logotipos largos y dentro de un círculo se aplastan. */
-                        <span class="grid h-6 w-11 place-items-center overflow-hidden rounded-md bg-white px-1">
-                          <img
-                            src={`/logos/${c.logo}`}
-                            alt={`Logo de ${c.nombre}`}
-                            width="40"
-                            height="20"
-                            loading="lazy"
-                            class="h-full w-full object-contain"
-                          />
-                        </span>
-                      )}
-                      <span class="text-xs font-semibold text-[var(--color-fox-deep)]">{c.nombre}</span>
-                    </span>
-                  ))}
-                </div>
-              )}
+                  <span class="block truncate text-[0.74rem] text-[var(--color-ink-soft)]">
+                    {e.empresa}
+                  </span>
+                </span>
 
-              <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">{e.descripcion}</p>
-              <ul class="mt-4 space-y-2">
-                {e.logros.map((l) => (
-                  <li class="flex gap-2.5 text-sm text-[var(--color-ink-soft)]">
-                    <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-[var(--color-fox)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7" /></svg>
-                    <span>{l}</span>
-                  </li>
-                ))}
-              </ul>
-              {e.stack && (
-                <div class="mt-5 flex flex-wrap gap-1.5">
-                  {e.stack.map((s) => <span class="chip">{s}</span>)}
-                </div>
-              )}
-            </div>
-          </li>
-        ))
-      }
-    </ol>
+                <span class="hidden shrink-0 items-center gap-1.5 md:flex">
+                  <img
+                    src={`/paises/${e.pais}.png`}
+                    alt={`Bandera de ${e.paisNombre}`}
+                    width="17"
+                    height="11"
+                    loading="lazy"
+                    class="h-[11px] w-[17px] rounded-[2px] object-cover ring-1 ring-black/10"
+                  />
+                  <span class="font-mono text-[0.68rem] text-[var(--color-faint)]">
+                    {e.paisNombre}
+                    {e.modalidad && ` · ${e.modalidad}`}
+                  </span>
+                </span>
+
+                <span class="hidden w-[8.5rem] shrink-0 justify-end lg:flex">
+                  {e.clientes && (
+                    <span class="truncate rounded-full bg-[var(--color-fox-tint)] px-2.5 py-1 font-mono text-[0.62rem] text-[var(--color-fox-dark)]">
+                      {e.clientes.map((c) => c.nombre).join(' · ')}
+                    </span>
+                  )}
+                </span>
+
+                <span class="flecha-etapa shrink-0" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                  </svg>
+                </span>
+              </button>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    {/* Un solo diálogo que se rellena al pulsar, como los de cliente y agente. */}
+    <dialog
+      id="dialogo-etapa"
+      tabindex="-1"
+      class="dialogo-cliente m-auto w-[min(44rem,94vw)] overflow-hidden rounded-[28px] border border-[var(--color-line)] bg-[var(--color-surface)] p-0 shadow-[0_40px_90px_-30px_rgba(29,23,18,0.45)] backdrop:bg-[rgba(29,23,18,0.5)] backdrop:backdrop-blur-sm"
+    >
+      <header class="relative border-b border-[var(--color-line)] bg-gradient-to-br from-[var(--color-cream-2)] to-[var(--color-cream)] px-7 py-5 md:px-8">
+        <button
+          type="button"
+          id="de-cerrar"
+          aria-label="Cerrar"
+          class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] transition-colors hover:border-[var(--color-fox)] hover:text-[var(--color-fox-dark)]"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="flex items-center gap-5 pr-12">
+          <span
+            id="de-logo"
+            class="grid h-14 w-24 shrink-0 place-items-center rounded-2xl border border-[var(--color-line)] bg-white p-2.5"
+          ></span>
+          <div class="min-w-0">
+            <h3 id="de-cargo" class="font-display text-[1.5rem] leading-tight tracking-tight"></h3>
+            <p id="de-meta" class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1"></p>
+          </div>
+        </div>
+      </header>
+
+      <div class="max-h-[62vh] overflow-y-auto px-7 py-6 md:px-8">
+        <div id="de-clientes" class="mb-5"></div>
+        <p id="de-descripcion" class="texto-justo text-[0.92rem] leading-relaxed text-[var(--color-ink-soft)]"></p>
+        <p class="mt-6 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">
+          Qué hice ahí
+        </p>
+        <ul id="de-logros" class="mt-3 space-y-2.5"></ul>
+        <div id="de-stack" class="mt-6 flex flex-wrap gap-1.5"></div>
+      </div>
+
+      <footer class="flex items-center justify-between gap-4 border-t border-[var(--color-line)] bg-[var(--color-cream)] px-7 py-3.5 md:px-8">
+        <span id="de-indice" class="font-mono text-xs text-[var(--color-faint)]"></span>
+        <a
+          id="de-web"
+          href="#"
+          target="_blank"
+          rel="noopener"
+          class="btn btn-primary shrink-0 !px-5 !py-2.5 text-sm"
+        >
+          Visitar el sitio
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+            <path d="M7 17 17 7M9 7h8v8" />
+          </svg>
+        </a>
+      </footer>
+    </dialog>
   </section>
 
   <!-- Educación + Certificaciones -->
@@ -1294,6 +1324,7 @@ const ICONOS_AGENTE: Record<string, string> = {
     </section>
   </div>
 
+  <script type="application/json" id="datos-etapas" set:html={JSON.stringify(experiencias)} is:inline />
   <script type="application/json" id="datos-fases" set:html={JSON.stringify(ciclo.map((c) => c.etapa))} is:inline />
   <script type="application/json" id="datos-agentes" set:html={JSON.stringify(agentesIA)} is:inline />
   <script type="application/json" id="datos-agentes-iconos" set:html={JSON.stringify(ICONOS_AGENTE)} is:inline />
@@ -1314,6 +1345,89 @@ const ICONOS_AGENTE: Record<string, string> = {
       io.observe(encabezado);
     } else {
       ficha?.classList.add('ficha-visible');
+    }
+
+
+    /* Detalle de la etapa. Mismo patrón que los otros dos diálogos: un solo
+     * <dialog> que se rellena al pulsar, y los datos en un JSON. */
+    const ETAPAS = JSON.parse(document.getElementById('datos-etapas').textContent);
+    const dlgEtapa = document.getElementById('dialogo-etapa');
+
+    if (dlgEtapa && ETAPAS) {
+      const ponE = (id, html) => (document.getElementById(id).innerHTML = html);
+      const chipE = (contenido) =>
+        `<span class="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 text-[0.7rem] font-medium text-[var(--color-ink-soft)]">${contenido}</span>`;
+
+      document.querySelectorAll('[data-etapa]').forEach((boton) => {
+        boton.addEventListener('click', () => {
+          const i = ETAPAS.findIndex((x) => x.cargo === boton.dataset.etapa);
+          const e = ETAPAS[i];
+          if (!e) return;
+
+          ponE('de-logo', `<img src="/logos/${e.logo}" alt="Logo de ${e.empresa}" class="h-full w-full object-contain">`);
+          ponE('de-cargo', e.cargo);
+          ponE(
+            'de-meta',
+            `<span class="font-semibold text-[var(--color-fox-deep)]">${e.empresa}</span>` +
+              chipE(
+                `<img src="/paises/${e.pais}.png" alt="" width="15" height="10" class="h-2.5 w-[15px] rounded-[1px] object-cover ring-1 ring-black/10"> ${e.paisNombre}`
+              ) +
+              (e.modalidad ? chipE(e.modalidad) : '')
+          );
+
+          ponE(
+            'de-clientes',
+            e.clientes && e.clientes.length
+              ? `<p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]">${
+                  e.clientes.length > 1 ? 'Clientes' : 'Cliente'
+                }</p>
+                 <div class="mt-2 flex flex-wrap items-center gap-2">${e.clientes
+                   .map(
+                     (c) =>
+                       `<span class="inline-flex items-center gap-2 rounded-full bg-[var(--color-fox-tint)] py-1 pl-1.5 pr-3">${
+                         c.logo
+                           ? `<span class="grid h-6 w-11 place-items-center overflow-hidden rounded-md bg-white px-1"><img src="/logos/${c.logo}" alt="Logo de ${c.nombre}" class="h-full w-full object-contain"></span>`
+                           : ''
+                       }<span class="text-xs font-semibold text-[var(--color-fox-deep)]">${c.nombre}</span></span>`
+                   )
+                   .join('')}</div>`
+              : ''
+          );
+
+          ponE('de-descripcion', e.descripcion);
+          ponE(
+            'de-logros',
+            e.logros
+              .map(
+                (l) =>
+                  `<li class="flex gap-3 text-[0.88rem] leading-relaxed text-[var(--color-ink-soft)]">
+                     <span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[var(--color-fox-tint)]">
+                       <svg class="h-3 w-3 text-[var(--color-fox-dark)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2"><path d="M5 12l5 5L20 7"/></svg>
+                     </span>
+                     <span>${l}</span>
+                   </li>`
+              )
+              .join('')
+          );
+          ponE(
+            'de-stack',
+            (e.stack || []).map((x) => `<span class="chip chip-sm">${x}</span>`).join('')
+          );
+          ponE('de-indice', `Etapa ${ETAPAS.length - i} de ${ETAPAS.length}`);
+
+          const web = document.getElementById('de-web');
+          web.href = e.web || '#';
+          web.hidden = !e.web;
+
+          dlgEtapa.showModal();
+          dlgEtapa.focus();
+        });
+      });
+
+      document.getElementById('de-cerrar').addEventListener('click', () => dlgEtapa.close());
+      dlgEtapa.addEventListener('click', (ev) => {
+        if (ev.target === dlgEtapa) dlgEtapa.close();
+      });
     }
 
 
@@ -1475,63 +1589,6 @@ const ICONOS_AGENTE: Record<string, string> = {
       });
     }
 
-    /* Carruseles con avance automático.
-     *
-     * Se detienen al pasar el cursor, al enfocar con el teclado y en cuanto la
-     * persona los desplaza a mano: una vez que alguien decide mirar una
-     * tarjeta, moverla debajo de su vista es lo peor que puede pasar. Y no
-     * arrancan si el sistema pide menos movimiento.
-     */
-    const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    document.querySelectorAll('.carrusel').forEach((pista) => {
-      if (menosMovimiento.matches) return;
-
-      let temporizador = null;
-      let detenido = false;
-
-      const avanzar = () => {
-        if (detenido) return;
-        const tarjeta = pista.firstElementChild;
-        if (!tarjeta) return;
-
-        const paso = tarjeta.getBoundingClientRect().width + 16;
-        const finalAlcanzado = pista.scrollLeft + pista.clientWidth >= pista.scrollWidth - 8;
-
-        pista.scrollTo({ left: finalAlcanzado ? 0 : pista.scrollLeft + paso, behavior: 'smooth' });
-      };
-
-      const arrancar = () => {
-        clearInterval(temporizador);
-        temporizador = setInterval(avanzar, 3800);
-      };
-
-      const parar = () => clearInterval(temporizador);
-
-      const pararDefinitivamente = () => {
-        detenido = true;
-        parar();
-      };
-
-      pista.addEventListener('mouseenter', parar);
-      pista.addEventListener('mouseleave', () => !detenido && arrancar());
-      pista.addEventListener('focusin', pararDefinitivamente);
-      pista.addEventListener('wheel', pararDefinitivamente, { passive: true });
-      pista.addEventListener('touchstart', pararDefinitivamente, { passive: true });
-      pista.addEventListener('pointerdown', pararDefinitivamente);
-
-      // Solo se mueve mientras está en pantalla: fuera de ella no aporta nada
-      // y consume trabajo del navegador.
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(
-          ([entrada]) => (entrada.isIntersecting && !detenido ? arrancar() : parar()),
-          { threshold: 0.25 }
-        ).observe(pista);
-      } else {
-        arrancar();
-      }
-    });
-
     /* El índice resalta el bloque que se está leyendo. Se elige el que está
      * más arriba dentro de la pantalla, no el primero que entra: con bloques
      * de varias pantallas, lo segundo salta de un lado a otro. */
@@ -1595,9 +1652,6 @@ const ICONOS_AGENTE: Record<string, string> = {
       (evento) => {
         if (navegando || !anchoSuficiente.matches || sinMovimiento.matches) return;
         if (Math.abs(evento.deltaY) < 4) return;
-        // Dentro del carrusel del recorrido el gesto es para moverlo a él.
-        if (evento.target.closest('.carrusel')) return;
-
         const i = sectorActual();
         const actual = sectores[i];
         const arriba = topeDe(actual);
