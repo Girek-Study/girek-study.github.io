@@ -287,9 +287,10 @@ export const experiencias: Experiencia[] = [
       { nombre: 'Pacífico Seguros', logo: 'pacifico.png' },
       { nombre: 'Interbank', logo: 'interbank.png' },
       { nombre: 'Citibank', logo: 'citibank.png' },
+      { nombre: 'Scotiabank', logo: 'scotiabank.png' },
     ],
     descripcion:
-      'Consultoría de testing. Trabajé como consultor en cuatro clientes de tres sectores —cosmética, seguros y banca—, que fue la mejor escuela posible para entender que el riesgo no se parece en ningún dominio al anterior.',
+      'Consultoría de testing. Trabajé como consultor en cinco clientes de tres sectores —cosmética, seguros y banca—, que fue la mejor escuela posible para entender que el riesgo no se parece en ningún dominio al anterior.',
     logros: [
       'En Yanbal automaticé con Selenium las funcionalidades críticas del negocio y validé el sistema core.',
       'En Pacífico Vida diseñé, ejecuté y estimé planes de prueba para el core asegurador, en web, móvil Android y aplicaciones cliente-servidor.',
