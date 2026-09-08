@@ -1601,3 +1601,119 @@ html {
     padding-bottom: 1.5rem;
   }
 }
+
+/* Resultados: dos tarjetas por pantalla en el teléfono, rejilla de dos
+   columnas con las cuatro a partir de 44rem, que es donde los envoltorios se
+   disuelven y sus tarjetas pasan a ser hijas directas de la rejilla. */
+.rejilla-resultados {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 44rem) {
+  .rejilla-resultados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grupo-resultados {
+    display: contents;
+  }
+
+  /* Al disolverse el envoltorio, el encabezado pasa a ser una celda más: hay
+     que devolverle el ancho completo. */
+  .cabecera-resultados {
+    grid-column: 1 / -1;
+    margin-bottom: 0.75rem;
+  }
+}
+
+@media (max-width: 43.99rem) {
+  .grupo-resultados {
+    gap: 1rem;
+  }
+
+  .cabecera-resultados {
+    margin-bottom: 0.25rem;
+  }
+}
+
+/* Resultados en el teléfono: dos tarjetas por pantalla, que crecen con ella.
+   La primera pantalla lleva además el encabezado, así que arranca compacta
+   —si no, no cabía en un Galaxy de 740— y de ahí para arriba gana cuerpo con
+   el mismo patrón que el resto: base + (pantalla - 740) * factor, atado al
+   menor entre alto y ancho. */
+@media (max-width: 43.99rem) {
+  #resultados article {
+    padding: min(calc(0.8rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 1.75rem);
+  }
+
+  #resultados .grupo-resultados {
+    gap: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.03), 1.4rem);
+  }
+
+  /* La cifra */
+  #resultados article p.font-display {
+    font-size: min(calc(1.75rem + (min(100svh, 100vw * 2.2) - 740px) * 0.045), 3rem);
+  }
+
+  #resultados article h3 {
+    margin-top: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem);
+    font-size: min(calc(0.92rem + (min(100svh, 100vw * 2.2) - 740px) * 0.022), 1.4rem);
+  }
+
+  #resultados article h3 + p {
+    margin-top: 0.4rem;
+    font-size: min(calc(0.8rem + (min(100svh, 100vw * 2.2) - 740px) * 0.018), 1.2rem);
+    line-height: 1.45;
+  }
+
+  /* Los remates de barra y de puntos */
+  #resultados article > div:last-child:not(:first-child) {
+    margin-top: min(calc(0.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.025), 1.5rem);
+    padding-top: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.2rem);
+  }
+
+  #resultados .cabecera-resultados h2 {
+    font-size: min(calc(1.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.04), 3rem);
+  }
+
+  #resultados .cabecera-resultados p {
+    font-size: min(calc(0.88rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1.25rem);
+  }
+}
+
+/* La segunda pantalla no lleva encabezado, así que sus dos tarjetas tienen
+   que ocupar lo que en la primera ocupan tres bloques. Van con más cuerpo. */
+@media (max-width: 43.99rem) {
+  #resultados .grupo-resultados:last-child article {
+    padding: min(calc(1.1rem + (min(100svh, 100vw * 2.2) - 740px) * 0.07), 2.5rem);
+  }
+
+  #resultados .grupo-resultados:last-child {
+    gap: min(calc(0.9rem + (min(100svh, 100vw * 2.2) - 740px) * 0.05), 2rem);
+  }
+
+  #resultados .grupo-resultados:last-child article p.font-display {
+    font-size: min(calc(2.1rem + (min(100svh, 100vw * 2.2) - 740px) * 0.07), 3.6rem);
+  }
+
+  #resultados .grupo-resultados:last-child article h3 {
+    margin-top: min(calc(0.8rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 1.75rem);
+    font-size: min(calc(1.05rem + (min(100svh, 100vw * 2.2) - 740px) * 0.032), 1.7rem);
+  }
+
+  #resultados .grupo-resultados:last-child article h3 + p {
+    font-size: min(calc(0.88rem + (min(100svh, 100vw * 2.2) - 740px) * 0.026), 1.45rem);
+  }
+
+  /* Y la primera arranca un punto más apretada: en un Galaxy de 740 el
+     encabezado y las dos tarjetas se pasaban por treinta píxeles. */
+  #resultados .grupo-resultados:first-child article {
+    padding: min(calc(0.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 1.75rem);
+  }
+
+  #resultados .grupo-resultados:first-child article p.font-display {
+    font-size: min(calc(1.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.045), 3rem);
+  }
+}

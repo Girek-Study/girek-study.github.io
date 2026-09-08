@@ -576,14 +576,26 @@ const ICONOS_AGENTE: Record<string, string> = {
 
   <!-- ============ LOGROS DESTACADOS ============ -->
   <section id="resultados" class="sector">
-    <SectionHeading
-      eyebrow="Resultados"
-      title="Lo que se movió cuando estuve"
-      subtitle="Cifras del CV, cada una con el contexto en el que ocurrió."
-    />
-    <div class="mt-7 grid gap-4 sm:grid-cols-2">
+    {/* Dos por pantalla en el teléfono. Las cuatro apiladas medían 1516px en
+        una pantalla de 852 y obligaban a leerlas de dos en dos igual, pero sin
+        que ninguna de las dos pantallas cerrara en un sitio limpio. Desde
+        44rem los envoltorios se disuelven y vuelven a ser una rejilla de dos
+        columnas con las cuatro tarjetas. */}
+    <div class="rejilla-resultados">
       {
-        logrosDestacados.map((l, i) => (
+        [0, 1].map((bloque) => (
+        <div class="pantalla-movil grupo-resultados">
+        {bloque === 0 && (
+          <div class="cabecera-resultados">
+            <SectionHeading
+              eyebrow="Resultados"
+              title="Lo que se movió cuando estuve"
+              subtitle="Cifras del CV, cada una con el contexto en el que ocurrió."
+            />
+          </div>
+        )}
+        {
+        logrosDestacados.slice(bloque * 2, bloque * 2 + 2).map((l, i) => (
           <article class="reveal card card-hover flex flex-col p-5" data-delay={`${i * 70}ms`}>
             {/* Icono y cifra en la misma línea: separados, el icono quedaba
                 suelto en su propio renglón y la tarjeta perdía compacidad. */}
@@ -659,6 +671,9 @@ const ICONOS_AGENTE: Record<string, string> = {
               </div>
             )}
           </article>
+        ))
+        }
+        </div>
         ))
       }
     </div>
