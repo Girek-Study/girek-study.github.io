@@ -28,6 +28,11 @@ export interface Experiencia {
   /** Matiz del puesto que no cabe en la tabla: se ve en el detalle. */
   nota?: string;
   clientes?: Cliente[];
+  /**
+   * Productos sobre los que trabajé dentro de la empresa. No son clientes:
+   * son las piezas del propio negocio que me tocó asegurar.
+   */
+  productos?: string[];
   /** Dos o tres frases: qué era la empresa, qué se me confió y qué estaba en juego. */
   descripcion: string;
   logros: string[];
@@ -135,6 +140,7 @@ export const experiencias: Experiencia[] = [
     web: 'https://prestamype.com',
     pais: 'pe',
     paisNombre: 'Perú',
+    productos: ['Prestamype Préstamos', 'Prestamype Factoring', 'Cambio Seguro', 'Tandia', 'Recadia'],
     descripcion:
       'Fintech de financiamiento con garantía hipotecaria y cambio de divisas. Dirigí la práctica de automatización de calidad de sus productos web y móviles: no solo construir la suite, sino formar al equipo que la iba a sostener cuando yo no estuviera.',
     logros: [
@@ -146,7 +152,7 @@ export const experiencias: Experiencia[] = [
       'Impulsé Shift-Left con desarrollo y producto, definiendo criterios de aceptación antes de escribir código.',
     ],
     stack: ['Playwright', 'TypeScript', 'Jenkins', 'GitLab CI', 'Docker', 'AWS', 'Azure'],
-    capas: ['Web', 'CI/CD'],
+    capas: ['Web', 'Móvil', 'CI/CD'],
   },
   {
     empresa: 'Nagnoi, LLC',
