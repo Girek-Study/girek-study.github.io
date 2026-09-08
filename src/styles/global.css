@@ -1419,3 +1419,39 @@ html {
     font-size: 0.73rem;
   }
 }
+
+/* Móviles muy bajos de pantalla —el iPhone SE deja 667px útiles, cien menos
+   que un teléfono actual—. En vez de dejar la última fila de cifras cortada
+   por la mitad, se aprieta lo justo para que entre entera. */
+@media (max-width: 47.99rem) and (max-height: 44rem) {
+  .perfil .foto-perfil {
+    height: 4.5rem;
+    width: 4.5rem;
+  }
+
+  .perfil h1 {
+    font-size: 1.35rem;
+  }
+
+  .perfil h1 + p {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .acciones-perfil a {
+    padding-block: 0.3rem !important;
+    font-size: 0.85rem;
+  }
+
+  .perfil dl > div {
+    padding-block: 0.3rem;
+  }
+
+  .perfil dl dt {
+    font-size: 1.5rem;
+  }
+
+  .perfil dl dd span {
+    font-size: 0.78rem;
+  }
+}
