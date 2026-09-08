@@ -81,6 +81,19 @@ const ICONOS: Record<string, string> = {
 const ciclo = iaEnElCiclo.slice(0, -1);
 const aparte = iaEnElCiclo[iaEnElCiclo.length - 1];
 
+// Un trazo por competencia. Rotula cada bloque de la rejilla para que se
+// distingan de un vistazo sin tener que leer los ocho titulares.
+const ICONOS_COMPETENCIA: Record<string, string> = {
+  'Automatización': 'M9 3.2h6 M12 3.2v3 M5 6.2h14v11.6H5z M9.2 10.8h.01 M14.8 10.8h.01 M9.3 14.6h5.4 M2.5 10.5v4 M21.5 10.5v4',
+  'APIs e integración': 'M8.5 3.5H7.5A2.5 2.5 0 0 0 5 6v3a2.5 2.5 0 0 1-2.5 2.5A2.5 2.5 0 0 1 5 14v3a2.5 2.5 0 0 0 2.5 2.5h1 M15.5 3.5h1A2.5 2.5 0 0 1 19 6v3a2.5 2.5 0 0 0 2.5 2.5A2.5 2.5 0 0 0 19 14v3a2.5 2.5 0 0 1-2.5 2.5h-1',
+  'Rendimiento y seguridad': 'M3.5 18.5a8.75 8.75 0 1 1 17 0 M12 14.5l4.4-4.6 M12 18.5h.01',
+  'CI/CD y plataformas': 'M6.6 15.6a3.6 3.6 0 1 1 0-7.2c3.4 0 4 7.2 7.4 7.2a3.6 3.6 0 1 0 0-7.2c-3.4 0-4 7.2-7.4 7.2Z',
+  'IA aplicada al testing': 'M9 3v2 M15 3v2 M9 19v2 M15 19v2 M3 9h2 M3 15h2 M19 9h2 M19 15h2 M6 6h12v12H6z M10 10h4v4h-4z',
+  'Liderazgo y estrategia': 'M9.2 11.2a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8Z M2.6 20a6.6 6.6 0 0 1 13.2 0 M16.8 5.4a3 3 0 0 1 0 6 M17.4 14.3a5.6 5.6 0 0 1 4 5.7',
+  'Lenguajes': 'm8 8-4 4 4 4 M16 8l4 4-4 4 M14 4.5l-4 15',
+  'Metodologías': 'M4 4.5h16v15H4z M9.4 4.5v15 M14.8 4.5v15 M6 8h1.6 M11.2 8h1.6 M16.6 8h1.6',
+};
+
 const ICONOS_AGENTE: Record<string, string> = {
   panel: 'M3 5h18v14H3z M3 9h18 M7 13h5 M7 16h8',
   auditoria: 'M9 3h6v3H9z M9 4.5H6.5A1.5 1.5 0 0 0 5 6v14a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V6a1.5 1.5 0 0 0-1.5-1.5H15 M9 13.5l2 2 4-4',
@@ -971,20 +984,50 @@ const ICONOS_AGENTE: Record<string, string> = {
       title="Competencias"
       subtitle="Lo que defiendo en una entrevista técnica, agrupado por para qué sirve."
     />
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {
-        competencias.map((c, i) => (
-          <article class="reveal card p-5" data-delay={`${(i % 4) * 60}ms`}>
-            <h3 class="font-display text-lg tracking-tight">{c.area}</h3>
-            <p class="mt-2 text-[0.82rem] leading-relaxed text-[var(--color-ink-soft)]">{c.detalle}</p>
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              {c.items.map((it) => (
-                <span class="chip">{it}</span>
-              ))}
-            </div>
-          </article>
-        ))
-      }
+
+    {/* Mismo tratamiento que el ciclo: panel opaco y divisiones de 1px. Antes
+        eran ocho tarjetas sueltas de altura desigual y la segunda fila se
+        cortaba; ahora la rejilla cuadra y cada bloque se rotula con su icono. */}
+    <div class="panel-fases mt-6 overflow-hidden rounded-[26px]">
+      <div class="grid gap-px bg-[var(--color-line-strong)] sm:grid-cols-2 xl:grid-cols-4">
+        {
+          competencias.map((c, i) => (
+            <article
+              class="reveal flex flex-col bg-[var(--color-surface)] px-4 py-3.5"
+              data-delay={`${(i % 4) * 60}ms`}
+            >
+              <div class="flex items-center gap-2.5">
+                <span class="icono-competencia" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d={ICONOS_COMPETENCIA[c.area]} />
+                  </svg>
+                </span>
+                <h3 class="font-display text-[0.98rem] leading-tight tracking-tight">{c.area}</h3>
+              </div>
+
+              {/* Sin justificar: a esta anchura el justificado abre calles entre
+                  palabras. Y sin mt-auto, que dejaba un vacío en las áreas de
+                  descripción corta. */}
+              <p class="mt-2.5 text-[0.78rem] leading-[1.5] text-[var(--color-ink-soft)]">
+                {c.detalle}
+              </p>
+
+              <div class="mt-3 flex flex-wrap gap-1">
+                {c.items.map((it) => (
+                  <span class="chip chip-sm">{it}</span>
+                ))}
+              </div>
+            </article>
+          ))
+        }
+      </div>
     </div>
   </section>
 

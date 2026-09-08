@@ -1009,3 +1009,30 @@ html {
   border-left: 3px solid var(--color-fox);
   box-shadow: var(--shadow-soft);
 }
+
+/* Icono de la competencia: la misma loseta que rotula las fases del ciclo, así
+   las dos rejillas se leen como el mismo sistema. */
+.icono-competencia {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: none;
+  border-radius: 9px;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+}
+
+.icono-competencia svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+/* Versión compacta del chip: son casi sesenta en pantalla, y al tamaño normal
+   la sección no cabía en el alto de un sector. */
+.chip-sm {
+  font-size: 0.62rem;
+  padding: 0.15rem 0.45rem;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
