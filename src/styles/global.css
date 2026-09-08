@@ -1064,46 +1064,79 @@ html {
   color: var(--color-fox-dark);
 }
 
-/* Rejilla del recorrido: pistas fijas para que las trece filas y su cabecera
-   compartan columna. Con cajas flexibles cada fila empezaba la ubicación donde
-   le tocaba y el bloque se leía como una lista de trozos. */
+/* Rejilla del recorrido: pistas fijas para que las trece filas compartan
+   columna. Con cajas flexibles cada fila empezaba la ubicación donde le tocaba
+   y el bloque se leía como una lista de trozos. */
 .rejilla-etapas {
   display: grid;
-  grid-template-columns: 1.8rem 72px minmax(0, 1fr) 1.6rem;
+  grid-template-columns: 68px minmax(0, 1fr) 1.6rem;
   align-items: center;
-  column-gap: 0.9rem;
+  column-gap: 1.1rem;
 }
 
 @media (min-width: 48rem) {
   .rejilla-etapas {
-    grid-template-columns: 1.8rem 72px minmax(0, 1fr) 13rem 1.6rem;
+    grid-template-columns: 68px minmax(0, 1fr) 10.5rem 1.6rem;
   }
 }
 
 @media (min-width: 64rem) {
   .rejilla-etapas {
-    grid-template-columns: 1.8rem 72px minmax(0, 1fr) 13rem 7.5rem 1.6rem;
+    grid-template-columns: 68px minmax(0, 1fr) 10.5rem 7.5rem 1.6rem;
   }
 }
 
-/* La cabecera nombra las columnas. Sin ella la tabla funciona igual, pero con
-   ella se entiende antes qué se está mirando. */
-.cabecera-etapas > span:first-child,
-.cabecera-etapas > span:nth-child(2) {
-  content-visibility: auto;
+/* El puesto de ahora. Es la primera pregunta de quien revisa un perfil, así que
+   se responde antes que nada y con otro peso. */
+.etapa-actual {
+  background: linear-gradient(115deg, var(--color-fox-tint) 0%, rgba(255, 255, 255, 0) 62%),
+    var(--color-surface);
+  border: 1px solid var(--color-line-strong);
+  box-shadow: var(--shadow-soft);
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
-/* Fila del recorrido. Es un botón que ocupa el ancho entero, así que el área
+.etapa-actual:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 26px 50px -30px rgba(28, 22, 18, 0.4);
+}
+
+.etiqueta-ahora {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  background: var(--color-fox);
+  padding: 0.2rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* Punto vivo: dice que el puesto sigue en curso sin escribir una fecha. */
+.etiqueta-ahora::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* Fila del índice. Es un botón que ocupa el ancho entero, así que el área
    pulsable es toda la fila y no solo la flecha. */
 .fila-etapa {
-  transition: background 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    background 0.18s ease,
+    padding-left 0.18s ease;
 }
 
 .fila-etapa:hover {
   background: var(--color-cream-2);
-  /* Filete a la izquierda en vez de un borde completo: marca la fila sin
-     moverla ni un píxel. */
-  box-shadow: inset 3px 0 0 var(--color-fox);
+  padding-left: 0.6rem;
 }
 
 .flecha-etapa {
