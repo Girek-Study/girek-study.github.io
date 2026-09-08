@@ -1482,24 +1482,66 @@ html {
   }
 }
 
-/* El sector de presentación también respira según el alto: en un teléfono
-   alto la primera mitad se quedaba en 593px de 1040 y volvía el hueco. */
-@media (max-width: 47.99rem) {
+/* Las dos pantallas de presentación llenan la suya.
+   El contenido es texto de ancho fijo, así que al crecer la tipografía crece
+   el interlineado y además se parte en más renglones: el alto sube mucho más
+   deprisa que el tamaño de letra, que es lo que hace falta aquí. Sin esto, en
+   un Pixel 7 Pro el relato medía 552px dentro de una pantalla de 1040 y dejaba
+   244 de banda arriba y otros tantos abajo.
+
+   El crecimiento va atado al menor entre el alto y el ancho: en un Fold de
+   344px el texto ya se parte solo y crecer además con el alto lo sacaba de la
+   pantalla. */
+@media (max-width: 43.99rem) {
+  #presentacion .eyebrow {
+    font-size: min(calc(0.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0116), 0.95rem);
+  }
+
+  #presentacion h2 {
+    font-size: min(calc(1.85rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0653), 3.4rem);
+  }
+
+  #presentacion h2 + p {
+    font-size: min(calc(0.95rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0261), 1.4rem);
+  }
+
   #presentacion blockquote,
   #presentacion .grid > div:first-child > p:first-of-type {
-    font-size: min(calc(1.25rem + (100svh - 740px) * 0.02), 1.7rem);
+    font-size: min(calc(1.25rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0406), 2rem);
+  }
+
+  #presentacion .grid p.texto-justo {
+    font-size: min(calc(0.88rem + (min(100svh, 100vw * 2.2) - 740px) * 0.029), 1.35rem);
   }
 
   #presentacion .grid > div:first-child > p + p,
   #presentacion .grid > div:first-child > div {
-    margin-top: min(calc(0.75rem + (100svh - 740px) * 0.06), 2.5rem);
+    margin-top: min(calc(0.75rem + (min(100svh, 100vw * 2.2) - 740px) * 0.087), 2.5rem);
   }
 
-  /* Nueve marcas en un renglón: por encima de 1.6rem la novena cae sola a una
-     segunda fila y se ve como un descuido. */
+  /* Nueve marcas en un renglón: por encima de 2.4rem la novena cae sola. */
   #presentacion li.herramienta svg {
-    width: min(calc(1.35rem + (100svh - 740px) * 0.012), 1.6rem);
-    height: min(calc(1.35rem + (100svh - 740px) * 0.012), 1.6rem);
+    width: min(calc(1.35rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0435), 2.4rem);
+    height: min(calc(1.35rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0435), 2.4rem);
+  }
+
+  /* Y las tres decisiones, que son la segunda pantalla. */
+  #decisiones li {
+    padding: min(calc(0.875rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0432), 2rem);
+  }
+
+  #decisiones h3 {
+    font-size: min(calc(1rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0271), 1.5rem);
+  }
+
+  #decisiones li p {
+    font-size: min(calc(0.85rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0222), 1.25rem);
+  }
+
+  #decisiones .icono-decision,
+  #decisiones li > span:first-child {
+    width: min(calc(2.25rem + (min(100svh, 100vw * 2.2) - 740px) * 0.037), 3.5rem);
+    height: min(calc(2.25rem + (min(100svh, 100vw * 2.2) - 740px) * 0.037), 3.5rem);
   }
 }
 
@@ -1550,6 +1592,9 @@ html {
     flex-direction: column;
     justify-content: center;
     scroll-margin-top: 4.5rem;
-    padding-bottom: 2rem;
+    /* La barra de arriba es fija: sin reservarle su alto, el primer rótulo de
+       la pantalla queda debajo de ella. Es lo mismo que ya hace `.sector`. */
+    padding-top: 4.5rem;
+    padding-bottom: 1.5rem;
   }
 }
