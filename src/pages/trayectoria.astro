@@ -1288,50 +1288,92 @@ const ICONOS_AGENTE: Record<string, string> = {
 
   <!-- Educación + Certificaciones -->
   <section id="formacion" class="sector">
-    <div class="grid gap-10 xl:grid-cols-2 xl:gap-14">
-      <div class="reveal">
-        <h2 class="eyebrow mb-5">Educación</h2>
-        <ul class="space-y-4">
-          {
-            educacion.map((ed) => (
-              <li class="card card-hover p-5">
-                <h3 class="font-display text-lg tracking-tight">{ed.titulo}</h3>
-                <p class="mt-1 text-sm text-[var(--color-ink-soft)]">{ed.institucion}</p>
-                {ed.periodo && <p class="mt-1 font-mono text-xs text-[var(--color-faint)]">{ed.periodo}</p>}
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-      <div class="reveal" data-delay="120ms">
-        <h2 class="eyebrow mb-5">Certificaciones</h2>
-        <ul class="space-y-4">
-          {
-            certificaciones.map((c) => (
-              <li class="card card-hover flex items-center gap-4 p-5">
-                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-deep)]">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6" /><path d="M9 13.5 7 22l5-3 5 3-2-8.5" /></svg>
-                </span>
-                <div>
-                  <h3 class="font-medium">{c.nombre}</h3>
-                  <p class="text-sm text-[var(--color-ink-soft)]">{c.emisor}{c.anio && ` · ${c.anio}`}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
+    <SectionHeading
+      eyebrow="Formación"
+      title="Estudios y certificaciones"
+      subtitle="Lo que está acreditado por un tercero, no lo que digo yo."
+    />
 
-        <h2 class="eyebrow mb-5 mt-10">Idiomas</h2>
-        <ul class="space-y-4">
-          {
-            idiomas.map((idioma) => (
-              <li class="card p-5">
-                <h3 class="font-display text-lg tracking-tight">{idioma.nombre}</h3>
-                <p class="mt-1 text-sm text-[var(--color-ink-soft)]">{idioma.nivel}</p>
-              </li>
-            ))
-          }
-        </ul>
+    {/* Antes eran dos columnas de tarjetas sueltas: la de Educación tenía una
+        sola y la otra cinco, así que media pantalla quedaba vacía. Ahora es una
+        ficha de tres bloques con el rótulo a la izquierda, que reparte el
+        espacio según lo que hay en cada uno y no al revés. */}
+    <div class="panel-fases mt-6 overflow-hidden rounded-[26px]">
+      <div class="grid gap-px bg-[var(--color-line-strong)]">
+        <div class="bloque-formacion bg-[var(--color-surface)]">
+          <p class="rotulo-formacion">Educación</p>
+          <ul class="grid gap-3">
+            {
+              educacion.map((ed) => (
+                <li class="flex items-start gap-3.5">
+                  <span class="icono-formacion" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m12 3.5 10 4.6-10 4.6L2 8.1l10-4.6Z M6 10.4v4.9c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.9" />
+                    </svg>
+                  </span>
+                  <span>
+                    <span class="block font-display text-[1.05rem] leading-tight tracking-tight">{ed.titulo}</span>
+                    <span class="mt-1 block text-[0.85rem] text-[var(--color-ink-soft)]">{ed.institucion}</span>
+                    {ed.periodo && (
+                      <span class="mt-1 block font-mono text-[0.7rem] text-[var(--color-faint)]">{ed.periodo}</span>
+                    )}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="bloque-formacion bg-[var(--color-surface)]">
+          <p class="rotulo-formacion">
+            Certificaciones
+            <span class="cuenta-formacion">{certificaciones.length}</span>
+          </p>
+          <ul class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {
+              certificaciones.map((c) => (
+                <li class="flex items-start gap-3.5">
+                  <span class="icono-formacion" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="8.4" r="5.4" />
+                      <path d="M9.2 13.4 7.4 21l4.6-2.7 4.6 2.7-1.8-7.6" />
+                    </svg>
+                  </span>
+                  <span class="min-w-0">
+                    <span class="block text-[0.9rem] font-semibold leading-snug">{c.nombre}</span>
+                    <span class="mt-0.5 block text-[0.8rem] text-[var(--color-ink-soft)]">
+                      {c.emisor}
+                      {c.anio && ` · ${c.anio}`}
+                    </span>
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="bloque-formacion bg-[var(--color-surface)]">
+          <p class="rotulo-formacion">Idiomas</p>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {
+              idiomas.map((idioma) => (
+                <li class="flex items-start gap-3.5">
+                  <span class="icono-formacion" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 3.2a8.8 8.8 0 1 0 0 17.6 8.8 8.8 0 0 0 0-17.6Z M3.6 9.2h16.8 M3.6 14.8h16.8 M12 3.2a13.5 13.5 0 0 1 0 17.6 M12 3.2a13.5 13.5 0 0 0 0 17.6" />
+                    </svg>
+                  </span>
+                  <span class="min-w-0">
+                    <span class="block font-display text-[1rem] leading-tight tracking-tight">{idioma.nombre}</span>
+                    <span class="mt-1 block text-[0.82rem] leading-snug text-[var(--color-ink-soft)]">
+                      {idioma.nivel}
+                    </span>
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
     </div>
   </section>

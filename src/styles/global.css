@@ -1253,3 +1253,64 @@ html {
     border-left: 1px solid var(--color-line);
   }
 }
+
+/* Ficha de formación: rótulo a la izquierda y contenido a la derecha, en
+   bloques separados por filete. Con dos columnas de tarjetas, la de Educación
+   tenía una sola entrada y la otra cinco, y media pantalla quedaba vacía; así
+   cada bloque ocupa lo que necesita y no lo que le tocaba. */
+.bloque-formacion {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.25rem 1.4rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {
+  .bloque-formacion {
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+}
+
+.rotulo-formacion {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+/* La cuenta dice de un vistazo cuántas hay sin tener que contarlas. */
+.cuenta-formacion {
+  display: grid;
+  place-items: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+  font-size: 0.58rem;
+  letter-spacing: 0;
+}
+
+.icono-formacion {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: none;
+  border-radius: 10px;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+}
+
+.icono-formacion svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
