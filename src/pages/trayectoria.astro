@@ -189,7 +189,7 @@ const ICONOS_AGENTE: Record<string, string> = {
 
     {/* En móvil la foto va al lado del nombre, no encima: apilada empujaba
         todo lo demás fuera de la primera pantalla. */}
-    <div class="mx-auto flex w-full max-w-[94rem] flex-1 items-center px-5 py-3 md:px-8 md:py-6">
+    <div class="mx-auto flex w-full max-w-[94rem] flex-1 items-center px-5 py-2 md:px-8 md:py-6">
       <div class="grid w-full items-center justify-center gap-4 sm:gap-10 lg:grid-cols-[auto_minmax(0,58rem)] lg:gap-16">
       <div class="reveal mx-auto lg:mx-0">
         <div class="relative grid place-items-center">
@@ -201,28 +201,28 @@ const ICONOS_AGENTE: Record<string, string> = {
           <img
             src="/girek-foto.png"
             srcset="/girek-foto-sm.png 360w, /girek-foto.png 720w"
-            sizes="(max-width: 639px) 112px, (max-width: 1023px) 152px, 288px"
+            sizes="(max-width: 639px) 88px, (max-width: 1023px) 152px, 288px"
             alt="Giancarlo Renato Palomino Huallpa"
             width="720"
             height="720"
-            class="foto-perfil relative h-28 w-28 object-contain sm:h-[9.5rem] sm:w-[9.5rem] lg:h-[28rem] lg:w-[28rem]"
+            class="foto-perfil relative h-[5.5rem] w-[5.5rem] object-contain sm:h-[9.5rem] sm:w-[9.5rem] lg:h-[28rem] lg:w-[28rem]"
           />
         </div>
       </div>
 
       <div class="min-w-0">
         <p class="reveal eyebrow">Trayectoria</p>
-        <h1 class="reveal mt-1.5 font-display text-[clamp(1.6rem,4.4vw+0.9rem,5.2rem)] leading-[1.05] tracking-tight sm:mt-3" data-delay="60ms">
+        <h1 class="reveal mt-1.5 font-display text-[clamp(1.5rem,4.4vw+0.9rem,5.2rem)] leading-[1.05] tracking-tight sm:mt-3" data-delay="60ms">
           {profile.nombreCompleto}
         </h1>
-        <p class="reveal mt-3 text-[0.92rem] leading-[1.5] text-[var(--color-ink-soft)] sm:mt-6 sm:text-lg sm:leading-relaxed md:text-[1.35rem]" data-delay="100ms">
+        <p class="reveal mt-2.5 text-[0.88rem] leading-[1.4] text-[var(--color-ink-soft)] sm:mt-6 sm:text-lg sm:leading-relaxed md:text-[1.35rem]" data-delay="100ms">
           Diseño la infraestructura de calidad de productos donde fallar cuesta caro: frameworks que
           otro equipo pueda mantener, pruebas que corren en cada build y agentes de IA que absorben
           el trabajo repetitivo.<span class="hidden sm:inline"> Empecé escribiendo código y nunca lo
           solté.</span>
         </p>
 
-        <p class="reveal mt-3 inline-flex items-center gap-2.5 font-mono text-sm text-[var(--color-ink-soft)] sm:mt-7 sm:text-base" data-delay="140ms">
+        <p class="reveal mt-2.5 inline-flex items-center gap-2.5 font-mono text-sm text-[var(--color-ink-soft)] sm:mt-7 sm:text-base" data-delay="140ms">
           <img
             src="/paises/pe.png"
             alt="Bandera del Perú"
@@ -237,7 +237,7 @@ const ICONOS_AGENTE: Record<string, string> = {
         {/* En móvil, rejilla de dos: con flex-wrap los cuatro caían 2+2 pero de
             anchos distintos, y el del correo se salía. */}
         <div
-          class="acciones-perfil reveal mt-3.5 grid grid-cols-2 gap-2 sm:mt-7 sm:flex sm:flex-wrap sm:gap-3"
+          class="acciones-perfil reveal mt-2.5 grid grid-cols-2 gap-1.5 sm:mt-7 sm:flex sm:flex-wrap sm:gap-3"
           data-delay="180ms"
         >
           {
@@ -247,7 +247,7 @@ const ICONOS_AGENTE: Record<string, string> = {
                 target="_blank"
                 rel="noopener"
                 class:list={[
-                  'btn min-w-0 justify-center text-[0.95rem] !px-4 !py-2.5 sm:!px-5 sm:!py-3',
+                  'btn min-w-0 justify-center text-[0.95rem] !px-4 !py-2 sm:!px-5 sm:!py-3',
                   c.principal ? 'btn-primary' : 'btn-ghost',
                 ]}
               >
@@ -282,7 +282,7 @@ const ICONOS_AGENTE: Record<string, string> = {
       {
         cifras.map((c, i) => (
           <div
-            class="reveal group flex flex-wrap items-center gap-x-3 bg-[var(--color-surface)] px-4 py-3.5 transition-colors duration-300 hover:bg-[var(--color-cream-2)] sm:px-6 sm:py-4 lg:block lg:px-8 lg:py-11"
+            class="reveal group flex flex-wrap items-center gap-x-3 bg-[var(--color-surface)] px-4 py-2 transition-colors duration-300 hover:bg-[var(--color-cream-2)] sm:px-6 sm:py-4 lg:block lg:px-8 lg:py-11"
             data-delay={`${i * 70}ms`}
           >
             <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)] transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-10 sm:w-10 lg:h-12 lg:w-12 lg:rounded-xl">
