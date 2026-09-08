@@ -1378,12 +1378,6 @@ html {
    uno de 390px, y estos tres casos se comprobaron midiendo en el dispositivo.
 */
 @media (max-width: 47.99rem) {
-  /* Justificar necesita una medida cómoda. En una columna de móvil, aunque
-     haya partición silábica, abre calles entre palabras. */
-  .texto-justo {
-    text-align: left;
-  }
-
   /* Suelo de legibilidad: por debajo de 11px un chip deja de leerse de un
      vistazo, que es justo para lo que sirve. */
   .chip-sm {

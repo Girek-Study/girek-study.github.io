@@ -183,7 +183,7 @@ const ICONOS_AGENTE: Record<string, string> = {
   description={`Trayectoria profesional de ${profile.nombreCompleto} en QA, automatización de pruebas y liderazgo de equipos de calidad.`}
 >
   <!-- ============ ENCABEZADO CON FOTO ============ -->
-  <section class="perfil relative flex flex-col overflow-hidden pt-[4.5rem] sm:pt-28 lg:min-h-dvh lg:pt-24">
+  <section class="perfil relative flex flex-col overflow-hidden pt-[4.5rem] min-h-dvh sm:pt-20 lg:pt-24">
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 right-[-4rem] top-16 h-80 w-80" style="background: var(--color-amber)"></div>
 
@@ -201,11 +201,11 @@ const ICONOS_AGENTE: Record<string, string> = {
           <img
             src="/girek-foto.png"
             srcset="/girek-foto-sm.png 360w, /girek-foto.png 720w"
-            sizes="(max-width: 639px) 112px, (max-width: 1023px) 288px, 288px"
+            sizes="(max-width: 639px) 112px, (max-width: 1023px) 152px, 288px"
             alt="Giancarlo Renato Palomino Huallpa"
             width="720"
             height="720"
-            class="foto-perfil relative h-28 w-28 object-contain sm:h-72 sm:w-72 lg:h-[28rem] lg:w-[28rem]"
+            class="foto-perfil relative h-28 w-28 object-contain sm:h-[9.5rem] sm:w-[9.5rem] lg:h-[28rem] lg:w-[28rem]"
           />
         </div>
       </div>
@@ -282,10 +282,10 @@ const ICONOS_AGENTE: Record<string, string> = {
       {
         cifras.map((c, i) => (
           <div
-            class="reveal group flex flex-wrap items-center gap-x-3 bg-[var(--color-surface)] px-4 py-3.5 transition-colors duration-300 hover:bg-[var(--color-cream-2)] sm:block sm:px-6 sm:py-8 md:px-8 md:py-11"
+            class="reveal group flex flex-wrap items-center gap-x-3 bg-[var(--color-surface)] px-4 py-3.5 transition-colors duration-300 hover:bg-[var(--color-cream-2)] sm:px-6 sm:py-4 lg:block lg:px-8 lg:py-11"
             data-delay={`${i * 70}ms`}
           >
-            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)] transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-12 sm:w-12 sm:rounded-xl">
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)] transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-10 sm:w-10 lg:h-12 lg:w-12 lg:rounded-xl">
               <svg
                 width="22"
                 height="22"
@@ -303,10 +303,10 @@ const ICONOS_AGENTE: Record<string, string> = {
               />
             </span>
 
-            <dt class="font-display text-[1.9rem] leading-none tracking-tight text-[var(--color-fox-dark)] sm:mt-5 sm:text-[3rem]">
+            <dt class="font-display text-[1.9rem] leading-none tracking-tight text-[var(--color-fox-dark)] sm:text-[2.4rem] lg:mt-5 lg:text-[3rem]">
               {c.valor}
             </dt>
-            <dd class="mt-1.5 w-full sm:mt-2">
+            <dd class="mt-1.5 w-full lg:mt-2">
               <span class="block text-[0.85rem] font-semibold leading-snug text-[var(--color-ink)] sm:text-base">{c.etiqueta}</span>
               {/* El matiz sobra en la primera pantalla de un móvil: lo que hay
                   que ver ahí es la cifra y de qué es. */}
