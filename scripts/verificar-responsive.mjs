@@ -94,7 +94,19 @@ for (const d of OBJETIVOS) {
   if (encabezado.cifras !== 4) fallos.push(`${d.nombre} · faltan cifras (${encabezado.cifras}/4)`);
   if (!encabezado.alineadas) fallos.push(`${d.nombre} · las cifras no alinean entre sí`);
 
-  // 3. Las tres decisiones nunca dejan una sola colgando con hueco al lado.
+  // 3. Ningún sector mide menos que la pantalla: si mide menos, el siguiente
+  //    se asoma por abajo y se ven dos a la vez.
+  const cortos = await pagina.evaluate(() => {
+    const ventana = window.innerHeight;
+    return [...document.querySelectorAll('.sector')]
+      .map((s, i) => ({ i, alto: Math.round(s.getBoundingClientRect().height) }))
+      .filter((s) => s.alto < ventana - 1);
+  });
+  for (const s of cortos) {
+    fallos.push(`${d.nombre} · el sector ${s.i + 1} mide ${s.alto} y la pantalla ${d.alto}`);
+  }
+
+  // 4. Las tres decisiones nunca dejan una sola colgando con hueco al lado.
   const decisiones = await pagina.evaluate(() => {
     const ul = document.querySelector('#decisiones ul');
     const columnas = getComputedStyle(ul).gridTemplateColumns.split(' ').length;
