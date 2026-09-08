@@ -552,7 +552,7 @@ html {
 /* Sectores de pantalla completa. Cada bloque ocupa una pantalla y el contenido
    se centra, así el desplazamiento avanza de un sector al siguiente. */
 .sector {
-  min-height: 100dvh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1425,42 +1425,42 @@ html {
    todo el aire sobrante se juntaba en un único hueco entre los botones y las
    cifras: 183px en un Pixel 7 Pro frente a 10 en un Galaxy A.
 
-   El patrón es `base + (100vh - 740px) * factor`: en 740px —el piso del
+   El patrón es `base + (100svh - 740px) * factor`: en 740px —el piso del
    diseño— cada propiedad vale lo de hoy, y de ahí para arriba crece. Los
    factores suman ~1, así que el bloque gana justo lo que gana la pantalla y
    el hueco no se abre. El `min()` pone tope para que no se desmadre en una
    tablet muy alta. */
 @media (max-width: 63.99rem) {
   .perfil .foto-perfil {
-    height: min(calc(5.3rem + (100vh - 740px) * 0.28), 13rem);
-    width: min(calc(5.3rem + (100vh - 740px) * 0.28), 13rem);
+    height: min(calc(5.3rem + (100svh - 740px) * 0.28), 13rem);
+    width: min(calc(5.3rem + (100svh - 740px) * 0.28), 13rem);
   }
 
   .perfil h1 {
-    font-size: min(calc(1.5rem + (100vh - 740px) * 0.05 + 0.5vw), 3.4rem);
+    font-size: min(calc(1.5rem + (100svh - 740px) * 0.05 + 0.5vw), 3.4rem);
   }
 
   .perfil h1 + p {
-    font-size: min(calc(0.88rem + (100vh - 740px) * 0.015), 1.3rem);
+    font-size: min(calc(0.88rem + (100svh - 740px) * 0.015), 1.3rem);
   }
 
   /* Párrafo, ubicación y botones comparten el mismo respiro. */
   .perfil h1 + p,
   .perfil h1 + p + p,
   .acciones-perfil {
-    margin-top: min(calc(0.625rem + (100vh - 740px) * 0.07), 2.5rem);
+    margin-top: min(calc(0.625rem + (100svh - 740px) * 0.07), 2.5rem);
   }
 
   .acciones-perfil a {
-    padding-block: min(calc(0.5rem + (100vh - 740px) * 0.03), 1.1rem);
+    padding-block: min(calc(0.5rem + (100svh - 740px) * 0.03), 1.1rem);
   }
 
   .perfil dl > div {
-    padding-block: min(calc(0.5rem + (100vh - 740px) * 0.045), 1.9rem);
+    padding-block: min(calc(0.5rem + (100svh - 740px) * 0.045), 1.9rem);
   }
 
   .perfil dl dt {
-    font-size: min(calc(1.6rem + (100vh - 740px) * 0.04), 3rem);
+    font-size: min(calc(1.6rem + (100svh - 740px) * 0.04), 3rem);
   }
 }
 
@@ -1469,16 +1469,16 @@ html {
    estaban fijos mientras la pantalla crecía. */
 @media (min-width: 64rem) {
   .perfil .foto-perfil {
-    height: min(calc(21rem + (100vh - 900px) * 0.62), 40rem);
-    width: min(calc(21rem + (100vh - 900px) * 0.62), 40rem);
+    height: min(calc(21rem + (100svh - 900px) * 0.62), 40rem);
+    width: min(calc(21rem + (100svh - 900px) * 0.62), 40rem);
   }
 
   .perfil dl > div {
-    padding-block: min(calc(2.75rem + (100vh - 900px) * 0.09), 6rem);
+    padding-block: min(calc(2.75rem + (100svh - 900px) * 0.09), 6rem);
   }
 
   .acciones-perfil {
-    margin-top: min(calc(1.75rem + (100vh - 900px) * 0.08), 4.5rem);
+    margin-top: min(calc(1.75rem + (100svh - 900px) * 0.08), 4.5rem);
   }
 }
 
@@ -1487,19 +1487,19 @@ html {
 @media (max-width: 47.99rem) {
   #presentacion blockquote,
   #presentacion .grid > div:first-child > p:first-of-type {
-    font-size: min(calc(1.25rem + (100vh - 740px) * 0.02), 1.7rem);
+    font-size: min(calc(1.25rem + (100svh - 740px) * 0.02), 1.7rem);
   }
 
   #presentacion .grid > div:first-child > p + p,
   #presentacion .grid > div:first-child > div {
-    margin-top: min(calc(0.75rem + (100vh - 740px) * 0.06), 2.5rem);
+    margin-top: min(calc(0.75rem + (100svh - 740px) * 0.06), 2.5rem);
   }
 
   /* Nueve marcas en un renglón: por encima de 1.6rem la novena cae sola a una
      segunda fila y se ve como un descuido. */
   #presentacion li.herramienta svg {
-    width: min(calc(1.35rem + (100vh - 740px) * 0.012), 1.6rem);
-    height: min(calc(1.35rem + (100vh - 740px) * 0.012), 1.6rem);
+    width: min(calc(1.35rem + (100svh - 740px) * 0.012), 1.6rem);
+    height: min(calc(1.35rem + (100svh - 740px) * 0.012), 1.6rem);
   }
 }
 
@@ -1545,7 +1545,7 @@ html {
    llenan pantalla cada una. En escritorio vuelven a ser una columna más. */
 @media (max-width: 43.99rem) {
   .pantalla-movil {
-    min-height: 100dvh;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: center;

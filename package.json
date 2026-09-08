@@ -8,7 +8,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "verificar:responsive": "node scripts/verificar-responsive.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -16,5 +17,8 @@
     "@tailwindcss/vite": "^4.0.17",
     "astro": "^5.5.5",
     "tailwindcss": "^4.0.17"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
   }
 }
