@@ -20,11 +20,15 @@ const MARCAS = [
   { slug: 'elipgo', dominio: 'elipgo.com' },
   { slug: 'canvia', url: 'https://canvia.com/wp-content/uploads/2021/09/favicon.svg' },
   { slug: 'soho', dominio: 'soho.cl' },
-  { slug: 'idm', dominio: 'idmtechnology.com' },
+  // El servicio de favicons devolvía marcas equivocadas para estas cuatro, así
+  // que se fija la URL del logotipo real de cada web.
+  { slug: 'idm', url: 'https://idmtechnology.com.pe/wp-content/uploads/2026/03/Logo-IDM-26-Blanco-6-1.png' },
+  { slug: 'gmd', url: 'https://media.licdn.com/dms/image/v2/C510BAQGLfVo2GnNp1Q/company-logo_200_200/company-logo_200_200/0/1631374783940?e=2147483647&v=beta&t=HD-iX66E-csEd1QyRJpvtPq4MDTuqfUuaAUKBnmf9YU' },
   { slug: 'prestamype', dominio: 'prestamype.com' },
-  { slug: 'nagnoi', dominio: 'nagnoi.com' },
+  { slug: 'nagnoi', url: 'https://static.wixstatic.com/media/e91250_5dd6cc8268cd408ea12007a836db08e6.png/v1/fill/w_129,h_39,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/e91250_5dd6cc8268cd408ea12007a836db08e6.png' },
   { slug: 'utp', dominio: 'utp.edu.pe' },
-  { slug: 'delaware', dominio: 'delaware.pro' },
+  // La versión '-blanco' solo se ve sobre fondo oscuro; aquí va la de color.
+  { slug: 'delaware', url: 'https://dlwlatam.com/wp-content/uploads/2023/03/delaware-logotipo.png' },
   { slug: 'qsystem', dominio: 'qsystem.com.pe' },
   // Clientes
   { slug: 'interbank', dominio: 'interbank.pe' },
@@ -38,6 +42,11 @@ const MARCAS = [
 ];
 
 // BCP no expone ningún icono servible: su tarjeta usa monograma a propósito.
+//
+// IDM solo publica su logotipo en blanco, porque en su web va sobre fondo
+// oscuro. public/logos/idm.png es ese archivo montado sobre un fondo oscuro,
+// para que se baste solo y no haya que darle trato especial a una loseta entre
+// trece. Si se vuelve a bajar, hay que repetir ese montaje.
 
 const PAISES = ['pe', 'mx', 'cl', 'pr'];
 

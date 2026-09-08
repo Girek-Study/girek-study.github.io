@@ -95,7 +95,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'IDM Technology',
     cargo: 'SDET — Starbucks Rewards Platform',
-    logo: null,
+    logo: 'idm.png',
     web: 'https://idmtechnology.com',
     pais: 'pe',
     paisNombre: 'Perú',
@@ -254,7 +254,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'GMD — Grupo Graña y Montero',
     cargo: 'Programador Java',
-    logo: null,
+    logo: 'gmd.png',
     pais: 'pe',
     paisNombre: 'Perú',
     descripcion:
@@ -269,7 +269,7 @@ export const experiencias: Experiencia[] = [
   {
     empresa: 'GMD — Grupo Graña y Montero',
     cargo: 'Practicante de Programación',
-    logo: null,
+    logo: 'gmd.png',
     pais: 'pe',
     paisNombre: 'Perú',
     descripcion:
