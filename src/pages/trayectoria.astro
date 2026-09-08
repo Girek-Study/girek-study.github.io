@@ -1382,7 +1382,7 @@ const ICONOS_AGENTE: Record<string, string> = {
     </div>
 
     <!-- ============ SIGUIENTE PASO ============ -->
-    <section id="cierre" class="mx-auto max-w-[94rem] px-5 pt-8 md:px-8">
+    <section id="cierre" class="mx-auto max-w-6xl px-5 pt-4 md:px-8">
       {/* Antes eran tres botones apilados a un lado, todos del mismo peso y sin
           decir a dónde llevaban. Ahora cada destino es una tarjeta con su icono
           y una línea: se elige sabiendo qué hay detrás. */}
@@ -1391,17 +1391,21 @@ const ICONOS_AGENTE: Record<string, string> = {
         <div class="brillo-cierre pointer-events-none absolute -right-32 -top-40 h-96 w-96 rounded-full" aria-hidden="true"></div>
 
         <div class="relative">
-          <p class="font-mono text-xs uppercase tracking-[0.2em] text-white/65">Girek Study</p>
-          <h2 class="mt-3.5 max-w-3xl font-display text-3xl leading-[1.08] tracking-tight md:text-[2.7rem]">
-            Todo esto lo publico en abierto
-          </h2>
-          <p class="mt-4 max-w-2xl leading-relaxed text-white/80">
-            Los frameworks que construyo, las decisiones de diseño detrás de cada uno y lo que
-            aprendo por el camino. El código se puede clonar y las notas se leen sin registrarse.
-            Las clases vienen después.
-          </p>
+          <div class="grid items-end gap-5 lg:grid-cols-[1fr_minmax(0,22rem)] lg:gap-12">
+            <div>
+              <p class="font-mono text-xs uppercase tracking-[0.2em] text-white/65">Girek Study</p>
+              <h2 class="mt-3.5 font-display text-3xl leading-[1.08] tracking-tight md:text-[2.6rem]">
+                Todo esto lo publico en abierto
+              </h2>
+            </div>
+            <p class="text-[0.92rem] leading-relaxed text-white/80">
+              Los frameworks que construyo, las decisiones de diseño detrás de cada uno y lo que
+              aprendo por el camino. El código se puede clonar y las notas se leen sin registrarse.
+              Las clases vienen después.
+            </p>
+          </div>
 
-          <div class="mt-9 grid gap-3 md:grid-cols-3">
+          <div class="mt-8 grid gap-3 md:grid-cols-3">
             {
               [
                 {
@@ -1493,7 +1497,11 @@ const ICONOS_AGENTE: Record<string, string> = {
             enElCierre = entrada.isIntersecting;
             decidir();
           },
-          { threshold: 0 }
+          // El pie del root sube al 45%: el cierre solo cuenta cuando su borde
+          // superior ya entró en la mitad de arriba de la pantalla. Con
+          // threshold 0 se apagaba en cuanto asomaba, y la ficha desaparecía
+          // mientras aún se estaba leyendo Formación.
+          { threshold: 0, rootMargin: '0px 0px -55% 0px' }
         ).observe(cierre);
       }
     } else {
