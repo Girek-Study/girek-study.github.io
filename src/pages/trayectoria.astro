@@ -1908,7 +1908,21 @@ const ICONOS_AGENTE: Record<string, string> = {
       ].filter(Boolean);
 
       if (!anchoDeSobra.matches) {
-        document.querySelectorAll('.pantalla-movil').forEach((p) => paradas.push(p));
+        // Un sector partido deja de ser parada: lo son sus mitades. Si se
+        // quedara, su tope y el de la primera mitad caerían a treinta píxeles
+        // uno de otro y la rueda se comería el salto siguiente.
+        const partidos = new Set();
+
+        document.querySelectorAll('.pantalla-movil').forEach((mitad) => {
+          paradas.push(mitad);
+          const sector = mitad.closest('.sector');
+          if (sector) partidos.add(sector);
+        });
+
+        partidos.forEach((sector) => {
+          const i = paradas.indexOf(sector);
+          if (i !== -1) paradas.splice(i, 1);
+        });
       }
 
       sectores = paradas.sort(
@@ -1919,7 +1933,6 @@ const ICONOS_AGENTE: Record<string, string> = {
     armarSectores();
     anchoDeSobra.addEventListener('change', armarSectores);
 
-    const anchoSuficiente = window.matchMedia('(min-width: 1024px)');
     const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
     let navegando = false;
 
@@ -1945,7 +1958,10 @@ const ICONOS_AGENTE: Record<string, string> = {
     window.addEventListener(
       'wheel',
       (evento) => {
-        if (navegando || !anchoSuficiente.matches || sinMovimiento.matches) return;
+        // La rueda manda en cualquier ancho: hay ratón en un portátil con la
+        // ventana estrecha y en los navegadores que emulan un móvil, y ahí el
+        // salto por sectores tiene tanto sentido como en escritorio.
+        if (navegando || sinMovimiento.matches) return;
         // Con un diálogo abierto la rueda es para el diálogo, no para la página.
         if (document.querySelector('dialog[open]')) return;
         if (Math.abs(evento.deltaY) < 4) return;
@@ -1984,9 +2000,12 @@ const ICONOS_AGENTE: Record<string, string> = {
      * El imán tiene alcance corto a propósito: si alguien paró en mitad de un
      * sector para leer, ahí se queda. */
     const IMAN = 0.2; // proporción de la ventana dentro de la que sí se ajusta
+    // Solo donde no hay rueda que interceptar. Con ratón manda el gesto de
+    // arriba, y un imán además tiraría del lector a media lectura.
+    const sinRueda = window.matchMedia('(pointer: coarse)');
 
     function encajarSector() {
-      if (navegando || anchoSuficiente.matches || sinMovimiento.matches) return;
+      if (navegando || sinMovimiento.matches || !sinRueda.matches) return;
       if (document.querySelector('dialog[open]')) return;
 
       const y = window.scrollY;
