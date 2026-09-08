@@ -81,6 +81,45 @@ const ICONOS: Record<string, string> = {
 const ciclo = iaEnElCiclo.slice(0, -1);
 const aparte = iaEnElCiclo[iaEnElCiclo.length - 1];
 
+// Marca de cada herramienta, para los chips de competencias. Solo entran
+// productos: una práctica como Shift-Left o Page Object Model no tiene logo
+// que poner, y fabricarle uno sería peor que dejarla en texto.
+const LOGOS_ITEM: Record<string, string> = {
+  Playwright: 'playwright',
+  TypeScript: 'typescript',
+  JavaScript: 'javascript',
+  Selenium: 'selenium',
+  Cypress: 'cypress',
+  Appium: 'appium',
+  'Cucumber / BDD': 'cucumber',
+  Postman: 'postman',
+  k6: 'k6',
+  JMeter: 'apachejmeter',
+  Gatling: 'gatling',
+  SonarQube: 'sonarqube',
+  Jenkins: 'jenkins',
+  'GitLab CI': 'gitlab',
+  'Azure DevOps': 'azuredevops',
+  Docker: 'docker',
+  'Kubernetes / AKS': 'kubernetes',
+  Terraform: 'terraform',
+  AWS: 'amazonaws',
+  Azure: 'microsoftazure',
+  Git: 'git',
+  GPT: 'openai',
+  Claude: 'anthropic',
+  Gemini: 'googlegemini',
+  Copilot: 'githubcopilot',
+  Java: 'openjdk',
+  Python: 'python',
+  'C#': 'csharp',
+};
+
+const marcaDe = (item: string) => {
+  const slug = LOGOS_ITEM[item];
+  return slug ? svgs[`../herramientas/${slug}.svg`] : null;
+};
+
 // Un trazo por competencia. Rotula cada bloque de la rejilla para que se
 // distingan de un vistazo sin tener que leer los ocho titulares.
 const ICONOS_COMPETENCIA: Record<string, string> = {
@@ -1020,9 +1059,15 @@ const ICONOS_AGENTE: Record<string, string> = {
               </p>
 
               <div class="mt-3 flex flex-wrap gap-1">
-                {c.items.map((it) => (
-                  <span class="chip chip-sm">{it}</span>
-                ))}
+                {c.items.map((it) => {
+                  const marca = marcaDe(it);
+                  return (
+                    <span class="chip chip-sm">
+                      {marca && <span class="chip-marca" aria-hidden="true" set:html={marca} />}
+                      {it}
+                    </span>
+                  );
+                })}
               </div>
             </article>
           ))

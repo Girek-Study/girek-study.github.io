@@ -1036,3 +1036,31 @@ html {
   letter-spacing: 0;
   line-height: 1.35;
 }
+
+/* Marca dentro del chip. En el mismo color que el texto y no a todo color: son
+   veintisiete en pantalla y a color se convertirían en un confeti que tapa lo
+   que dice cada chip. */
+.chip-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.chip-marca {
+  display: block;
+  width: 0.68rem;
+  height: 0.68rem;
+  flex: none;
+  opacity: 0.75;
+}
+
+.chip-marca svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  display: block;
+}
+
+.chip:hover .chip-marca {
+  opacity: 1;
+}
