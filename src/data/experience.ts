@@ -48,7 +48,10 @@ export const experiencias: Experiencia[] = [
     pais: 'mx',
     paisNombre: 'México',
     modalidad: 'Remoto',
-    clientes: [{ nombre: 'Starlink México', logo: 'starlink.png' }],
+    clientes: [
+      { nombre: 'Starlink México', logo: 'starlink.png' },
+      { nombre: 'Elipgo Analytics Engineering', logo: 'elipgo.png' },
+    ],
     descripcion:
       'Elipgo desarrolla un producto de analítica de video: detección y análisis sobre cámaras con inteligencia artificial. Lidero técnicamente la automatización de calidad de ese producto, un dominio donde la prueba no se limita a que la interfaz responda —hay que verificar que el modelo detecte lo que debe, que los eventos se registren y que la analítica cuadre con lo que ocurrió frente a la cámara.',
     logros: [
