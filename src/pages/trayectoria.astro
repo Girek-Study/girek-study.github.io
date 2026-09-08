@@ -82,8 +82,9 @@ const ciclo = iaEnElCiclo.slice(0, -1);
 const aparte = iaEnElCiclo[iaEnElCiclo.length - 1];
 
 // Marca de cada herramienta, para los chips de competencias. Solo entran
-// productos: una práctica como Shift-Left o Page Object Model no tiene logo
-// que poner, y fabricarle uno sería peor que dejarla en texto.
+// productos. Shift-Left, Risk-based testing o Page Object Model no tienen
+// logotipo porque no son de nadie: son prácticas. Ponerles el de alguien sería
+// falso, así que se distinguen por estilo y van agrupadas aparte.
 const LOGOS_ITEM: Record<string, string> = {
   Playwright: 'playwright',
   TypeScript: 'typescript',
@@ -92,6 +93,8 @@ const LOGOS_ITEM: Record<string, string> = {
   Cypress: 'cypress',
   Appium: 'appium',
   'Cucumber / BDD': 'cucumber',
+  Gherkin: 'cucumber',
+  'OWASP ZAP': 'owasp',
   Postman: 'postman',
   k6: 'k6',
   JMeter: 'apachejmeter',
@@ -1059,15 +1062,17 @@ const ICONOS_AGENTE: Record<string, string> = {
               </p>
 
               <div class="mt-3 flex flex-wrap gap-1">
-                {c.items.map((it) => {
-                  const marca = marcaDe(it);
-                  return (
-                    <span class="chip chip-sm">
-                      {marca && <span class="chip-marca" aria-hidden="true" set:html={marca} />}
-                      {it}
-                    </span>
-                  );
-                })}
+                {[...c.items]
+                  .sort((a, b) => Number(Boolean(LOGOS_ITEM[b])) - Number(Boolean(LOGOS_ITEM[a])))
+                  .map((it) => {
+                    const marca = marcaDe(it);
+                    return (
+                      <span class:list={['chip', 'chip-sm', !marca && 'chip-practica']}>
+                        {marca && <span class="chip-marca" aria-hidden="true" set:html={marca} />}
+                        {it}
+                      </span>
+                    );
+                  })}
               </div>
             </article>
           ))

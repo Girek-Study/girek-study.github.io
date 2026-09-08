@@ -1064,3 +1064,19 @@ html {
 .chip:hover .chip-marca {
   opacity: 1;
 }
+
+/* Chip sin marca. No es que le falte el logotipo: es que Shift-Left o
+   Risk-based testing no son de nadie. Van sin relleno y en trazo discontinuo
+   para que la diferencia con las herramientas se vea, y ordenadas después. */
+.chip-practica {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--color-line-strong);
+  color: var(--color-faint);
+}
+
+.chip-practica:hover {
+  background: transparent;
+  border-color: var(--color-fox);
+  color: var(--color-fox-dark);
+}
