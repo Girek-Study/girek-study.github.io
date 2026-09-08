@@ -79,9 +79,6 @@ const ICONOS: Record<string, string> = {
 // La última de iaEnElCiclo no es una fase del ciclo sino un producto que
 // lleva IA dentro; se saca aquí para que la plantilla no tenga que saberlo.
 const ciclo = iaEnElCiclo.slice(0, -1);
-
-// El puesto actual se separa del resto: va destacado y los demás como índice.
-const [actual, ...anteriores] = experiencias;
 const aparte = iaEnElCiclo[iaEnElCiclo.length - 1];
 
 // Marca de cada herramienta, para los chips de competencias. Solo entran
@@ -1089,80 +1086,23 @@ const ICONOS_AGENTE: Record<string, string> = {
     <SectionHeading
       eyebrow="Recorrido"
       title="Etapa por etapa"
+      subtitle="De las primeras prácticas al liderazgo técnico. Pulsa una etapa para ver qué hice ahí."
     />
 
-    {/* Jerarquía en vez de tabla uniforme. La primera pregunta de quien revisa
-        un perfil es "¿y ahora qué hace?", así que el puesto actual va destacado
-        y con su primera frase; los doce anteriores quedan como índice. Sin
+    {/* Índice: una línea por etapa, separadas por filete y sin caja. Sin
         numerar y sin recuadrar los logos: la caja alrededor de cada marca
-        pesaba más que la marca. */}
-    <button
-      type="button"
-      data-etapa={actual.cargo}
-      aria-haspopup="dialog"
-      class="reveal etapa-actual mt-5 flex w-full flex-col gap-4 rounded-[24px] p-5 text-left md:flex-row md:items-center md:gap-6"
-    >
-      <span class="flex shrink-0 items-center md:w-32">
-        <img
-          src={`/logos/${actual.logo}`}
-          alt={`Logo de ${actual.empresa}`}
-          width="120"
-          height="48"
-          class="max-h-10 max-w-[7.5rem] object-contain"
-        />
-      </span>
-
-      <span class="min-w-0 flex-1">
-        <span class="etiqueta-ahora">Ahora</span>
-
-        <span class="mt-2 block font-display text-[1.35rem] leading-tight tracking-tight md:text-[1.5rem]">
-          {actual.cargo}
-        </span>
-
-        <span class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1">
-          <span class="text-[0.85rem] font-semibold text-[var(--color-fox-deep)]">{actual.empresa}</span>
-          <span class="text-[var(--color-line-strong)]">·</span>
-          <img
-            src={`/paises/${actual.pais}.png`}
-            alt={`Bandera de ${actual.paisNombre}`}
-            width="17"
-            height="11"
-            class="h-[11px] w-[17px] rounded-[2px] object-cover ring-1 ring-black/10"
-          />
-          <span class="font-mono text-[0.68rem] text-[var(--color-faint)]">
-            {actual.paisNombre}
-            {actual.modalidad && ` · ${actual.modalidad}`}
-          </span>
-        </span>
-        <span class="mt-2 line-clamp-2 max-w-2xl text-[0.85rem] leading-relaxed text-[var(--color-ink-soft)]">
-          {actual.descripcion}
-        </span>
-      </span>
-
-      <span class="btn btn-primary shrink-0 !px-5 !py-2.5 text-sm">
-        Ver el detalle
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
-          <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
-        </svg>
-      </span>
-    </button>
-
-    <p class="reveal mt-5 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-[var(--color-faint)]" data-delay="60ms">
-      Antes · {anteriores.length} etapas
-    </p>
-
-    {/* Índice: una línea por etapa, separadas por filete y sin caja. Las marcas
-        van en gris y se encienden al pasar el cursor, igual que en el muro de
-        clientes, para que ninguna domine sobre las demás en reposo. */}
-    <ol class="mt-2">
+        pesaba más que la marca. Las marcas van en gris y se encienden al pasar
+        el cursor, igual que en el muro de clientes, para que ninguna domine
+        sobre las demás en reposo. */}
+    <ol class="mt-6">
       {
-        anteriores.map((e) => (
+        experiencias.map((e) => (
           <li>
             <button
               type="button"
               data-etapa={e.cargo}
               aria-haspopup="dialog"
-              class="fila-etapa marca rejilla-etapas w-full border-t border-[var(--color-line)] py-1 text-left"
+              class="fila-etapa marca rejilla-etapas w-full border-t border-[var(--color-line)] py-[9px] text-left"
             >
               <span class="flex h-6 items-center">
                 {e.logo ? (
