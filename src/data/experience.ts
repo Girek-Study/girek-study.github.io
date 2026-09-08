@@ -143,13 +143,12 @@ export const experiencias: Experiencia[] = [
     paisNombre: 'Perú',
     productos: [
       // Préstamos y Factoring son líneas de la propia Prestamype y usan su
-      // marca. Tandia y Recadia van sin logotipo: no publican uno verificable
-      // —tandiashop.com carga vacío— y poner el de otro sería falsear la marca.
+      // marca; las otras tres tienen la suya.
       { nombre: 'Prestamype Préstamos', logo: 'prestamype.svg' },
       { nombre: 'Prestamype Factoring', logo: 'prestamype.svg' },
       { nombre: 'Cambio Seguro', logo: 'cambioseguro.png' },
-      { nombre: 'Tandia', logo: null },
-      { nombre: 'Recadia', logo: null },
+      { nombre: 'Tandia', logo: 'tandia.svg' },
+      { nombre: 'Recadia', logo: 'recadia.svg' },
     ],
     descripcion:
       'Fintech de financiamiento con garantía hipotecaria y cambio de divisas. Dirigí la práctica de automatización de calidad de sus productos web y móviles: no solo construir la suite, sino formar al equipo que la iba a sostener cuando yo no estuviera.',

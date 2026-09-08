@@ -39,9 +39,12 @@ const MARCAS = [
   { slug: 'edulogica', dominio: 'edulogica.com' },
   { slug: 'bbva', dominio: 'bbva.pe' },
   { slug: 'pacifico', dominio: 'pacifico.com.pe' },
-  // Producto de Prestamype. Tandia y Recadia no entran: tandiashop.com carga
-  // vacío y de Recadia no hay web verificable, así que van con monograma.
+  // Productos de Prestamype. Los tres exponen su logotipo en una URL fija; el
+  // servicio de favicons devolvía el globo gris para Tandia y una plantilla
+  // ajena para Recadia.
   { slug: 'cambioseguro', url: 'https://cambioseguro.com/favicon.png' },
+  { slug: 'tandia', url: 'https://client.tandia.pe/static/img/logo-normal.svg' },
+  { slug: 'recadia', url: 'https://recadiapagos.com/logo-recadia-green.svg' },
 ];
 
 // BCP no expone ningún icono servible: su tarjeta usa monograma a propósito.
