@@ -247,7 +247,13 @@ export const experiencias: Experiencia[] = [
     web: 'https://www.delaware.pro',
     pais: 'pe',
     paisNombre: 'Perú',
-    clientes: [{ nombre: 'Interbank', logo: 'interbank.png' }],
+    clientes: [
+      { nombre: 'Interbank', logo: 'interbank.png' },
+      { nombre: 'SMV', logo: 'smv.png' },
+      { nombre: 'SUNAT', logo: 'sunat.png' },
+      { nombre: 'Distriluz', logo: 'distriluz.png' },
+      { nombre: 'Contraloría', logo: 'contraloria.png' },
+    ],
     descripcion:
       'Consultora belga de tecnología empresarial. Lideré servicios de QA y DevOps para clientes del sector financiero y público, en proyectos de implantación donde la calidad se decide en el plan y no en la ejecución.',
     logros: [
