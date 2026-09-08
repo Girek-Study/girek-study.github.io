@@ -45,7 +45,9 @@ const contacto = [
   { slug: 'whatsapp', texto: 'Escríbeme', href: profile.whatsappUrl, principal: true },
   { slug: 'linkedin', texto: 'LinkedIn', href: profile.links.linkedin, principal: false },
   { slug: 'github', texto: 'GitHub', href: profile.links.github, principal: false },
-  { slug: 'gmail', texto: profile.email, href: `mailto:${profile.email}`, principal: false },
+  // En móvil la dirección entera no cabe en el botón y se cortaba a media
+  // palabra; el rótulo corto entra hasta que hay sitio para la de verdad.
+  { slug: 'gmail', texto: profile.email, textoCorto: 'Correo', href: `mailto:${profile.email}`, principal: false },
 ].map((c) => ({ ...c, svg: svgs[`../herramientas/${c.slug}.svg`] }));
 
 // Nueve entran en una fila del ancho de la columna; con diez, la última
@@ -201,7 +203,7 @@ const ICONOS_AGENTE: Record<string, string> = {
             alt="Giancarlo Renato Palomino Huallpa"
             width="720"
             height="720"
-            class="foto-perfil relative h-64 w-64 object-contain sm:h-80 sm:w-80 lg:h-[28rem] lg:w-[28rem]"
+            class="foto-perfil relative h-52 w-52 object-contain sm:h-72 sm:w-72 lg:h-[28rem] lg:w-[28rem]"
           />
         </div>
       </div>
@@ -229,17 +231,34 @@ const ICONOS_AGENTE: Record<string, string> = {
           Lima, Perú
         </p>
 
-        <div class="acciones-perfil reveal mt-7 flex flex-wrap gap-3" data-delay="180ms">
+        {/* En móvil, rejilla de dos: con flex-wrap los cuatro caían 2+2 pero de
+            anchos distintos, y el del correo se salía. */}
+        <div
+          class="acciones-perfil reveal mt-7 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:gap-3"
+          data-delay="180ms"
+        >
           {
             contacto.map((c) => (
               <a
                 href={c.href}
                 target="_blank"
                 rel="noopener"
-                class:list={['btn text-[0.95rem] !px-5 !py-3', c.principal ? 'btn-primary' : 'btn-ghost']}
+                class:list={[
+                  'btn min-w-0 justify-center text-[0.95rem] !px-4 !py-3 sm:!px-5',
+                  c.principal ? 'btn-primary' : 'btn-ghost',
+                ]}
               >
-                <span class="herramienta herramienta-sm" aria-hidden="true" set:html={c.svg} />
-                {c.texto}
+                <span class="herramienta herramienta-sm shrink-0" aria-hidden="true" set:html={c.svg} />
+                <span class="truncate">
+                  {c.textoCorto ? (
+                    <>
+                      <span class="sm:hidden">{c.textoCorto}</span>
+                      <span class="hidden sm:inline">{c.texto}</span>
+                    </>
+                  ) : (
+                    c.texto
+                  )}
+                </span>
               </a>
             ))
           }
@@ -260,10 +279,10 @@ const ICONOS_AGENTE: Record<string, string> = {
       {
         cifras.map((c, i) => (
           <div
-            class="reveal group bg-[var(--color-surface)] px-6 py-8 transition-colors duration-300 hover:bg-[var(--color-cream-2)] md:px-8 md:py-11"
+            class="reveal group flex items-start gap-4 bg-[var(--color-surface)] px-5 py-5 transition-colors duration-300 hover:bg-[var(--color-cream-2)] sm:block sm:px-6 sm:py-8 md:px-8 md:py-11"
             data-delay={`${i * 70}ms`}
           >
-            <span class="grid h-12 w-12 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)] transition-transform duration-300 group-hover:-translate-y-0.5">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)] transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-12 sm:w-12">
               <svg
                 width="22"
                 height="22"
@@ -281,10 +300,11 @@ const ICONOS_AGENTE: Record<string, string> = {
               />
             </span>
 
-            <dt class="mt-5 font-display text-[3rem] leading-none tracking-tight text-[var(--color-fox-dark)]">
+            <div class="min-w-0 sm:contents">
+            <dt class="font-display text-[2.1rem] leading-none tracking-tight text-[var(--color-fox-dark)] sm:mt-5 sm:text-[3rem]">
               {c.valor}
             </dt>
-            <dd class="mt-2">
+            <dd class="mt-1.5 sm:mt-2">
               <span class="block font-semibold leading-snug text-[var(--color-ink)]">{c.etiqueta}</span>
               <span class="mt-1 block text-sm leading-snug text-[var(--color-ink-soft)]">{c.detalle}</span>
               {'banderas' in c && (
@@ -303,6 +323,7 @@ const ICONOS_AGENTE: Record<string, string> = {
                 </span>
               )}
             </dd>
+            </div>
           </div>
         ))
       }
@@ -553,7 +574,7 @@ const ICONOS_AGENTE: Record<string, string> = {
           <article class="reveal card card-hover flex flex-col p-5" data-delay={`${i * 70}ms`}>
             {/* Icono y cifra en la misma línea: separados, el icono quedaba
                 suelto en su propio renglón y la tarjeta perdía compacidad. */}
-            <div class="flex items-center justify-between gap-4">
+            <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
               <div class="flex items-center gap-3">
                 <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)]">
                   <svg
@@ -816,7 +837,9 @@ const ICONOS_AGENTE: Record<string, string> = {
             Agentes y herramientas que construí
           </h3>
           <p class="font-mono text-[0.68rem] text-white/35">
-            software propio, en producción · pasa el cursor para detener
+            software propio, en producción
+            <span class="hidden md:inline"> · pasa el cursor para detener</span>
+            <span class="md:hidden"> · toca una tarjeta para ver su modelo</span>
           </p>
         </div>
 
@@ -1149,12 +1172,12 @@ const ICONOS_AGENTE: Record<string, string> = {
                 )}
               </span>
 
-              <span class="flex min-w-0 items-baseline gap-2">
+              <span class="flex min-w-0 flex-col sm:flex-row sm:items-baseline sm:gap-2">
                 <span class="min-w-0 shrink truncate font-display text-[0.95rem] leading-tight tracking-tight">
                   {e.cargo}
                 </span>
-                <span class="shrink-0 text-[var(--color-line-strong)]">·</span>
-                <span class="min-w-0 shrink-[8] truncate text-[0.78rem] leading-tight text-[var(--color-faint)]">
+                <span class="hidden shrink-0 text-[var(--color-line-strong)] sm:inline">·</span>
+                <span class="mt-0.5 min-w-0 shrink-[8] truncate text-[0.78rem] leading-tight text-[var(--color-faint)] sm:mt-0">
                   {e.empresa}
                 </span>
               </span>

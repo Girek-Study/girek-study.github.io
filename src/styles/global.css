@@ -1372,3 +1372,56 @@ html {
   width: 1.2rem;
   height: 1.2rem;
 }
+
+/* ---------- Ajustes de móvil ----------
+   Lo que funciona en una columna ancha de escritorio no siempre funciona en
+   uno de 390px, y estos tres casos se comprobaron midiendo en el dispositivo.
+*/
+@media (max-width: 47.99rem) {
+  /* Justificar necesita una medida cómoda. En una columna de móvil, aunque
+     haya partición silábica, abre calles entre palabras. */
+  .texto-justo {
+    text-align: left;
+  }
+
+  /* Suelo de legibilidad: por debajo de 11px un chip deja de leerse de un
+     vistazo, que es justo para lo que sirve. */
+  .chip-sm {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .chip-marca {
+    width: 0.78rem;
+    height: 0.78rem;
+  }
+
+  /* Zona pulsable de al menos 40px: los enlaces del pie median 17. */
+  footer .link-underline,
+  footer a[href^='mailto:'] {
+    display: inline-block;
+    padding-block: 0.65rem;
+  }
+
+  /* Rótulos de la ficha de formación: a 9.6px no se leen en un móvil. */
+  .rotulo-formacion {
+    font-size: 0.68rem;
+  }
+
+  /* Suelo general para los rótulos en versalitas. En escritorio, a 0.6rem y
+     con tracking, se leen sin esfuerzo; en un móvil quedan en 9.6px y ahí ya
+     no. Se suben todos de golpe en vez de retocar cuarenta sitios. */
+  .text-\[0\.56rem\],
+  .text-\[0\.58rem\],
+  .text-\[0\.6rem\],
+  .text-\[0\.62rem\] {
+    font-size: 0.7rem;
+  }
+
+  .text-\[0\.64rem\],
+  .text-\[0\.65rem\],
+  .text-\[0\.66rem\],
+  .text-\[0\.68rem\] {
+    font-size: 0.73rem;
+  }
+}
