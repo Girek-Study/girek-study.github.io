@@ -1840,3 +1840,98 @@ html {
 #dialogo-resultado:focus-visible {
   outline: none;
 }
+
+/* ---------- Muro de clientes ---------- */
+
+.muro-marcas {
+  column-gap: 2rem;
+  row-gap: 2rem;
+}
+
+.marca {
+  gap: 0.625rem;
+}
+
+.hueco-marca {
+  height: 3.5rem;
+}
+
+.logo-marca {
+  max-height: 2rem;
+}
+
+.logo-marca.es-iso {
+  max-height: 3.25rem;
+}
+
+.nombre-marca {
+  font-size: 0.72rem;
+}
+
+/* En el teléfono, cuatro columnas en vez de tres: con tres eran siete filas y
+   el muro no entraba en la pantalla. Todo escala con el alto disponible, atado
+   al menor entre alto y ancho para que en un Fold no se desborde. */
+@media (max-width: 43.99rem) {
+  .muro-marcas {
+    column-gap: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.5rem);
+    row-gap: min(calc(0.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.03), 1.75rem);
+  }
+
+  .marca {
+    gap: min(calc(0.25rem + (min(100svh, 100vw * 2.2) - 740px) * 0.008), 0.6rem);
+  }
+
+  .hueco-marca {
+    height: min(calc(1.9rem + (min(100svh, 100vw * 2.2) - 740px) * 0.05), 3.5rem);
+  }
+
+  .logo-marca {
+    max-height: min(calc(1.2rem + (min(100svh, 100vw * 2.2) - 740px) * 0.03), 2rem);
+  }
+
+  .logo-marca.es-iso {
+    max-height: min(calc(1.75rem + (min(100svh, 100vw * 2.2) - 740px) * 0.05), 3.25rem);
+  }
+
+  .nombre-marca {
+    font-size: min(calc(0.55rem + (min(100svh, 100vw * 2.2) - 740px) * 0.008), 0.72rem);
+    line-height: 1.25;
+    text-align: center;
+  }
+}
+
+/* El encabezado y los contadores de Clientes, también a escala: en un Galaxy
+   de 740 se llevaban 362px de los 628 útiles y el muro no cabía debajo. */
+@media (max-width: 43.99rem) {
+  #clientes h2 {
+    font-size: min(calc(1.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.04), 2.7rem);
+  }
+
+  #clientes h2 + p {
+    margin-top: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1rem);
+    font-size: min(calc(0.82rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1.1rem);
+  }
+
+  #clientes .reveal.mt-8 {
+    margin-top: min(calc(0.85rem + (min(100svh, 100vw * 2.2) - 740px) * 0.03), 2rem);
+    padding: min(calc(0.75rem + (min(100svh, 100vw * 2.2) - 740px) * 0.025), 1.75rem);
+  }
+
+  #clientes dl {
+    column-gap: 0.75rem;
+    row-gap: min(calc(0.45rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem);
+    padding-bottom: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem);
+  }
+
+  #clientes dl dt {
+    font-size: min(calc(1.3rem + (min(100svh, 100vw * 2.2) - 740px) * 0.025), 1.9rem);
+  }
+
+  #clientes dl dd {
+    font-size: min(calc(0.66rem + (min(100svh, 100vw * 2.2) - 740px) * 0.008), 0.8rem);
+  }
+
+  #clientes .muro {
+    margin-top: min(calc(0.75rem + (min(100svh, 100vw * 2.2) - 740px) * 0.03), 1.75rem);
+  }
+}

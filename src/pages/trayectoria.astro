@@ -756,21 +756,21 @@ const ICONOS_AGENTE: Record<string, string> = {
       {/* Muro de logotipos. Sin una caja por cliente: diecinueve recuadros
           dentro de otro competían entre sí. En gris para que ninguno domine, y a
           color al pasar el cursor. Al pulsar se abre el detalle. */}
-        <div class="mt-7">
-        <ul class="grid grid-cols-3 gap-x-8 gap-y-8 sm:grid-cols-4 lg:grid-cols-5">
+        <div class="mt-7 muro">
+        <ul class="muro-marcas grid grid-cols-4 lg:grid-cols-5">
           {
             clientes.map((c) => (
               <li>
                 <button
                   type="button"
-                  class="marca group flex w-full flex-col items-center gap-2.5"
+                  class="marca group flex w-full flex-col items-center"
                   data-cliente={c.nombre}
                   aria-haspopup="dialog"
                 >
                   {/* Altura según el tipo de logo: un isotipo cuadrado necesita
                       más que un logotipo largo para pesar lo mismo. Sin esto
                       unos se ven diminutos junto a otros. */}
-                  <span class="grid h-14 w-full place-items-center">
+                  <span class="hueco-marca grid w-full place-items-center">
                     {c.logo ? (
                       <img
                         src={`/logos/${c.logo}`}
@@ -778,17 +778,14 @@ const ICONOS_AGENTE: Record<string, string> = {
                         width="150"
                         height="56"
                         loading="lazy"
-                        class:list={[
-                          'w-auto max-w-full object-contain sm:max-w-[9rem]',
-                          c.iso ? 'max-h-[3.25rem]' : 'max-h-8',
-                        ]}
+                        class:list={['logo-marca w-auto max-w-full object-contain sm:max-w-[9rem]', c.iso && 'es-iso']}
                       />
                     ) : (
                       <span class="font-display text-2xl text-[var(--color-ink-soft)]">{c.nombre.slice(0, 3)}</span>
                     )}
                   </span>
 
-                  <span class="text-[0.72rem] text-[var(--color-faint)] transition-colors group-hover:text-[var(--color-fox-dark)]">
+                  <span class="nombre-marca text-[var(--color-faint)] transition-colors group-hover:text-[var(--color-fox-dark)]">
                     {c.nombre}
                   </span>
                 </button>
