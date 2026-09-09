@@ -576,63 +576,62 @@ const ICONOS_AGENTE: Record<string, string> = {
 
   <!-- ============ LOGROS DESTACADOS ============ -->
   <section id="resultados" class="sector">
-    {/* Dos por pantalla en el teléfono. Las cuatro apiladas medían 1516px en
-        una pantalla de 852 y obligaban a leerlas de dos en dos igual, pero sin
-        que ninguna de las dos pantallas cerrara en un sitio limpio. Desde
-        44rem los envoltorios se disuelven y vuelven a ser una rejilla de dos
-        columnas con las cuatro tarjetas. */}
+    {/* En el teléfono las cuatro cifras entran en una sola vista: la tarjeta se
+        recoge a cifra, titular y una barra de una línea, y el contexto —que no
+        cabe— se lee al pulsar, en el mismo diálogo que ya usan Recorrido y los
+        agentes. Desde 44rem la tarjeta se despliega entera en dos columnas y el
+        diálogo deja de hacer falta. */}
     <div class="rejilla-resultados">
-      {
-        [0, 1].map((bloque) => (
-        <div class="pantalla-movil grupo-resultados">
-        {bloque === 0 && (
-          <div class="cabecera-resultados">
-            <SectionHeading
-              eyebrow="Resultados"
-              title="Lo que se movió cuando estuve"
-              subtitle="Cifras del CV, cada una con el contexto en el que ocurrió."
-            />
-          </div>
-        )}
-        {
-        logrosDestacados.slice(bloque * 2, bloque * 2 + 2).map((l, i) => (
-          <article class="reveal card card-hover flex flex-col p-5" data-delay={`${i * 70}ms`}>
-            {/* Icono y cifra en la misma línea: separados, el icono quedaba
-                suelto en su propio renglón y la tarjeta perdía compacidad. */}
-            <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-              <div class="flex items-center gap-3">
-                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--color-fox-tint)] text-[var(--color-fox-dark)]">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                    set:html={l.icono
-                      .split(' M')
-                      .map((d, n) => `<path d="${n === 0 ? d : 'M' + d}"/>`)
-                      .join('')}
-                  />
-                </span>
-                <p class="font-display text-[2.3rem] leading-none text-[var(--color-fox-dark)]">{l.cifra}</p>
-              </div>
+      <div class="cabecera-resultados">
+        <SectionHeading
+          eyebrow="Resultados"
+          title="Lo que se movió cuando estuve"
+          subtitle="Cifras del CV, cada una con el contexto en el que ocurrió."
+        />
+      </div>
 
-              <span class="shrink-0 rounded-full border border-[var(--color-line)] px-3 py-1 font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-faint)]">
-                {l.sector}
+      {
+        logrosDestacados.map((l, i) => (
+          <article class="reveal card card-hover ficha-resultado" data-delay={`${i * 70}ms`}>
+            {/* El área pulsable cubre la tarjeta entera, pero solo existe donde
+                el contexto está escondido. */}
+            <button
+              type="button"
+              class="abrir-resultado"
+              data-resultado={l.titulo}
+              aria-label={`Ver el detalle de ${l.titulo}`}
+            />
+
+            <div class="cabeza-resultado">
+              <span class="icono-resultado" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={l.icono
+                    .split(' M')
+                    .map((d, n) => `<path d="${n === 0 ? d : 'M' + d}"/>`)
+                    .join('')}
+                />
               </span>
+              <p class="cifra-resultado font-display leading-none text-[var(--color-fox-dark)]">
+                {l.cifra}
+              </p>
+              <span class="sector-resultado">{l.sector}</span>
             </div>
 
-            <h3 class="mt-4 font-semibold leading-snug">{l.titulo}</h3>
-            <p class="mt-2 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{l.detalle}</p>
+            <h3 class="titulo-resultado font-semibold leading-snug">{l.titulo}</h3>
+            <p class="texto-resultado flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              {l.detalle}
+            </p>
 
             {l.barra && (
               /* La misma métrica antes y después, en proporción. Un número
                  solo se cree; verlo comparado se entiende. */
-              <div class="mt-4 space-y-2 border-t border-[var(--color-line)] pt-3.5">
+              <div class="detalle-resultado mt-4 space-y-2 border-t border-[var(--color-line)] pt-3.5">
                 <div class="flex items-center gap-3">
                   <span class="w-[4.75rem] shrink-0 whitespace-nowrap font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-faint)]">
                     {l.barra.etiquetaAntes}
@@ -659,7 +658,7 @@ const ICONOS_AGENTE: Record<string, string> = {
               /* Sin este remate la tarjeta quedaba más corta que las de al lado
                  y la fila se descuadraba. Además, quince puntos se leen antes
                  que el número. */
-              <div class="mt-4 border-t border-[var(--color-line)] pt-3.5">
+              <div class="detalle-resultado mt-4 border-t border-[var(--color-line)] pt-3.5">
                 <p class="font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-faint)]">
                   {l.puntos.etiqueta}
                 </p>
@@ -670,13 +669,66 @@ const ICONOS_AGENTE: Record<string, string> = {
                 </div>
               </div>
             )}
+
+            {/* Resumen de una línea para el teléfono: la misma comparación, sin
+                rótulos ni segunda fila. La de abajo es "antes"; la naranja
+                encima, "después". */}
+            {l.barra && (
+              <span class="resumen-resultado" aria-hidden="true">
+                <span class="resumen-antes" style={`width:${l.barra.antes}%`} />
+                <span class="resumen-despues" style={`width:${l.barra.despues}%`} />
+              </span>
+            )}
+
+            {l.puntos && (
+              <span class="resumen-puntos" aria-hidden="true">
+                {Array.from({ length: l.puntos.cantidad }).map(() => (
+                  <span />
+                ))}
+              </span>
+            )}
+
+            <span class="flecha-resultado" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+              </svg>
+            </span>
           </article>
-        ))
-        }
-        </div>
         ))
       }
     </div>
+
+    {/* El contexto de cada cifra, para cuando la tarjeta va recogida. */}
+    <dialog
+      id="dialogo-resultado"
+      tabindex="-1"
+      class="dialogo-cliente m-auto w-[min(32rem,92vw)] overflow-hidden rounded-[28px] border border-[var(--color-line)] bg-[var(--color-surface)] p-0 shadow-[0_40px_90px_-30px_rgba(29,23,18,0.45)] backdrop:bg-[rgba(29,23,18,0.5)] backdrop:backdrop-blur-sm"
+    >
+      <header class="relative border-b border-[var(--color-line)] bg-gradient-to-br from-[var(--color-cream-2)] to-[var(--color-cream)] px-6 py-5">
+        <button
+          type="button"
+          id="dr-cerrar"
+          aria-label="Cerrar"
+          class="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] transition-colors hover:border-[var(--color-fox)] hover:text-[var(--color-fox-dark)]"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="flex items-center gap-3.5 pr-12">
+          <span id="dr-icono" class="icono-resultado" aria-hidden="true" />
+          <p id="dr-cifra" class="font-display text-[2.4rem] leading-none text-[var(--color-fox-dark)]" />
+        </div>
+        <p id="dr-sector" class="mt-3 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[var(--color-faint)]" />
+        <h3 id="dr-titulo" class="mt-1.5 font-display text-[1.35rem] leading-snug tracking-tight" />
+      </header>
+
+      <div class="px-6 py-5">
+        <p id="dr-detalle" class="texto-justo text-[0.92rem] leading-relaxed text-[var(--color-ink-soft)]" />
+        <div id="dr-comparacion" class="mt-5" />
+      </div>
+    </dialog>
   </section>
 
   <!-- ============ CLIENTES ============ -->
@@ -1510,6 +1562,7 @@ const ICONOS_AGENTE: Record<string, string> = {
     </section>
   </div>
 
+  <script type="application/json" id="datos-resultados" set:html={JSON.stringify(logrosDestacados)} is:inline />
   <script type="application/json" id="datos-capas" set:html={JSON.stringify(CAPAS)} is:inline />
   <script type="application/json" id="datos-marcas" set:html={JSON.stringify(Object.fromEntries(Object.keys(LOGOS_ITEM).map((k) => [k, marcaDe(k)]).filter(([, v]) => v)))} is:inline />
   <script type="application/json" id="datos-etapas" set:html={JSON.stringify(experiencias)} is:inline />
@@ -1557,6 +1610,73 @@ const ICONOS_AGENTE: Record<string, string> = {
       }
     } else {
       ficha?.classList.add('ficha-visible');
+    }
+
+
+    /* Contexto de cada cifra. En el teléfono la tarjeta va recogida —no cabe
+     * de otra forma— y esto es lo que devuelve lo que se quitó. */
+    const RESULTADOS = JSON.parse(document.getElementById('datos-resultados').textContent);
+    const dlgResultado = document.getElementById('dialogo-resultado');
+
+    if (dlgResultado && RESULTADOS) {
+      const ponR = (id, html) => (document.getElementById(id).innerHTML = html);
+
+      const carril = (etiqueta, ancho, clase) =>
+        `<div class="flex items-center gap-3">
+           <span class="w-[4.75rem] shrink-0 whitespace-nowrap font-mono text-[0.65rem] uppercase tracking-wide ${clase}">${etiqueta}</span>
+           <span class="h-2 flex-1 overflow-hidden rounded-full bg-[var(--color-cream-2)]">
+             <span class="block h-full rounded-full ${
+               clase.includes('fox')
+                 ? 'bg-gradient-to-r from-[var(--color-fox)] to-[var(--color-fox-dark)]'
+                 : 'bg-[var(--color-line-strong)]'
+             }" style="width:${ancho}%"></span>
+           </span>
+         </div>`;
+
+      document.querySelectorAll('[data-resultado]').forEach((boton) => {
+        boton.addEventListener('click', () => {
+          const r = RESULTADOS.find((x) => x.titulo === boton.dataset.resultado);
+          if (!r) return;
+
+          ponR(
+            'dr-icono',
+            `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round">${r.icono
+                    .split(' M')
+                    .map((d, n) => `<path d="${n === 0 ? d : 'M' + d}"/>`)
+                    .join('')}</svg>`
+          );
+          ponR('dr-cifra', r.cifra);
+          ponR('dr-sector', r.sector);
+          ponR('dr-titulo', r.titulo);
+          ponR('dr-detalle', r.detalle);
+
+          ponR(
+            'dr-comparacion',
+            r.barra
+              ? `<div class="space-y-2 border-t border-[var(--color-line)] pt-4">
+                   ${carril(r.barra.etiquetaAntes, r.barra.antes, 'text-[var(--color-faint)]')}
+                   ${carril(r.barra.etiquetaDespues, r.barra.despues, 'text-[var(--color-fox-dark)]')}
+                 </div>`
+              : r.puntos
+                ? `<div class="border-t border-[var(--color-line)] pt-4">
+                     <p class="font-mono text-[0.65rem] uppercase tracking-wide text-[var(--color-faint)]">${r.puntos.etiqueta}</p>
+                     <div class="mt-2.5 flex flex-wrap gap-1.5">${Array.from({ length: r.puntos.cantidad })
+                       .map(() => '<span class="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-[var(--color-fox)] to-[var(--color-fox-dark)]"></span>')
+                       .join('')}</div>
+                   </div>`
+                : ''
+          );
+
+          dlgResultado.showModal();
+          dlgResultado.focus();
+        });
+      });
+
+      document.getElementById('dr-cerrar').addEventListener('click', () => dlgResultado.close());
+      dlgResultado.addEventListener('click', (e) => {
+        if (e.target === dlgResultado) dlgResultado.close();
+      });
     }
 
 

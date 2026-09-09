@@ -1582,6 +1582,39 @@ html {
   .perfil dl dd span {
     font-size: 0.78rem;
   }
+
+  /* En pantallas tan bajas el aire de abajo del sector es lo primero que
+     sobra; el de arriba no se toca, que ahí está la barra fija. */
+  .sector {
+    padding-bottom: 0.75rem;
+  }
+
+  /* Resultados también: en un iPhone SE las cuatro cifras y su encabezado se
+     pasaban por cincuenta píxeles. */
+  #resultados .cabecera-resultados h2 {
+    font-size: 1.55rem;
+  }
+
+  #resultados .cabecera-resultados p {
+    font-size: 0.82rem;
+  }
+
+  .rejilla-resultados {
+    gap: 0.45rem;
+  }
+
+  .ficha-resultado {
+    padding: 0.45rem 0.7rem;
+  }
+
+  .titulo-resultado {
+    margin-top: 0.35rem;
+  }
+
+  .resumen-resultado,
+  .resumen-puntos {
+    margin-top: 0.4rem;
+  }
 }
 
 /* Bloques que en móvil se leen como una pantalla propia. Su sector completo no
@@ -1602,13 +1635,76 @@ html {
   }
 }
 
-/* Resultados: dos tarjetas por pantalla en el teléfono, rejilla de dos
-   columnas con las cuatro a partir de 44rem, que es donde los envoltorios se
-   disuelven y sus tarjetas pasan a ser hijas directas de la rejilla. */
+/* ---------- Resultados ---------- */
+
 .rejilla-resultados {
   display: grid;
   gap: 1rem;
   grid-template-columns: minmax(0, 1fr);
+}
+
+.ficha-resultado {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.cabeza-resultado {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icono-resultado {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+}
+
+.icono-resultado svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.cifra-resultado {
+  font-size: 2.3rem;
+}
+
+/* El sector se va al extremo: es una etiqueta, no parte de la cifra. */
+.sector-resultado {
+  margin-left: auto;
+  flex: none;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.titulo-resultado {
+  margin-top: 1rem;
+}
+
+.texto-resultado {
+  margin-top: 0.5rem;
+}
+
+/* El resumen de una línea y la flecha solo existen en el teléfono, donde el
+   contexto está escondido detrás del diálogo. */
+.resumen-resultado,
+.resumen-puntos,
+.flecha-resultado,
+.abrir-resultado {
+  display: none;
 }
 
 @media (min-width: 44rem) {
@@ -1616,104 +1712,131 @@ html {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .grupo-resultados {
-    display: contents;
-  }
-
-  /* Al disolverse el envoltorio, el encabezado pasa a ser una celda más: hay
-     que devolverle el ancho completo. */
+  /* El encabezado ocupa el ancho entero de la rejilla. */
   .cabecera-resultados {
     grid-column: 1 / -1;
     margin-bottom: 0.75rem;
   }
 }
 
+/* En el teléfono la tarjeta se recoge: cifra, titular y una barra de una sola
+   línea. Las cuatro caben así en una vista —el presupuesto real son 136px por
+   tarjeta en un iPhone 14 Pro y 113 en un Galaxy de 740— y el contexto, que no
+   cabe de ninguna forma, se lee al pulsar. */
 @media (max-width: 43.99rem) {
-  .grupo-resultados {
-    gap: 1rem;
+  .rejilla-resultados {
+    gap: min(calc(0.75rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem);
   }
 
-  .cabecera-resultados {
-    margin-bottom: 0.25rem;
+  .ficha-resultado {
+    padding: min(calc(0.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem)
+      min(calc(0.85rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem);
+  }
+
+  .abrir-resultado {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    background: none;
+    border: 0;
+  }
+
+  .texto-resultado,
+  .detalle-resultado {
+    display: none;
+  }
+
+  .icono-resultado {
+    width: min(calc(2rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 2.75rem);
+    height: min(calc(2rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 2.75rem);
+    border-radius: 0.625rem;
+  }
+
+  .icono-resultado svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  .cifra-resultado {
+    font-size: min(calc(1.65rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 2.6rem);
+  }
+
+  /* Sitio para la flecha. */
+  .sector-resultado {
+    margin-right: 1.25rem;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.6rem;
+  }
+
+  .titulo-resultado {
+    margin-top: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1rem);
+    font-size: min(calc(0.92rem + (min(100svh, 100vw * 2.2) - 740px) * 0.014), 1.2rem);
+  }
+
+  /* La barra de resumen: el carril claro es el total, la franja gris el antes y
+     la naranja el después, una encima de otra. Se lee la proporción de un
+     vistazo sin gastar dos renglones en rótulos. */
+  .resumen-resultado {
+    position: relative;
+    display: block;
+    margin-top: min(calc(0.55rem + (min(100svh, 100vw * 2.2) - 740px) * 0.018), 1.1rem);
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--color-cream-2);
+    overflow: hidden;
+  }
+
+  .resumen-antes,
+  .resumen-despues {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    border-radius: 999px;
+  }
+
+  .resumen-antes {
+    background: var(--color-line-strong);
+  }
+
+  .resumen-despues {
+    background: linear-gradient(90deg, var(--color-fox), var(--color-fox-dark));
+  }
+
+  .resumen-puntos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: min(calc(0.55rem + (min(100svh, 100vw * 2.2) - 740px) * 0.018), 1.1rem);
+  }
+
+  .resumen-puntos span {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--color-fox), var(--color-fox-dark));
+  }
+
+  .flecha-resultado {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 50%;
+    right: 0.6rem;
+    transform: translateY(-50%);
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--color-line-strong);
+  }
+
+  .flecha-resultado svg {
+    width: 100%;
+    height: 100%;
   }
 }
 
-/* Resultados en el teléfono: dos tarjetas por pantalla, que crecen con ella.
-   La primera pantalla lleva además el encabezado, así que arranca compacta
-   —si no, no cabía en un Galaxy de 740— y de ahí para arriba gana cuerpo con
-   el mismo patrón que el resto: base + (pantalla - 740) * factor, atado al
-   menor entre alto y ancho. */
-@media (max-width: 43.99rem) {
-  #resultados article {
-    padding: min(calc(0.8rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 1.75rem);
-  }
-
-  #resultados .grupo-resultados {
-    gap: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.03), 1.4rem);
-  }
-
-  /* La cifra */
-  #resultados article p.font-display {
-    font-size: min(calc(1.75rem + (min(100svh, 100vw * 2.2) - 740px) * 0.045), 3rem);
-  }
-
-  #resultados article h3 {
-    margin-top: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem);
-    font-size: min(calc(0.92rem + (min(100svh, 100vw * 2.2) - 740px) * 0.022), 1.4rem);
-  }
-
-  #resultados article h3 + p {
-    margin-top: 0.4rem;
-    font-size: min(calc(0.8rem + (min(100svh, 100vw * 2.2) - 740px) * 0.018), 1.2rem);
-    line-height: 1.45;
-  }
-
-  /* Los remates de barra y de puntos */
-  #resultados article > div:last-child:not(:first-child) {
-    margin-top: min(calc(0.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.025), 1.5rem);
-    padding-top: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.2rem);
-  }
-
-  #resultados .cabecera-resultados h2 {
-    font-size: min(calc(1.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.04), 3rem);
-  }
-
-  #resultados .cabecera-resultados p {
-    font-size: min(calc(0.88rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1.25rem);
-  }
-}
-
-/* La segunda pantalla no lleva encabezado, así que sus dos tarjetas tienen
-   que ocupar lo que en la primera ocupan tres bloques. Van con más cuerpo. */
-@media (max-width: 43.99rem) {
-  #resultados .grupo-resultados:last-child article {
-    padding: min(calc(1.1rem + (min(100svh, 100vw * 2.2) - 740px) * 0.07), 2.5rem);
-  }
-
-  #resultados .grupo-resultados:last-child {
-    gap: min(calc(0.9rem + (min(100svh, 100vw * 2.2) - 740px) * 0.05), 2rem);
-  }
-
-  #resultados .grupo-resultados:last-child article p.font-display {
-    font-size: min(calc(2.1rem + (min(100svh, 100vw * 2.2) - 740px) * 0.07), 3.6rem);
-  }
-
-  #resultados .grupo-resultados:last-child article h3 {
-    margin-top: min(calc(0.8rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 1.75rem);
-    font-size: min(calc(1.05rem + (min(100svh, 100vw * 2.2) - 740px) * 0.032), 1.7rem);
-  }
-
-  #resultados .grupo-resultados:last-child article h3 + p {
-    font-size: min(calc(0.88rem + (min(100svh, 100vw * 2.2) - 740px) * 0.026), 1.45rem);
-  }
-
-  /* Y la primera arranca un punto más apretada: en un Galaxy de 740 el
-     encabezado y las dos tarjetas se pasaban por treinta píxeles. */
-  #resultados .grupo-resultados:first-child article {
-    padding: min(calc(0.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 1.75rem);
-  }
-
-  #resultados .grupo-resultados:first-child article p.font-display {
-    font-size: min(calc(1.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.045), 3rem);
-  }
+#dialogo-resultado:focus,
+#dialogo-resultado:focus-visible {
+  outline: none;
 }
