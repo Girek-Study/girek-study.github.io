@@ -2339,3 +2339,125 @@ html {
     gap: 0.4rem;
   }
 }
+
+/* ---------- El ciclo en el teléfono ----------
+   Apiladas, las seis fases más la regla y el caso aparte son 2,6 pantallas en
+   un Galaxy de 740. En dos columnas y recogidas, entra todo de una vez: la
+   regla y el caso aparte se llevan 440px de los 628 útiles si no se aprietan. */
+@media (max-width: 43.99rem) {
+  #ciclo h3 {
+    font-size: min(calc(1.35rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 2.2rem);
+  }
+
+  #ciclo .banda-regla {
+    margin-top: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 0.875rem);
+    gap: 0.6rem;
+    padding: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 0.875rem) 0.9rem;
+  }
+
+  #ciclo .banda-regla p {
+    font-size: min(calc(0.72rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 0.9rem);
+    line-height: 1.4;
+  }
+
+  #ciclo .icono-regla {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  #ciclo .icono-regla svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  #ciclo .panel-fases {
+    margin-top: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 1rem);
+  }
+
+  #ciclo .fase {
+    padding: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 0.75rem)
+      min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 1.25rem);
+  }
+
+  #ciclo .ficha-fase {
+    width: 1.4rem;
+    height: 1.4rem;
+    font-size: 0.58rem;
+    border-radius: 7px;
+  }
+
+  #ciclo .fase > div > p {
+    font-size: 0.56rem;
+  }
+
+  .titulo-fase {
+    margin-top: min(calc(0.25rem + (min(100svh, 100vw * 2.2) - 740px) * 0.008), 0.625rem);
+    font-size: min(calc(0.76rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 1.06rem);
+  }
+
+  /* En dos columnas no hay sitio para la frase ni para el sector al pie: la
+     fase se queda con su número, su etapa y su titular, que es lo que ordena
+     la lectura del ciclo. */
+  .detalle-fase,
+  .sector-fase {
+    display: none;
+  }
+
+  #ciclo .aparte {
+    margin-top: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 1rem);
+    gap: 0.6rem;
+    padding: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1.25rem) 0.9rem;
+  }
+
+  #ciclo .aparte h4 {
+    font-size: min(calc(0.85rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 1.2rem);
+  }
+
+  #ciclo .aparte > p {
+    font-size: min(calc(0.72rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 0.88rem);
+    line-height: 1.4;
+  }
+
+  #ciclo .icono-aparte {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  #ciclo .icono-aparte svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* Con las fases recogidas sobra sitio en un teléfono alto, así que la frase
+   vuelve, recortada a un número fijo de renglones para que el alto siga siendo
+   predecible. */
+@media (max-width: 43.99rem) and (min-height: 50rem) {
+  .detalle-fase {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-top: 0.35rem;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 43.99rem) and (min-height: 56rem) {
+  .detalle-fase {
+    -webkit-line-clamp: 3;
+  }
+
+  .sector-fase {
+    display: block;
+    padding-top: 0.4rem;
+    font-size: 0.55rem;
+  }
+}
+
+@media (max-width: 43.99rem) and (min-height: 62rem) {
+  .detalle-fase {
+    -webkit-line-clamp: 4;
+  }
+}

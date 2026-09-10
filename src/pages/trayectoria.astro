@@ -1087,7 +1087,7 @@ const ICONOS_AGENTE: Record<string, string> = {
         dejan ver el color del panel, así que cuadran solas en cualquier
         reacomodo y no hay bordes que se dupliquen. */}
     <div class="panel-fases mt-4 overflow-hidden rounded-[26px]">
-      <ol class="grid gap-px bg-[var(--color-line-strong)] sm:grid-cols-2 xl:grid-cols-3">
+      <ol class="rejilla-fases grid gap-px bg-[var(--color-line-strong)] grid-cols-2 xl:grid-cols-3">
         {
           ciclo.map((a, i) => (
             <li
@@ -1104,12 +1104,12 @@ const ICONOS_AGENTE: Record<string, string> = {
                 </p>
               </div>
 
-              <h4 class="mt-2.5 font-display text-[1.06rem] leading-snug tracking-tight">{a.titulo}</h4>
-              <p class="texto-justo mt-2 text-[0.82rem] leading-[1.5] text-[var(--color-ink-soft)]">
+              <h4 class="titulo-fase mt-2.5 font-display text-[1.06rem] leading-snug tracking-tight">{a.titulo}</h4>
+              <p class="detalle-fase texto-justo mt-2 text-[0.82rem] leading-[1.5] text-[var(--color-ink-soft)]">
                 {a.detalle}
               </p>
 
-              <p class="mt-auto pt-3 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[var(--color-faint)]">
+              <p class="sector-fase mt-auto pt-3 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[var(--color-faint)]">
                 {a.contexto}
               </p>
             </li>
