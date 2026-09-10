@@ -1149,19 +1149,25 @@ const ICONOS_AGENTE: Record<string, string> = {
 
   <!-- ============ COMPETENCIAS ============ -->
   <section id="competencias" class="sector">
-    <SectionHeading
-      eyebrow="Qué sé hacer"
-      title="Competencias"
-      subtitle="Lo que defiendo en una entrevista técnica, agrupado por para qué sirve."
-    />
-
-    {/* Mismo tratamiento que el ciclo: panel opaco y divisiones de 1px. Antes
-        eran ocho tarjetas sueltas de altura desigual y la segunda fila se
-        cortaba; ahora la rejilla cuadra y cada bloque se rotula con su icono. */}
-    <div class="panel-fases mt-6 overflow-hidden rounded-[26px]">
-      <div class="grid gap-px bg-[var(--color-line-strong)] sm:grid-cols-2 xl:grid-cols-4">
+    {/* Panel opaco y divisiones de 1px. En el teléfono las ocho áreas se
+        reparten en dos pantallas de cuatro —las ocho seguidas son 2,7
+        pantallas— y el encabezado viaja dentro de la primera; desde 44rem los
+        envoltorios se disuelven y vuelve a ser una sola rejilla. */}
+    <div class="panel-competencias">
+      {
+        [0, 1].map((bloque) => (
+      <div class="pantalla-movil grupo-competencias">
+        {bloque === 0 && (
+          <div class="cabecera-competencias">
+            <SectionHeading
+              eyebrow="Qué sé hacer"
+              title="Competencias"
+              subtitle="Lo que defiendo en una entrevista técnica, agrupado por para qué sirve."
+            />
+          </div>
+        )}
         {
-          competencias.map((c, i) => (
+          competencias.slice(bloque * 4, bloque * 4 + 4).map((c, i) => (
             <article
               class="reveal flex flex-col bg-[var(--color-surface)] px-4 py-3.5"
               data-delay={`${(i % 4) * 60}ms`}
@@ -1206,6 +1212,8 @@ const ICONOS_AGENTE: Record<string, string> = {
           ))
         }
       </div>
+        ))
+      }
     </div>
   </section>
 

@@ -2049,3 +2049,108 @@ html {
     height: 1rem;
   }
 }
+
+/* ---------- Competencias ---------- */
+
+/* Desde 44rem, una sola rejilla con las ocho áreas dentro del panel opaco: los
+   envoltorios de pantalla se disuelven y sus tarjetas pasan a ser hijas
+   directas, así las divisiones de 1px siguen cuadrando. */
+@media (min-width: 44rem) {
+  .panel-competencias {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 0.75rem;
+    overflow: hidden;
+    border-radius: 26px;
+    border: 1px solid var(--color-line-strong);
+    background: var(--color-line-strong);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .grupo-competencias {
+    display: contents;
+  }
+
+  .cabecera-competencias {
+    grid-column: 1 / -1;
+    background: var(--color-cream);
+    padding: 0.5rem 1.25rem 0.7rem;
+  }
+
+  .grupo-competencias > article {
+    padding-block: 0.7rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  .panel-competencias {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* En el teléfono, dos pantallas de cuatro áreas. Las ocho seguidas son 2,7
+   pantallas en un Galaxy de 740 y ninguna de las dos mitades cerraba en un
+   sitio limpio. */
+@media (max-width: 43.99rem) {
+  .grupo-competencias {
+    gap: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1rem);
+  }
+
+  .grupo-competencias > article {
+    border-radius: 18px;
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-soft);
+    padding: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.025), 1.25rem)
+      min(calc(0.8rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem);
+  }
+
+  .cabecera-competencias {
+    margin-bottom: min(calc(0.25rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1rem);
+  }
+
+  #competencias h2 {
+    font-size: min(calc(1.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.04), 2.7rem);
+  }
+
+  #competencias h2 + p {
+    margin-top: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 1rem);
+    font-size: min(calc(0.8rem + (min(100svh, 100vw * 2.2) - 740px) * 0.014), 1.1rem);
+  }
+
+  #competencias h3 {
+    font-size: min(calc(0.88rem + (min(100svh, 100vw * 2.2) - 740px) * 0.014), 1.1rem);
+  }
+
+  /* La frase de cada área se recoge: con ella, cuatro áreas por pantalla no
+     entran, y lo que se escanea aquí son las herramientas. El subtítulo del
+     sector sigue explicando el conjunto. */
+  #competencias article > p {
+    display: none;
+  }
+
+  #competencias article > div:last-child {
+    margin-top: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 0.75rem);
+    gap: 0.25rem;
+  }
+
+  #competencias .icono-competencia {
+    width: min(calc(1.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1.9rem);
+    height: min(calc(1.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1.9rem);
+  }
+
+  #competencias .icono-competencia svg {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  #competencias .chip-sm {
+    font-size: min(calc(0.64rem + (min(100svh, 100vw * 2.2) - 740px) * 0.006), 0.72rem);
+    padding: 0.12rem 0.4rem;
+  }
+
+  #competencias .chip-marca {
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+}
