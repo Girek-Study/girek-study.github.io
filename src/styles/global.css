@@ -1935,3 +1935,117 @@ html {
     margin-top: min(calc(0.75rem + (min(100svh, 100vw * 2.2) - 740px) * 0.03), 1.75rem);
   }
 }
+
+/* ---------- IA aplicada en el teléfono ----------
+   El sector medía 1290px contra los 740 útiles de un iPhone 14 Pro. Lo que más
+   pesaba: la tarjeta de agente con su descripción (338px) y las tres cifras
+   apiladas (260). La descripción no se pierde — cada tarjeta ya abre el
+   diálogo con el modelo conceptual completo. */
+@media (max-width: 43.99rem) {
+  #ia .bloque-ia {
+    padding: min(calc(0.7rem + (min(100svh, 100vw * 2.2) - 740px) * 0.03), 1.75rem);
+  }
+
+  /* Los tres respiros internos del bloque oscuro. */
+  #ia .bloque-ia > div > div.reveal {
+    margin-top: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.25rem);
+    padding-top: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 0.875rem);
+  }
+
+  #ia h2 {
+    font-size: min(calc(1.45rem + (min(100svh, 100vw * 2.2) - 740px) * 0.035), 2.5rem);
+  }
+
+  #ia h2 + p {
+    margin-top: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 0.75rem);
+    font-size: min(calc(0.76rem + (min(100svh, 100vw * 2.2) - 740px) * 0.017), 1rem);
+    line-height: 1.4;
+  }
+
+  /* Número y etiqueta en el mismo renglón: apiladas, tres cifras se comían
+     260px de los 740 disponibles. */
+  .cifras-ia {
+    gap: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1.25rem);
+  }
+
+  .cifra-ia {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    width: 100%;
+    padding-left: 0.7rem;
+  }
+
+  .cifra-ia dt {
+    font-size: min(calc(1.3rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 2rem);
+    flex: none;
+  }
+
+  .cifra-ia dd {
+    margin-top: 0;
+    font-size: min(calc(0.72rem + (min(100svh, 100vw * 2.2) - 740px) * 0.01), 0.85rem);
+  }
+
+  .nombre-modelo {
+    font-size: min(calc(0.68rem + (min(100svh, 100vw * 2.2) - 740px) * 0.008), 0.82rem);
+  }
+
+  /* La tarjeta de agente se recoge: el detalle está a un toque, en el diálogo
+     con su diagrama de flujo. */
+  .detalle-agente {
+    display: none;
+  }
+
+  .tarjeta-agente {
+    width: min(calc(12rem + (min(100svh, 100vw * 2.2) - 740px) * 0.25), 19rem);
+  }
+}
+
+/* El rótulo de la cinta y la propia tarjeta, a escala. */
+@media (max-width: 43.99rem) {
+  #agentes {
+    margin-top: min(calc(0.35rem + (min(100svh, 100vw * 2.2) - 740px) * 0.022), 1.5rem);
+    padding-top: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.017), 1rem);
+  }
+
+  .titulo-agentes {
+    font-size: min(calc(0.95rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.4rem);
+  }
+
+  .pie-agentes {
+    font-size: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.006), 0.68rem);
+  }
+
+  #agentes .marquee-track {
+    margin-top: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.015), 1rem);
+  }
+
+  .tarjeta-agente {
+    padding: min(calc(0.65rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1rem);
+  }
+
+  .titulo-agente {
+    margin-top: min(calc(0.3rem + (min(100svh, 100vw * 2.2) - 740px) * 0.008), 0.5rem);
+    font-size: min(calc(0.85rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 1.02rem);
+  }
+
+  .sector-agente {
+    margin-top: min(calc(0.5rem + (min(100svh, 100vw * 2.2) - 740px) * 0.012), 0.75rem);
+  }
+
+  /* El número de agua sobra en una tarjeta recogida: ocupa sitio y no dice
+     nada que el título no diga. */
+  .tarjeta-agente > div > span:last-child {
+    display: none;
+  }
+
+  .icono-agente {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .icono-agente svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
