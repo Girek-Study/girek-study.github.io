@@ -2154,3 +2154,75 @@ html {
     height: 0.6rem;
   }
 }
+
+/* En el teléfono el bloque oscuro se estira hasta llenar el sector. Con el
+   contenido escalado y el bloque a su alto natural, en un Pixel 7 Pro sobraban
+   199px repartidos arriba y abajo y la pieza se veía pequeña dentro de su
+   propia pantalla. Al estirarlo, el aire pasa a estar DENTRO del bloque, entre
+   sus tres partes, que es donde se lee como diseño y no como sobra. */
+@media (max-width: 43.99rem) {
+  #ia .bloque-ia {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* El sobrante se lo queda la cinta y lo reparte entre sus tarjetas: con
+     `space-between` se abría un vacío de doscientos píxeles entre los modelos
+     y los agentes, que se leía como un error. Aquí crecen las tarjetas. */
+  #ia #agentes {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  /* La pista se vuelve columna para que la cinta crezca en alto sin perder su
+     ancho intrínseco, que es lo que la hace desbordar y desplazarse. */
+  #ia #agentes .marquee-track {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* La cadena entera necesita poder encoger: basta un `min-height: auto` en
+     cualquier eslabón para que el contenido imponga su alto y el sector crezca. */
+  #ia .marquee-agentes,
+  #ia .marquee-agentes > li,
+  #ia .tarjeta-agente {
+    min-height: 0;
+  }
+
+  #ia .marquee-agentes {
+    flex: 1;
+  }
+
+  #ia .tarjeta-agente {
+    height: 100%;
+  }
+}
+
+/* En un teléfono alto sobra sitio y la tarjeta puede recuperar su descripción:
+   estirada y vacía se veía peor que recogida. Por debajo de ese alto sigue
+   recogida y el detalle se lee en el diálogo. */
+@media (max-width: 43.99rem) and (min-height: 50rem) {
+  /* La descripción vuelve, recortada a un número fijo de renglones: con `flex`
+     el contenido seguía imponiendo su alto y el sector crecía. El texto entero
+     está en el diálogo. */
+  #ia .detalle-agente {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 43.99rem) and (min-height: 62rem) {
+  #ia .detalle-agente {
+    -webkit-line-clamp: 6;
+  }
+}
