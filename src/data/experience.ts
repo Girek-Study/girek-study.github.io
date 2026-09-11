@@ -47,6 +47,27 @@ export interface Experiencia {
 
 export const experiencias: Experiencia[] = [
   {
+    empresa: 'Canvia',
+    cargo: 'Quality Engineering & API Testing',
+    logo: 'canvia.svg',
+    web: 'https://canvia.com',
+    pais: 'pe',
+    paisNombre: 'Perú',
+    modalidad: 'Remoto',
+    clientes: [{ nombre: 'Interbank', logo: 'interbank.png' }],
+    descripcion:
+      'Certifico la calidad de los servicios críticos de Interbank durante su modernización de XML a JSON. Una migración de este tipo no cambia funcionalidad: cambia el contrato. El riesgo no está en lo que se ve, sino en un campo que cambió de tipo, un opcional que dejó de serlo o un error que ahora se devuelve distinto — y todo eso llega a producción sin que la interfaz muestre nada raro.',
+    logros: [
+      'Valido contratos, mapeo de campos, tipos, reglas de negocio, manejo de errores e integridad de datos entre el servicio legacy y el migrado, comparando ambos respuesta contra respuesta.',
+      'Diseño y ejecuto pruebas funcionales, de integración, regresión y E2E sobre APIs y backend, priorizando por riesgo de liberación y no por orden de llegada.',
+      'Gestiono los defectos con evidencia técnica —request, response, esperado contra obtenido— para que la discusión sea sobre el dato y no sobre percepciones.',
+      'Coordino el análisis y la trazabilidad de la certificación con Desarrollo, Arquitectura, Negocio y QA.',
+      'Aplico IA y LLMs al análisis de requerimientos y a la revisión de estructuras JSON y XML, bajo revisión humana.',
+    ],
+    stack: ['APIs REST y SOAP', 'JSON', 'XML', 'SQL', 'Postman', 'Azure DevOps'],
+    capas: ['API', 'Datos'],
+  },
+  {
     empresa: 'Elipgo Technology',
     cargo: 'Tech Lead IA Automation',
     logo: 'elipgo.png',
@@ -69,27 +90,6 @@ export const experiencias: Experiencia[] = [
     ],
     stack: ['Playwright', 'TypeScript', 'Cucumber', 'Screenplay', 'Appium', 'IA aplicada'],
     capas: ['Web', 'Escritorio', 'Móvil', 'API'],
-  },
-  {
-    empresa: 'Canvia',
-    cargo: 'Quality Engineering & API Testing',
-    logo: 'canvia.svg',
-    web: 'https://canvia.com',
-    pais: 'pe',
-    paisNombre: 'Perú',
-    modalidad: 'Remoto',
-    clientes: [{ nombre: 'Interbank', logo: 'interbank.png' }],
-    descripcion:
-      'Certifico la calidad de los servicios críticos de Interbank durante su modernización de XML a JSON. Una migración de este tipo no cambia funcionalidad: cambia el contrato. El riesgo no está en lo que se ve, sino en un campo que cambió de tipo, un opcional que dejó de serlo o un error que ahora se devuelve distinto — y todo eso llega a producción sin que la interfaz muestre nada raro.',
-    logros: [
-      'Valido contratos, mapeo de campos, tipos, reglas de negocio, manejo de errores e integridad de datos entre el servicio legacy y el migrado, comparando ambos respuesta contra respuesta.',
-      'Diseño y ejecuto pruebas funcionales, de integración, regresión y E2E sobre APIs y backend, priorizando por riesgo de liberación y no por orden de llegada.',
-      'Gestiono los defectos con evidencia técnica —request, response, esperado contra obtenido— para que la discusión sea sobre el dato y no sobre percepciones.',
-      'Coordino el análisis y la trazabilidad de la certificación con Desarrollo, Arquitectura, Negocio y QA.',
-      'Aplico IA y LLMs al análisis de requerimientos y a la revisión de estructuras JSON y XML, bajo revisión humana.',
-    ],
-    stack: ['APIs REST y SOAP', 'JSON', 'XML', 'SQL', 'Postman', 'Azure DevOps'],
-    capas: ['API', 'Datos'],
   },
   {
     empresa: 'Soho Humantech',
