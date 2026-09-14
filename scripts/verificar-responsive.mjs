@@ -151,6 +151,66 @@ for (const d of OBJETIVOS) {
     );
   }
 
+  // 3bis. Una ráfaga de rueda —la que da un trackpad— deja el scroll en una
+  //       posición válida: el tope de una parada, una pantalla dentro de una
+  //       parada más alta que la ventana, o el fondo. Dejar pasar los gestos
+  //       que llegaban durante un salto hacía que el navegador los aplicara
+  //       encima de la animación y el scroll acababa entre dos sectores.
+  const donde = await pagina.evaluate(() => {
+    const tope = (el) => Math.round(el.getBoundingClientRect().top + window.scrollY);
+    const anchoDeSobra = window.matchMedia('(min-width: 44rem)').matches;
+    const lista = [
+      document.querySelector('.perfil'),
+      ...document.querySelectorAll('.sector'),
+      document.getElementById('cierre'),
+    ].filter(Boolean);
+
+    if (!anchoDeSobra) {
+      const partidos = new Set();
+      document.querySelectorAll('.pantalla-movil').forEach((mitad) => {
+        lista.push(mitad);
+        const sector = mitad.closest('.sector');
+        if (sector) partidos.add(sector);
+      });
+      partidos.forEach((sector) => {
+        const i = lista.indexOf(sector);
+        if (i !== -1) lista.splice(i, 1);
+      });
+    }
+
+    return {
+      maximo: document.documentElement.scrollHeight - window.innerHeight,
+      ventana: window.innerHeight,
+      paradas: lista
+        .map((s) => ({ tope: tope(s), alto: Math.round(s.getBoundingClientRect().height) }))
+        .sort((a, b) => a.tope - b.tope),
+    };
+  });
+
+  await pagina.evaluate(() => window.scrollTo(0, 0));
+  await pagina.waitForTimeout(300);
+  await pagina.mouse.move(d.ancho / 2, d.alto / 2);
+
+  for (let ronda = 0; ronda < 3; ronda++) {
+    for (let golpe = 0; golpe < 5; golpe++) {
+      await pagina.mouse.wheel(0, 60);
+      await pagina.waitForTimeout(45);
+    }
+    await pagina.waitForTimeout(1300);
+
+    const y = await pagina.evaluate(() => Math.round(window.scrollY));
+    const valida =
+      y >= donde.maximo - 2 ||
+      donde.paradas.some(
+        (s) => y >= s.tope - 2 && y <= s.tope + Math.max(s.alto - donde.ventana, 0) + 2,
+      );
+
+    if (!valida) {
+      fallos.push(`${d.nombre} · la rueda en ráfaga deja el scroll a medias, en ${y}`);
+      break;
+    }
+  }
+
   // 3c. En la portada, cada sección llena la pantalla. El salto por gesto solo
   //     se siente bien si lo que aterriza no deja asomar a la siguiente. La
   //     última queda fuera: cierra con el pie a la vista, y llevarla a pantalla

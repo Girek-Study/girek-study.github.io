@@ -57,11 +57,38 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
     return indice;
   }
 
-  function irA(altura: number) {
-    navegando = true;
-    window.scrollTo({ top: altura, behavior: 'smooth' });
-    setTimeout(() => (navegando = false), 750);
+  let destino: number | null = null;
+  let vigilante = 0;
+
+  function soltar() {
+    navegando = false;
+    destino = null;
+    clearTimeout(vigilante);
   }
+
+  function irA(altura: number) {
+    destino = altura;
+    navegando = true;
+    clearTimeout(vigilante);
+    /* Red de seguridad: si el desplazamiento no llega nunca —lo interrumpió el
+     * usuario, o el destino quedó fuera de alcance— el salto no puede dejar la
+     * página bloqueada para siempre. */
+    vigilante = window.setTimeout(soltar, 1600);
+    window.scrollTo({ top: altura, behavior: 'smooth' });
+  }
+
+  /* El salto termina cuando se llega, no a los tantos milisegundos. Con un
+   * reloj fijo, un desplazamiento largo seguía en curso cuando ya se aceptaban
+   * gestos nuevos, y el siguiente se calculaba desde una altura intermedia. */
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!navegando || destino === null) return;
+      const maximo = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+      if (Math.abs(window.scrollY - Math.min(destino, maximo)) <= 2) soltar();
+    },
+    { passive: true },
+  );
 
   /** A qué altura lleva el gesto, o null si no hay a dónde ir.
    *
@@ -113,8 +140,9 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
     return false;
   }
 
-  function ocupado(objetivo: EventTarget | null) {
-    if (navegando || sinMovimiento.matches) return true;
+  /** Cuándo el gesto no es nuestro y el navegador debe quedárselo entero. */
+  function fueraDeJuego(objetivo: EventTarget | null) {
+    if (sinMovimiento.matches) return true;
     if (document.querySelector('dialog[open]')) return true;
     return objetivo instanceof Element ? dentroDeAlgoQueSeDesplaza(objetivo) : false;
   }
@@ -124,7 +152,17 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
     (evento) => {
       // La rueda manda en cualquier ancho: hay ratón en un portátil con la
       // ventana estrecha y en los navegadores que emulan un móvil.
-      if (ocupado(evento.target)) return;
+      if (fueraDeJuego(evento.target)) return;
+
+      /* Con un salto en curso el gesto se descarta, pero cancelándolo: dejarlo
+       * pasar hacía que el navegador lo aplicara encima de la animación y el
+       * scroll acababa entre dos sectores. Es lo que se veía al girar la rueda
+       * en ráfaga sobre una ventana baja, donde los sectores no caben enteros. */
+      if (navegando) {
+        evento.preventDefault();
+        return;
+      }
+
       if (Math.abs(evento.deltaY) < 4) return;
 
       const altura = alturaDelGesto(evento.deltaY > 0 ? 1 : -1);
@@ -156,6 +194,8 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
   let dedoRecorrido = 0;
   let dedoDecidido = false;
   let dedoDestino: number | null = null;
+  /** Un dedo que aterriza durante un salto: se le cancela hasta que lo levante. */
+  let dedoTragado = false;
 
   document.addEventListener(
     'touchstart',
@@ -163,9 +203,10 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
       dedoDecidido = false;
       dedoDestino = null;
       dedoRecorrido = 0;
+      dedoTragado = navegando && !fueraDeJuego(evento.target);
       // Con dos dedos el gesto es un zoom, no un desplazamiento.
       dedoY =
-        evento.touches.length === 1 && !ocupado(evento.target)
+        evento.touches.length === 1 && !navegando && !fueraDeJuego(evento.target)
           ? evento.touches[0].clientY
           : null;
     },
@@ -175,6 +216,10 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
   document.addEventListener(
     'touchmove',
     (evento) => {
+      if (dedoTragado) {
+        evento.preventDefault();
+        return;
+      }
       if (dedoY === null) return;
 
       dedoRecorrido = dedoY - evento.touches[0].clientY;
@@ -194,13 +239,14 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
   document.addEventListener(
     'touchend',
     () => {
-      const destino = dedoDestino;
+      const aDonde = dedoDestino;
       const recorrido = dedoRecorrido;
       dedoY = null;
       dedoDestino = null;
+      dedoTragado = false;
 
       // Un roce no cambia de sector; un deslizamiento de verdad, sí.
-      if (destino !== null && Math.abs(recorrido) >= UMBRAL_DEDO) irA(destino);
+      if (aDonde !== null && Math.abs(recorrido) >= UMBRAL_DEDO) irA(aDonde);
     },
     { passive: true },
   );
