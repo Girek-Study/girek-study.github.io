@@ -107,7 +107,7 @@ const entradas = [
 
 <Layout>
   <!-- ============ HERO ============ -->
-  <section class="seccion hero relative flex flex-col overflow-hidden pt-24 lg:min-h-dvh lg:pt-20">
+  <section class="seccion hero relative flex flex-col overflow-hidden pt-24 lg:pt-20">
     <!-- Fondo con vida -->
     <div class="grid-bg pointer-events-none absolute inset-0 -z-10"></div>
     <div class="blob -z-10 left-[-6rem] top-10 h-72 w-72" style="background: var(--color-amber)"></div>
@@ -376,7 +376,7 @@ const entradas = [
   </section>
 
   <!-- ============ CTA CONTACTO ============ -->
-  <section class="seccion mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+  <section class="seccion cierre-inicio mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
     <div class="reveal text-center">
       <p class="eyebrow">¿Trabajamos juntos?</p>
       <h2 class="mx-auto mt-3 max-w-2xl font-display text-3xl tracking-tight sm:text-5xl">
@@ -388,6 +388,11 @@ const entradas = [
 </Layout>
 
 <script>
+  import { activarSaltoPorSectores } from '../scripts/salto-por-sectores';
+
+  // Cada sección de la portada es una parada; el pie viaja con la última.
+  activarSaltoPorSectores({ paradas: () => [...document.querySelectorAll('.seccion')] });
+
   // Contador animado para las stats
   const animateCount = (el: HTMLElement) => {
     const raw = el.dataset.count ?? el.textContent ?? '';

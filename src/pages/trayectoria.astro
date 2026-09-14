@@ -1577,6 +1577,8 @@ const ICONOS_AGENTE: Record<string, string> = {
   <script type="application/json" id="datos-clientes" set:html={JSON.stringify(clientesParaModal)} is:inline />
 
   <script>
+    import { activarSaltoPorSectores } from '../scripts/salto-por-sectores';
+
     // La ficha lateral aparece cuando el encabezado deja la pantalla: da la
     // sensación de que la presentación se recoge a un lado en vez de
     // materializarse de golpe a media página.
@@ -2023,228 +2025,39 @@ const ICONOS_AGENTE: Record<string, string> = {
     }
 
 
-    /* Navegación por sectores.
-     *
-     * Un gesto lleva al sector siguiente. Los sectores que no caben en una
-     * pantalla —los agentes, las competencias y el recorrido— se recorren
-     * primero por dentro y solo saltan cuando se llega a su final: lo
-     * contrario obligaría a comprimir el contenido hasta hacerlo ilegible.
-     *
-     * Va en JavaScript y no con scroll-snap de CSS porque `mandatory` no puede
-     * anclar un elemento más alto que la ventana, que es justo el caso de esos
-     * tres sectores.
-     */
     /* Las paradas del recorrido. Algunos bloques solo cuentan como parada en
      * móvil, donde su sector se parte en dos pantallas; en escritorio caben
-     * juntos y ahí sobran. Por eso la lista se rehace al cambiar el ancho. */
+     * juntos y ahí sobran. El módulo vuelve a pedirlas al cambiar el ancho. */
     const anchoDeSobra = window.matchMedia('(min-width: 44rem)');
-    let sectores = [];
 
-    function armarSectores() {
-      const paradas = [
-        document.querySelector('.perfil'),
-        ...document.querySelectorAll('.sector'),
-        document.getElementById('cierre'),
-      ].filter(Boolean);
+    activarSaltoPorSectores({
+      paradas: () => {
+        const lista = [
+          document.querySelector('.perfil'),
+          ...document.querySelectorAll('.sector'),
+          document.getElementById('cierre'),
+        ].filter(Boolean);
 
-      if (!anchoDeSobra.matches) {
+        if (anchoDeSobra.matches) return lista;
+
         // Un sector partido deja de ser parada: lo son sus mitades. Si se
         // quedara, su tope y el de la primera mitad caerían a treinta píxeles
         // uno de otro y la rueda se comería el salto siguiente.
         const partidos = new Set();
 
         document.querySelectorAll('.pantalla-movil').forEach((mitad) => {
-          paradas.push(mitad);
+          lista.push(mitad);
           const sector = mitad.closest('.sector');
           if (sector) partidos.add(sector);
         });
 
         partidos.forEach((sector) => {
-          const i = paradas.indexOf(sector);
-          if (i !== -1) paradas.splice(i, 1);
+          const i = lista.indexOf(sector);
+          if (i !== -1) lista.splice(i, 1);
         });
-      }
 
-      sectores = paradas.sort(
-        (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top
-      );
-    }
-
-    armarSectores();
-    anchoDeSobra.addEventListener('change', armarSectores);
-
-    const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let navegando = false;
-
-    const topeDe = (el) => Math.round(el.getBoundingClientRect().top + window.scrollY);
-
-    function sectorActual() {
-      /* El último bloque es más bajo que la ventana, así que su tope queda por
-       * encima del scroll máximo y nunca llega a cumplirse `tope <= scrollY`:
-       * estando en él, la cuenta devolvía el anterior y el gesto hacia atrás
-       * saltaba dos paradas. Al fondo de la página el actual es el último,
-       * sin más cuentas. */
-      const maximo = document.documentElement.scrollHeight - window.innerHeight;
-      const ultimo = sectores.length - 1;
-      if (ultimo > 0 && window.scrollY >= maximo - 2 && topeDe(sectores[ultimo]) > maximo) {
-        return ultimo;
-      }
-
-      const y = window.scrollY + 4;
-      let indice = 0;
-      sectores.forEach((s, i) => {
-        if (topeDe(s) <= y) indice = i;
-      });
-      return indice;
-    }
-
-    function irA(altura) {
-      navegando = true;
-      window.scrollTo({ top: altura, behavior: 'smooth' });
-      setTimeout(() => (navegando = false), 750);
-    }
-
-    /** A qué altura lleva el gesto, o null si no hay a dónde ir.
-     *
-     * Cada gesto avanza una cantidad exacta, nunca una libre: o al sector
-     * siguiente, o una pantalla más dentro del sector actual cuando es más
-     * alto que la ventana. Así nunca se queda a medio camino de nada.
-     *
-     * El paso deja un solape de una décima de pantalla para que el renglón
-     * donde se quedó la lectura siga a la vista. */
-    function alturaDelGesto(direccion) {
-      const i = sectorActual();
-      const actual = sectores[i];
-      if (!actual) return null;
-
-      const arriba = topeDe(actual);
-      const sobraPorDentro = actual.getBoundingClientRect().height - window.innerHeight;
-      const recorrido = window.scrollY - arriba;
-      const paso = Math.round(window.innerHeight * 0.9);
-
-      if (direccion > 0) {
-        // Todavía queda sector por leer: una pantalla más, sin pasarse.
-        if (sobraPorDentro > 8 && recorrido < sobraPorDentro - 8) {
-          return arriba + Math.min(recorrido + paso, sobraPorDentro);
-        }
-        if (i >= sectores.length - 1) return null;
-        return topeDe(sectores[i + 1]);
-      }
-
-      if (sobraPorDentro > 8 && recorrido > 8) {
-        return arriba + Math.max(recorrido - paso, 0);
-      }
-      if (i <= 0) return null;
-
-      // Al volver a un sector más alto que la ventana se entra por su final,
-      // que es donde se dejó de leer, y no por el principio.
-      const anterior = sectores[i - 1];
-      const sobraAntes = anterior.getBoundingClientRect().height - window.innerHeight;
-      return topeDe(anterior) + Math.max(sobraAntes, 0);
-    }
-
-    function ocupado(objetivo) {
-      if (navegando || sinMovimiento.matches) return true;
-      if (document.querySelector('dialog[open]')) return true;
-      return objetivo ? dentroDeAlgoQueSeDesplaza(objetivo) : false;
-    }
-
-    /** Un diálogo o cualquier caja con desplazamiento propio se queda el gesto. */
-    function dentroDeAlgoQueSeDesplaza(nodo) {
-      for (let e = nodo; e && e !== document.body; e = e.parentElement) {
-        if (e.tagName === 'DIALOG') return true;
-        const desborde = getComputedStyle(e).overflowY;
-        const puede = desborde === 'auto' || desborde === 'scroll';
-        if (puede && e.scrollHeight > e.clientHeight + 2) return true;
-      }
-      return false;
-    }
-
-    window.addEventListener(
-      'wheel',
-      (evento) => {
-        // La rueda manda en cualquier ancho: hay ratón en un portátil con la
-        // ventana estrecha y en los navegadores que emulan un móvil.
-        if (ocupado(evento.target)) return;
-        if (Math.abs(evento.deltaY) < 4) return;
-
-        const altura = alturaDelGesto(evento.deltaY > 0 ? 1 : -1);
-        if (altura === null) return;
-
-        evento.preventDefault();
-        irA(altura);
+        return lista;
       },
-      { passive: false }
-    );
-
-    /* En táctil, el mismo salto — decidiendo en el primer touchmove.
-     *
-     * Ese primer evento todavía es cancelable: el navegador espera a que el
-     * guion diga algo antes de empezar a desplazar. Ahí ya se conoce la
-     * dirección del dedo, así que se decide de una vez qué es este gesto:
-     *
-     *   · si en esa dirección toca cambiar de sector, se cancela el
-     *     desplazamiento nativo y el deslizamiento pasa a ser una orden de
-     *     pasar de pantalla, como el golpe de rueda en escritorio;
-     *   · si el sector todavía tiene contenido por leer, no se toca nada y el
-     *     dedo se comporta como siempre, con su inercia.
-     *
-     * Decidir en el primer movimiento es lo que evita pelear con la inercia:
-     * o el gesto es nuestro desde el principio, o no lo es en absoluto. */
-    const UMBRAL_DEDO = 40; // píxeles de recorrido para que el gesto cuente
-
-    let dedoY = null;
-    let dedoRecorrido = 0;
-    let dedoDecidido = false;
-    let dedoDestino = null;
-
-    document.addEventListener(
-      'touchstart',
-      (evento) => {
-        dedoDecidido = false;
-        dedoDestino = null;
-        dedoRecorrido = 0;
-        // Con dos dedos el gesto es un zoom, no un desplazamiento.
-        dedoY = evento.touches.length === 1 && !ocupado(evento.target)
-          ? evento.touches[0].clientY
-          : null;
-      },
-      { passive: true }
-    );
-
-    document.addEventListener(
-      'touchmove',
-      (evento) => {
-        if (dedoY === null) return;
-
-        dedoRecorrido = dedoY - evento.touches[0].clientY;
-
-        if (!dedoDecidido) {
-          if (dedoRecorrido === 0) return;
-          dedoDecidido = true;
-          dedoDestino = alturaDelGesto(dedoRecorrido > 0 ? 1 : -1);
-        }
-
-        // Mientras el gesto sea nuestro, la página no se mueve sola.
-        if (dedoDestino !== null) evento.preventDefault();
-      },
-      { passive: false }
-    );
-
-    document.addEventListener(
-      'touchend',
-      () => {
-        const destino = dedoDestino;
-        const recorrido = dedoRecorrido;
-        dedoY = null;
-        dedoDestino = null;
-
-        // Un roce no cambia de sector; un deslizamiento de verdad, sí.
-        if (destino !== null && Math.abs(recorrido) >= UMBRAL_DEDO) irA(destino);
-      },
-      { passive: true }
-    );
-
-
+    });
   </script>
 </Layout>

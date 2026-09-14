@@ -151,6 +151,32 @@ for (const d of OBJETIVOS) {
     );
   }
 
+  // 3c. En la portada, cada sección llena la pantalla. El salto por gesto solo
+  //     se siente bien si lo que aterriza no deja asomar a la siguiente. La
+  //     última queda fuera: cierra con el pie a la vista, y llevarla a pantalla
+  //     completa lo empujaría fuera.
+  await pagina.goto(BASE + '/', { waitUntil: 'networkidle' });
+  await pagina.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await pagina.waitForTimeout(400);
+  await pagina.evaluate(() => window.scrollTo(0, 0));
+  await pagina.waitForTimeout(300);
+
+  const cortas = await pagina.evaluate(() => {
+    const ventana = window.innerHeight;
+    return [...document.querySelectorAll('.seccion:not(.cierre-inicio)')]
+      .map((s, i) => ({ i, alto: Math.round(s.getBoundingClientRect().height) }))
+      .filter((s) => s.alto < ventana - 1);
+  });
+  for (const s of cortas) {
+    fallos.push(`${d.nombre} · portada: la sección ${s.i + 1} mide ${s.alto} y la pantalla ${d.alto}`);
+  }
+
+  await pagina.goto(BASE + '/trayectoria/', { waitUntil: 'networkidle' });
+  await pagina.evaluate(() =>
+    document.querySelectorAll('.reveal').forEach((e) => e.classList.add('is-visible')),
+  );
+  await pagina.waitForTimeout(300);
+
   // 4. Las tres decisiones nunca dejan una sola colgando con hueco al lado.
   const decisiones = await pagina.evaluate(() => {
     const ul = document.querySelector('#decisiones ul');
