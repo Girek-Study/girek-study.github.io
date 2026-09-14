@@ -1,77 +1,268 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import SectionHeading from '../../components/SectionHeading.astro';
-import { formatearFecha } from '../../utils/fechas';
+import { formatearFecha, minutosDeLectura } from '../../utils/fechas';
 
 // Los borradores se ven en `npm run dev` pero nunca se publican.
-const notas = (await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador)).sort(
-  (a, b) => b.data.fecha.getTime() - a.data.fecha.getTime(),
-);
+const publicadas = (
+  await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador)
+).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+
+// Los minutos se calculan una sola vez aquí: la tarjeta y la ficha de arriba
+// tienen que decir lo mismo, y el cuerpo de la nota no se vuelve a recorrer.
+const notas = publicadas.map((nota) => ({
+  id: nota.id,
+  ...nota.data,
+  minutos: nota.data.minutos ?? minutosDeLectura(nota.body ?? ''),
+  // Los encabezados del cuerpo sirven de índice: dicen qué se trata dentro
+  // antes de abrirla, que es lo que decide si vale el clic.
+  secciones: [...(nota.body ?? '').matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim()),
+}));
+
+/** Un tema se filtra por su llave, no por su rótulo: "API Testing" → "api-testing". */
+const llave = (tema: string) => tema.toLowerCase().replace(/\s+/g, '-');
+
+const conteo = new Map<string, number>();
+for (const nota of notas) {
+  for (const tema of nota.etiquetas) conteo.set(tema, (conteo.get(tema) ?? 0) + 1);
+}
+// Primero los temas sobre los que más he escrito; a igualdad, alfabético.
+const temas = [...conteo.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+const minutosTotales = notas.reduce((suma, nota) => suma + nota.minutos, 0);
+
+// La más reciente va destacada; el resto, en rejilla.
+const [destacada, ...resto] = notas;
 ---
 
 <Layout
   title="Notas — Girek Study"
   description="Apuntes sobre automatización de pruebas, calidad de software y las decisiones de diseño que sostienen una suite a lo largo del tiempo."
 >
-  <section class="relative overflow-hidden mx-auto max-w-4xl px-5 pt-32 pb-10 md:px-8 md:pt-40">
-    <div class="blob -z-10 right-[-3rem] top-16 h-72 w-72" style="background: var(--color-amber)"></div>
-    <SectionHeading
-      eyebrow="Notas"
-      title="Lo que aprendo escribiendo pruebas"
-      subtitle="Decisiones de diseño, errores que costaron caro y cosas que ojalá me hubieran contado antes. Sin relleno."
-    />
+  <section class="relative overflow-hidden pt-28 pb-10 md:pt-36">
+    <div class="blob -z-10 right-[-4rem] top-10 h-80 w-80" style="background: var(--color-amber)"></div>
+    <div class="blob -z-10 left-[-6rem] top-40 h-64 w-64" style="background: var(--color-cyan-tint); animation-delay: -6s"></div>
 
-    <a
-      href="/rss.xml"
-      class="reveal mt-6 inline-flex items-center gap-2 font-mono text-xs text-[var(--color-faint)] transition-colors hover:text-[var(--color-fox-deep)]"
-      data-delay="60ms"
-    >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <circle cx="6.18" cy="17.82" r="2.18"></circle>
-        <path
-          d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"
-        ></path>
-      </svg>
-      Suscribirse por RSS
-    </a>
+    <div class="mx-auto max-w-[82rem] px-5 md:px-8">
+      {/* Antes el encabezado vivía en una columna estrecha a la izquierda y el
+          resto de la pantalla quedaba vacío. Ahora la bajada comparte fila con
+          la ficha de lo que hay publicado: el mismo espacio, dos cosas que
+          decir. */}
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-end lg:gap-16">
+        <div class="reveal">
+          <p class="eyebrow">Notas</p>
+          <h1 class="mt-3.5 max-w-2xl font-display text-[2.5rem] leading-[1.04] tracking-tight sm:text-5xl md:text-[3.4rem]">
+            Lo que aprendo escribiendo pruebas
+          </h1>
+          <p class="mt-5 max-w-xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
+            Decisiones de diseño, errores que costaron caro y cosas que ojalá me hubieran contado
+            antes. Escritas desde el proyecto en el que ocurrieron, sin relleno.
+          </p>
+        </div>
+
+        <aside class="reveal ficha-notas card p-6 md:p-7" data-delay="120ms">
+          <dl class="cifras-notas">
+            <div>
+              <dt>Notas</dt>
+              <dd>{notas.length}</dd>
+            </div>
+            <div>
+              <dt>Temas</dt>
+              <dd>{temas.length}</dd>
+            </div>
+            <div>
+              <dt>Lectura</dt>
+              <dd>{minutosTotales}<span class="unidad-notas">min</span></dd>
+            </div>
+          </dl>
+
+          <p class="mt-5 text-[0.88rem] leading-relaxed text-[var(--color-ink-soft)]">
+            Se publican sin registro ni muro de pago. El canal avisa cuando sale una nueva.
+          </p>
+
+          <a href="/rss.xml" class="btn btn-ghost mt-5 w-full justify-center text-[0.92rem]">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="6.18" cy="17.82" r="2.18"></circle>
+              <path
+                d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"
+              ></path>
+            </svg>
+            Suscribirse por RSS
+          </a>
+        </aside>
+      </div>
+    </div>
   </section>
 
-  <section class="mx-auto max-w-4xl px-5 pb-20 md:px-8">
+  <section class="mx-auto max-w-[82rem] px-5 pb-24 md:px-8">
     {
       notas.length === 0 ? (
         <p class="font-mono text-sm text-[var(--color-faint)]">Todavía no hay notas publicadas.</p>
       ) : (
-        <ol class="space-y-5">
-          {notas.map((nota, i) => (
-            <li>
-              <a
-                href={`/notas/${nota.id}/`}
-                class="reveal card card-hover block p-6 md:p-8"
-                data-delay={`${(i % 4) * 70}ms`}
+        <>
+          {/* Filtrar en cliente y no por URL: son pocas notas, todas caben en la
+              misma página y así el tema se cambia sin recargar ni perder el
+              sitio donde iba la lectura. */}
+          <nav class="reveal barra-temas" aria-label="Filtrar por tema">
+            <button type="button" class="chip chip-tema is-activo" data-tema="" aria-pressed="true">
+              Todas <span class="cuenta-tema">{notas.length}</span>
+            </button>
+            {temas.map(([tema, veces]) => (
+              <button
+                type="button"
+                class="chip chip-tema"
+                data-tema={llave(tema)}
+                aria-pressed="false"
               >
-                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-faint)]">
-                  <time datetime={nota.data.fecha.toISOString()}>{formatearFecha(nota.data.fecha)}</time>
-                  {nota.data.etiquetas.map((t) => (
-                    <span>#{t}</span>
-                  ))}
-                  {nota.data.borrador && (
-                    <span class="rounded-full bg-[var(--color-fox-tint)] px-2 py-0.5 text-[var(--color-fox-deep)]">
-                      borrador
-                    </span>
-                  )}
-                </div>
+                {tema} <span class="cuenta-tema">{veces}</span>
+              </button>
+            ))}
+          </nav>
 
-                <h2 class="mt-3 font-display text-2xl leading-tight tracking-tight md:text-3xl">
-                  {nota.data.titulo}
+          <a
+            href={`/notas/${destacada.id}/`}
+            class="reveal nota-destacada group"
+            data-delay="80ms"
+            data-temas={destacada.etiquetas.map(llave).join('|')}
+          >
+            <span class="trama-cierre pointer-events-none absolute inset-0" aria-hidden="true" />
+            <span class="brillo-cierre pointer-events-none absolute -right-28 -top-36 h-96 w-96 rounded-full" aria-hidden="true" />
+
+            <span class="cuerpo-destacada">
+              <span class="block">
+                <span class="meta-destacada">
+                  <span class="sello-destacada">Lo último</span>
+                  <time datetime={destacada.fecha.toISOString()}>{formatearFecha(destacada.fecha)}</time>
+                  <span aria-hidden="true">·</span>
+                  <span>{destacada.minutos} min de lectura</span>
+                </span>
+
+                <h2 class="mt-5 font-display text-[1.9rem] leading-[1.12] tracking-tight md:text-[2.6rem]">
+                  {destacada.titulo}
                 </h2>
-                <p class="mt-3 leading-relaxed text-[var(--color-ink-soft)]">{nota.data.resumen}</p>
-                <span class="mt-4 inline-block text-sm font-semibold text-[var(--color-fox-deep)]">Leer →</span>
-              </a>
-            </li>
-          ))}
-        </ol>
+                <p class="mt-4 leading-relaxed text-white/80">{destacada.resumen}</p>
+
+                <span class="mt-6 flex flex-wrap items-center gap-2">
+                  {destacada.etiquetas.map((tema) => (
+                    <span class="tema-oscuro">{tema}</span>
+                  ))}
+                </span>
+
+                <span class="mt-7 inline-flex items-center gap-2 font-semibold">
+                  Leer la nota
+                  <svg
+                    class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                  </svg>
+                </span>
+              </span>
+
+              {destacada.secciones.length > 0 && (
+                <span class="indice-destacada">
+                  <span class="rotulo-indice">Lo que hay dentro</span>
+                  <ol class="mt-3.5 space-y-2.5">
+                    {destacada.secciones.map((seccion, n) => (
+                      <li class="renglon-indice">
+                        <span class="numero-indice">{String(n + 1).padStart(2, '0')}</span>
+                        <span>{seccion}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </span>
+              )}
+            </span>
+          </a>
+
+          {resto.length > 0 && (
+            <ol class="rejilla-notas">
+              {resto.map((nota, i) => (
+                <li data-temas={nota.etiquetas.map(llave).join('|')}>
+                  <a
+                    href={`/notas/${nota.id}/`}
+                    class="reveal tarjeta-nota card card-hover group"
+                    data-delay={`${(i % 3) * 70}ms`}
+                  >
+                    {/* El número no es decoración: dice cuántas van y en qué
+                        orden se escribieron. */}
+                    <span class="orden-nota" aria-hidden="true">
+                      {String(i + 2).padStart(2, '0')}
+                    </span>
+
+                    <span class="meta-nota">
+                      <time datetime={nota.fecha.toISOString()}>{formatearFecha(nota.fecha)}</time>
+                      <span aria-hidden="true">·</span>
+                      <span>{nota.minutos} min</span>
+                      {nota.borrador && <span class="sello-borrador">borrador</span>}
+                    </span>
+
+                    <h3 class="titulo-nota">{nota.titulo}</h3>
+                    <p class="resumen-nota">{nota.resumen}</p>
+
+                    <span class="temas-nota">
+                      {nota.etiquetas.map((tema) => (
+                        <span class="tema-claro">{tema}</span>
+                      ))}
+                    </span>
+
+                    <span class="pie-nota">
+                      Leer
+                      <svg
+                        class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                      </svg>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          )}
+        </>
       )
     }
   </section>
 </Layout>
+
+<script>
+  /* Filtro por tema. Cada ficha declara sus temas en `data-temas`, así que
+   * filtrar es esconder lo que no lo lleva: no se reordena nada ni se vuelve a
+   * pintar la lista. */
+  const botones = document.querySelectorAll<HTMLButtonElement>('.chip-tema');
+  const fichas = document.querySelectorAll<HTMLElement>('[data-temas]');
+
+  botones.forEach((boton) => {
+    boton.addEventListener('click', () => {
+      const tema = boton.dataset.tema ?? '';
+
+      botones.forEach((otro) => {
+        const activo = otro === boton;
+        otro.classList.toggle('is-activo', activo);
+        otro.setAttribute('aria-pressed', String(activo));
+      });
+
+      fichas.forEach((ficha) => {
+        const suyos = (ficha.dataset.temas ?? '').split('|');
+        // La ficha destacada es un enlace suelto; la de la rejilla vive dentro
+        // de su <li>. Se esconde el elemento que declara los temas y, si está
+        // dentro de una lista, también su renglón, para que no quede el hueco.
+        const objetivo = ficha.closest('li') ?? ficha;
+        (objetivo as HTMLElement).hidden = tema !== '' && !suyos.includes(tema);
+      });
+    });
+  });
+</script>

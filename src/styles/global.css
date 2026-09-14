@@ -2461,3 +2461,299 @@ html {
     -webkit-line-clamp: 4;
   }
 }
+
+/* ==========================================================================
+   Notas — el listado
+   ========================================================================== */
+
+/* Ficha de lo publicado. Acompaña al titular en la misma fila en vez de
+   dejar media pantalla vacía a su derecha. */
+.ficha-notas {
+  border-radius: 22px;
+}
+
+.cifras-notas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--color-line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.cifras-notas > div {
+  background: var(--color-cream);
+  padding: 0.95rem 0.4rem 1rem;
+  text-align: center;
+}
+
+.cifras-notas dt {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.cifras-notas dd {
+  margin-top: 0.3rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.85rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-fox-dark);
+}
+
+.unidad-notas {
+  margin-left: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0;
+  color: var(--color-faint);
+}
+
+/* Barra de temas */
+.barra-temas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.chip-tema {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.chip-tema.is-activo {
+  background: var(--color-fox-dark);
+  border-color: var(--color-fox-dark);
+  color: #fff;
+}
+
+.cuenta-tema {
+  font-size: 0.62rem;
+  opacity: 0.65;
+}
+
+/* La nota más reciente, en grande. El mismo plano cálido del cierre de
+   trayectoria: separa lo último del archivo sin necesidad de rotularlo. */
+.nota-destacada {
+  position: relative;
+  display: block;
+  margin-top: 1.75rem;
+  overflow: hidden;
+  border-radius: 28px;
+  padding: 2.25rem 1.75rem 2.4rem;
+  color: #fff;
+  background:
+    radial-gradient(120% 120% at 85% 0%, #c24a10 0%, rgba(0, 0, 0, 0) 55%),
+    linear-gradient(135deg, var(--color-fox-dark) 0%, #9c3103 100%);
+  box-shadow: var(--shadow-warm);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease;
+}
+
+.nota-destacada:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 34px 70px -28px rgba(184, 57, 5, 0.62);
+}
+
+@media (min-width: 48rem) {
+  .nota-destacada {
+    padding: 3rem 3.25rem 3.25rem;
+  }
+}
+
+.meta-destacada {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sello-destacada {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  padding: 0.22rem 0.66rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.tema-oscuro {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.28rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* El archivo */
+.rejilla-notas {
+  display: grid;
+  gap: 1.15rem;
+  margin-top: 1.15rem;
+}
+
+@media (min-width: 48rem) {
+  .rejilla-notas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.tarjeta-nota {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  border-radius: 22px;
+  padding: 1.6rem 1.65rem 1.5rem;
+}
+
+/* El número se queda detrás del contenido, como marca de agua: ubica la nota
+   en la serie sin competir con el titular. */
+.orden-nota {
+  position: absolute;
+  top: 1rem;
+  right: 1.35rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 2.6rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-fox);
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+.meta-nota {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-faint);
+}
+
+.sello-borrador {
+  border-radius: 999px;
+  background: var(--color-fox-tint);
+  padding: 0.1rem 0.5rem;
+  color: var(--color-fox-dark);
+}
+
+.titulo-nota {
+  margin-top: 0.85rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.resumen-nota {
+  margin-top: 0.8rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+.temas-nota {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.1rem;
+}
+
+.tema-claro {
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream-2);
+  padding: 0.22rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--color-ink-soft);
+}
+
+/* `margin-top: auto` pega el pie al fondo: las tarjetas de una fila cierran a
+   la misma altura aunque el resumen sea más corto. */
+.pie-nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 1.2rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-fox-dark);
+}
+
+/* La destacada se parte en dos: el relato a la izquierda y el índice de sus
+   secciones a la derecha. Antes el texto ocupaba media caja y la otra mitad
+   era plano naranja. */
+.cuerpo-destacada {
+  position: relative;
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 62rem) {
+  .cuerpo-destacada {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.85fr);
+    gap: 3rem;
+    align-items: start;
+  }
+}
+
+.indice-destacada {
+  display: block;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.09);
+  padding: 1.4rem 1.5rem 1.5rem;
+}
+
+.rotulo-indice {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.renglon-indice {
+  display: flex;
+  gap: 0.7rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.numero-indice {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 47.99rem) {
+  .nota-destacada h2 {
+    font-size: 1.72rem;
+  }
+
+  .cifras-notas dd {
+    font-size: 1.55rem;
+  }
+}
