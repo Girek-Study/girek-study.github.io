@@ -2079,6 +2079,17 @@ const ICONOS_AGENTE: Record<string, string> = {
     const topeDe = (el) => Math.round(el.getBoundingClientRect().top + window.scrollY);
 
     function sectorActual() {
+      /* El último bloque es más bajo que la ventana, así que su tope queda por
+       * encima del scroll máximo y nunca llega a cumplirse `tope <= scrollY`:
+       * estando en él, la cuenta devolvía el anterior y el gesto hacia atrás
+       * saltaba dos paradas. Al fondo de la página el actual es el último,
+       * sin más cuentas. */
+      const maximo = document.documentElement.scrollHeight - window.innerHeight;
+      const ultimo = sectores.length - 1;
+      if (ultimo > 0 && window.scrollY >= maximo - 2 && topeDe(sectores[ultimo]) > maximo) {
+        return ultimo;
+      }
+
       const y = window.scrollY + 4;
       let indice = 0;
       sectores.forEach((s, i) => {

@@ -117,6 +117,40 @@ for (const d of OBJETIVOS) {
     fallos.push(`${d.nombre} · el sector ${s.i + 1} mide ${s.alto} y la pantalla ${d.alto}`);
   }
 
+  // 3b. Volver desde el final para en Formación y no se salta la parada.
+  //     El bloque de cierre es más bajo que la ventana, así que su tope queda
+  //     por encima del scroll máximo: si la cuenta del sector actual no lo
+  //     contempla, el gesto hacia atrás retrocede dos paradas de golpe.
+  await pagina.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await pagina.waitForTimeout(500);
+
+  await pagina.mouse.move(d.ancho / 2, d.alto / 2);
+
+  // En pantallas estrechas el cierre es más alto que la ventana, así que el
+  // primer gesto retrocede dentro de él: hacen falta varios para llegar.
+  const paradas = [];
+  for (let n = 0; n < 4; n++) {
+    await pagina.mouse.wheel(0, -200);
+    await pagina.waitForTimeout(1000);
+    paradas.push(await pagina.evaluate(() => Math.round(window.scrollY)));
+  }
+
+  const formacion = await pagina.evaluate(() => {
+    const s = document.getElementById('formacion');
+    const caja = s.getBoundingClientRect();
+    const tope = Math.round(caja.top + window.scrollY);
+    // Un sector más alto que la ventana se puede leer por dentro: cualquier
+    // altura entre su tope y su final cuenta como estar en él.
+    return { tope, fondo: tope + Math.max(Math.round(caja.height) - window.innerHeight, 0) };
+  });
+
+  const paro = paradas.some((y) => y >= formacion.tope - 4 && y <= formacion.fondo + 4);
+  if (!paro) {
+    fallos.push(
+      `${d.nombre} · volver desde el cierre no para en Formación (${formacion.tope}-${formacion.fondo}); pasó por ${paradas.join(', ')}`,
+    );
+  }
+
   // 4. Las tres decisiones nunca dejan una sola colgando con hueco al lado.
   const decisiones = await pagina.evaluate(() => {
     const ul = document.querySelector('#decisiones ul');
