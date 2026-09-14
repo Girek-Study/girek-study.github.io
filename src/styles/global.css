@@ -4246,6 +4246,9 @@ body::before {
    abajo, abajo. Centrarlo juntaría las dos cosas en mitad de la pantalla. */
 .seccion.hero {
   justify-content: flex-start;
+  /* La cinta de herramientas cierra a ras del borde: el relleno común le abría
+     un hueco debajo que no estaba antes. */
+  padding-bottom: 0;
 }
 
 /* La última cierra con el pie a la vista. Llevarla a pantalla completa lo
