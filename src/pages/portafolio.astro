@@ -1,88 +1,252 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SectionHeading from '../components/SectionHeading.astro';
 import { profile } from '../data/site';
 import { proyectos } from '../data/projects';
 import { obtenerRepos, haceCuanto } from '../data/github';
 
-const categorias = ['Todos', ...Array.from(new Set(proyectos.map((p) => p.categoria)))];
+/* El filtro vivía arriba del todo y filtraba una rejilla que estaba a dos
+ * pantallas de distancia: se pulsaba una categoría y no pasaba nada visible.
+ * Ahora va pegado a lo que filtra, y cada botón dice cuántos casos tiene. */
+const categorias = [
+  { nombre: 'Todos', cuantos: proyectos.length },
+  ...Array.from(new Set(proyectos.map((p) => p.categoria))).map((nombre) => ({
+    nombre,
+    cuantos: proyectos.filter((p) => p.categoria === nombre).length,
+  })),
+];
+
+const sectores = Array.from(new Set(proyectos.map((p) => p.sector)));
 
 // Se resuelve en el build: el visitante recibe HTML, no una llamada a GitHub.
 const repos = await obtenerRepos();
+
+// Los destacados primero: es lo que un reclutador mira si solo mira tres.
+const casos = [...proyectos].sort((a, b) => Number(!!b.destacado) - Number(!!a.destacado));
+
+/* Un punto de color por lenguaje, como en GitHub. Reconocerlo de un vistazo
+ * ahorra leer la etiqueta. */
+const COLOR_LENGUAJE: Record<string, string> = {
+  TypeScript: '#3178c6',
+  JavaScript: '#f1e05a',
+  Java: '#b07219',
+  Python: '#3572A5',
+  HTML: '#e34c26',
+  CSS: '#563d7c',
+  Shell: '#89e051',
+  Astro: '#ff5a03',
+};
 ---
 
-<Layout title={`Portafolio — ${profile.nombre}`} description="Portafolio de proyectos de automatización, QA, web y enseñanza de Giancarlo (Girek) Palomino.">
-  <section class="relative overflow-hidden mx-auto max-w-6xl px-5 pt-32 pb-10 md:px-8 md:pt-40">
-    <div class="blob -z-10 right-[-3rem] top-12 h-72 w-72" style="background: var(--color-coral)"></div>
-    <SectionHeading
-      eyebrow="Portafolio"
-      title="Proyectos & casos de trabajo"
-      subtitle="Automatización, calidad de software, producto y enseñanza. Filtra por categoría."
-    />
+<Layout
+  title={`Portafolio — ${profile.nombre}`}
+  description="Portafolio de proyectos de automatización, QA, web y enseñanza de Giancarlo (Girek) Palomino."
+>
+  <section class="relative overflow-hidden pt-28 pb-10 md:pt-36">
+    <div class="blob -z-10 right-[-4rem] top-10 h-80 w-80" style="background: var(--color-coral)"></div>
+    <div class="blob -z-10 left-[-6rem] top-44 h-64 w-64" style="background: var(--color-cyan-tint); animation-delay: -7s"></div>
 
-    <!-- Filtros -->
-    <div class="reveal mt-8 flex flex-wrap gap-2" data-delay="80ms">
-      {
-        categorias.map((c, i) => (
-          <button
-            class:list={[
-              'filtro rounded-full border px-4 py-2 font-mono text-xs transition-all',
-              i === 0
-                ? 'border-transparent bg-[var(--color-fox)] text-white shadow-[var(--shadow-warm)]'
-                : 'border-[var(--color-line-strong)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-fox)] hover:text-[var(--color-fox-deep)]',
-            ]}
-            data-cat={c}
-          >
-            {c}
-          </button>
-        ))
-      }
+    <div class="mx-auto max-w-[82rem] px-5 md:px-8">
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-end lg:gap-16">
+        <div class="reveal">
+          <p class="eyebrow">Portafolio</p>
+          <h1 class="mt-3.5 max-w-2xl font-display text-[2.5rem] leading-[1.04] tracking-tight sm:text-5xl md:text-[3.4rem]">
+            Lo que he construido
+          </h1>
+          <p class="mt-5 max-w-xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
+            Casos de cliente contados a nivel de problema, decisión y resultado —sin datos ni
+            material confidencial— y el código abierto que cualquiera puede clonar y leer.
+          </p>
+        </div>
+
+        <aside class="reveal ficha-notas card p-6 md:p-7" data-delay="120ms">
+          <dl class="cifras-notas">
+            <div>
+              <dt>Casos</dt>
+              <dd>{proyectos.length}</dd>
+            </div>
+            <div>
+              <dt>Repos</dt>
+              <dd>{repos.length}</dd>
+            </div>
+            <div>
+              <dt>Sectores</dt>
+              <dd>{sectores.length}</dd>
+            </div>
+          </dl>
+
+          <p class="mt-5 text-[0.88rem] leading-relaxed text-[var(--color-ink-soft)]">
+            La lista de repositorios no se mantiene a mano: sale de la API de GitHub en cada
+            despliegue.
+          </p>
+
+          <a href={profile.links.github} target="_blank" rel="noopener" class="btn btn-ghost mt-5 w-full justify-center text-[0.92rem]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 1.8a10.2 10.2 0 0 0-3.22 19.88c.51.1.7-.22.7-.49l-.01-1.9c-2.84.62-3.44-1.2-3.44-1.2-.46-1.18-1.13-1.5-1.13-1.5-.93-.63.07-.62.07-.62 1.03.07 1.57 1.06 1.57 1.06.91 1.57 2.4 1.12 2.99.85.09-.66.36-1.12.65-1.38-2.27-.26-4.65-1.14-4.65-5.06 0-1.12.4-2.03 1.05-2.74-.1-.26-.46-1.3.1-2.71 0 0 .86-.28 2.81 1.05a9.7 9.7 0 0 1 5.12 0c1.95-1.33 2.81-1.05 2.81-1.05.56 1.41.2 2.45.1 2.71.65.71 1.05 1.62 1.05 2.74 0 3.93-2.39 4.79-4.67 5.05.37.32.69.94.69 1.9l-.01 2.81c0 .27.19.6.71.49A10.2 10.2 0 0 0 12 1.8Z" />
+            </svg>
+            Ver la cuenta en GitHub
+          </a>
+        </aside>
+      </div>
     </div>
   </section>
 
-  <!-- Repositorios abiertos: la lista sale de la API de GitHub en cada build -->
-  <section class="mx-auto max-w-6xl px-5 pb-4 md:px-8">
-    <SectionHeading
-      eyebrow="Código abierto"
-      title="Repositorios"
-      subtitle="Todo lo que publico en GitHub, con el código a la vista. Esta lista se actualiza sola."
-    />
+  <!-- ============ CASOS DE TRABAJO ============ -->
+  <section class="mx-auto max-w-[82rem] px-5 pb-16 md:px-8">
+    <div class="reveal cabecera-bloque">
+      <div>
+        <p class="eyebrow">Casos de trabajo</p>
+        <h2 class="mt-3 font-display text-3xl tracking-tight sm:text-4xl">
+          Proyectos de cliente
+        </h2>
+      </div>
+      <p class="nota-bloque">
+        Cada uno con el sector donde ocurrió y, cuando la hay, la cifra que quedó.
+      </p>
+    </div>
+
+    <nav class="reveal barra-temas mt-6" aria-label="Filtrar por categoría">
+      {categorias.map((c, i) => (
+        <button
+          type="button"
+          class:list={['chip', 'chip-tema', i === 0 && 'is-activo']}
+          data-cat={c.nombre}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+        >
+          {c.nombre} <span class="cuenta-tema">{c.cuantos}</span>
+        </button>
+      ))}
+    </nav>
+
+    <div id="grid-proyectos" class="rejilla-casos">
+      {
+        casos.map((p, i) => (
+          <article
+            class="proyecto reveal card card-hover ficha-caso"
+            data-cat={p.categoria}
+            data-delay={`${(i % 3) * 70}ms`}
+          >
+            <div class="cabeza-caso">
+              <span class="sector-caso">{p.sector}</span>
+              {p.destacado && <span class="sello-destacado">Destacado</span>}
+            </div>
+
+            <h3 class="titulo-caso">{p.titulo}</h3>
+            <p class="resumen-caso">{p.resumen}</p>
+
+            {p.metrica && (
+              <div class="metrica-caso">
+                <span class="valor-metrica">{p.metrica.valor}</span>
+                <span class="etiqueta-metrica">{p.metrica.etiqueta}</span>
+              </div>
+            )}
+
+            <div class="pie-caso">
+              <span class="temas-nota">
+                {p.tags.map((t) => (
+                  <span class="tema-claro">{t}</span>
+                ))}
+              </span>
+
+              {(p.repo || p.demo) && (
+                <span class="enlaces-caso">
+                  {p.repo && (
+                    <a href={p.repo} target="_blank" rel="noopener" class="link-underline text-sm font-semibold text-[var(--color-fox-dark)]">
+                      Código →
+                    </a>
+                  )}
+                  {p.demo && (
+                    <a href={p.demo} target="_blank" rel="noopener" class="link-underline text-sm font-semibold text-[var(--color-ink)]">
+                      Demo →
+                    </a>
+                  )}
+                </span>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div id="vacio" class="estado-vacio" hidden>
+      <img src="/brand/girek-fox-head.png" alt="" width="64" height="64" />
+      <p>No hay casos en esta categoría todavía.</p>
+    </div>
+  </section>
+
+  <!-- ============ REPOSITORIOS ============ -->
+  <section class="mx-auto max-w-[82rem] px-5 pb-24 md:px-8">
+    <div class="reveal cabecera-bloque">
+      <div>
+        <p class="eyebrow">Código abierto</p>
+        <h2 class="mt-3 font-display text-3xl tracking-tight sm:text-4xl">Repositorios</h2>
+      </div>
+      <p class="nota-bloque">
+        Todo lo que publico en GitHub, con el código a la vista y licencia permisiva.
+      </p>
+    </div>
 
     {
       repos.length > 0 ? (
-        <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        /* Las columnas siguen a la cantidad: con un solo repositorio, una
+           rejilla de tres deja dos huecos que parecen un error de carga. */
+        <div
+          class:list={['rejilla-repos', repos.length === 1 && 'es-sola']}
+          style={`--columnas:${Math.min(repos.length, 3)}`}
+        >
           {repos.map((r, i) => (
             <a
               href={r.url}
               target="_blank"
               rel="noopener"
-              class="reveal card card-hover group flex flex-col p-6"
-              data-delay={`${(i % 3) * 80}ms`}
+              class="reveal card card-hover ficha-repo group"
+              data-delay={`${(i % 3) * 70}ms`}
             >
-              <div class="flex items-center justify-between gap-3">
-                <span class="chip">{r.lenguaje ?? 'Repositorio'}</span>
+              <div class="cabeza-repo">
+                <span class="icono-repo" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5.5 4.6A1.6 1.6 0 0 1 7.1 3h11.4v14.4H7.1a1.6 1.6 0 0 0-1.6 1.6V4.6Z" />
+                    <path d="M5.5 19a1.6 1.6 0 0 0 1.6 1.6h11.4" />
+                  </svg>
+                </span>
                 {r.estrellas > 0 && (
-                  <span class="font-mono text-[0.7rem] text-[var(--color-faint)]">★ {r.estrellas}</span>
+                  <span class="estrellas-repo">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="m12 3.6 2.6 5.3 5.9.86-4.25 4.14 1 5.86L12 17l-5.25 2.76 1-5.86L3.5 9.76l5.9-.86L12 3.6Z" />
+                    </svg>
+                    {r.estrellas}
+                  </span>
                 )}
               </div>
 
-              <h3 class="mt-5 font-display text-xl tracking-tight group-hover:text-[var(--color-fox-deep)]">
-                {r.nombre}
-              </h3>
-              <p class="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{r.descripcion}</p>
+              <h3 class="nombre-repo">{r.nombre}</h3>
+              <p class="resumen-nota">{r.descripcion}</p>
 
-              <div class="mt-5 flex flex-wrap gap-1.5">
+              <span class="temas-nota">
                 {r.temas.slice(0, 4).map((t) => (
-                  <span class="font-mono text-[0.7rem] text-[var(--color-faint)]">#{t}</span>
+                  <span class="tema-claro">{t}</span>
                 ))}
-              </div>
+              </span>
 
-              <div class="mt-5 flex items-center justify-between border-t border-[var(--color-line)] pt-4">
-                <span class="font-mono text-[0.7rem] text-[var(--color-faint)]">
-                  actualizado {haceCuanto(r.actualizado)}
+              <span class="pie-repo">
+                <span class="lenguaje-repo">
+                  {r.lenguaje && (
+                    <span
+                      class="punto-lenguaje"
+                      style={`background:${COLOR_LENGUAJE[r.lenguaje] ?? 'var(--color-line-strong)'}`}
+                      aria-hidden="true"
+                    />
+                  )}
+                  {r.lenguaje ?? 'Repositorio'}
+                  <span class="separador-repo" aria-hidden="true">·</span>
+                  {haceCuanto(r.actualizado)}
                 </span>
-                <span class="text-sm font-semibold text-[var(--color-fox-deep)]">Ver código →</span>
-              </div>
+                <span class="ver-codigo">
+                  Ver código
+                  <svg class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                  </svg>
+                </span>
+              </span>
             </a>
           ))}
         </div>
@@ -97,84 +261,31 @@ const repos = await obtenerRepos();
     }
   </section>
 
-  <section class="mx-auto max-w-6xl px-5 pb-16 pt-12 md:px-8">
-    <SectionHeading
-      eyebrow="Experiencia"
-      title="Casos de trabajo"
-      subtitle="Proyectos de cliente, descritos sin datos ni material confidencial."
-    />
-    <div id="grid-proyectos" class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        proyectos.map((p, i) => (
-          <article
-            class="proyecto reveal card card-hover group flex flex-col p-6"
-            data-cat={p.categoria}
-            data-delay={`${(i % 3) * 80}ms`}
-          >
-            <div class="flex items-center justify-between">
-              <span class="chip">{p.categoria}</span>
-              {p.destacado && (
-                <span class="rounded-full bg-[var(--color-fox-tint)] px-2 py-0.5 font-mono text-[0.65rem] text-[var(--color-fox-deep)]">★ destacado</span>
-              )}
-            </div>
-            <h3 class="mt-5 font-display text-xl tracking-tight">{p.titulo}</h3>
-            <p class="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{p.resumen}</p>
-            <div class="mt-5 flex flex-wrap gap-1.5">
-              {p.tags.map((t) => (
-                <span class="font-mono text-[0.7rem] text-[var(--color-faint)]">#{t}</span>
-              ))}
-            </div>
-            {(p.repo || p.demo) && (
-              <div class="mt-5 flex gap-4 border-t border-[var(--color-line)] pt-4">
-                {p.repo && (
-                  <a href={p.repo} target="_blank" rel="noopener" class="link-underline text-sm font-semibold text-[var(--color-fox-deep)]">
-                    Código →
-                  </a>
-                )}
-                {p.demo && (
-                  <a href={p.demo} target="_blank" rel="noopener" class="link-underline text-sm font-semibold text-[var(--color-ink)]">
-                    Demo →
-                  </a>
-                )}
-              </div>
-            )}
-          </article>
-        ))
-      }
-    </div>
-
-    <div id="vacio" class="hidden flex-col items-center gap-3 py-16 text-center">
-      <img src="/brand/girek-fox-head.png" alt="Girek" width="64" height="64" class="h-16 w-16 object-contain opacity-80" />
-      <p class="font-mono text-sm text-[var(--color-faint)]">No hay proyectos en esta categoría todavía.</p>
-    </div>
-  </section>
-
   <script>
-    const botones = document.querySelectorAll<HTMLButtonElement>('.filtro');
-    const items = document.querySelectorAll<HTMLElement>('.proyecto');
+    /* Filtro de casos. Mismo mecanismo que el de las notas: se esconde lo que
+     * no coincide, no se reordena ni se vuelve a pintar la rejilla. */
+    const botones = document.querySelectorAll<HTMLButtonElement>('.chip-tema');
+    const fichas = document.querySelectorAll<HTMLElement>('.proyecto');
     const vacio = document.getElementById('vacio');
 
-    const activo = ['border-transparent', 'bg-[var(--color-fox)]', 'text-white', 'shadow-[var(--shadow-warm)]'];
-    const inactivo = ['border-[var(--color-line-strong)]', 'bg-[var(--color-surface)]', 'text-[var(--color-ink-soft)]'];
+    botones.forEach((boton) => {
+      boton.addEventListener('click', () => {
+        const categoria = boton.dataset.cat;
 
-    botones.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const cat = btn.dataset.cat;
-        botones.forEach((b) => {
-          activo.forEach((c) => b.classList.remove(c));
-          inactivo.forEach((c) => b.classList.add(c));
+        botones.forEach((otro) => {
+          const activo = otro === boton;
+          otro.classList.toggle('is-activo', activo);
+          otro.setAttribute('aria-pressed', String(activo));
         });
-        inactivo.forEach((c) => btn.classList.remove(c));
-        activo.forEach((c) => btn.classList.add(c));
 
         let visibles = 0;
-        items.forEach((it) => {
-          const show = cat === 'Todos' || it.dataset.cat === cat;
-          it.style.display = show ? '' : 'none';
-          if (show) visibles++;
+        fichas.forEach((ficha) => {
+          const pasa = categoria === 'Todos' || ficha.dataset.cat === categoria;
+          ficha.hidden = !pasa;
+          if (pasa) visibles++;
         });
-        vacio?.classList.toggle('hidden', visibles > 0);
-        vacio?.classList.toggle('flex', visibles === 0);
+
+        if (vacio) vacio.hidden = visibles > 0;
       });
     });
   </script>

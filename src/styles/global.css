@@ -3903,3 +3903,348 @@ html {
     font-size: 0.72rem;
   }
 }
+
+/* ==========================================================================
+   Portafolio
+   ========================================================================== */
+
+/* Cada bloque abre con su rótulo a la izquierda y una línea de contexto a la
+   derecha: el ancho completo se usa sin estirar el titular. */
+.cabecera-bloque {
+  display: grid;
+  gap: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+}
+
+@media (min-width: 56rem) {
+  .cabecera-bloque {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+    align-items: end;
+    gap: 3rem;
+  }
+}
+
+.nota-bloque {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+@media (min-width: 56rem) {
+  .nota-bloque {
+    text-align: right;
+  }
+}
+
+/* ---------- Casos de trabajo ---------- */
+
+.rejilla-casos {
+  display: grid;
+  gap: 1.15rem;
+  margin-top: 1.6rem;
+}
+
+@media (min-width: 48rem) {
+  .rejilla-casos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 80rem) {
+  .rejilla-casos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.ficha-caso {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  border-radius: 22px;
+  padding: 1.6rem 1.65rem 1.5rem;
+}
+
+.cabeza-caso {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* El sector va delante de la categoría técnica: un reclutador busca banca o
+   salud antes que "automatización". */
+.sector-caso {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-fox-dark);
+}
+
+.sector-caso::before {
+  content: '';
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: var(--color-fox);
+}
+
+.sello-destacado {
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream-2);
+  padding: 0.16rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.titulo-caso {
+  margin-top: 0.95rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.32rem;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--color-ink);
+}
+
+.resumen-caso {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+/* La cifra, cuando existe, en su propia franja: es lo que se recuerda de un
+   caso cuando se cierra la pestaña. */
+.metrica-caso {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-top: 1.15rem;
+  border-radius: 14px;
+  background: var(--color-cream-2);
+  padding: 0.7rem 0.9rem;
+}
+
+.valor-metrica {
+  flex-shrink: 0;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-fox-dark);
+}
+
+.etiqueta-metrica {
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: var(--color-ink-soft);
+}
+
+/* `margin-top: auto` cierra todas las tarjetas de una fila a la misma altura
+   aunque el resumen sea más corto o falte la cifra. */
+.pie-caso {
+  margin-top: auto;
+  padding-top: 1.2rem;
+}
+
+.enlaces-caso {
+  display: flex;
+  gap: 1.1rem;
+  margin-top: 0.95rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.estado-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.estado-vacio img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.estado-vacio p {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-faint);
+}
+
+/* ---------- Repositorios ---------- */
+
+.rejilla-repos {
+  display: grid;
+  gap: 1.15rem;
+  margin-top: 1.6rem;
+}
+
+@media (min-width: 48rem) {
+  .rejilla-repos {
+    grid-template-columns: repeat(min(var(--columnas, 3), 2), minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 80rem) {
+  .rejilla-repos {
+    grid-template-columns: repeat(var(--columnas, 3), minmax(0, 1fr));
+  }
+}
+
+/* Un repositorio solo se cuenta en horizontal: la tarjeta se reparte en dos
+   mitades y usa el ancho en vez de dejar dos huecos al lado. */
+@media (min-width: 56rem) {
+  .es-sola .ficha-repo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    /* Poco aire entre filas y mucho entre columnas: al repartir en dos, el
+       hueco vertical del apilado deja la tarjeta con agujeros. */
+    gap: 0.55rem 2.5rem;
+    align-items: start;
+    padding: 1.9rem 2.25rem 1.6rem;
+  }
+
+  .es-sola .cabeza-repo {
+    grid-column: 1 / -1;
+  }
+
+  .es-sola .nombre-repo {
+    grid-column: 1;
+    margin-top: 0.55rem;
+    margin-bottom: 0;
+    font-size: 1.3rem;
+  }
+
+  .es-sola .resumen-nota {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 0;
+    font-size: 0.95rem;
+  }
+
+  .es-sola .temas-nota {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    margin-top: 0.75rem;
+    align-content: start;
+  }
+
+  .es-sola .pie-repo {
+    grid-column: 1 / -1;
+    margin-top: 0.85rem;
+    border-top: 1px solid var(--color-line);
+  }
+}
+
+.ficha-repo {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  border-radius: 22px;
+  padding: 1.55rem 1.6rem 1.4rem;
+}
+
+.cabeza-repo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.icono-repo {
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 12px;
+  background: var(--color-cream-2);
+  color: var(--color-fox-dark);
+}
+
+.icono-repo svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.estrellas-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-faint);
+}
+
+.estrellas-repo svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  color: var(--color-amber);
+}
+
+.nombre-repo {
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  word-break: break-word;
+  transition: color 0.25s ease;
+}
+
+.ficha-repo:hover .nombre-repo {
+  color: var(--color-fox-dark);
+}
+
+.pie-repo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 1.2rem;
+}
+
+.lenguaje-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-faint);
+}
+
+.punto-lenguaje {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+}
+
+.separador-repo {
+  opacity: 0.5;
+}
+
+.ver-codigo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-fox-dark);
+}
