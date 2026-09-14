@@ -24,6 +24,25 @@ A la décima, el rojo dejó de significar nada y las pruebas se volvieron un tr�
 mira si pasó, y si no pasó se corre otra vez. En ese punto la suite ya no protege
 producción, solo consume tiempo de CI.
 
+<figure class="pieza">
+<div class="degradacion">
+<p class="pieza-titulo">Qué hace el equipo cada vez que el pipeline se pone rojo por causas ajenas</p>
+<div class="episodio">
+<span class="episodio-marca">1.ª vez</span>
+<span class="episodio-barra"><span style="width:100%">Investiga: capturas, logs, media mañana</span></span>
+</div>
+<div class="episodio">
+<span class="episodio-marca">3.ª vez</span>
+<span class="episodio-barra"><span style="width:55%">Reejecuta antes de mirar</span></span>
+</div>
+<div class="episodio">
+<span class="episodio-marca">10.ª vez</span>
+<span class="episodio-barra es-corta" style="--ancho:14%"><span style="width:14%"></span><em>El rojo dejó de significar algo</em></span>
+</div>
+</div>
+<figcaption>La suite no se rompe de golpe: se le va la credibilidad episodio a episodio. Lo he visto degradarse así en semanas.</figcaption>
+</figure>
+
 Lo he visto degradarse así en cuestión de semanas, y casi nunca por un mal diseño de las
 pruebas. Basta con un rate limit, un cambio de DOM que no anunciaron o un servidor gratuito
 que se duerme.
@@ -36,6 +55,31 @@ confianza del equipo.
 
 Un sitio de demo público es un tercer motivo permanente. No lo controlas, no te avisa
 cuando cambia, y su disponibilidad no es tu problema hasta que rompe tu pipeline.
+
+<figure class="pieza">
+<p class="pieza-titulo">De qué depende cada suite para ponerse en verde</p>
+<div class="comparativa">
+<div class="lado es-flojo">
+<p class="lado-rotulo">Contra un sitio que no controlas</p>
+<p class="lado-titulo">Cuatro motivos de fallo</p>
+<ul>
+<li>El código cambió</li>
+<li>La prueba está mal escrita</li>
+<li>El sitio se cayó, cambió su DOM o te limitó por rate limit</li>
+<li>La red entre el runner y ese sitio</li>
+</ul>
+</div>
+<div class="lado es-bueno">
+<p class="lado-rotulo">Con la app dentro del repositorio</p>
+<p class="lado-titulo">Dos motivos de fallo</p>
+<ul>
+<li>El código cambió</li>
+<li>La prueba está mal escrita</li>
+</ul>
+</div>
+</div>
+<figcaption>Los dos motivos que sobran son ruido, y el ruido se paga con la confianza del equipo. Una suite hermética corre igual hoy, en la máquina de otra persona y dentro de tres años.</figcaption>
+</figure>
 
 ## Qué hice en el repo
 

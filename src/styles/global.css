@@ -2757,3 +2757,1149 @@ html {
     font-size: 1.55rem;
   }
 }
+
+/* ==========================================================================
+   Notas — la lectura
+   Antes vivían dentro de la página. Se mueven aquí porque ahora la nota tiene
+   cabecera, índice y cierre además del cuerpo, y el conjunto se lee mejor de
+   corrido que repartido entre dos archivos.
+   ========================================================================== */
+
+/* Cuánto queda por leer. `transform` en vez de `width`: solo compone, no
+   dispara reflow en cada scroll. */
+.progreso-lectura {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  background: transparent;
+  pointer-events: none;
+}
+
+.progreso-lectura span {
+  display: block;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--color-fox), var(--color-fox-dark));
+}
+
+.cabecera-nota {
+  position: relative;
+  padding-top: 7.5rem;
+  padding-bottom: 2.5rem;
+  background:
+    radial-gradient(110% 140% at 12% 0%, var(--color-cream-2) 0%, rgba(255, 250, 244, 0) 62%),
+    linear-gradient(180deg, rgba(255, 243, 231, 0.75) 0%, rgba(255, 250, 244, 0) 100%);
+  border-bottom: 1px solid var(--color-line);
+}
+
+@media (min-width: 48rem) {
+  .cabecera-nota {
+    padding-top: 9rem;
+    padding-bottom: 3rem;
+  }
+}
+
+.volver-notas {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-faint);
+  transition: color 0.25s ease;
+}
+
+.volver-notas svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  transition: transform 0.25s ease;
+}
+
+.volver-notas:hover {
+  color: var(--color-fox-dark);
+}
+
+.volver-notas:hover svg {
+  transform: translateX(-3px);
+}
+
+.temas-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+}
+
+.titulo-articulo {
+  margin-top: 1.1rem;
+  max-width: 20ch;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: clamp(2.1rem, 1.35rem + 3.1vw, 4rem);
+  line-height: 1.03;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+  color: var(--color-ink);
+}
+
+.entradilla {
+  margin-top: 1.3rem;
+  max-width: 44ch;
+  font-size: clamp(1.02rem, 0.96rem + 0.3vw, 1.24rem);
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+/* La firma va arriba: en una nota técnica, quién la escribe es parte del
+   argumento. */
+.firma-nota {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 2.25rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.firma-nota img {
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.nombre-firma {
+  font-weight: 600;
+  font-size: 0.94rem;
+  color: var(--color-ink);
+}
+
+.cargo-firma {
+  font-size: 0.82rem;
+  color: var(--color-faint);
+}
+
+.datos-firma {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-faint);
+}
+
+/* ---------- El reparto: índice al lado, texto en su medida ---------- */
+
+.reparto-nota {
+  display: grid;
+  gap: 2rem;
+  padding-top: 2.75rem;
+}
+
+@media (min-width: 68rem) {
+  .reparto-nota {
+    grid-template-columns: minmax(0, 15.5rem) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: start;
+  }
+}
+
+.columna-indice {
+  min-width: 0;
+}
+
+@media (min-width: 68rem) {
+  .columna-indice {
+    position: sticky;
+    /* Bajo la barra de navegación, con aire. */
+    top: 6.5rem;
+  }
+}
+
+.indice-lateral {
+  border: 1px solid var(--color-line);
+  border-radius: 18px;
+  background: var(--color-surface);
+  padding: 1.1rem 1.15rem;
+}
+
+.indice-lateral summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+}
+
+.indice-lateral summary::-webkit-details-marker {
+  display: none;
+}
+
+.rotulo-lateral {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.pico-indice {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--color-faint);
+  transition: transform 0.25s ease;
+}
+
+.indice-lateral[open] .pico-indice {
+  transform: rotate(180deg);
+}
+
+/* En escritorio el índice no se pliega: es una columna, no un desplegable. */
+@media (min-width: 68rem) {
+  .indice-lateral summary {
+    cursor: default;
+  }
+
+  .pico-indice {
+    display: none;
+  }
+}
+
+.indice-lateral ol {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.indice-lateral a {
+  display: flex;
+  gap: 0.6rem;
+  border-radius: 10px;
+  padding: 0.42rem 0.5rem;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: var(--color-ink-soft);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.indice-lateral a:hover {
+  background: var(--color-cream-2);
+  color: var(--color-ink);
+}
+
+.indice-lateral a.is-activo {
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+  font-weight: 600;
+}
+
+.numero-lateral {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  opacity: 0.6;
+}
+
+.compartir-lateral {
+  margin-top: 1.25rem;
+  padding-left: 0.15rem;
+}
+
+.botones-compartir {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.boton-compartir {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  transition: color 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
+}
+
+.boton-compartir:hover {
+  color: var(--color-fox-dark);
+  border-color: var(--color-coral);
+  transform: translateY(-2px);
+}
+
+.boton-compartir svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.aviso-copiado {
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-fox-dark);
+}
+
+/* ---------- El cierre ---------- */
+
+.cierre-nota {
+  margin-top: 4.5rem;
+}
+
+.ficha-autor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  border-radius: 26px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-soft);
+}
+
+@media (min-width: 48rem) {
+  .ficha-autor {
+    padding: 2.25rem 2.5rem;
+  }
+}
+
+.ficha-autor img {
+  width: 4.25rem;
+  height: 4.25rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ficha-autor > div {
+  flex: 1 1 20rem;
+}
+
+.enlaces-autor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.35rem;
+}
+
+.enlaces-autor .btn {
+  padding: 0.62rem 1.1rem;
+  font-size: 0.85rem;
+}
+
+.siguientes-notas {
+  margin-top: 3.5rem;
+}
+
+.rejilla-siguientes {
+  display: grid;
+  gap: 1.15rem;
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 48rem) {
+  .rejilla-siguientes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.tarjeta-siguiente {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  border-radius: 22px;
+  padding: 1.5rem 1.6rem 1.4rem;
+}
+
+.titulo-siguiente {
+  display: block;
+  margin-top: 0.7rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.3rem;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.sello-relacionada {
+  border-radius: 999px;
+  background: var(--color-fox-tint);
+  padding: 0.12rem 0.55rem;
+  color: var(--color-fox-dark);
+}
+
+/* ---------- El cuerpo ---------- */
+
+.nota {
+  min-width: 0;
+  /* Medida de lectura: más de ~70 caracteres por línea y el ojo pierde el
+     renglón al volver. */
+  max-width: 68ch;
+  font-size: 1.075rem;
+  line-height: 1.72;
+  color: var(--color-ink-soft);
+}
+
+.nota > * + * {
+  margin-top: 1.35em;
+}
+
+/* La entrada de la nota, un punto más grande: marca dónde empieza el texto sin
+   necesidad de un rótulo. */
+.nota > p:first-child {
+  font-size: 1.2rem;
+  line-height: 1.62;
+  color: var(--color-ink);
+}
+
+.nota h2 {
+  margin-top: 2.5em;
+  scroll-margin-top: 6rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: clamp(1.5rem, 1.32rem + 0.7vw, 1.95rem);
+  line-height: 1.16;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+  color: var(--color-ink);
+}
+
+/* Filete corto sobre cada sección: separa sin la dureza de una línea completa. */
+.nota h2::before {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-bottom: 1rem;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-fox), var(--color-amber));
+}
+
+.nota h3 {
+  margin-top: 2em;
+  scroll-margin-top: 6rem;
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.nota strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.nota a {
+  color: var(--color-fox-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-coral);
+  transition: text-decoration-color 0.2s ease;
+}
+
+.nota a:hover {
+  text-decoration-color: var(--color-fox-dark);
+}
+
+.nota ol,
+.nota ul {
+  padding-left: 1.35em;
+}
+
+.nota ol {
+  list-style: decimal;
+}
+
+.nota ul {
+  list-style: disc;
+}
+
+.nota li + li {
+  margin-top: 0.6em;
+}
+
+.nota li::marker {
+  color: var(--color-fox);
+  font-weight: 600;
+}
+
+.nota blockquote {
+  border-left: 3px solid var(--color-fox);
+  padding-left: 1.1em;
+  font-style: italic;
+  color: var(--color-ink);
+}
+
+.nota code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--color-cream-2);
+  border: 1px solid var(--color-line);
+  border-radius: 5px;
+  padding: 0.1em 0.36em;
+  color: var(--color-fox-dark);
+}
+
+.nota pre {
+  background: var(--color-navy);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+  overflow-x: auto;
+  font-size: 0.855rem;
+  line-height: 1.68;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Dentro de un bloque, el código hereda el fondo del bloque. */
+.nota pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+.nota hr {
+  margin: 3em 0;
+  border: 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.nota img {
+  border-radius: 16px;
+}
+
+@media (max-width: 47.99rem) {
+  .datos-firma {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .nota {
+    font-size: 1.02rem;
+  }
+
+  .nota > p:first-child {
+    font-size: 1.1rem;
+  }
+
+  .nota pre {
+    padding: 1rem 1.05rem;
+    font-size: 0.79rem;
+  }
+}
+
+/* ==========================================================================
+   Notas — piezas de contenido
+   Diagramas, avisos y comparativas que las notas insertan como HTML dentro del
+   markdown. Se definen aquí y no por nota para que todas hablen el mismo
+   idioma visual: un aviso se ve igual en las tres.
+   ========================================================================== */
+
+/* Las piezas rompen la medida de lectura a propósito: el texto se lee en 68ch,
+   pero un diagrama necesita el ancho de la columna entera. */
+.pieza {
+  margin-top: 2.4em;
+  margin-bottom: 2.4em;
+  width: 100%;
+}
+
+@media (min-width: 68rem) {
+  .pieza {
+    width: min(100%, 46rem);
+  }
+}
+
+.pieza-titulo {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.pieza figcaption,
+.pieza-pie {
+  margin-top: 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--color-faint);
+}
+
+/* ---------- Aviso ---------- */
+
+.aviso {
+  display: flex;
+  gap: 1rem;
+  border-radius: 18px;
+  border: 1px solid var(--color-line);
+  border-left: 3px solid var(--color-fox);
+  background: var(--color-surface);
+  padding: 1.2rem 1.35rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.aviso-icono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 10px;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+}
+
+.aviso-icono svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.aviso p {
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.62;
+}
+
+.aviso p + p {
+  margin-top: 0.6rem;
+}
+
+.aviso-rotulo {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-fox-dark);
+  margin-bottom: 0.35rem;
+}
+
+/* El aviso de cuidado usa el cian de la paleta: distinto del naranja de marca,
+   pero sin salirse de ella. */
+.aviso.es-ojo {
+  border-left-color: var(--color-cyan-deep);
+}
+
+.aviso.es-ojo .aviso-icono {
+  background: var(--color-cyan-tint);
+  color: var(--color-cyan-deep);
+}
+
+.aviso.es-ojo .aviso-rotulo {
+  color: var(--color-cyan-deep);
+}
+
+/* ---------- Comparativa de dos planos ---------- */
+
+.comparativa {
+  display: grid;
+  gap: 1px;
+  background: var(--color-line-strong);
+  border: 1px solid var(--color-line-strong);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+@media (min-width: 40rem) {
+  .comparativa {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.lado {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  padding: 1.35rem 1.4rem 1.5rem;
+}
+
+.lado.es-flojo {
+  background: var(--color-cream);
+}
+
+.lado-rotulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.lado.es-bueno .lado-rotulo {
+  color: var(--color-fox-dark);
+}
+
+.lado-titulo {
+  margin-top: 0.55rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.12rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.lado ul {
+  margin-top: 0.9rem;
+  padding-left: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.lado li {
+  display: flex;
+  gap: 0.55rem;
+  margin-top: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.lado li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-top: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-line-strong);
+}
+
+.lado.es-bueno li::before {
+  background: var(--color-fox);
+}
+
+/* ---------- Pila de capas (una caja que lo mezcla todo / capas separadas) ---------- */
+
+.pila {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.95rem;
+}
+
+.capa {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  color: var(--color-ink);
+}
+
+.capa-marca {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  min-width: 5.2rem;
+}
+
+/* Cuando las cuatro responsabilidades viven en la misma caja, se dibujan
+   dentro de un solo marco: es literalmente el problema. */
+.bloque-mezcla {
+  margin-top: 0.95rem;
+  border-radius: 14px;
+  border: 1px dashed var(--color-line-strong);
+  background: var(--color-cream);
+  padding: 0.8rem;
+}
+
+.bloque-mezcla .capa {
+  background: var(--color-surface);
+  border-style: solid;
+}
+
+.bloque-mezcla .capa + .capa {
+  margin-top: 0.4rem;
+}
+
+.bloque-mezcla-pie {
+  margin-top: auto;
+  padding-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  color: var(--color-faint);
+  text-align: center;
+}
+
+/* ---------- Regla de volumen ---------- */
+
+.regla-volumen {
+  border-radius: 20px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 1.5rem 1.5rem 1.35rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.tramos {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 2px;
+  margin-top: 1.1rem;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.tramo {
+  height: 0.75rem;
+}
+
+.tramo.es-uno {
+  background: var(--color-line-strong);
+}
+
+.tramo.es-dos {
+  background: var(--color-amber);
+}
+
+.tramo.es-tres {
+  background: linear-gradient(90deg, var(--color-fox), var(--color-fox-dark));
+}
+
+.marcas {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 2px;
+  margin-top: 0.6rem;
+}
+
+.marca {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--color-faint);
+}
+
+.zonas {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.15rem;
+}
+
+@media (min-width: 44rem) {
+  .zonas {
+    grid-template-columns: 1fr 1fr 1.2fr;
+    gap: 1rem;
+  }
+}
+
+.zona {
+  border-top: 2px solid var(--color-line);
+  padding-top: 0.65rem;
+}
+
+.zona.es-uno {
+  border-top-color: var(--color-line-strong);
+}
+
+.zona.es-dos {
+  border-top-color: var(--color-amber);
+}
+
+.zona.es-tres {
+  border-top-color: var(--color-fox);
+}
+
+.zona-titulo {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.zona p {
+  margin: 0.3rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+/* ---------- Flujo de pasos ---------- */
+
+.flujo {
+  display: grid;
+  gap: 0.65rem;
+  border-radius: 20px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 1.4rem;
+  box-shadow: var(--shadow-soft);
+}
+
+@media (min-width: 48rem) {
+  .flujo {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 1.6rem 1.5rem;
+  }
+}
+
+.paso {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream);
+  padding: 0.85rem 0.95rem 0.9rem;
+}
+
+.paso.es-clave {
+  border-color: var(--color-coral);
+  background: var(--color-fox-tint);
+}
+
+.paso-marca {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.paso.es-clave .paso-marca {
+  color: var(--color-fox-dark);
+}
+
+.paso-titulo {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.paso p {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--color-ink-soft);
+}
+
+/* La flecha entre pasos apunta hacia abajo cuando la fila se apila. */
+.paso + .paso::before {
+  content: '';
+  position: absolute;
+  background: var(--color-line-strong);
+}
+
+.paso + .paso::before {
+  top: -0.45rem;
+  left: 50%;
+  width: 1px;
+  height: 0.45rem;
+}
+
+@media (min-width: 48rem) {
+  .paso + .paso::before {
+    top: 50%;
+    left: -0.5rem;
+    width: 0.5rem;
+    height: 1px;
+  }
+}
+
+/* ---------- Salidas del flujo (las tres categorías) ---------- */
+
+.salidas {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+}
+
+@media (min-width: 44rem) {
+  .salidas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.salida {
+  border-radius: 14px;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream);
+  padding: 0.85rem 0.95rem 0.95rem;
+}
+
+.salida.es-defecto {
+  border-color: var(--color-coral);
+  background: var(--color-fox-tint);
+}
+
+.salida-numero {
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-line-strong);
+}
+
+.salida.es-defecto .salida-numero {
+  color: var(--color-fox);
+}
+
+.salida-titulo {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.salida p {
+  margin: 0.3rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--color-ink-soft);
+}
+
+/* ---------- Tabla ---------- */
+
+.tabla-envoltorio {
+  overflow-x: auto;
+  border-radius: 18px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.tabla-nota {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  min-width: 34rem;
+}
+
+.tabla-nota th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  font-weight: 500;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-line-strong);
+  background: var(--color-cream);
+}
+
+.tabla-nota td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-line);
+  vertical-align: top;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.tabla-nota tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabla-nota td:first-child {
+  color: var(--color-ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tabla-nota code {
+  white-space: nowrap;
+}
+
+/* ---------- Degradación: una barra por episodio ---------- */
+
+.degradacion {
+  display: grid;
+  gap: 0.7rem;
+  border-radius: 20px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 1.45rem 1.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.episodio {
+  display: grid;
+  grid-template-columns: 4.2rem 1fr;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.episodio-marca {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--color-faint);
+  text-align: right;
+}
+
+.episodio-barra {
+  position: relative;
+  height: 1.85rem;
+  border-radius: 8px;
+  background: var(--color-cream-2);
+  overflow: hidden;
+}
+
+.episodio-barra {
+  font-size: 0.78rem;
+}
+
+.episodio-barra span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: flex;
+  align-items: center;
+  padding-left: 0.7rem;
+  color: #fff;
+  white-space: nowrap;
+  background: linear-gradient(90deg, var(--color-fox), var(--color-fox-dark));
+}
+
+/* Cuando la barra se queda corta, el texto no cabe dentro y se sale al hueco
+   de al lado, donde sí hay sitio. */
+.episodio-barra.es-corta span {
+  color: var(--color-ink-soft);
+  background: var(--color-line-strong);
+  padding-left: 0;
+  padding-right: 0;
+  justify-content: flex-start;
+}
+
+.episodio-barra.es-corta em {
+  position: absolute;
+  left: calc(var(--ancho, 20%) + 0.7rem);
+  font-style: normal;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 39.99rem) {
+  .episodio {
+    grid-template-columns: 3.4rem 1fr;
+    gap: 0.6rem;
+  }
+
+  .episodio-marca {
+    font-size: 0.6rem;
+  }
+
+  .episodio-barra span,
+  .episodio-barra.es-corta em {
+    font-size: 0.72rem;
+  }
+}

@@ -6,156 +6,289 @@ import { profile } from '../../data/site';
 
 export async function getStaticPaths() {
   const notas = await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador);
-  return notas.map((nota) => ({ params: { slug: nota.id }, props: { nota } }));
+  return notas.map((nota) => ({ params: { slug: nota.id }, props: { nota, notas } }));
 }
 
-const { nota } = Astro.props;
-const { Content } = await render(nota);
+const { nota, notas } = Astro.props;
+const { Content, headings } = await render(nota);
 const minutos = nota.data.minutos ?? minutosDeLectura(nota.body ?? '');
+
+// El índice se arma con los encabezados de segundo nivel: son las paradas de
+// la nota. Los de tercero desordenarían la columna sin aportar navegación.
+const secciones = headings.filter((h) => h.depth === 2);
+
+/* Las siguientes notas se eligen por tema compartido y, si no alcanzan, se
+ * completan con las más recientes. Una nota sin salida es una nota que termina
+ * en el botón de atrás. */
+const otras = notas.filter((n) => n.id !== nota.id);
+const puntua = (n: (typeof otras)[number]) =>
+  n.data.etiquetas.filter((t) => nota.data.etiquetas.includes(t)).length;
+const siguientes = [...otras]
+  .sort((a, b) => puntua(b) - puntua(a) || b.data.fecha.getTime() - a.data.fecha.getTime())
+  .slice(0, 2)
+  .map((n) => ({
+    id: n.id,
+    titulo: n.data.titulo,
+    resumen: n.data.resumen,
+    etiquetas: n.data.etiquetas,
+    minutos: n.data.minutos ?? minutosDeLectura(n.body ?? ''),
+    comparte: puntua(n) > 0,
+  }));
+
+const url = new URL(Astro.url.pathname, Astro.site).href;
+
+/* Datos estructurados del artículo. Sin esto Google ve texto; con esto sabe
+ * que es un artículo, de quién, de cuándo y de cuánto se tarda en leerlo. */
+const articulo = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: nota.data.titulo,
+  description: nota.data.resumen,
+  datePublished: nota.data.fecha.toISOString(),
+  dateModified: nota.data.fecha.toISOString(),
+  inLanguage: 'es',
+  keywords: nota.data.etiquetas.join(', '),
+  wordCount: (nota.body ?? '').trim().split(/\s+/).length,
+  timeRequired: `PT${minutos}M`,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  author: {
+    '@type': 'Person',
+    name: profile.nombreCompleto,
+    url: Astro.site?.href,
+    jobTitle: 'Quality Engineer',
+  },
+  publisher: { '@type': 'Organization', name: 'Girek Study', url: Astro.site?.href },
+};
 ---
 
 <Layout title={`${nota.data.titulo} — Girek Study`} description={nota.data.resumen}>
-  <article class="mx-auto max-w-3xl px-5 pt-32 pb-20 md:px-8 md:pt-40">
-    <a
-      href="/notas"
-      class="link-underline font-mono text-xs text-[var(--color-faint)] transition-colors hover:text-[var(--color-fox-deep)]"
-      >← Todas las notas</a
-    >
+  <script type="application/ld+json" set:html={JSON.stringify(articulo)} is:inline />
 
-    <header class="mt-6">
-      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-faint)]">
-        <time datetime={nota.data.fecha.toISOString()}>{formatearFecha(nota.data.fecha)}</time>
-        <span>·</span>
-        <span>{minutos} min de lectura</span>
-        {nota.data.etiquetas.map((t) => <span>#{t}</span>)}
+  {/* Cuánto queda. Es la única señal que el lector pide en una lectura larga y
+      no cuesta ni un reflow: solo cambia el ancho de una barra fija. */}
+  <div class="progreso-lectura" aria-hidden="true"><span id="barra-progreso"></span></div>
+
+  <article>
+    <header class="cabecera-nota">
+      <div class="mx-auto max-w-[82rem] px-5 md:px-8">
+        <a href="/notas" class="volver-notas">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H6M13 5.5 6.5 12 13 18.5" />
+          </svg>
+          Todas las notas
+        </a>
+
+        <div class="temas-cabecera">
+          {nota.data.etiquetas.map((tema) => <span class="tema-claro">{tema}</span>)}
+          {nota.data.borrador && <span class="sello-borrador">borrador</span>}
+        </div>
+
+        <h1 class="titulo-articulo">{nota.data.titulo}</h1>
+        <p class="entradilla">{nota.data.resumen}</p>
+
+        {/* La firma va arriba y con cara: en una nota técnica, quién la escribe
+            es parte del argumento. */}
+        <div class="firma-nota">
+          <img src="/girek-foto-sm.png" alt="" width="48" height="48" loading="eager" />
+          <div class="min-w-0">
+            <p class="nombre-firma">{profile.nombreCompleto}</p>
+            <p class="cargo-firma">Quality Engineer · {profile.ubicacion}</p>
+          </div>
+          <div class="datos-firma">
+            <time datetime={nota.data.fecha.toISOString()}>{formatearFecha(nota.data.fecha)}</time>
+            <span aria-hidden="true">·</span>
+            <span>{minutos} min de lectura</span>
+          </div>
+        </div>
       </div>
-
-      <h1 class="mt-4 font-display text-[2.1rem] leading-[1.08] tracking-tight md:text-5xl">
-        {nota.data.titulo}
-      </h1>
-      <p class="mt-5 text-lg leading-relaxed text-[var(--color-ink-soft)]">{nota.data.resumen}</p>
     </header>
 
-    <hr class="my-10 border-[var(--color-line)]" />
+    <div class="mx-auto max-w-[82rem] px-5 pb-20 md:px-8">
+      <div class="reparto-nota">
+        {/* En escritorio el índice acompaña la lectura pegado a un lado; por
+            debajo de 68rem se pliega en un desplegable que no roba alto. */}
+        {secciones.length > 1 && (
+          <aside class="columna-indice">
+            <details class="indice-lateral" open>
+              <summary>
+                <span class="rotulo-lateral">En esta nota</span>
+                <svg class="pico-indice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </summary>
+              <nav aria-label="Índice de la nota">
+                <ol>
+                  {secciones.map((seccion, n) => (
+                    <li>
+                      <a href={`#${seccion.slug}`} data-indice={seccion.slug}>
+                        <span class="numero-lateral">{String(n + 1).padStart(2, '0')}</span>
+                        <span>{seccion.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </details>
 
-    <div class="nota">
-      <Content />
+            <div class="compartir-lateral">
+              <p class="rotulo-lateral">Compartir</p>
+              <div class="botones-compartir">
+                <a
+                  class="boton-compartir"
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="Compartir en LinkedIn"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM3 9h4v12H3V9Zm6.5 0h3.8v1.65h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.5 4.76 5.75V21h-4v-5.65c0-1.35-.03-3.08-1.9-3.08-1.9 0-2.2 1.46-2.2 2.98V21h-3.97V9Z" />
+                  </svg>
+                </a>
+                <a
+                  class="boton-compartir"
+                  href={`https://wa.me/?text=${encodeURIComponent(`${nota.data.titulo} — ${url}`)}`}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="Compartir por WhatsApp"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.94.53 3.76 1.45 5.32L2 22l4.98-1.6a9.8 9.8 0 0 0 5.06 1.4h.01c5.43 0 9.84-4.4 9.84-9.84C21.89 6.4 17.48 2 12.04 2Zm5.75 13.9c-.24.68-1.4 1.3-1.93 1.35-.5.05-.96.24-3.24-.68-2.73-1.1-4.45-3.9-4.58-4.08-.13-.18-1.1-1.46-1.1-2.79 0-1.33.7-1.98.95-2.25.24-.27.53-.34.71-.34.18 0 .35 0 .5.01.16.01.38-.6.59.45.24.52.8 1.85.87 1.98.07.13.12.29.02.47-.1.18-.15.29-.29.45-.15.16-.31.36-.44.48-.15.13-.3.28-.13.56.17.27.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.32 1.44.28.14.44.12.6-.07.16-.18.7-.81.88-1.09.18-.27.36-.22.6-.13.24.09 1.55.73 1.81.87.27.13.44.2.51.31.06.11.06.65-.18 1.33Z" />
+                  </svg>
+                </a>
+                <button type="button" class="boton-compartir" id="copiar-enlace" aria-label="Copiar el enlace">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M10.5 13.5a3.5 3.5 0 0 0 5 0l3-3a3.54 3.54 0 0 0-5-5l-1.2 1.2" />
+                    <path d="M13.5 10.5a3.5 3.5 0 0 0-5 0l-3 3a3.54 3.54 0 0 0 5 5l1.2-1.2" />
+                  </svg>
+                </button>
+              </div>
+              <p class="aviso-copiado" id="aviso-copiado" role="status" hidden>Enlace copiado</p>
+            </div>
+          </aside>
+        )}
+
+        <div class="nota">
+          <Content />
+        </div>
+      </div>
+
+      <footer class="cierre-nota">
+        <div class="ficha-autor">
+          <img src="/girek-foto-sm.png" alt="" width="72" height="72" loading="lazy" />
+          <div class="min-w-0">
+            <p class="eyebrow">Quién escribe</p>
+            <p class="mt-2 font-display text-xl leading-tight tracking-tight">
+              {profile.nombreCompleto}
+            </p>
+            <p class="mt-2 text-[0.92rem] leading-relaxed text-[var(--color-ink-soft)]">
+              Diez años en calidad de software, de programador Java a liderar chapters de QA en
+              banca, fintech y salud. En <a href="/" class="link-underline text-[var(--color-fox-dark)]">Girek Study</a>
+              publico los frameworks, las decisiones de diseño detrás de cada uno y lo que aprendo por
+              el camino.
+            </p>
+            <div class="enlaces-autor">
+              <a href="/trayectoria" class="btn btn-ghost">Ver la trayectoria</a>
+              <a href={profile.links.github} target="_blank" rel="noopener" class="btn btn-ghost">
+                Repositorios
+              </a>
+              <a href="/rss.xml" class="btn btn-ghost">RSS</a>
+            </div>
+          </div>
+        </div>
+
+        {siguientes.length > 0 && (
+          <section class="siguientes-notas">
+            <p class="eyebrow">Sigue por aquí</p>
+            <div class="rejilla-siguientes">
+              {siguientes.map((otra) => (
+                <a href={`/notas/${otra.id}/`} class="card card-hover tarjeta-siguiente group">
+                  <span class="meta-nota">
+                    {otra.comparte && <span class="sello-relacionada">Mismo tema</span>}
+                    <span>{otra.minutos} min</span>
+                  </span>
+                  <span class="titulo-siguiente">{otra.titulo}</span>
+                  <span class="resumen-nota">{otra.resumen}</span>
+                  <span class="temas-nota">
+                    {otra.etiquetas.map((tema) => (
+                      <span class="tema-claro">{tema}</span>
+                    ))}
+                  </span>
+                  <span class="pie-nota">
+                    Leer
+                    <svg class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                    </svg>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </footer>
     </div>
-
-    <footer class="mt-14 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 md:p-7">
-      <p class="text-sm leading-relaxed text-[var(--color-ink-soft)]">
-        Escrito por <strong class="text-[var(--color-ink)]">{profile.nombreCompleto}</strong>, Quality
-        Engineer. Publico en <a href="/" class="link-underline text-[var(--color-fox-deep)]">Girek Study</a>
-        material abierto sobre automatización de pruebas.
-      </p>
-      <p class="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs">
-        <a href={profile.links.linkedin} target="_blank" rel="noopener" class="link-underline text-[var(--color-fox-deep)]"
-          >LinkedIn</a
-        >
-        <a href={profile.links.github} target="_blank" rel="noopener" class="link-underline text-[var(--color-fox-deep)]"
-          >GitHub</a
-        >
-        <a href="/rss.xml" class="link-underline text-[var(--color-fox-deep)]">RSS</a>
-      </p>
-    </footer>
   </article>
 </Layout>
 
-<style is:global>
-  /* Tipografía de lectura larga. Se define aquí y no en global.css porque solo
-     aplica al cuerpo de una nota. */
-  .nota {
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    color: var(--color-ink-soft);
+<script>
+  /* Barra de progreso. `scrollHeight - innerHeight` es lo que de verdad se
+   * puede recorrer; usar solo el alto del documento deja la barra sin llenarse
+   * nunca. */
+  const barra = document.getElementById('barra-progreso');
+  const marcarProgreso = () => {
+    const recorrible = document.documentElement.scrollHeight - window.innerHeight;
+    const avance = recorrible > 0 ? Math.min(window.scrollY / recorrible, 1) : 0;
+    if (barra) barra.style.transform = `scaleX(${avance})`;
+  };
+  marcarProgreso();
+  window.addEventListener('scroll', marcarProgreso, { passive: true });
+  window.addEventListener('resize', marcarProgreso);
+
+  /* Sección activa en el índice. Se observa el encabezado, no la sección
+   * entera: una sección más alta que la ventana nunca dejaría de estar en
+   * pantalla y el resaltado se quedaría atascado. */
+  const enlaces = new Map<string, HTMLAnchorElement>();
+  document.querySelectorAll<HTMLAnchorElement>('[data-indice]').forEach((a) => {
+    enlaces.set(a.dataset.indice ?? '', a);
+  });
+
+  if (enlaces.size > 0) {
+    const vistos = new Set<string>();
+
+    const resaltar = () => {
+      // El activo es el último encabezado que ya pasó por el borde superior.
+      let activo = '';
+      for (const [id] of enlaces) {
+        const encabezado = document.getElementById(id);
+        if (encabezado && encabezado.getBoundingClientRect().top < 140) activo = id;
+      }
+      if (!activo && vistos.size === 0) activo = [...enlaces.keys()][0] ?? '';
+      enlaces.forEach((enlace, id) => enlace.classList.toggle('is-activo', id === activo));
+    };
+
+    resaltar();
+    window.addEventListener('scroll', resaltar, { passive: true });
   }
 
-  .nota > * + * {
-    margin-top: 1.35em;
-  }
+  /* Copiar el enlace. `navigator.clipboard` no existe fuera de un contexto
+   * seguro, así que el botón se esconde en vez de fallar al pulsarlo. */
+  const boton = document.getElementById('copiar-enlace');
+  const aviso = document.getElementById('aviso-copiado');
 
-  .nota h2 {
-    margin-top: 2.6em;
-    font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
-    font-size: 1.6rem;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: var(--color-ink);
+  if (boton) {
+    if (!navigator.clipboard) {
+      boton.hidden = true;
+    } else {
+      boton.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          if (aviso) {
+            aviso.hidden = false;
+            setTimeout(() => (aviso.hidden = true), 2200);
+          }
+        } catch {
+          /* Si el navegador lo deniega, no hay nada que anunciar. */
+        }
+      });
+    }
   }
-
-  .nota h3 {
-    margin-top: 2em;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--color-ink);
-  }
-
-  .nota strong {
-    color: var(--color-ink);
-    font-weight: 600;
-  }
-
-  .nota a {
-    color: var(--color-fox-deep);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-  }
-
-  .nota ol,
-  .nota ul {
-    padding-left: 1.4em;
-  }
-
-  .nota ol {
-    list-style: decimal;
-  }
-
-  .nota ul {
-    list-style: disc;
-  }
-
-  .nota li + li {
-    margin-top: 0.6em;
-  }
-
-  .nota li::marker {
-    color: var(--color-fox);
-  }
-
-  .nota blockquote {
-    border-left: 3px solid var(--color-fox);
-    padding-left: 1.1em;
-    font-style: italic;
-  }
-
-  .nota code {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.875em;
-    background: var(--color-cream-2);
-    border-radius: 5px;
-    padding: 0.15em 0.4em;
-  }
-
-  .nota pre {
-    background: var(--color-navy);
-    border-radius: 12px;
-    padding: 1.1rem 1.25rem;
-    overflow-x: auto;
-    font-size: 0.85rem;
-    line-height: 1.65;
-  }
-
-  /* Dentro de un bloque, el código hereda el fondo del bloque. */
-  .nota pre code {
-    background: none;
-    padding: 0;
-    font-size: inherit;
-  }
-
-  .nota hr {
-    margin: 2.8em 0;
-    border: 0;
-    border-top: 1px solid var(--color-line);
-  }
-</style>
+</script>

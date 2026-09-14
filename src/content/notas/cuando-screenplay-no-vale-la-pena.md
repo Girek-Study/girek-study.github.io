@@ -20,6 +20,35 @@ veces es no.
 Screenplay separa cuatro cosas que el Page Object mezcla en una: **quién** actúa, **qué**
 quiere lograr, **cómo** se hace y **dónde** está el elemento.
 
+<figure class="pieza">
+<p class="pieza-titulo">Dónde vive cada responsabilidad</p>
+<div class="comparativa">
+<div class="lado es-flojo">
+<p class="lado-rotulo">Page Object</p>
+<p class="lado-titulo">Las cuatro en la misma clase</p>
+<div class="bloque-mezcla">
+<div class="capa"><span class="capa-marca">Quién</span> el propio test</div>
+<div class="capa"><span class="capa-marca">Qué</span> iniciar sesión</div>
+<div class="capa"><span class="capa-marca">Cómo</span> escribir y pulsar</div>
+<div class="capa"><span class="capa-marca">Dónde</span> los selectores</div>
+</div>
+<p class="bloque-mezcla-pie">cualquier cambio toca el mismo archivo</p>
+</div>
+<div class="lado es-bueno">
+<p class="lado-rotulo">Screenplay</p>
+<p class="lado-titulo">Cada una en su capa</p>
+<div class="pila">
+<div class="capa"><span class="capa-marca">Actor</span> Ana</div>
+<div class="capa"><span class="capa-marca">Tarea</span> IniciarSesion</div>
+<div class="capa"><span class="capa-marca">Interacción</span> Escribir, Pulsar</div>
+<div class="capa"><span class="capa-marca">Localizador</span> CampoUsuario</div>
+</div>
+<p class="bloque-mezcla-pie">cada cambio toca solo su capa</p>
+</div>
+</div>
+<figcaption>Un rediseño mueve la capa de abajo. Un segundo factor mueve la tarea. Ninguno de los dos obliga a tocar los veinte tests que empiezan iniciando sesión.</figcaption>
+</figure>
+
 ```ts
 // Page Object: la página sabe hacer cosas, y termina sabiendo demasiadas.
 await loginPage.login('demo', 'demo123');
@@ -36,6 +65,37 @@ suficientes pruebas, esa independencia te ahorra semanas al año.
 ## Dónde está la línea
 
 Mi regla, después de aplicarlo en banca, fintech y salud:
+
+<figure class="pieza">
+<div class="regla-volumen">
+<p class="pieza-titulo">Cuándo compensa, por volumen de pruebas</p>
+<div class="tramos">
+<span class="tramo es-uno"></span>
+<span class="tramo es-dos"></span>
+<span class="tramo es-tres"></span>
+</div>
+<div class="marcas">
+<span class="marca">0</span>
+<span class="marca">50</span>
+<span class="marca">200 o más</span>
+</div>
+<div class="zonas">
+<div class="zona es-uno">
+<p class="zona-titulo">Page Object alcanza</p>
+<p>El costo de mantener todavía no apareció. Screenplay solo agrega archivos que recorrer.</p>
+</div>
+<div class="zona es-dos">
+<p class="zona-titulo">Zona gris</p>
+<p>Aquí no manda el volumen, manda cuánto va a durar el proyecto. Tres años lo justifican; un piloto de dos meses, no.</p>
+</div>
+<div class="zona es-tres">
+<p class="zona-titulo">La diferencia se nota</p>
+<p>Con más de una persona tocando la suite, el Page Object empieza a mostrar clases de mil líneas y duplicación entre flujos parecidos.</p>
+</div>
+</div>
+</div>
+<figcaption>La regla después de aplicarlo en banca, fintech y salud. No es una ley: es dónde he visto que se cruza la línea.</figcaption>
+</figure>
 
 **Por debajo de unas cincuenta pruebas, el Page Object te alcanza.** Con ese volumen, el
 costo de mantener no ha aparecido todavía, y la estructura extra de Screenplay solo agrega
@@ -65,6 +125,14 @@ su cuenta. Eso es un Page Object con más archivos y peor nombre.
 **Estás automatizando para salir del paso.** Si el objetivo es cubrir cuatro flujos antes
 de una certificación y después nadie va a tocar esa suite, el mantenimiento futuro que
 Screenplay optimiza sencillamente no existe.
+
+<aside class="aviso pieza">
+<span class="aviso-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 20.5 6v6.1c0 4.4-3.5 7.5-8.5 8.7-5-1.2-8.5-4.3-8.5-8.7V6L12 3.2Z"/><path d="m8.8 12 2.3 2.3 4.1-4.4"/></svg></span>
+<div>
+<span class="aviso-rotulo">La prueba de fuego</span>
+<p>Si el equipo todavía pelea con esperas y selectores, o si nadie va a revisar el estándar, la respuesta es no. Screenplay no simplifica una herramienta que aún no se domina: la esconde detrás de otra capa.</p>
+</div>
+</aside>
 
 ## Lo que sí haría en cualquier caso
 

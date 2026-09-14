@@ -37,7 +37,18 @@ const OBJETIVOS = [
   { nombre: 'QHD', ancho: 2560, alto: 1440, dpr: 1 },
 ];
 
-const RUTAS = ['/', '/trayectoria/', '/girek-study/', '/notas/', '/portafolio/'];
+// Las notas van una por una: su cuerpo lleva diagramas, tablas y bloques de
+// código, que es justo lo que desborda en un teléfono estrecho.
+const RUTAS = [
+  '/',
+  '/trayectoria/',
+  '/girek-study/',
+  '/notas/',
+  '/portafolio/',
+  '/notas/cuando-screenplay-no-vale-la-pena/',
+  '/notas/migrar-xml-a-json-el-contrato-cambia/',
+  '/notas/suite-sin-sitios-de-terceros/',
+];
 
 const fallos = [];
 
