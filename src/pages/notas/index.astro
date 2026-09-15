@@ -44,76 +44,44 @@ const [destacada, ...resto] = notas;
     <div class="blob -z-10 left-[-6rem] top-40 h-64 w-64" style="background: var(--color-cyan-tint); animation-delay: -6s"></div>
 
     <div class="mx-auto max-w-[82rem] px-5 md:px-8">
-      {/* Antes el encabezado vivía en una columna estrecha a la izquierda y el
-          resto de la pantalla quedaba vacío. Ahora la bajada comparte fila con
-          la ficha de lo que hay publicado: el mismo espacio, dos cosas que
-          decir. */}
-      <div class="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-end lg:gap-16">
-        <div class="reveal">
-          <p class="eyebrow">Notas</p>
-          <h1 class="mt-3.5 max-w-2xl font-display text-[2.5rem] leading-[1.04] tracking-tight sm:text-5xl md:text-[3.4rem]">
-            Lo que aprendo escribiendo pruebas
-          </h1>
-          <p class="mt-5 max-w-xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
+      {/* La primera pantalla enseña lo último publicado, no una ficha de
+          recuentos: lo que se ve al llegar es una nota que se puede abrir. Las
+          cifras bajan a una línea bajo la bajada, que es todo el sitio que
+          necesitan. */}
+      <div class="reparto-notas">
+        <div class="lado-notas">
+          <p class="reveal eyebrow">Notas</p>
+          <h1 class="reveal titulo-notas" data-delay="60ms">Lo que aprendo escribiendo pruebas</h1>
+          <p class="reveal bajada-notas" data-delay="110ms">
             Decisiones de diseño, errores que costaron caro y cosas que ojalá me hubieran contado
             antes. Escritas desde el proyecto en el que ocurrieron, sin relleno.
           </p>
-        </div>
 
-        <aside class="reveal ficha-notas card p-6 md:p-7" data-delay="120ms">
-          <dl class="cifras-notas">
+          <dl class="reveal tira-cifras" data-delay="160ms">
             <div>
-              <dt>Notas</dt>
               <dd>{notas.length}</dd>
+              <dt>{notas.length === 1 ? 'nota' : 'notas'}</dt>
             </div>
             <div>
-              <dt>Temas</dt>
               <dd>{temas.length}</dd>
+              <dt>temas</dt>
             </div>
             <div>
-              <dt>Lectura</dt>
               <dd>{minutosTotales}<span class="unidad-notas">min</span></dd>
+              <dt>de lectura</dt>
             </div>
           </dl>
 
-          <p class="mt-5 text-[0.88rem] leading-relaxed text-[var(--color-ink-soft)]">
-            Se publican sin registro ni muro de pago. El canal avisa cuando sale una nueva.
-          </p>
-
-          <a href="/rss.xml" class="btn btn-ghost mt-5 w-full justify-center text-[0.92rem]">
+          <a href="/rss.xml" class="reveal enlace-rss" data-delay="210ms">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <circle cx="6.18" cy="17.82" r="2.18"></circle>
-              <path
-                d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"
-              ></path>
+              <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"></path>
             </svg>
-            Suscribirse por RSS
+            Suscribirse por RSS · sin registro ni muro de pago
           </a>
-        </aside>
-      </div>
+        </div>
 
-      {/* Los temas cierran la primera pantalla: antes de bajar ya se sabe de
-          qué va todo esto y se puede acotar sin recorrer el archivo. */}
-      <nav class="reveal barra-temas barra-cabecera" aria-label="Filtrar por tema" data-delay="200ms">
-        <button type="button" class="chip chip-tema is-activo" data-tema="" aria-pressed="true">
-          Todas <span class="cuenta-tema">{notas.length}</span>
-        </button>
-        {temas.map(([tema, veces]) => (
-          <button type="button" class="chip chip-tema" data-tema={llave(tema)} aria-pressed="false">
-            {tema} <span class="cuenta-tema">{veces}</span>
-          </button>
-        ))}
-      </nav>
-    </div>
-  </section>
-
-  <section class="seccion cierre-inicio mx-auto max-w-[82rem] px-5 pb-24 md:px-8">
-    {
-      notas.length === 0 ? (
-        <p class="font-mono text-sm text-[var(--color-faint)]">Todavía no hay notas publicadas.</p>
-      ) : (
-        <>
-
+        <div class="lado-destacada">
           <a
             href={`/notas/${destacada.id}/`}
             class="reveal nota-destacada group"
@@ -175,6 +143,31 @@ const [destacada, ...resto] = notas;
               )}
             </span>
           </a>
+        </div>
+      </div>
+
+      {/* Los temas cierran la primera pantalla: antes de bajar ya se sabe de
+          qué va todo esto y se puede acotar sin recorrer el archivo. */}
+      <nav class="reveal barra-temas barra-cabecera" aria-label="Filtrar por tema" data-delay="200ms">
+        <button type="button" class="chip chip-tema is-activo" data-tema="" aria-pressed="true">
+          Todas <span class="cuenta-tema">{notas.length}</span>
+        </button>
+        {temas.map(([tema, veces]) => (
+          <button type="button" class="chip chip-tema" data-tema={llave(tema)} aria-pressed="false">
+            {tema} <span class="cuenta-tema">{veces}</span>
+          </button>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <section class="seccion cierre-inicio mx-auto max-w-[82rem] px-5 pb-24 md:px-8">
+    {
+      notas.length === 0 ? (
+        <p class="font-mono text-sm text-[var(--color-faint)]">Todavía no hay notas publicadas.</p>
+      ) : (
+        <>
+
 
           {resto.length > 0 && (
             <ol class="rejilla-notas">
