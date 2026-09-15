@@ -61,6 +61,34 @@ const RUTAS = [
   '/notas/suite-sin-sitios-de-terceros/',
 ];
 
+/** Deja la página quieta para medir: sin animaciones, revelada y con su
+ * tipografía ya aplicada.
+ *
+ * Sin congelar las transiciones, medir es una carrera: cada bloque revelado
+ * entra con su propio retardo, así que mientras la animación corre sus
+ * posiciones difieren de verdad y la comprobación falla en un objetivo
+ * distinto en cada pasada. */
+async function preparar(pagina, { revelar = true } = {}) {
+  await pagina.addStyleTag({
+    content: `*, *::before, *::after {
+      transition: none !important;
+      animation: none !important;
+      scroll-behavior: auto !important;
+    }`,
+  });
+
+  if (revelar) {
+    await pagina.evaluate(() =>
+      document.querySelectorAll('.reveal').forEach((e) => e.classList.add('is-visible')),
+    );
+  }
+
+  // `document.fonts.ready` resuelve cuando ya no queda ninguna fuente por
+  // aplicar. Sin esto se mide con la de respaldo y las alturas bailan.
+  await pagina.evaluate(() => document.fonts.ready);
+  await pagina.waitForTimeout(150);
+}
+
 /** Revisa un objetivo entero y devuelve sus fallos. */
 async function revisar(navegador, d) {
   const fallos = [];
@@ -89,21 +117,18 @@ async function revisar(navegador, d) {
     // 2. El encabezado de trayectoria cabe entero en una pantalla, con sus
     //    cuatro cifras, y las etiquetas de cada fila arrancan a la misma altura.
     await pagina.goto(BASE + '/trayectoria/', { waitUntil: 'networkidle' });
-    await pagina.evaluate(() =>
-      document.querySelectorAll('.reveal').forEach((e) => e.classList.add('is-visible')),
-    );
-    await pagina.waitForTimeout(400);
+    await preparar(pagina);
 
     const encabezado = await pagina.evaluate(() => {
       const dl = document.querySelector('.perfil dl');
-      const y = [...dl.querySelectorAll(':scope > div dd')].map((e) =>
-        Math.round(e.getBoundingClientRect().top),
+      const y = [...dl.querySelectorAll(':scope > div dd')].map(
+        (e) => e.getBoundingClientRect().top,
       );
       return {
         alto: Math.round(dl.getBoundingClientRect().bottom + window.scrollY),
         ventana: window.innerHeight,
         cifras: dl.children.length,
-        alineadas: y[0] === y[1] && y[2] === y[3],
+        alineadas: Math.abs(y[0] - y[1]) <= 1 && Math.abs(y[2] - y[3]) <= 1,
       };
     });
 
@@ -230,7 +255,7 @@ async function revisar(navegador, d) {
     await pagina.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await pagina.waitForTimeout(400);
     await pagina.evaluate(() => window.scrollTo(0, 0));
-    await pagina.waitForTimeout(300);
+    await preparar(pagina);
 
     const cortas = await pagina.evaluate(() => {
       const ventana = window.innerHeight;
@@ -247,7 +272,7 @@ async function revisar(navegador, d) {
     // 3d. La portada de Girek Study entra en una pantalla: es un plano oscuro
     //     que recorta lo que sobra, así que un desborde no se vería en el alto.
     await pagina.goto(BASE + '/girek-study/', { waitUntil: 'networkidle' });
-    await pagina.waitForTimeout(400);
+    await preparar(pagina);
 
     const plano = await pagina.evaluate(() => {
       const s = document.querySelector('.portada-estudio');
@@ -266,10 +291,7 @@ async function revisar(navegador, d) {
     }
 
     await pagina.goto(BASE + '/trayectoria/', { waitUntil: 'networkidle' });
-    await pagina.evaluate(() =>
-      document.querySelectorAll('.reveal').forEach((e) => e.classList.add('is-visible')),
-    );
-    await pagina.waitForTimeout(300);
+    await preparar(pagina);
 
     // 4. Las tres decisiones nunca dejan una sola colgando con hueco al lado.
     const decisiones = await pagina.evaluate(() => {
