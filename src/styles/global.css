@@ -4256,3 +4256,196 @@ body::before {
 .seccion.cierre-inicio {
   min-height: 0;
 }
+
+/* ---------- Portada: las tres puertas ---------- */
+
+.cabecera-puertas {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 56rem) {
+  .cabecera-puertas {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: end;
+    gap: 3.5rem;
+  }
+}
+
+.texto-puertas {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+}
+
+.rejilla-puertas {
+  display: grid;
+  gap: 1.15rem;
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 64rem) {
+  .rejilla-puertas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.ficha-puerta {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 1.75rem 1.75rem 1.5rem;
+}
+
+/* El número se queda detrás del contenido, como marca de agua: ordena las tres
+   sin competir con el titular. Mismo recurso que en el archivo de notas. */
+.orden-puerta {
+  position: absolute;
+  top: 0.9rem;
+  right: 1.4rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 2.9rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-fox);
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.icono-puerta {
+  display: grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: 14px;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ficha-puerta:hover .icono-puerta {
+  transform: translateY(-3px) rotate(-4deg);
+}
+
+.icono-puerta svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.etiqueta-puerta {
+  display: block;
+  margin-top: 1.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.titulo-puerta {
+  margin-top: 0.5rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--color-ink);
+  transition: color 0.25s ease;
+}
+
+.ficha-puerta:hover .titulo-puerta {
+  color: var(--color-fox-dark);
+}
+
+.texto-puerta {
+  margin-top: 0.85rem;
+  font-size: 0.92rem;
+  line-height: 1.62;
+  color: var(--color-ink-soft);
+}
+
+/* `margin-top: auto` cierra las tres a la misma altura aunque el texto no mida
+   lo mismo. */
+.pie-puerta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 1.4rem;
+}
+
+/* El punto delante dice de un vistazo si eso ya existe. */
+.estado-puerta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-faint);
+}
+
+.estado-puerta::before {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--color-fox);
+}
+
+.estado-puerta.es-pendiente::before {
+  background: var(--color-amber);
+}
+
+.accion-puerta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-fox-dark);
+}
+
+/* En la tablet, tres columnas dejan cada tarjeta en 273px y el titular se
+   parte en tres renglones. Ahí van una debajo de otra, pero en horizontal:
+   el icono a un lado y el texto al ancho completo. */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  /* Apretado a propósito: así las tres caben con la cabecera en una sola
+     pantalla de tablet y el sector no se parte por cuarenta píxeles. */
+  .rejilla-puertas {
+    gap: 0.85rem;
+    margin-top: 1.9rem;
+  }
+
+  .ficha-puerta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 1.5rem;
+    padding: 1.3rem 1.6rem 1.15rem;
+  }
+
+  .icono-puerta {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    align-self: start;
+  }
+
+  .etiqueta-puerta,
+  .titulo-puerta,
+  .texto-puerta,
+  .pie-puerta {
+    grid-column: 2;
+  }
+
+  .etiqueta-puerta {
+    margin-top: 0.2rem;
+  }
+
+  .pie-puerta {
+    padding-top: 0.9rem;
+  }
+}
