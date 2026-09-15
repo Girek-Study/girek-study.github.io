@@ -68,3 +68,18 @@ export const stack = [
   'Java',
   'Python',
 ];
+
+/**
+ * Token de Cloudflare Web Analytics.
+ *
+ * No es un secreto: viaja dentro del HTML de cada página, así que guardarlo en
+ * un `.env` solo complicaría el despliegue sin esconder nada. Se saca del panel
+ * de Cloudflare, en Analytics & Logs → Web Analytics → Add a site.
+ *
+ * Vacío significa sin medición: el sitio no carga ningún script y no pasa nada.
+ * Se eligió Cloudflare y no Google Analytics por peso y por cookies: son unos
+ * 5 KB frente a 50, y al no poner cookies no hace falta banner de
+ * consentimiento. Para un sitio cuyo argumento es que las cosas estén bien
+ * hechas, el rastreador pesado contradecía el mensaje.
+ */
+export const analiticaCloudflare = '18a34828424049f49a6084d3825cb574';
