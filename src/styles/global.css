@@ -4232,6 +4232,30 @@ body::before {
   min-height: 0;
 }
 
+/* El sector que cierra una página con un panel.
+ *
+ * Al anclar al fondo se ven el panel y el pie a la vez, así que lo que sumen
+ * de más recorta el panel por arriba —justo donde está el titular— y encima
+ * queda debajo de la barra, que es fija y se lleva 73px. Los números salen de
+ * ahí: el relleno de arriba supera la barra, y el resto se aprieta para que
+ * los dos quepan en una pantalla de 900. */
+.sector-cierre {
+  padding-top: 5rem;
+  /* Casi nada abajo: el pie ya trae 56px de relleno propio, y estos nueve
+     píxeles eran los que dejaban el titular del panel bajo la barra. */
+  padding-bottom: 0.4rem;
+}
+
+.sector-cierre .bloque-cierre {
+  padding: 1.75rem;
+}
+
+@media (min-width: 48rem) {
+  .sector-cierre .bloque-cierre {
+    padding: 2.5rem 2.75rem;
+  }
+}
+
 /* ---------- Portada: las tres puertas ---------- */
 
 .cabecera-puertas {
