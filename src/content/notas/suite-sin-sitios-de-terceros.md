@@ -5,6 +5,19 @@ resumen: >-
   culpa de la página de demo contra la que estás probando.
 fecha: 2026-09-05
 etiquetas: [Playwright, CI/CD, Flakiness]
+portada: pipeline
+codigo:
+  repo: playwright-screenplay-ts
+  titulo: La app de ejemplo, dentro del repositorio
+  archivos:
+    - ruta: scripts/serve-demo.js
+      que: El estático de Node que sirve la app, sin una sola dependencia
+    - ruta: playwright.config.ts
+      que: El webServer que la levanta antes de las pruebas y la baja al acabar
+    - ruta: demo/app.js
+      que: El retardo de 250 ms que obliga a la suite a ganárselo
+    - ruta: .github/workflows/ci.yml
+      que: El CI que corre todo sin salir a la red
 ---
 
 Hay una escena que se repite en casi todos los equipos donde he trabajado. Alguien abre el
@@ -144,6 +157,5 @@ Lo importante no es cuál elijas. Es que el rojo vuelva a significar algo.
 
 ---
 
-El repositorio completo, con el framework y la app de ejemplo, está en
-[playwright-screenplay-ts](https://github.com/Girek-Study/playwright-screenplay-ts). Es MIT:
+El repositorio completo, con el framework y la app de ejemplo, está abajo. Es MIT:
 clónalo y quédate con lo que te sirva.

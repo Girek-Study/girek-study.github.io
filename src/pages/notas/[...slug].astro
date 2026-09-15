@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { formatearFecha, minutosDeLectura } from '../../utils/fechas';
 import { profile } from '../../data/site';
+import PortadaNota from '../../components/PortadaNota.astro';
 
 export async function getStaticPaths() {
   const notas = await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador);
@@ -78,13 +79,21 @@ const articulo = {
           Todas las notas
         </a>
 
-        <div class="temas-cabecera">
-          {nota.data.etiquetas.map((tema) => <span class="tema-claro">{tema}</span>)}
-          {nota.data.borrador && <span class="sello-borrador">borrador</span>}
-        </div>
+        <div class="reparto-cabecera">
+          <div class="min-w-0">
+            <div class="temas-cabecera">
+              {nota.data.etiquetas.map((tema) => <span class="tema-claro">{tema}</span>)}
+              {nota.data.borrador && <span class="sello-borrador">borrador</span>}
+            </div>
 
-        <h1 class="titulo-articulo">{nota.data.titulo}</h1>
-        <p class="entradilla">{nota.data.resumen}</p>
+            <h1 class="titulo-articulo">{nota.data.titulo}</h1>
+            <p class="entradilla">{nota.data.resumen}</p>
+          </div>
+
+          {/* La pieza dibuja el problema del que trata la nota con su propio
+              dato. Una nota sin portada abre con el titular solo. */}
+          {nota.data.portada && <PortadaNota tipo={nota.data.portada} />}
+        </div>
 
         {/* La firma va arriba y con cara: en una nota técnica, quién la escribe
             es parte del argumento. */}
@@ -171,6 +180,54 @@ const articulo = {
           <Content />
         </div>
       </div>
+
+      {/* El código de lo que se acaba de leer, por archivos. Antes iba como un
+          enlace en el último párrafo y se lo saltaba todo el mundo. */}
+      {nota.data.codigo && (
+        <aside class="tarjeta-codigo">
+          <span class="trama-nota" aria-hidden="true" />
+
+          <div class="relative">
+            <div class="cabeza-codigo">
+              <span class="icono-repo-nota" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 1.8a10.2 10.2 0 0 0-3.22 19.88c.51.1.7-.22.7-.49l-.01-1.9c-2.84.62-3.44-1.2-3.44-1.2-.46-1.18-1.13-1.5-1.13-1.5-.93-.63.07-.62.07-.62 1.03.07 1.57 1.06 1.57 1.06.91 1.57 2.4 1.12 2.99.85.09-.66.36-1.12.65-1.38-2.27-.26-4.65-1.14-4.65-5.06 0-1.12.4-2.03 1.05-2.74-.1-.26-.46-1.3.1-2.71 0 0 .86-.28 2.81 1.05a9.7 9.7 0 0 1 5.12 0c1.95-1.33 2.81-1.05 2.81-1.05.56 1.41.2 2.45.1 2.71.65.71 1.05 1.62 1.05 2.74 0 3.93-2.39 4.79-4.67 5.05.37.32.69.94.69 1.9l-.01 2.81c0 .27.19.6.71.49A10.2 10.2 0 0 0 12 1.8Z" />
+                </svg>
+              </span>
+              <div class="min-w-0">
+                <p class="rotulo-codigo">El código</p>
+                <p class="titulo-codigo">{nota.data.codigo.titulo}</p>
+              </div>
+              <a
+                href={`https://github.com/Girek-Study/${nota.data.codigo.repo}`}
+                target="_blank"
+                rel="noopener"
+                class="ir-al-repo"
+              >
+                {nota.data.codigo.repo}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+              </a>
+            </div>
+
+            <ul class="lista-archivos">
+              {nota.data.codigo.archivos.map((a) => (
+                <li>
+                  <a
+                    href={`https://github.com/Girek-Study/${nota.data.codigo!.repo}/blob/main/${a.ruta}`}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <code>{a.ruta}</code>
+                    <span>{a.que}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      )}
 
       <footer class="cierre-nota">
         <div class="ficha-autor">

@@ -1,0 +1,94 @@
+---
+/**
+ * La pieza que ilustra la cabecera de una nota.
+ *
+ * No son imágenes de archivo: cada una dibuja el problema del que trata su
+ * nota, con el mismo dato que aparece dentro del texto. Una foto de gente
+ * señalando una pantalla no dice nada; un contrato que cambia de tipo, sí.
+ *
+ * Van en HTML y CSS, no en PNG: pesan nada, escalan sin pixelarse y el texto
+ * que llevan dentro se puede copiar.
+ */
+interface Props {
+  tipo: 'contrato' | 'capas' | 'pipeline';
+}
+
+const { tipo } = Astro.props;
+---
+
+<div class="portada-nota" aria-hidden="true">
+  <span class="trama-nota"></span>
+  <span class="halo-nota"></span>
+
+  <div class="marco-nota">
+    <span class="semaforo"><i></i><i></i><i></i></span>
+
+    {
+      tipo === 'contrato' && (
+        <div class="pieza-contrato">
+          {/* El mismo importe antes y después: el tipo cambió y la pantalla no
+              se entera. Es el ejemplo que abre la nota. */}
+          <p class="fila-formato">
+            <span class="sello-formato es-antes">XML</span>
+            <code>&lt;monto&gt;1500.00&lt;/monto&gt;</code>
+          </p>
+
+          <p class="flecha-formato">↓</p>
+
+          <p class="fila-formato">
+            <span class="sello-formato es-despues">JSON</span>
+            <code>"monto": <b>1500</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el tipo cambió y la interfaz lo pinta igual
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'capas' && (
+        <div class="pieza-capas">
+          {/* Las cuatro responsabilidades que el patrón separa, de arriba
+              abajo. La nota discute cuándo esa separación paga. */}
+          {[
+            { rol: 'Actor', valor: 'ana' },
+            { rol: 'Tarea', valor: 'IniciarSesion' },
+            { rol: 'Interacción', valor: 'Escribir · Pulsar' },
+            { rol: 'Localizador', valor: 'CampoUsuario' },
+          ].map((c) => (
+            <p class="fila-capa">
+              <span class="rol-capa">{c.rol}</span>
+              <code>{c.valor}</code>
+            </p>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      tipo === 'pipeline' && (
+        <div class="pieza-pipeline-nota">
+          {/* Dos ejecuciones con el mismo código: la de arriba falla por algo
+              que no es tuyo. De eso trata la nota. */}
+          <p class="corrida es-rota">
+            <span class="marca-corrida">✕</span>
+            <code>suite · el sitio de demo no responde</code>
+          </p>
+          <p class="corrida es-rota">
+            <span class="marca-corrida">✕</span>
+            <code>suite · rate limit del sitio de demo</code>
+          </p>
+          <p class="separador-corridas">
+            <span>la app de ejemplo pasa a vivir en el repositorio</span>
+          </p>
+          <p class="corrida es-verde">
+            <span class="marca-corrida">✓</span>
+            <code>suite · hermética, sin red</code>
+          </p>
+        </div>
+      )
+    }
+  </div>
+</div>

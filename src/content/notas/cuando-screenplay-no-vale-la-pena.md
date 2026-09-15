@@ -5,6 +5,19 @@ resumen: >-
   adoptarlo antes de tiempo. Aquí está la línea donde deja de compensar.
 fecha: 2026-09-05
 etiquetas: [Screenplay, Arquitectura, Page Object]
+portada: capas
+codigo:
+  repo: playwright-screenplay-ts
+  titulo: Las cuatro capas, en código
+  archivos:
+    - ruta: src/screenplay/Actor.ts
+      que: El actor que sostiene las habilidades y ejecuta las tareas
+    - ruta: src/tasks/IniciarSesion.ts
+      que: La tarea del ejemplo, separada de cómo se hace
+    - ruta: src/screens/LoginScreen.ts
+      que: Los localizadores con nombre de negocio, no con selector
+    - ruta: src/tasks/AgregarTarea.ts
+      que: Una acción que no devuelve el control hasta garantizar su efecto
 ---
 
 Casi todo lo que se escribe sobre Screenplay lo defiende. Es lógico: quien se toma el
@@ -159,7 +172,6 @@ idea o solo está copiando la forma.
 
 ---
 
-Mi implementación completa, con la explicación de cada decisión, está en
-[playwright-screenplay-ts](https://github.com/Girek-Study/playwright-screenplay-ts). El
-README incluye esta misma advertencia, porque un framework que no dice cuándo no usarlo
-está vendiendo, no enseñando.
+Mi implementación completa, con la explicación de cada decisión, está abajo. El README
+incluye esta misma advertencia, porque un framework que no dice cuándo no usarlo está
+vendiendo, no enseñando.

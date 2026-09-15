@@ -21,6 +21,31 @@ const notas = defineCollection({
     minutos: z.number().optional(),
     /** Una nota en borrador se ve en local pero no se publica. */
     borrador: z.boolean().default(false),
+    /**
+     * La pieza que ilustra la cabecera. No es una foto de archivo: cada una
+     * dibuja el problema del que trata la nota, así que solo valen las que
+     * están dibujadas en PortadaNota.astro. Una nota sin portada abre con el
+     * titular solo, como antes.
+     */
+    portada: z.enum(['contrato', 'capas', 'pipeline']).optional(),
+    /**
+     * El código de lo que cuenta la nota. Se apunta a archivos concretos y no
+     * a la raíz del repositorio: «esto que acabas de leer está en esta línea»
+     * vale más que «aquí tienes un repo, búscate la vida».
+     *
+     * No hay un repositorio por nota a propósito. Cada repo arrastra README,
+     * CI y dependencias que caducan, y uno abandonado resta más credibilidad
+     * que la que suma el enlace.
+     */
+    codigo: z
+      .object({
+        repo: z.string(),
+        titulo: z.string(),
+        archivos: z
+          .array(z.object({ ruta: z.string(), que: z.string() }))
+          .default([]),
+      })
+      .optional(),
   }),
 });
 

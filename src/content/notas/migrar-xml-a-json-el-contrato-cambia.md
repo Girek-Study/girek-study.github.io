@@ -5,6 +5,7 @@ resumen: >-
   en la interfaz: se ve tres semanas después, en un reporte que no cuadra.
 fecha: 2026-09-05
 etiquetas: [API Testing, Contract Testing, Banca]
+portada: contrato
 ---
 
 Hay un tipo de proyecto que asusta menos de lo que debería: **la migración que no cambia
