@@ -59,6 +59,7 @@ const RUTAS = [
   '/notas/cuando-screenplay-no-vale-la-pena/',
   '/notas/migrar-xml-a-json-el-contrato-cambia/',
   '/notas/suite-sin-sitios-de-terceros/',
+  '/notas/la-ia-no-sabe-que-es-un-defecto/',
 ];
 
 /** Deja la página quieta para medir: sin animaciones, revelada y con su
