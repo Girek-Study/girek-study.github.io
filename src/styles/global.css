@@ -6490,3 +6490,113 @@ body::before {
     font-size: 2.25rem;
   }
 }
+
+/* ---------- El archivo, en carrusel ---------- */
+
+.carrusel-notas {
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.pista-notas {
+  display: flex;
+  gap: 1.15rem;
+  overflow-x: auto;
+  /* Aquí el anclaje sí funciona: una tarjeta mide exactamente lo que mide, al
+     revés que un sector vertical más alto que la ventana, que el navegador no
+     puede anclar. */
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0.25rem;
+  /* Sitio para que la sombra de las tarjetas no se recorte al desplazarse. */
+  padding: 0.5rem 0.25rem 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+.pista-notas::-webkit-scrollbar {
+  height: 6px;
+}
+
+.pista-notas::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--color-line-strong);
+}
+
+.pista-notas > li {
+  flex: 0 0 auto;
+  width: min(23rem, 82vw);
+  scroll-snap-align: start;
+}
+
+.pista-notas .tarjeta-nota {
+  height: 100%;
+}
+
+/* El icono del tema, junto al número de orden. */
+.icono-nota {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-bottom: 1rem;
+  border-radius: 13px;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pista-notas > li:nth-child(even) .icono-nota {
+  background: var(--color-cyan-tint);
+  color: var(--color-cyan-deep);
+}
+
+.tarjeta-nota:hover .icono-nota {
+  transform: translateY(-3px) rotate(-4deg);
+}
+
+.icono-nota svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.mandos-carrusel {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.mando {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition:
+    border-color 0.22s ease,
+    color 0.22s ease,
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.mando:hover:not(:disabled) {
+  border-color: var(--color-fox);
+  color: var(--color-fox-dark);
+  transform: translateY(-2px);
+}
+
+/* Deshabilitado y no escondido: si desaparecieran, los dos botones bailarían
+   de sitio cada vez que se llega a un extremo. */
+.mando:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.mando svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
