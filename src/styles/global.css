@@ -271,19 +271,6 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 75%);
 }
 
-/* ---------- Acento cian (secundario) ---------- */
-.chip-cyan {
-  border-color: rgba(6, 182, 212, 0.35);
-  background: var(--color-cyan-tint);
-  color: var(--color-cyan-deep);
-}
-.btn-cyan {
-  background: linear-gradient(120deg, var(--color-cyan-bright), var(--color-cyan-deep));
-  color: #fff;
-  box-shadow: 0 18px 44px -22px rgba(6, 182, 212, 0.6);
-}
-.btn-cyan:hover { transform: translateY(-2px); }
-
 /* Banda navy (secciones destacadas — el neón del logo brilla aquí) */
 .band-navy {
   position: relative;
@@ -420,12 +407,6 @@ body::before {
   -webkit-mask-image: linear-gradient(to bottom, #000 74%, transparent 99%);
   mask-image: linear-gradient(to bottom, #000 74%, transparent 99%);
   filter: drop-shadow(0 16px 26px rgba(29, 23, 18, 0.16));
-}
-
-/* Tamaño intermedio, para las filas de modelos y herramientas. */
-.herramienta-md svg {
-  width: 1.35rem;
-  height: 1.35rem;
 }
 
 /* El encabezado de la trayectoria ocupa una pantalla, con las cifras cerrando
@@ -989,13 +970,6 @@ body::before {
 
 /* Versión compacta del chip: son casi sesenta en pantalla, y al tamaño normal
    la sección no cabía en el alto de un sector. */
-.chip-sm {
-  font-size: 0.62rem;
-  padding: 0.15rem 0.45rem;
-  letter-spacing: 0;
-  line-height: 1.35;
-}
-
 /* Marca dentro del chip. En el mismo color que el texto y no a todo color: son
    veintisiete en pantalla y a color se convertirían en un confeti que tapa lo
    que dice cada chip. */
@@ -1003,6 +977,10 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
+  font-size: 0.62rem;
+  padding: 0.15rem 0.45rem;
+  letter-spacing: 0;
+  line-height: 1.35;
 }
 
 .chip-marca {
@@ -1522,7 +1500,6 @@ body::before {
     font-size: min(calc(0.85rem + (min(100svh, 100vw * 2.2) - 740px) * 0.0222), 1.25rem);
   }
 
-  #decisiones .icono-decision,
   #decisiones li > span:first-child {
     width: min(calc(2.25rem + (min(100svh, 100vw * 2.2) - 740px) * 0.037), 3.5rem);
     height: min(calc(2.25rem + (min(100svh, 100vw * 2.2) - 740px) * 0.037), 3.5rem);
@@ -1829,7 +1806,7 @@ body::before {
   row-gap: 2rem;
 }
 
-.marca {
+.loseta-marca {
   gap: 0.625rem;
 }
 
@@ -1987,14 +1964,6 @@ body::before {
   #agentes {
     margin-top: min(calc(0.35rem + (min(100svh, 100vw * 2.2) - 740px) * 0.022), 1.5rem);
     padding-top: min(calc(0.4rem + (min(100svh, 100vw * 2.2) - 740px) * 0.017), 1rem);
-  }
-
-  .titulo-agentes {
-    font-size: min(calc(0.95rem + (min(100svh, 100vw * 2.2) - 740px) * 0.02), 1.4rem);
-  }
-
-  .pie-agentes {
-    font-size: min(calc(0.6rem + (min(100svh, 100vw * 2.2) - 740px) * 0.006), 0.68rem);
   }
 
   #agentes .marquee-track {
@@ -3310,13 +3279,6 @@ body::before {
 }
 
 .pieza figcaption,
-.pieza-pie {
-  margin-top: 0.9rem;
-  font-size: 0.82rem;
-  line-height: 1.55;
-  color: var(--color-faint);
-}
-
 /* ---------- Aviso ---------- */
 
 .aviso {
@@ -3835,9 +3797,6 @@ body::before {
   border-radius: 8px;
   background: var(--color-cream-2);
   overflow: hidden;
-}
-
-.episodio-barra {
   font-size: 0.78rem;
 }
 
@@ -4519,7 +4478,7 @@ body::before {
   }
 }
 
-.rotulo-estudio {
+.rotulo-banda {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.18em;
@@ -4944,4 +4903,1464 @@ body::before {
     align-items: center;
     justify-content: space-between;
   }
+}
+
+/* ==========================================================================
+   Girek Study — la página del proyecto de enseñanza
+   ========================================================================== */
+
+/* El punto ámbar para lo que todavía no abre: el verde de la portada dice
+   «escríbeme hoy», y aquí sería una promesa que no se puede cumplir. */
+.latido.es-espera {
+  background: var(--color-amber);
+}
+
+.latido.es-espera::after {
+  border-color: var(--color-amber);
+}
+
+/* ---------- La tira de herramientas ---------- */
+
+.stack-estudio {
+  margin-top: min(calc(1rem + (100svh - 640px) * 0.009), 1.9rem);
+}
+
+.rotulo-stack {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7e94b2;
+}
+
+.stack-estudio ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+@media (min-width: 62rem) {
+  .stack-estudio ul {
+    justify-content: flex-start;
+  }
+}
+
+/* Cada logo en su loseta de vidrio: sueltos sobre el plano oscuro se veían
+   como manchas de distinto peso. */
+.ficha-stack {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.07);
+  color: #cbd9ea;
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.ficha-stack:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34, 211, 238, 0.5);
+  background: rgba(34, 211, 238, 0.12);
+  color: #fff;
+}
+
+.ficha-stack svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+  display: block;
+}
+
+/* En una pantalla baja la tira sobra antes que el argumento. */
+@media (max-height: 44rem) {
+  .stack-estudio {
+    display: none;
+  }
+}
+
+/* ---------- Vida en el plano ---------- */
+
+/* Un barrido de luz recorre el plano cada ocho segundos. No pide atención,
+   pero el fondo deja de parecer una imagen fija. */
+.panel-portada::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 45%;
+  height: 200%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.055) 45%,
+    rgba(34, 211, 238, 0.07) 55%,
+    transparent 100%
+  );
+  transform: rotate(8deg);
+  animation: barrido 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes barrido {
+  0%,
+  100% {
+    transform: translateX(0) rotate(8deg);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  70%,
+  100% {
+    transform: translateX(340%) rotate(8deg);
+    opacity: 0;
+  }
+}
+
+/* El halo de fuego respira: el plano tenía el mismo brillo siempre y se leía
+   como un fondo plano. */
+.halo-fuego {
+  animation: respirar 9s ease-in-out infinite;
+}
+
+.halo-agua {
+  animation: respirar 11s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+@keyframes respirar {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+/* La rejilla se desplaza muy despacio: da sensación de profundidad sin que se
+   note el movimiento si no se busca. */
+.trama-portada {
+  animation: deriva 28s linear infinite;
+}
+
+@keyframes deriva {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 40px 40px, 40px 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-portada::after,
+  .halo-fuego,
+  .halo-agua,
+  .trama-portada {
+    animation: none;
+  }
+
+  .panel-portada::after {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Girek Study — la portada
+   ========================================================================== */
+
+/* La sección solo enmarca: el plano oscuro es quien ocupa la pantalla. */
+.portada-estudio {
+  padding-top: 5.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 64rem) {
+  .portada-estudio {
+    padding-top: 6.5rem;
+    padding-bottom: 2rem;
+  }
+}
+
+.panel-portada {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  width: calc(100% - 1.6rem);
+  max-width: 94rem;
+  margin: 0 auto;
+  border-radius: 26px;
+  padding: 1.75rem 1.5rem 1.5rem;
+  background:
+    radial-gradient(90% 90% at 88% 6%, rgba(224, 73, 10, 0.5) 0%, rgba(0, 0, 0, 0) 55%),
+    radial-gradient(70% 80% at 8% 92%, rgba(14, 116, 144, 0.45) 0%, rgba(0, 0, 0, 0) 60%),
+    linear-gradient(155deg, #0a0f1e 0%, #111c33 55%, #0c1526 100%);
+  box-shadow: 0 40px 90px -40px rgba(10, 15, 30, 0.75);
+}
+
+@media (min-width: 48rem) {
+  .panel-portada {
+    width: calc(100% - 2.5rem);
+    border-radius: 32px;
+    /* Con 2rem abajo el plano se pasaba seis píxeles de la pantalla en un Fold
+       abierto, y el salto por sectores se ganaba un tirón de nada. */
+    padding: 2.25rem 2.75rem 1.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .panel-portada {
+    padding: 3rem 3.5rem 2.25rem;
+  }
+}
+
+.trama-portada {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(140, 200, 230, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 200, 230, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 30% 30%, #000 5%, transparent 70%);
+  mask-image: radial-gradient(ellipse 80% 70% at 30% 30%, #000 5%, transparent 70%);
+  pointer-events: none;
+}
+
+.halo-portada {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.halo-fuego {
+  top: -9rem;
+  right: -6rem;
+  width: 30rem;
+  height: 30rem;
+  background: radial-gradient(circle, rgba(255, 106, 26, 0.32) 0%, transparent 65%);
+}
+
+.halo-agua {
+  bottom: -8rem;
+  left: -7rem;
+  width: 26rem;
+  height: 26rem;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.26) 0%, transparent 65%);
+}
+
+.dentro-portada {
+  position: relative;
+  display: grid;
+  flex: 1;
+  gap: 1.25rem;
+  align-content: center;
+  align-items: center;
+  min-height: 0;
+}
+
+@media (min-width: 62rem) {
+  .dentro-portada {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 2.5rem;
+  }
+}
+
+.lado-argumento {
+  min-width: 0;
+  text-align: center;
+}
+
+@media (min-width: 62rem) {
+  .lado-argumento {
+    text-align: left;
+  }
+}
+
+.rotulo-estudio {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--color-cyan-bright);
+}
+
+@media (min-width: 62rem) {
+  .rotulo-estudio {
+    justify-content: flex-start;
+  }
+}
+
+/* El titular manda. Escala con el menor entre alto y ancho: en un teléfono bajo
+   tiene que encoger o los botones se quedan fuera, y en uno estrecho la que
+   manda es la anchura. */
+.lema-estudio {
+  margin: min(calc(0.8rem + (100svh - 640px) * 0.01), 1.5rem) auto 0;
+  max-width: 14ch;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: min(calc(2rem + (min(100svh, 100vw * 1.55) - 640px) * 0.14), 4.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+@media (min-width: 62rem) {
+  .lema-estudio {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* La palabra que da nombre a todo esto, en el fuego de la marca. */
+.resalte-lema {
+  background: linear-gradient(100deg, var(--color-amber) 0%, var(--color-fox) 55%, var(--color-coral) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bajada-estudio {
+  margin: min(calc(0.8rem + (100svh - 640px) * 0.008), 1.4rem) auto 0;
+  max-width: 40ch;
+  font-size: min(calc(0.92rem + (min(100svh, 100vw * 1.55) - 640px) * 0.0016), 1.15rem);
+  line-height: 1.6;
+  color: #b8c8de;
+}
+
+@media (min-width: 62rem) {
+  .bajada-estudio {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.botones-estudio {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: min(calc(1rem + (100svh - 640px) * 0.009), 1.9rem);
+}
+
+@media (min-width: 62rem) {
+  .botones-estudio {
+    justify-content: flex-start;
+  }
+}
+
+/* El botón claro del sitio no existe sobre un plano oscuro: aquí es vidrio. */
+.btn-vidrio {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+
+.btn-vidrio:hover {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-2px);
+}
+
+.senal-oscura {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: min(calc(0.8rem + (100svh - 640px) * 0.007), 1.4rem);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.38rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: #cbd9ea;
+}
+
+/* ---------- La escena: el zorro y las piezas del oficio ---------- */
+
+.escena-estudio {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.zorro-escena {
+  position: relative;
+  z-index: 1;
+  width: min(calc(11rem + (min(100svh, 100vw * 1.55) - 640px) * 0.88), 38rem);
+  height: auto;
+  filter: drop-shadow(0 0 45px rgba(34, 211, 238, 0.35)) drop-shadow(0 26px 50px rgba(0, 0, 0, 0.55));
+  animation: flotar 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zorro-escena,
+  .pieza-flotante {
+    animation: none;
+  }
+}
+
+/* Halo detrás: separa la ilustración del plano sin encerrarla en una caja. */
+.aura-estudio {
+  position: absolute;
+  width: min(36rem, 105%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 138, 82, 0.22) 0%, rgba(34, 211, 238, 0.12) 45%, transparent 70%);
+  filter: blur(22px);
+}
+
+.pieza-flotante {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+/* Solo desde 62rem: en una columna estrecha se montan encima del zorro y lo
+   que se lee es un amasijo. */
+@media (max-width: 61.99rem) {
+  .pieza-flotante {
+    display: none;
+  }
+}
+
+.pieza-codigo {
+  place-items: center;
+  top: 10%;
+  left: 0;
+  width: 4.4rem;
+  height: 4.4rem;
+  color: var(--color-amber);
+  animation: flotar 6s ease-in-out infinite;
+  animation-delay: -1.5s;
+}
+
+.pieza-codigo svg {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+.pieza-lista {
+  gap: 0.5rem;
+  right: 0;
+  bottom: 12%;
+  padding: 0.9rem 1rem;
+  animation: flotar 6.5s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+.linea-lista {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* El check y la barra de la fila: verde para lo que ya pasa, y una barra que
+   insinúa el nombre de la prueba sin inventarse texto. */
+.linea-lista i {
+  display: block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 5px;
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+
+.linea-lista b {
+  display: block;
+  width: 3.2rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ---------- Anillos: centran la figura en su mitad ---------- */
+
+.anillo {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(140, 200, 230, 0.16);
+  pointer-events: none;
+}
+
+.anillo-uno {
+  width: min(30rem, 84%);
+  aspect-ratio: 1;
+  animation: girar 34s linear infinite;
+  border-style: dashed;
+}
+
+.anillo-dos {
+  width: min(22rem, 62%);
+  aspect-ratio: 1;
+  border-color: rgba(255, 138, 82, 0.18);
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 61.99rem) {
+  .anillo {
+    display: none;
+  }
+}
+
+/* ---------- La consola y la cobertura ---------- */
+
+.pieza-consola {
+  gap: 0.55rem;
+  left: 4%;
+  bottom: 16%;
+  padding: 0.75rem 0.95rem 0.85rem;
+  animation: flotar 7.5s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.semaforo {
+  display: flex;
+  gap: 0.28rem;
+}
+
+.semaforo i {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.semaforo i:first-child {
+  background: #ff5f57;
+}
+
+.semaforo i:nth-child(2) {
+  background: #febc2e;
+}
+
+.semaforo i:last-child {
+  background: #28c840;
+}
+
+.salida-consola {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #d5e2f2;
+  white-space: nowrap;
+}
+
+.tic {
+  color: #22c55e;
+}
+
+.tiempo {
+  color: #7e94b2;
+}
+
+/* Las etapas de un pipeline: tres puntos y dos tramos, con el último en
+   verde. Dice lo mismo que un porcentaje y no afirma ninguna cifra. */
+.pieza-pipeline {
+  grid-auto-flow: column;
+  align-items: center;
+  top: 8%;
+  right: 6%;
+  padding: 0.85rem 1rem;
+}
+
+.etapa-pipeline {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  border: 1.5px solid rgba(140, 200, 230, 0.55);
+}
+
+.etapa-pipeline.es-verde {
+  border-color: #22c55e;
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+  animation: latir-etapa 2.4s ease-in-out infinite;
+}
+
+@keyframes latir-etapa {
+  0%, 100% { box-shadow: 0 0 8px rgba(34, 197, 94, 0.45); }
+  50% { box-shadow: 0 0 16px rgba(34, 197, 94, 0.85); }
+}
+
+.tramo-pipeline {
+  width: 1.15rem;
+  height: 1px;
+  background: rgba(140, 200, 230, 0.35);
+}
+
+/* ---------- El pie del plano ---------- */
+
+.pie-portada {
+  position: relative;
+  display: grid;
+  gap: 1.1rem;
+  margin-top: min(calc(1rem + (100svh - 640px) * 0.01), 2rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: min(calc(0.8rem + (100svh - 640px) * 0.008), 1.4rem);
+}
+
+@media (min-width: 62rem) {
+  .pie-portada {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+.cifras-estudio {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+/* Cada cifra con su icono al lado: tres números sueltos en una banda ancha era
+   justo lo que se veía vacío. */
+.cifras-estudio > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  text-align: left;
+}
+
+@media (min-width: 62rem) {
+  .cifras-estudio > div {
+    justify-content: flex-start;
+  }
+}
+
+.icono-cifra {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--color-amber);
+}
+
+.icono-cifra svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.cifras-estudio dd {
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: min(calc(1.3rem + (min(100svh, 100vw * 1.55) - 640px) * 0.009), 1.8rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(100deg, var(--color-amber), var(--color-coral));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cifras-estudio dt {
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  color: #8fa8c6;
+}
+
+/* La salida: quien llega abajo del plano ya sabe qué hay; esto le dice por
+   dónde entrar sin tener que volver arriba. */
+.salida-portada {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.6rem 1.15rem;
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: #fff;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.salida-portada:hover {
+  background: rgba(34, 211, 238, 0.14);
+  border-color: rgba(34, 211, 238, 0.5);
+  transform: translateY(-2px);
+}
+
+.salida-portada svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  transition: transform 0.2s ease;
+}
+
+.salida-portada:hover svg {
+  transform: translateX(3px);
+}
+
+/* En un teléfono bajo el pie no cabe con todo lo demás: en un iPhone SE la
+   portada se pasaba de 752 sobre 667. Lo que cuenta se repite en cada sección.
+   La condición lleva también el ancho para no quitarlo en un portátil de
+   pantalla baja, donde sí cabe. */
+@media (max-width: 61.99rem) and (max-height: 47.99rem) {
+  .pie-portada {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anillo-uno,
+  .pieza-consola,
+  .etapa-pipeline.es-verde {
+    animation: none;
+  }
+}
+
+/* Los dos botones se apilan por debajo de 26rem de ancho: con menos relleno,
+   las dos filas ocupan lo que una y media. */
+@media (max-width: 26rem) {
+  .botones-estudio .btn {
+    width: 100%;
+    justify-content: center;
+    padding-block: 0.7rem;
+  }
+}
+
+/* ---------- Para quién es ---------- */
+
+.rejilla-perfiles {
+  display: grid;
+  gap: 1rem;
+  /* Tres píxeles de más eran un tirón en el salto por sectores, y este hueco
+     es de donde menos se nota quitarlos. */
+  margin-top: 1.35rem;
+}
+
+@media (min-width: 40rem) {
+  .rejilla-perfiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Dos en fila y no cuatro: con cuatro columnas la ficha se queda en 250px, el
+   texto se parte en cinco renglones y el sector entero se ve vacío alrededor
+   de unas tarjetas diminutas. */
+@media (min-width: 56rem) {
+  .rejilla-perfiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+.ficha-perfil {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 1.9rem 2rem 1.7rem;
+}
+
+/* Filete de color arriba: cuatro tarjetas idénticas en blanco se leían como un
+   bloque; con el filete cada una tiene cara propia antes de leerla. */
+.ficha-perfil::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-fox), var(--color-amber));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.rejilla-perfiles li:nth-child(even) .ficha-perfil::before {
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-cyan-bright));
+}
+
+.ficha-perfil:hover::before {
+  transform: scaleX(1);
+}
+
+.cabeza-perfil {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.numero-perfil {
+  display: grid;
+  place-items: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 16px;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.numero-perfil svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.ficha-perfil:hover .numero-perfil {
+  transform: translateY(-3px) rotate(-4deg);
+}
+
+/* Alternando el color, las cuatro se distinguen de un vistazo. */
+.rejilla-perfiles li:nth-child(even) .numero-perfil {
+  background: var(--color-cyan-tint);
+  color: var(--color-cyan-deep);
+}
+
+.orden-perfil {
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 2.2rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-fox);
+  opacity: 0.14;
+}
+
+.rol-perfil {
+  display: block;
+  margin-top: 1.25rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  transition: color 0.25s ease;
+}
+
+.ficha-perfil:hover .rol-perfil {
+  color: var(--color-fox-dark);
+}
+
+/* La frase entre comillas, con la barra a un lado: se lee como una cita y no
+   como otra línea de descripción. */
+.sintoma-perfil {
+  display: block;
+  margin-top: 0.75rem;
+  border-left: 3px solid var(--color-fox-tint);
+  padding-left: 0.9rem;
+  font-size: 1.02rem;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--color-ink);
+}
+
+.sintoma-perfil::before {
+  content: '«';
+}
+
+.sintoma-perfil::after {
+  content: '»';
+}
+
+.rejilla-perfiles li:nth-child(even) .sintoma-perfil {
+  border-left-color: var(--color-cyan-tint);
+}
+
+.texto-perfil {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.91rem;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+/* La puerta de entrada, separada del resto: es lo que hay que pulsar. */
+.puerta-perfil {
+  display: block;
+  margin-top: auto;
+  padding-top: 1.05rem;
+}
+
+.rotulo-puerta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.destino-puerta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: var(--color-fox-dark);
+}
+
+/* ---------- Cursos ---------- */
+
+.rejilla-cursos {
+  display: grid;
+  gap: 0.95rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 52rem) {
+  .rejilla-cursos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ficha-curso {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 22px;
+  padding: 1.45rem 1.6rem 1.25rem;
+}
+
+.cabeza-curso {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.nivel-curso {
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+.nivel-inicial {
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+}
+
+.nivel-intermedio {
+  background: var(--color-cyan-tint);
+  color: var(--color-cyan-deep);
+}
+
+.nivel-avanzado {
+  background: #fde68a;
+  color: #92400e;
+}
+
+.numero-curso {
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.9rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-fox);
+  opacity: 0.16;
+}
+
+.titulo-curso {
+  margin-top: 0.9rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.42rem;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--color-ink);
+}
+
+.texto-curso {
+  margin-top: 0.75rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+.pie-curso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.enlace-curso {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-fox-dark);
+  transition: gap 0.22s ease;
+}
+
+.enlace-curso:hover {
+  gap: 0.6rem;
+}
+
+.enlace-curso svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+/* ---------- Testimonios (vacío hasta que haya alumnos reales) ---------- */
+
+.comilla {
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 2.5rem;
+  line-height: 0.6;
+  color: var(--color-coral);
+}
+
+.firma-testimonio {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1.35rem;
+}
+
+.inicial-testimonio {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--color-fox-tint);
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  color: var(--color-fox-dark);
+}
+
+/* ---------- La portada de cada nota ---------- */
+
+.reparto-cabecera {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 62rem) {
+  .reparto-cabecera {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: 3.5rem;
+  }
+}
+
+/* Con la pieza al lado, el titular deja de tener que caber en veinte
+   caracteres: la medida se la marca su columna. */
+@media (min-width: 62rem) {
+  .reparto-cabecera .titulo-articulo {
+    max-width: none;
+  }
+}
+
+.portada-nota {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 1.5rem;
+  background:
+    radial-gradient(85% 85% at 85% 5%, rgba(224, 73, 10, 0.42) 0%, rgba(0, 0, 0, 0) 58%),
+    linear-gradient(155deg, #0a0f1e 0%, #111c33 100%);
+  box-shadow: 0 30px 60px -32px rgba(10, 15, 30, 0.7);
+}
+
+@media (min-width: 48rem) {
+  .portada-nota {
+    padding: 1.9rem;
+  }
+}
+
+.trama-nota {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(140, 200, 230, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 200, 230, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 25% 20%, #000 5%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 70% at 25% 20%, #000 5%, transparent 75%);
+  pointer-events: none;
+}
+
+.halo-nota {
+  position: absolute;
+  bottom: -6rem;
+  left: -5rem;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.26) 0%, transparent 65%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+/* El marco de consola: lo que va dentro es salida de una herramienta, no una
+   ilustración decorativa. */
+.marco-nota {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 13, 24, 0.72);
+  padding: 1rem 1.1rem 1.15rem;
+  backdrop-filter: blur(6px);
+}
+
+.marco-nota .semaforo {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 0.95rem;
+}
+
+.marco-nota .semaforo i {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+}
+
+.marco-nota .semaforo i:first-child {
+  background: #ff5f57;
+}
+
+.marco-nota .semaforo i:nth-child(2) {
+  background: #febc2e;
+}
+
+.marco-nota .semaforo i:last-child {
+  background: #28c840;
+}
+
+.marco-nota code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #d5e2f2;
+}
+
+/* ---------- Contrato: el mismo importe, otro tipo ---------- */
+
+.fila-formato {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.sello-formato {
+  border-radius: 6px;
+  padding: 0.12rem 0.42rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+}
+
+.sello-formato.es-antes {
+  background: rgba(255, 166, 43, 0.18);
+  color: var(--color-amber);
+}
+
+.sello-formato.es-despues {
+  background: rgba(34, 211, 238, 0.16);
+  color: var(--color-cyan-bright);
+}
+
+.flecha-formato {
+  margin: 0.55rem 0 0.55rem 0.4rem;
+  font-size: 0.9rem;
+  color: #5d7593;
+}
+
+.fila-formato code b {
+  color: var(--color-cyan-bright);
+  font-weight: 600;
+}
+
+.aviso-formato {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.05rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: #9db3cd;
+}
+
+.aviso-formato span {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: rgba(255, 166, 43, 0.2);
+  color: var(--color-amber);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+/* ---------- Capas: las cuatro responsabilidades ---------- */
+
+.pieza-capas {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.fila-capa {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+}
+
+.rol-capa {
+  flex-shrink: 0;
+  width: 6.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6f89a9;
+}
+
+.fila-capa:first-child code {
+  color: var(--color-amber);
+}
+
+.fila-capa:last-child code {
+  color: var(--color-cyan-bright);
+}
+
+/* ---------- Pipeline: dos ejecuciones con el mismo código ---------- */
+
+.pieza-pipeline-nota {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.corrida {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.marca-corrida {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.corrida.es-rota .marca-corrida {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+}
+
+.corrida.es-rota code {
+  color: #94a9c2;
+}
+
+.corrida.es-verde .marca-corrida {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.35);
+}
+
+.corrida.es-verde code {
+  color: #fff;
+}
+
+.separador-corridas {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0.55rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: #6f89a9;
+}
+
+.separador-corridas::before,
+.separador-corridas::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- La tarjeta de código de una nota ---------- */
+
+.tarjeta-codigo {
+  position: relative;
+  overflow: hidden;
+  margin-top: 3.5rem;
+  border-radius: 26px;
+  padding: 1.6rem 1.7rem 1.5rem;
+  background:
+    radial-gradient(80% 80% at 90% 0%, rgba(224, 73, 10, 0.34) 0%, rgba(0, 0, 0, 0) 58%),
+    linear-gradient(155deg, #0a0f1e 0%, #111c33 100%);
+  box-shadow: 0 30px 60px -32px rgba(10, 15, 30, 0.7);
+}
+
+@media (min-width: 48rem) {
+  .tarjeta-codigo {
+    padding: 2rem 2.25rem 1.9rem;
+  }
+}
+
+.cabeza-codigo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.icono-repo-nota {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.icono-repo-nota svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.rotulo-codigo {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-cyan-bright);
+}
+
+.titulo-codigo {
+  margin-top: 0.3rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.22rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.ir-al-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.45rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #d5e2f2;
+  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+}
+
+.ir-al-repo:hover {
+  background: rgba(34, 211, 238, 0.14);
+  border-color: rgba(34, 211, 238, 0.5);
+  color: #fff;
+}
+
+.ir-al-repo svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* Un archivo por fila, con la ruta delante: lo que se busca al venir de la
+   nota es el archivo, no el repositorio. */
+.lista-archivos {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.9rem;
+}
+
+.lista-archivos a {
+  display: grid;
+  gap: 0.15rem;
+  border-radius: 12px;
+  padding: 0.6rem 0.7rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+@media (min-width: 44rem) {
+  .lista-archivos a {
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    align-items: baseline;
+    gap: 1.1rem;
+  }
+}
+
+.lista-archivos a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(3px);
+}
+
+.lista-archivos code {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--color-amber);
+  overflow-wrap: anywhere;
+}
+
+.lista-archivos span {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #9db3cd;
 }
