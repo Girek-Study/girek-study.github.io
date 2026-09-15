@@ -260,4 +260,9 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
     },
     { passive: true },
   );
+
+  /* Quien la llama puede pedir que se recalculen las paradas cuando el
+   * contenido cambia de alto sin que la ventana se mueva: un filtro que
+   * esconde tarjetas, por ejemplo. */
+  return { rearmar: armar };
 }

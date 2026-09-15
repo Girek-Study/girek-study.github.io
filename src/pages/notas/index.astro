@@ -39,7 +39,7 @@ const [destacada, ...resto] = notas;
   title="Notas — Girek Study"
   description="Apuntes sobre automatización de pruebas, calidad de software y las decisiones de diseño que sostienen una suite a lo largo del tiempo."
 >
-  <section class="relative overflow-hidden pt-28 pb-10 md:pt-36">
+  <section class="seccion relative overflow-hidden">
     <div class="blob -z-10 right-[-4rem] top-10 h-80 w-80" style="background: var(--color-amber)"></div>
     <div class="blob -z-10 left-[-6rem] top-40 h-64 w-64" style="background: var(--color-cyan-tint); animation-delay: -6s"></div>
 
@@ -91,33 +91,28 @@ const [destacada, ...resto] = notas;
           </a>
         </aside>
       </div>
+
+      {/* Los temas cierran la primera pantalla: antes de bajar ya se sabe de
+          qué va todo esto y se puede acotar sin recorrer el archivo. */}
+      <nav class="reveal barra-temas barra-cabecera" aria-label="Filtrar por tema" data-delay="200ms">
+        <button type="button" class="chip chip-tema is-activo" data-tema="" aria-pressed="true">
+          Todas <span class="cuenta-tema">{notas.length}</span>
+        </button>
+        {temas.map(([tema, veces]) => (
+          <button type="button" class="chip chip-tema" data-tema={llave(tema)} aria-pressed="false">
+            {tema} <span class="cuenta-tema">{veces}</span>
+          </button>
+        ))}
+      </nav>
     </div>
   </section>
 
-  <section class="mx-auto max-w-[82rem] px-5 pb-24 md:px-8">
+  <section class="seccion cierre-inicio mx-auto max-w-[82rem] px-5 pb-24 md:px-8">
     {
       notas.length === 0 ? (
         <p class="font-mono text-sm text-[var(--color-faint)]">Todavía no hay notas publicadas.</p>
       ) : (
         <>
-          {/* Filtrar en cliente y no por URL: son pocas notas, todas caben en la
-              misma página y así el tema se cambia sin recargar ni perder el
-              sitio donde iba la lectura. */}
-          <nav class="reveal barra-temas" aria-label="Filtrar por tema">
-            <button type="button" class="chip chip-tema is-activo" data-tema="" aria-pressed="true">
-              Todas <span class="cuenta-tema">{notas.length}</span>
-            </button>
-            {temas.map(([tema, veces]) => (
-              <button
-                type="button"
-                class="chip chip-tema"
-                data-tema={llave(tema)}
-                aria-pressed="false"
-              >
-                {tema} <span class="cuenta-tema">{veces}</span>
-              </button>
-            ))}
-          </nav>
 
           <a
             href={`/notas/${destacada.id}/`}
@@ -239,6 +234,14 @@ const [destacada, ...resto] = notas;
 </Layout>
 
 <script>
+  import { activarSaltoPorSectores } from '../../scripts/salto-por-sectores';
+
+  /* Dos paradas: la cabecera y el archivo. El archivo es más alto que la
+   * ventana, así que se recorre por dentro antes de llegar al pie. */
+  const salto = activarSaltoPorSectores({
+    paradas: () => [...document.querySelectorAll('.seccion')],
+  });
+
   /* Filtro por tema. Cada ficha declara sus temas en `data-temas`, así que
    * filtrar es esconder lo que no lo lleva: no se reordena nada ni se vuelve a
    * pintar la lista. */
@@ -263,6 +266,11 @@ const [destacada, ...resto] = notas;
         const objetivo = ficha.closest('li') ?? ficha;
         (objetivo as HTMLElement).hidden = tema !== '' && !suyos.includes(tema);
       });
+
+      /* El archivo acaba de cambiar de alto sin que la ventana se haya movido:
+       * si no se recalculan, las paradas del salto apuntan a donde estaban las
+       * tarjetas antes de esconderse. */
+      salto.rearmar();
     });
   });
 </script>
