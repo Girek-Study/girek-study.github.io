@@ -10,7 +10,7 @@
  * que llevan dentro se puede copiar.
  */
 interface Props {
-  tipo: 'contrato' | 'capas' | 'pipeline' | 'criterio';
+  tipo: 'contrato' | 'capas' | 'pipeline' | 'criterio' | 'espera';
 }
 
 const { tipo } = Astro.props;
@@ -110,6 +110,33 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> comparar es cálculo; clasificar es criterio
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'espera' && (
+        <div class="pieza-espera">
+          {/* Lo mismo esperado de dos formas: por reloj, que tarda siempre lo
+              mismo aunque ya se haya cumplido, y por condición, que sale en
+              cuanto ocurre. */}
+          <p class="fila-espera es-fija">
+            <span class="marca-espera">✕</span>
+            <code>waitForTimeout(2000)</code>
+            <span class="barra-espera"><i style="width:100%"></i></span>
+            <span class="coste-espera">2.0s</span>
+          </p>
+
+          <p class="fila-espera es-viva">
+            <span class="marca-espera">✓</span>
+            <code>expect(total).toHaveText(...)</code>
+            <span class="barra-espera"><i style="width:9%"></i></span>
+            <span class="coste-espera">0.2s</span>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el sleep no falla cuando la app se vuelve lenta: aguanta
           </p>
         </div>
       )

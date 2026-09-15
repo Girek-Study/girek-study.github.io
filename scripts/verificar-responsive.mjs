@@ -60,6 +60,7 @@ const RUTAS = [
   '/notas/migrar-xml-a-json-el-contrato-cambia/',
   '/notas/suite-sin-sitios-de-terceros/',
   '/notas/la-ia-no-sabe-que-es-un-defecto/',
+  '/notas/el-sleep-que-metiste-sigue-ahi/',
 ];
 
 /** Deja la página quieta para medir: sin animaciones, revelada y con su

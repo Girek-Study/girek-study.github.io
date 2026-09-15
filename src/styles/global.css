@@ -6624,3 +6624,80 @@ body::before {
   width: 1.1rem;
   height: 1.1rem;
 }
+
+/* ---------- Espera: por reloj contra por condición ---------- */
+
+.pieza-espera {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.fila-espera {
+  display: grid;
+  grid-template-columns: 1.2rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem 0.6rem;
+}
+
+.marca-espera {
+  display: grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.fila-espera.es-fija .marca-espera {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+}
+
+.fila-espera.es-viva .marca-espera {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.fila-espera code {
+  grid-column: 2;
+  font-size: 0.74rem;
+}
+
+.fila-espera.es-fija code {
+  color: #94a9c2;
+}
+
+/* La barra dice lo que la cifra no: una tarda siempre lo mismo y la otra sale
+   en cuanto la condición se cumple. */
+.barra-espera {
+  grid-column: 2;
+  display: block;
+  height: 0.32rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.barra-espera i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.fila-espera.es-fija .barra-espera i {
+  background: linear-gradient(90deg, #f87171, rgba(248, 113, 113, 0.45));
+}
+
+.fila-espera.es-viva .barra-espera i {
+  background: linear-gradient(90deg, var(--color-cyan-bright), #22c55e);
+}
+
+.coste-espera {
+  grid-column: 2;
+  justify-self: end;
+  margin-top: -0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: #7e94b2;
+}
