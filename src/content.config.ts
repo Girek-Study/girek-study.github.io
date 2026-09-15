@@ -27,7 +27,7 @@ const notas = defineCollection({
      * están dibujadas en PortadaNota.astro. Una nota sin portada abre con el
      * titular solo, como antes.
      */
-    portada: z.enum(['contrato', 'capas', 'pipeline']).optional(),
+    portada: z.enum(['contrato', 'capas', 'pipeline', 'criterio']).optional(),
     /**
      * El código de lo que cuenta la nota. Se apunta a archivos concretos y no
      * a la raíz del repositorio: «esto que acabas de leer está en esta línea»

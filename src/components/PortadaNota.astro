@@ -10,7 +10,7 @@
  * que llevan dentro se puede copiar.
  */
 interface Props {
-  tipo: 'contrato' | 'capas' | 'pipeline';
+  tipo: 'contrato' | 'capas' | 'pipeline' | 'criterio';
 }
 
 const { tipo } = Astro.props;
@@ -86,6 +86,30 @@ const { tipo } = Astro.props;
           <p class="corrida es-verde">
             <span class="marca-corrida">✓</span>
             <code>suite · hermética, sin red</code>
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'criterio' && (
+        <div class="pieza-contrato">
+          {/* El modelo entrega diferencias; el defecto aparece cuando alguien
+              las clasifica. Ese salto es el tema de la nota. */}
+          <p class="fila-formato">
+            <span class="sello-formato es-antes">IA</span>
+            <code>3 diferencias detectadas</code>
+          </p>
+
+          <p class="flecha-formato">↓</p>
+
+          <p class="fila-formato">
+            <span class="sello-formato es-despues">TÚ</span>
+            <code>1 acordada · 1 no contada · <b>1 defecto</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> comparar es cálculo; clasificar es criterio
           </p>
         </div>
       )
