@@ -1,57 +1,129 @@
 ---
 import { profile } from '../data/site';
 const year = 2026;
+
+/* Los enlaces salen de aquí y no del marcado: antes faltaban Inicio y Notas
+ * en la columna de navegación, y nadie lo nota hasta que busca una página que
+ * sí existe. */
+const navegar = [
+  { texto: 'Inicio', href: '/' },
+  { texto: 'Trayectoria', href: '/trayectoria' },
+  { texto: 'Girek Study', href: '/girek-study' },
+  { texto: 'Notas', href: '/notas' },
+  { texto: 'Portafolio', href: '/portafolio' },
+];
+
+const conectar = [
+  {
+    texto: 'LinkedIn',
+    href: profile.links.linkedin,
+    fuera: true,
+    trazo:
+      'M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM3 9h4v12H3V9Zm6.5 0h3.8v1.65h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.5 4.76 5.75V21h-4v-5.65c0-1.35-.03-3.08-1.9-3.08-1.9 0-2.2 1.46-2.2 2.98V21h-3.97V9Z',
+  },
+  {
+    texto: 'GitHub',
+    href: profile.links.github,
+    fuera: true,
+    trazo:
+      'M12 1.8a10.2 10.2 0 0 0-3.22 19.88c.51.1.7-.22.7-.49l-.01-1.9c-2.84.62-3.44-1.2-3.44-1.2-.46-1.18-1.13-1.5-1.13-1.5-.93-.63.07-.62.07-.62 1.03.07 1.57 1.06 1.57 1.06.91 1.57 2.4 1.12 2.99.85.09-.66.36-1.12.65-1.38-2.27-.26-4.65-1.14-4.65-5.06 0-1.12.4-2.03 1.05-2.74-.1-.26-.46-1.3.1-2.71 0 0 .86-.28 2.81 1.05a9.7 9.7 0 0 1 5.12 0c1.95-1.33 2.81-1.05 2.81-1.05.56 1.41.2 2.45.1 2.71.65.71 1.05 1.62 1.05 2.74 0 3.93-2.39 4.79-4.67 5.05.37.32.69.94.69 1.9l-.01 2.81c0 .27.19.6.71.49A10.2 10.2 0 0 0 12 1.8Z',
+  },
+  {
+    texto: 'WhatsApp',
+    href: profile.whatsappUrl,
+    fuera: true,
+    trazo:
+      'M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.94.53 3.76 1.45 5.32L2 22l4.98-1.6a9.8 9.8 0 0 0 5.06 1.4h.01c5.43 0 9.84-4.4 9.84-9.84C21.89 6.4 17.48 2 12.04 2Zm5.75 13.9c-.24.68-1.4 1.3-1.93 1.35-.5.05-.96.24-3.24-.68-2.73-1.1-4.45-3.9-4.58-4.08-.13-.18-1.1-1.46-1.1-2.79 0-1.33.7-1.98.95-2.25.24-.27.53-.34.71-.34.18 0 .35 0 .5.01.16.01.38-.6.59.45.24.52.8 1.85.87 1.98.07.13.12.29.02.47-.1.18-.15.29-.29.45-.15.16-.31.36-.44.48-.15.13-.3.28-.13.56.17.27.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.32 1.44.28.14.44.12.6-.07.16-.18.7-.81.88-1.09.18-.27.36-.22.6-.13.24.09 1.55.73 1.81.87.27.13.44.2.51.31.06.11.06.65-.18 1.33Z',
+  },
+  {
+    texto: 'RSS',
+    href: '/rss.xml',
+    fuera: false,
+    trazo:
+      'M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z M8.36 17.82a2.18 2.18 0 1 1-4.36 0 2.18 2.18 0 0 1 4.36 0Z',
+  },
+];
 ---
 
-<footer class="relative mt-20 border-t border-[var(--color-line)] bg-[var(--color-cream-2)]">
-  <div class="mx-auto max-w-6xl px-5 py-14 md:px-8">
-    <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-      <div class="min-w-0 max-w-sm">
+<footer class="pie">
+  {/* Filete de marca: separa el pie del contenido sin una línea gris más. */}
+  <span class="filete-pie" aria-hidden="true"></span>
+
+  <div class="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
+    <div class="cuerpo-pie">
+      <div class="marca-pie">
         <a href="/" class="flex items-center gap-2.5">
-          <span class="grid h-11 w-11 place-items-center">
-            <img src="/brand/girek-fox-head.png" alt="" width="44" height="44" class="h-full w-full object-contain" />
-          </span>
+          <img src="/brand/girek-fox-head.png" alt="" width="44" height="44" class="h-11 w-11 object-contain" />
           <span class="font-display text-xl leading-none">
             Girek <span class="text-[var(--color-fox-deep)]">Study</span>
           </span>
         </a>
+
         <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          {profile.titular} · {profile.ubicacion}. Automatización de pruebas y
-          enseñanza de QA con Girek Study.
+          {profile.titular} · {profile.ubicacion}. Automatización de pruebas y enseñanza de QA con
+          Girek Study.
+        </p>
+
+        <p class="senal-pie">
+          <span class="latido" aria-hidden="true"></span>
+          Abierto a propuestas · Remoto
         </p>
       </div>
 
-      <div class="grid min-w-0 grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-10">
+      <div class="columnas-pie">
         <div>
-          <h3 class="eyebrow mb-3">Navega</h3>
-          <ul class="space-y-2 text-sm text-[var(--color-ink-soft)]">
-            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href="/trayectoria">Trayectoria</a></li>
-            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href="/girek-study">Girek Study</a></li>
-            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href="/portafolio">Portafolio</a></li>
+          <h3 class="eyebrow mb-3.5">Navega</h3>
+          <ul class="lista-pie">
+            {navegar.map((e) => (
+              <li>
+                <a href={e.href}>{e.texto}</a>
+              </li>
+            ))}
           </ul>
         </div>
+
         <div>
-          <h3 class="eyebrow mb-3">Conecta</h3>
-          <ul class="space-y-2 text-sm text-[var(--color-ink-soft)]">
-            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href={profile.links.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
-            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href={profile.links.github} target="_blank" rel="noopener">GitHub</a></li>
-            <li><a class="link-underline transition-colors hover:text-[var(--color-fox-deep)]" href={`mailto:${profile.email}`}>Email</a></li>
+          <h3 class="eyebrow mb-3.5">Conecta</h3>
+          <ul class="lista-pie">
+            {conectar.map((e) => (
+              <li>
+                <a
+                  href={e.href}
+                  target={e.fuera ? '_blank' : undefined}
+                  rel={e.fuera ? 'noopener' : undefined}
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d={e.trazo} />
+                  </svg>
+                  {e.texto}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
-        <div class="col-span-2 sm:col-span-1">
-          <h3 class="eyebrow mb-3">Contacto</h3>
-          <a
-            href={`mailto:${profile.email}`}
-            class="break-words text-sm font-medium text-[var(--color-fox-deep)] underline decoration-[var(--color-amber)] decoration-2 underline-offset-4 transition-colors hover:text-[var(--color-fox)]"
-            >{profile.email}</a
-          >
+
+        {/* El correo, como algo que se pulsa. Antes era un enlace subrayado más
+            en una lista de tres. */}
+        <div class="contacto-pie">
+          <h3 class="eyebrow mb-3.5">¿Hablamos?</h3>
+          <p class="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            Cuéntame en qué punto está la calidad de lo que estás construyendo.
+          </p>
+          <a href={`mailto:${profile.email}`} class="btn btn-primary mt-4 w-full justify-center text-sm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2.8" y="4.8" width="18.4" height="14.4" rx="2.4" />
+              <path d="m3.4 6.4 8.6 6 8.6-6" />
+            </svg>
+            Escríbeme
+          </a>
+          <a href={`mailto:${profile.email}`} class="correo-pie">{profile.email}</a>
         </div>
       </div>
     </div>
 
-    <div class="mt-12 flex flex-col gap-2 border-t border-[var(--color-line)] pt-6 text-xs text-[var(--color-faint)] sm:flex-row sm:items-center sm:justify-between">
-      <p class="font-mono">© {year} {profile.nombre} — Girek Study 🦊</p>
-      <p class="font-mono">Hecho con Astro + Tailwind</p>
+    <div class="linea-pie">
+      <p>© {year} {profile.nombreCompleto}</p>
+      <p>Hecho con Astro + Tailwind · Desplegado en GitHub Pages</p>
     </div>
   </div>
 </footer>

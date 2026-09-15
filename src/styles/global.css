@@ -1366,11 +1366,19 @@ body::before {
     height: 0.78rem;
   }
 
-  /* Zona pulsable de al menos 40px: los enlaces del pie median 17. */
+  /* Zona pulsable de al menos 40px: los enlaces del pie median 17. Sin el
+     `display`, que a un botón le quitaba el flex y le apilaba el icono sobre
+     el texto; el padding basta para ganar el alto. El hueco entre renglones se
+     recorta otro tanto para que la lista no se estire. */
+  .pie .lista-pie a,
+  .pie .correo-pie,
   footer .link-underline,
-  footer a[href^='mailto:'] {
-    display: inline-block;
+  footer a[href^='mailto:']:not(.btn) {
     padding-block: 0.65rem;
+  }
+
+  .pie .lista-pie {
+    gap: 0;
   }
 
   /* Rótulos de la ficha de formación: a 9.6px no se leen en un móvil. */
@@ -4447,5 +4455,489 @@ body::before {
 
   .pie-puerta {
     padding-top: 0.9rem;
+  }
+}
+
+/* ---------- Portada: remate de cabecera con enlace ---------- */
+
+.remate-bloque {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+
+@media (min-width: 56rem) {
+  .remate-bloque {
+    justify-content: flex-end;
+  }
+
+  .remate-bloque .nota-bloque {
+    flex: 1 1 14rem;
+  }
+}
+
+/* ---------- Portada: la banda de Girek Study ---------- */
+
+.panel-estudio {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  padding: 2.25rem;
+  box-shadow: var(--shadow-soft);
+}
+
+@media (min-width: 48rem) {
+  .panel-estudio {
+    padding: 3rem 3.5rem;
+  }
+}
+
+.brillo-estudio {
+  position: absolute;
+  top: -8rem;
+  right: -6rem;
+  width: 26rem;
+  height: 26rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.28) 0%, transparent 68%);
+  filter: blur(28px);
+  pointer-events: none;
+}
+
+.cuerpo-estudio {
+  position: relative;
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 62rem) {
+  .cuerpo-estudio {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 3.5rem;
+    align-items: center;
+  }
+}
+
+.rotulo-estudio {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-cyan-bright);
+}
+
+.titulo-estudio {
+  margin-top: 0.75rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: clamp(2.1rem, 1.6rem + 2vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: #fff;
+}
+
+.texto-estudio {
+  margin-top: 1.1rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #c8d6ee;
+}
+
+/* Las tres piezas, cada una con su estado. El párrafo decía lo mismo, pero
+   había que leerlo entero para saber qué existe ya. */
+.piezas-estudio {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.pieza-estudio {
+  display: flex;
+  gap: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.055);
+  padding: 1.05rem 1.2rem;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.pieza-estudio:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(120, 200, 230, 0.45);
+  transform: translateX(4px);
+}
+
+.icono-estudio {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 12px;
+  background: rgba(34, 211, 238, 0.16);
+  color: var(--color-cyan-bright);
+}
+
+.icono-estudio svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.titulo-pieza {
+  display: block;
+  font-size: 0.97rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.detalle-pieza {
+  display: block;
+  margin-top: 0.28rem;
+  font-size: 0.83rem;
+  line-height: 1.5;
+  color: #a9bdd8;
+}
+
+.estado-pieza {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cyan-bright);
+}
+
+.estado-pieza::before {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.estado-pieza.es-pendiente {
+  color: var(--color-amber);
+}
+
+/* El zorro pasa a ser fondo: antes se apoyaba sobre el texto del párrafo. */
+.zorro-estudio {
+  position: absolute;
+  right: -2.5rem;
+  bottom: -2rem;
+  width: 15rem;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.zorro-estudio img {
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 62rem) {
+  .zorro-estudio {
+    right: -3rem;
+    bottom: -3rem;
+    width: 18rem;
+    opacity: 0.16;
+  }
+}
+
+/* ---------- Portada: el cierre ---------- */
+
+.senal-disponible {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  padding: 0.4rem 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-soft);
+  box-shadow: var(--shadow-soft);
+}
+
+.latido {
+  position: relative;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #16a34a;
+}
+
+/* El halo late una vez cada dos segundos: se nota sin pedir atención. */
+.latido::after {
+  content: '';
+  position: absolute;
+  inset: -0.28rem;
+  border-radius: 50%;
+  border: 1px solid #16a34a;
+  animation: latido 2.2s ease-out infinite;
+}
+
+@keyframes latido {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.85;
+  }
+  70%,
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .latido::after {
+    animation: none;
+    opacity: 0.4;
+  }
+}
+
+.canales-contacto {
+  display: grid;
+  gap: 0.9rem;
+  margin: 2.5rem auto 0;
+  max-width: 58rem;
+  text-align: left;
+}
+
+@media (min-width: 48rem) {
+  .canales-contacto {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.canal-contacto {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  border-radius: 18px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 1.05rem 1.2rem;
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.canal-contacto:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 106, 26, 0.5);
+  box-shadow: var(--shadow-warm);
+}
+
+/* El correo es el canal que de verdad quiero que usen: va primero y con el
+   plano de la marca, no como una opción más de tres iguales. */
+.canal-contacto.es-principal {
+  background: linear-gradient(120deg, var(--color-fox-dark), #9c3103);
+  border-color: transparent;
+  color: #fff;
+}
+
+.icono-canal {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 13px;
+  background: var(--color-cream-2);
+  color: var(--color-fox-dark);
+}
+
+.canal-contacto.es-principal .icono-canal {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.icono-canal svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.nombre-canal {
+  display: block;
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.canal-contacto.es-principal .nombre-canal {
+  color: #fff;
+}
+
+.dato-canal {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-faint);
+  overflow-wrap: anywhere;
+}
+
+.canal-contacto.es-principal .dato-canal {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* ---------- El pie ---------- */
+
+.pie {
+  position: relative;
+  margin-top: 5rem;
+  background: linear-gradient(180deg, var(--color-cream-2) 0%, #ffeedd 100%);
+}
+
+/* Filete de marca en vez de una línea gris más. */
+.filete-pie {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-fox) 0%,
+    var(--color-amber) 35%,
+    var(--color-cyan) 100%
+  );
+}
+
+.cuerpo-pie {
+  display: grid;
+  gap: 2.75rem;
+}
+
+@media (min-width: 62rem) {
+  .cuerpo-pie {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    gap: 4rem;
+  }
+}
+
+.marca-pie {
+  min-width: 0;
+  max-width: 24rem;
+}
+
+.senal-pie {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-soft);
+}
+
+.columnas-pie {
+  display: grid;
+  gap: 2.25rem;
+}
+
+@media (min-width: 30rem) {
+  .columnas-pie {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 48rem) {
+  .columnas-pie {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.8fr) minmax(0, 1.3fr);
+    gap: 2.5rem;
+  }
+}
+
+.lista-pie {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.lista-pie a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.88rem;
+  color: var(--color-ink-soft);
+  transition: color 0.22s ease, transform 0.22s ease;
+}
+
+.lista-pie a:hover {
+  color: var(--color-fox-dark);
+  transform: translateX(3px);
+}
+
+.lista-pie svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.lista-pie a:hover svg {
+  opacity: 1;
+}
+
+.contacto-pie {
+  min-width: 0;
+}
+
+@media (min-width: 30rem) and (max-width: 47.99rem) {
+  .contacto-pie {
+    grid-column: 1 / -1;
+  }
+}
+
+.contacto-pie .btn {
+  padding: 0.7rem 1.2rem;
+}
+
+.correo-pie {
+  display: block;
+  margin-top: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--color-faint);
+  overflow-wrap: anywhere;
+  transition: color 0.22s ease;
+}
+
+.correo-pie:hover {
+  color: var(--color-fox-dark);
+}
+
+.linea-pie {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 3.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-line);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-faint);
+}
+
+@media (min-width: 40rem) {
+  .linea-pie {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
