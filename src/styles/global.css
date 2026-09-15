@@ -4795,7 +4795,11 @@ body::before {
 
 .pie {
   position: relative;
-  margin-top: 5rem;
+  /* Sin margen: los 80px que tenía eran justo lo que impedía que el bloque de
+     cierre y el pie entraran en la misma pantalla, y obligaban a un salto
+     extra de cien píxeles para enseñar el resto del pie. El filete de arriba
+     ya los separa, y el pie trae su propio relleno. */
+  margin-top: 0;
   background: linear-gradient(180deg, var(--color-cream-2) 0%, #ffeedd 100%);
 }
 

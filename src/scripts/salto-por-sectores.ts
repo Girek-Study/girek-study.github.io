@@ -104,9 +104,19 @@ export function activarSaltoPorSectores({ paradas }: Opciones) {
     if (!actual) return null;
 
     const arriba = topeDe(actual);
-    const sobraPorDentro = actual.getBoundingClientRect().height - window.innerHeight;
     const recorrido = window.scrollY - arriba;
     const paso = Math.round(window.innerHeight * 0.9);
+
+    /* El último tramo llega hasta el fondo del documento, no hasta el final de
+     * su caja: debajo queda el pie, que no es una parada. Midiéndolo así, el
+     * cierre y el pie se recorren en pasos de una pantalla como cualquier otro
+     * sector alto, y el último gesto acaba justo en el fondo. Antes el salto
+     * devolvía null ahí y el resto quedaba como scroll suelto. */
+    const maximoDoc = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+    const sobraPorDentro =
+      i === sectores.length - 1
+        ? maximoDoc - arriba
+        : actual.getBoundingClientRect().height - window.innerHeight;
 
     if (direccion > 0) {
       // Todavía queda sector por leer: una pantalla más, sin pasarse.
