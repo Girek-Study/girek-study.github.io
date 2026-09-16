@@ -61,6 +61,7 @@ const RUTAS = [
   '/notas/suite-sin-sitios-de-terceros/',
   '/notas/la-ia-no-sabe-que-es-un-defecto/',
   '/notas/el-sleep-que-metiste-sigue-ahi/',
+  '/notas/la-ia-que-si-mira-la-pagina/',
 ];
 
 /** Deja la página quieta para medir: sin animaciones, revelada y con su

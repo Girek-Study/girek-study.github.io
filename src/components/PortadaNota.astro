@@ -10,7 +10,7 @@
  * que llevan dentro se puede copiar.
  */
 interface Props {
-  tipo: 'contrato' | 'capas' | 'pipeline' | 'criterio' | 'espera';
+  tipo: 'contrato' | 'capas' | 'pipeline' | 'criterio' | 'espera' | 'mcp';
 }
 
 const { tipo } = Astro.props;
@@ -137,6 +137,30 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> el sleep no falla cuando la app se vuelve lenta: aguanta
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'mcp' && (
+        <div class="pieza-mcp">
+          {/* Lo que el modelo recibe de cada forma: una imagen que hay que
+              interpretar, o roles y nombres que se pueden referenciar. */}
+          <p class="via-mcp es-ciega">
+            <span class="sello-formato es-antes">Captura</span>
+            <code>"el botón azul de abajo"</code>
+          </p>
+
+          <p class="flecha-formato">↓</p>
+
+          <p class="via-mcp es-clara">
+            <span class="sello-formato es-despues">Árbol a11y</span>
+            <code>button · name=<b>"Ingresar"</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> lo segundo es una referencia; lo primero, una interpretación
           </p>
         </div>
       )

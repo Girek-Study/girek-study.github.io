@@ -6701,3 +6701,28 @@ body::before {
   font-size: 0.62rem;
   color: #7e94b2;
 }
+
+/* ---------- MCP: lo que el modelo recibe de cada forma ---------- */
+
+.pieza-mcp {
+  display: grid;
+  gap: 0;
+}
+
+.via-mcp {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.via-mcp code b {
+  color: var(--color-cyan-bright);
+  font-weight: 600;
+}
+
+/* Lo que hay que interpretar se ve como lo que es: aproximado. */
+.via-mcp.es-ciega code {
+  color: #8fa8c6;
+  font-style: italic;
+}
