@@ -6726,3 +6726,86 @@ body::before {
   color: #8fa8c6;
   font-style: italic;
 }
+
+/* ---------- Datos: la colisión que parece del entorno ---------- */
+
+.pieza-datos {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.fila-dato {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.fila-dato.es-choque code {
+  color: #f87171;
+}
+
+.fila-dato.es-propio code {
+  color: var(--color-cyan-bright);
+}
+
+.choque {
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.18);
+  padding: 0.12rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f87171;
+}
+
+/* ---------- Carga: el promedio tranquiliza, la cola espera ---------- */
+
+.pieza-carga {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.fila-percentil {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr) 3.4rem;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.rotulo-percentil {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #7e94b2;
+}
+
+.barra-percentil {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.barra-percentil i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-cyan-bright), #22c55e);
+}
+
+.fila-percentil.es-alarma .barra-percentil i {
+  background: linear-gradient(90deg, var(--color-amber), #f87171);
+}
+
+.valor-percentil {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-align: right;
+  color: #d5e2f2;
+}
+
+.fila-percentil.es-alarma .valor-percentil {
+  color: #f87171;
+  font-weight: 600;
+}

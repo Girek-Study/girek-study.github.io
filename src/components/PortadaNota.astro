@@ -10,7 +10,7 @@
  * que llevan dentro se puede copiar.
  */
 interface Props {
-  tipo: 'contrato' | 'capas' | 'pipeline' | 'criterio' | 'espera' | 'mcp';
+  tipo: 'contrato' | 'capas' | 'pipeline' | 'criterio' | 'espera' | 'mcp' | 'datos' | 'carga';
 }
 
 const { tipo } = Astro.props;
@@ -161,6 +161,60 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> lo segundo es una referencia; lo primero, una interpretación
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'datos' && (
+        <div class="pieza-datos">
+          {/* Dos pruebas apuntando al mismo registro, y una tercera con el
+              suyo. Lo que falla es la colisión, no el entorno. */}
+          <p class="fila-dato es-choque">
+            <span class="sello-formato es-antes">test A</span>
+            <code>qa_test_01</code>
+          </p>
+          <p class="fila-dato es-choque">
+            <span class="sello-formato es-antes">test B</span>
+            <code>qa_test_01</code>
+            <span class="choque">colisión</span>
+          </p>
+
+          <p class="fila-dato es-propio">
+            <span class="sello-formato es-despues">test C</span>
+            <code>qa_1726502841_a7f3</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el rojo no era del entorno: una llegó primero
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'carga' && (
+        <div class="pieza-carga">
+          {/* El promedio tranquiliza; la cola es la que espera. */}
+          <p class="fila-percentil">
+            <span class="rotulo-percentil">p50</span>
+            <span class="barra-percentil"><i style="width:14%"></i></span>
+            <span class="valor-percentil">180ms</span>
+          </p>
+          <p class="fila-percentil">
+            <span class="rotulo-percentil">p95</span>
+            <span class="barra-percentil"><i style="width:38%"></i></span>
+            <span class="valor-percentil">500ms</span>
+          </p>
+          <p class="fila-percentil es-alarma">
+            <span class="rotulo-percentil">p99</span>
+            <span class="barra-percentil"><i style="width:100%"></i></span>
+            <span class="valor-percentil">11s</span>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el umbral estaba en p95: nadie miraba la cola
           </p>
         </div>
       )

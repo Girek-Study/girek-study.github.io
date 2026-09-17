@@ -62,6 +62,8 @@ const RUTAS = [
   '/notas/la-ia-no-sabe-que-es-un-defecto/',
   '/notas/el-sleep-que-metiste-sigue-ahi/',
   '/notas/la-ia-que-si-mira-la-pagina/',
+  '/notas/el-dato-de-prueba-que-alguien-mas-esta-usando/',
+  '/notas/la-prueba-de-carga-que-nadie-mira/',
 ];
 
 /** Deja la página quieta para medir: sin animaciones, revelada y con su
