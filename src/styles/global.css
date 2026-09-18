@@ -6809,3 +6809,70 @@ body::before {
   color: #f87171;
   font-weight: 600;
 }
+
+/* ---------- Rojo permanente: el historial lo cuenta mejor que un texto ---------- */
+
+.pieza-rojo {
+  display: grid;
+  gap: 0.85rem;
+}
+
+/* Una casilla por ejecución. El día en que el rojo dejó de ser excepción
+   se ve sin leer nada. */
+.tira-ejecuciones {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: 0.22rem;
+}
+
+.tira-ejecuciones i {
+  display: block;
+  height: 1.35rem;
+  border-radius: 0.2rem;
+}
+
+.tira-ejecuciones i.es-ok { background: rgba(34, 197, 94, 0.55); }
+
+.tira-ejecuciones i.es-mal { background: rgba(239, 68, 68, 0.62); }
+
+.fila-ejecucion {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.fila-ejecucion code { color: #f87171; }
+
+/* ---------- Métricas: las que se suben solas y las que no ---------- */
+
+.pieza-metricas {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.fila-metrica {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.marca-metrica {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.fila-metrica.es-vacia .marca-metrica { color: #f87171; }
+
+/* Tachada: se lee «esta no» antes de leer cuál es. */
+.fila-metrica.es-vacia code {
+  color: #8fa8c6;
+  text-decoration: line-through;
+  text-decoration-color: rgba(239, 68, 68, 0.55);
+}
+
+.fila-metrica.es-buena .marca-metrica { color: #22c55e; }
+
+.fila-metrica.es-buena code { color: var(--color-cyan-bright); }

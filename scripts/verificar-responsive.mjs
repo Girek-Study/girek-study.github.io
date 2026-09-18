@@ -15,6 +15,7 @@
 // doce minutos y nadie espera doce minutos por una comprobación, así que se
 // dejaba de correr, que es la peor forma de tener una guardia.
 
+import { readdirSync } from 'node:fs';
 import { chromium } from 'playwright';
 
 const BASE = process.env.BASE ?? 'http://localhost:4474';
@@ -50,20 +51,21 @@ const OBJETIVOS = [
 
 // Las notas van una por una: su cuerpo lleva diagramas, tablas y bloques de
 // código, que es justo lo que desborda en un teléfono estrecho.
+//
+// Se leen del disco en vez de listarlas a mano: una nota nueva entra sola en
+// la guardia, que es precisamente cuando más falta hace revisarla.
+const NOTAS = readdirSync(new URL('../src/content/notas/', import.meta.url))
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => `/notas/${f.replace(/.md$/, '')}/`)
+  .sort();
+
 const RUTAS = [
   '/',
   '/trayectoria/',
   '/girek-study/',
   '/notas/',
   '/portafolio/',
-  '/notas/cuando-screenplay-no-vale-la-pena/',
-  '/notas/migrar-xml-a-json-el-contrato-cambia/',
-  '/notas/suite-sin-sitios-de-terceros/',
-  '/notas/la-ia-no-sabe-que-es-un-defecto/',
-  '/notas/el-sleep-que-metiste-sigue-ahi/',
-  '/notas/la-ia-que-si-mira-la-pagina/',
-  '/notas/el-dato-de-prueba-que-alguien-mas-esta-usando/',
-  '/notas/la-prueba-de-carga-que-nadie-mira/',
+  ...NOTAS,
 ];
 
 /** Deja la página quieta para medir: sin animaciones, revelada y con su

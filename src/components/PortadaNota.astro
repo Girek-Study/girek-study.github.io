@@ -10,7 +10,17 @@
  * que llevan dentro se puede copiar.
  */
 interface Props {
-  tipo: 'contrato' | 'capas' | 'pipeline' | 'criterio' | 'espera' | 'mcp' | 'datos' | 'carga';
+  tipo:
+    | 'contrato'
+    | 'capas'
+    | 'pipeline'
+    | 'criterio'
+    | 'espera'
+    | 'mcp'
+    | 'datos'
+    | 'carga'
+    | 'rojo'
+    | 'metricas';
 }
 
 const { tipo } = Astro.props;
@@ -215,6 +225,56 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> el umbral estaba en p95: nadie miraba la cola
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'rojo' && (
+        <div class="pieza-rojo">
+          {/* El historial de ejecuciones: se ve de un vistazo el día en que
+              el rojo dejó de ser una excepción. */}
+          <span class="tira-ejecuciones">
+            {[
+              'ok', 'ok', 'ok', 'ok', 'mal', 'ok', 'mal', 'mal',
+              'mal', 'mal', 'mal', 'mal', 'mal', 'mal', 'mal', 'mal',
+            ].map((e) => (
+              <i class={e === 'mal' ? 'es-mal' : 'es-ok'} />
+            ))}
+          </span>
+
+          <p class="fila-ejecucion">
+            <span class="sello-formato es-antes">#218</span>
+            <code>4 fallos — los mismos de ayer</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> «esas siempre fallan»: el rojo ya no avisa de nada
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'metricas' && (
+        <div class="pieza-metricas">
+          {/* Arriba, las que se suben sin tocar el producto. Abajo, las que
+              miden lo que le pasa a quien lo usa. */}
+          {[
+            { que: 'casos ejecutados', vale: false },
+            { que: '% de cobertura', vale: false },
+            { que: 'defectos escapados', vale: true },
+            { que: 'minutos hasta el rojo', vale: true },
+          ].map((m) => (
+            <p class={`fila-metrica ${m.vale ? 'es-buena' : 'es-vacia'}`}>
+              <span class="marca-metrica">{m.vale ? '✓' : '✕'}</span>
+              <code>{m.que}</code>
+            </p>
+          ))}
+
+          <p class="aviso-formato">
+            <span>!</span> las dos primeras miden esfuerzo; las otras, resultado
           </p>
         </div>
       )
