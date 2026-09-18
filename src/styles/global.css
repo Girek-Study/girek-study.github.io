@@ -6566,6 +6566,84 @@ body::before {
   scroll-snap-align: start;
 }
 
+/* En una pantalla ancha, el contenido se quedaba en 82rem y sobraban tres
+   dedos de margen a cada lado. La pista se estira hacia la derecha hasta
+   comerse ese margen —nunca más, así que no puede desbordar— y la cabecera
+   se queda alineada con el resto de la página. */
+@media (min-width: 1280px) {
+  .pista-notas {
+    margin-right: calc(-1 * max(0px, (100vw - 82rem) / 2 - 1rem));
+    padding-right: 3rem;
+  }
+
+  .pista-notas > li {
+    width: 24rem;
+  }
+}
+
+/* Con alto de sobra, la mitad de la pantalla quedaba vacía debajo de una
+   sola fila. En dos filas entra el doble de archivo sin alargar la página:
+   se sigue pasando de lado, pero por columnas. */
+@media (min-width: 1100px) and (min-height: 1040px) {
+  .pista-notas {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(2, 1fr);
+    grid-auto-columns: 24rem;
+    align-items: stretch;
+    row-gap: 0.75rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.7rem;
+    /* El aire que separa del título ya lo pone la cabecera. */
+    margin-top: -0.6rem;
+  }
+
+  .pista-notas > li {
+    width: auto;
+  }
+
+  /* Dos filas caben en la pantalla por poco, así que la tarjeta se aprieta
+     donde no se nota: márgenes internos, no tamaño de letra. */
+  .pista-notas .tarjeta-nota {
+    padding: 1.25rem 1.4rem 1.15rem;
+  }
+
+  .pista-notas .icono-nota {
+    margin-bottom: 0.7rem;
+  }
+
+  .pista-notas .titulo-nota {
+    margin-top: 0.7rem;
+  }
+
+  .pista-notas .temas-nota {
+    margin-top: 0.8rem;
+  }
+
+  .pista-notas .pie-nota {
+    padding-top: 0.8rem;
+  }
+
+  /* Con dos filas el resumen es lo único que puede crecer sin control: uno de
+     cinco líneas empujaba la segunda fila fuera de la pantalla. Recortado a
+     tres, todas las tarjetas traen el mismo bloque de texto, y el resto de la
+     nota se lee donde tiene que leerse, que es en la nota. */
+  .pista-notas .resumen-nota {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
+  /* El sector reserva 6rem arriba por la cabecera fija, que mide 4.5. Con una
+     sola fila ese respiro de más no molesta; con dos, es lo que dejaba el riel
+     de avance por debajo del borde de la pantalla. */
+  .seccion:has(.carrusel-notas) {
+    padding-top: 4.75rem;
+    padding-bottom: 2rem;
+  }
+}
+
 /* El corte seco en el borde parecía un fallo de maquetación. Desvanecido,
    se lee como lo que es: sigue habiendo tarjetas. La clase la pone el guion
    solo cuando de verdad hay más. */
