@@ -6533,17 +6533,31 @@ body::before {
   scroll-padding-left: 0.25rem;
   /* Sitio para que la sombra de las tarjetas no se recorte al desplazarse. */
   padding: 0.5rem 0.25rem 1.25rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-line-strong) transparent;
+  /* La barra del navegador es gris, de grosor ajeno y distinta en cada
+     sistema. Se quita, y el avance lo dibuja `.riel-notas`. */
+  scrollbar-width: none;
 }
 
 .pista-notas::-webkit-scrollbar {
-  height: 6px;
+  display: none;
 }
 
-.pista-notas::-webkit-scrollbar-thumb {
+/* Riel de avance: el guion ocupa la parte visible de la pista, así que su
+   ancho dice cuánto se ve y su posición, por dónde vas. */
+.riel-notas {
+  overflow: hidden;
+  height: 3px;
   border-radius: 999px;
-  background: var(--color-line-strong);
+  background: var(--color-line);
+}
+
+.avance-notas {
+  display: block;
+  height: 100%;
+  width: 30%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-fox), #ffa62b);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .pista-notas > li {
@@ -6552,8 +6566,51 @@ body::before {
   scroll-snap-align: start;
 }
 
+/* El corte seco en el borde parecía un fallo de maquetación. Desvanecido,
+   se lee como lo que es: sigue habiendo tarjetas. La clase la pone el guion
+   solo cuando de verdad hay más. */
+.pista-notas.hay-mas {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 5rem), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 5rem), transparent);
+}
+
 .pista-notas .tarjeta-nota {
   height: 100%;
+}
+
+/* Las tarjetas igualan su altura a la más alta, así que en las de título
+   corto quedaba un hueco muerto de tres líneas entre los temas y el pie.
+   Con una línea encima, ese aire se lee como separación y no como olvido. */
+.pista-notas .pie-nota {
+  width: 100%;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--color-line);
+}
+
+/* La flecha, en su propio botón redondo: da un objetivo claro al cursor y
+   remata la tarjeta por la derecha, que era el lado que quedaba vacío. */
+.pista-notas .pie-nota svg {
+  box-sizing: content-box;
+  width: 0.85rem;
+  height: 0.85rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pista-notas .tarjeta-nota:hover .pie-nota svg {
+  background: var(--color-fox);
+  color: #fff;
+  transform: translateX(3px);
+}
+
+/* Los temas se pegan al pie en vez de flotar a media caja. */
+.pista-notas .temas-nota {
+  margin-top: 1rem;
 }
 
 /* El icono del tema, junto al número de orden. */
@@ -6583,11 +6640,48 @@ body::before {
   height: 1.25rem;
 }
 
+/* Cabecera del archivo. Los mandos van pegados al título, que es donde se
+   buscan: abajo y sueltos parecían de la sección siguiente. */
+.cabecera-archivo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+}
+
+.control-archivo {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-left: auto;
+}
+
+.control-archivo .nota-bloque {
+  max-width: 22rem;
+  margin: 0;
+  text-align: right;
+}
+
+.cifra-archivo {
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.35rem;
+  color: var(--color-fox-dark);
+  letter-spacing: -0.02em;
+}
+
 .mandos-carrusel {
   display: flex;
-  justify-content: flex-end;
+  flex: none;
   gap: 0.5rem;
-  margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  /* En un teléfono se pasa con el dedo: los mandos sobran, y el recuento
+     vuelve a la izquierda bajo el título. */
+  .control-archivo { margin-left: 0; }
+  .control-archivo .nota-bloque { text-align: left; }
+  .control-archivo .mandos-carrusel { display: none; }
 }
 
 .mando {

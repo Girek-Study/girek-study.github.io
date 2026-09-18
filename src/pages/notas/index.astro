@@ -29,6 +29,18 @@ const ICONOS: Record<string, string> = {
   pipeline:
     'M5.5 7.5h3.2 M15.3 7.5h3.2 M5.5 16.5h3.2 M15.3 16.5h3.2 M12 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z M12 19a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z M12 10v4',
   criterio: 'M3.5 6.5h17 M6.5 12h11 M10 17.5h4',
+  // Reloj: la espera que se quedó puesta.
+  espera: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z M12 7.6V12l3.1 1.9',
+  // Árbol de accesibilidad: lo que el modelo lee en vez de la captura.
+  mcp: 'M6 4.5v15 M6 8h5 M6 15.5h5 M13.5 5.5h5v5h-5z M13.5 13h5v5h-5z',
+  // Cilindro: el registro que dos pruebas se disputan.
+  datos: 'M12 3.5c3.6 0 6.5 1.1 6.5 2.5S15.6 8.5 12 8.5 5.5 7.4 5.5 6 8.4 3.5 12 3.5Z M5.5 6v12c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5V6 M5.5 12c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5',
+  // Velocímetro: el percentil que nadie mira.
+  carga: 'M3.6 17.5a8.4 8.4 0 1 1 16.8 0 M12 13.6l4.2-3.7',
+  // Aviso: el rojo que dejó de avisar.
+  rojo: 'M12 4.4 21 19.6H3L12 4.4Z M12 10v4.1 M12 16.9v.2',
+  // Barras: lo que se mide y lo que se cree medir.
+  metricas: 'M4 19.5h16 M7.5 19.5v-4.6 M12 19.5v-8.4 M16.5 19.5v-11.6',
 };
 
 /** Un tema se filtra por su llave, no por su rótulo: "API Testing" → "api-testing". */
@@ -174,16 +186,37 @@ const [destacada, ...resto] = notas;
   </section>
 
   <section class="seccion mx-auto max-w-[82rem] px-5 md:px-8">
-    <div class="reveal cabecera-bloque">
+    <div class="reveal cabecera-archivo">
       <div>
         <p class="eyebrow">El archivo</p>
         <h2 class="mt-3 font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-[2.7rem]">
           Todo lo demás
         </h2>
       </div>
-      <p class="nota-bloque">
-        Se pasa de lado. Los temas de arriba filtran también aquí.
-      </p>
+
+      <div class="control-archivo">
+        {/* El espacio tras la cifra es explícito: en JSX el salto de línea
+            entre expresiones no deja ninguno. */}
+        <p class="nota-bloque">
+          <span class="cifra-archivo">{resto.length}</span>{' '}
+          {resto.length === 1 ? 'nota más' : 'notas más'}. Los temas también filtran aquí.
+        </p>
+
+        {/* Los mandos solo aparecen si hay a dónde ir: con tres notas en una
+            pantalla ancha no hay nada que pasar. */}
+        <div class="mandos-carrusel" id="mandos-notas" hidden>
+          <button type="button" class="mando" data-ir="-1" aria-label="Notas anteriores">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 5.5 8.5 12 15 18.5" />
+            </svg>
+          </button>
+          <button type="button" class="mando" data-ir="1" aria-label="Notas siguientes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 5.5 6.5 6.5L9 18.5" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     {
@@ -247,19 +280,10 @@ const [destacada, ...resto] = notas;
                 ))}
               </ol>
 
-              {/* Los mandos solo aparecen si hay a dónde ir: con tres notas en
-                  una pantalla ancha no hay nada que pasar. */}
-              <div class="mandos-carrusel" id="mandos-notas" hidden>
-                <button type="button" class="mando" data-ir="-1" aria-label="Notas anteriores">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M15 5.5 8.5 12 15 18.5" />
-                  </svg>
-                </button>
-                <button type="button" class="mando" data-ir="1" aria-label="Notas siguientes">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m9 5.5 6.5 6.5L9 18.5" />
-                  </svg>
-                </button>
+              {/* Cuánto queda por ver. Se esconde igual que los mandos cuando
+                  todas las tarjetas caben a la vez. */}
+              <div class="riel-notas" id="riel-notas" hidden aria-hidden="true">
+                <span class="avance-notas" id="avance-notas"></span>
               </div>
             </div>
           )}
@@ -353,18 +377,36 @@ const [destacada, ...resto] = notas;
    * se puede anclar—. El guion solo pone los mandos y decide si hacen falta. */
   const pista = document.getElementById('pista-notas');
   const mandos = document.getElementById('mandos-notas');
+  const riel = document.getElementById('riel-notas');
+  const avance = document.getElementById('avance-notas');
 
   if (pista && mandos) {
     const hayDeSobra = () => pista.scrollWidth > pista.clientWidth + 4;
 
     const revisarMandos = () => {
-      mandos.hidden = !hayDeSobra();
+      const sobra = hayDeSobra();
+      mandos.hidden = !sobra;
+      if (riel) riel.hidden = !sobra;
+      /* El desvanecido del borde derecho insinúa que hay más. Si todas las
+       * tarjetas caben, sobra: borraría la última sin motivo. */
+      pista.classList.toggle('hay-mas', sobra);
+
       mandos.querySelectorAll<HTMLButtonElement>('.mando').forEach((boton) => {
         const hacia = Number(boton.dataset.ir ?? '1');
         const tope = pista.scrollWidth - pista.clientWidth;
         boton.disabled =
           hacia < 0 ? pista.scrollLeft <= 4 : pista.scrollLeft >= tope - 4;
       });
+
+      /* El guion de la barra ocupa la parte visible de la pista y se mueve con
+       * ella: dice a la vez cuánto se ve y por dónde vas. La barra del navegador
+       * hacía lo mismo, pero gris y con el grosor que decidiera el sistema. */
+      if (avance && sobra) {
+        const visible = pista.clientWidth / pista.scrollWidth;
+        const recorrido = pista.scrollLeft / (pista.scrollWidth - pista.clientWidth);
+        avance.style.width = `${visible * 100}%`;
+        avance.style.transform = `translateX(${(recorrido * (1 - visible) * 100) / visible}%)`;
+      }
     };
 
     mandos.querySelectorAll<HTMLButtonElement>('.mando').forEach((boton) => {
