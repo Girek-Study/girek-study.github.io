@@ -20,7 +20,9 @@ interface Props {
     | 'datos'
     | 'carga'
     | 'rojo'
-    | 'metricas';
+    | 'metricas'
+    | 'ruta'
+    | 'traducir';
 }
 
 const { tipo } = Astro.props;
@@ -275,6 +277,54 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> las dos primeras miden esfuerzo; las otras, resultado
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'ruta' && (
+        <div class="pieza-ruta">
+          {/* Las capas en el orden que importa: la herramienta es la quinta,
+              no la primera. Se lee de abajo arriba, como se construye. */}
+          {[
+            { n: '08', que: 'Comunicar y decidir', tono: 'alta' },
+            { n: '05', que: 'Automatización', tono: 'media' },
+            { n: '03', que: 'Programar', tono: 'media' },
+            { n: '01', que: 'Qué significa probar', tono: 'base' },
+          ].map((c) => (
+            <p class={`peldano es-${c.tono}`}>
+              <span class="peldano-n">{c.n}</span>
+              <code>{c.que}</code>
+            </p>
+          ))}
+
+          <p class="aviso-formato">
+            <span>!</span> saltarse la base es llegar antes y estancarse después
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'traducir' && (
+        <div class="pieza-traducir">
+          {/* El riesgo en palabras y su señal en código: lo mismo dicho dos
+              veces, que es justo lo que hace la traducción. */}
+          <p class="lado-riesgo">
+            <span class="sello-formato es-antes">Riesgo</span>
+            <code>entra alguien que no debería</code>
+          </p>
+
+          <p class="flecha-formato">↓</p>
+
+          <p class="lado-senal">
+            <span class="sello-formato es-despues">Señal</span>
+            <code>no hay <b>cookie de sesión</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el mensaje en pantalla es cosmética; la cookie es el hecho
           </p>
         </div>
       )

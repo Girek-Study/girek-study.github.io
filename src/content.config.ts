@@ -28,7 +28,20 @@ const notas = defineCollection({
      * titular solo, como antes.
      */
     portada: z
-      .enum(['contrato', 'capas', 'pipeline', 'criterio', 'espera', 'mcp', 'datos', 'carga', 'rojo', 'metricas'])
+      .enum([
+        'contrato',
+        'capas',
+        'pipeline',
+        'criterio',
+        'espera',
+        'mcp',
+        'datos',
+        'carga',
+        'rojo',
+        'metricas',
+        'ruta',
+        'traducir',
+      ])
       .optional(),
     /**
      * El código de lo que cuenta la nota. Se apunta a archivos concretos y no

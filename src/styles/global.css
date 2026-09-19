@@ -7048,3 +7048,58 @@ body::before {
 .fila-metrica.es-buena .marca-metrica { color: #22c55e; }
 
 .fila-metrica.es-buena code { color: var(--color-cyan-bright); }
+
+/* ---------- Ruta: las capas, y en qué peldaño está la herramienta ---------- */
+
+.pieza-ruta {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.peldano {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.55rem;
+  padding: 0.4rem 0.6rem;
+}
+
+/* El sangrado dibuja la escalera sin tener que explicarla. */
+.peldano.es-alta { margin-left: 2.4rem; background: rgba(255, 106, 26, 0.16); }
+.peldano.es-media { margin-left: 1.2rem; background: rgba(255, 255, 255, 0.06); }
+.peldano.es-base { background: rgba(6, 182, 212, 0.16); }
+
+.peldano-n {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #7e94b2;
+}
+
+.peldano.es-alta code { color: var(--color-amber); }
+.peldano.es-base code { color: var(--color-cyan-bright); }
+
+/* ---------- Traducir: el riesgo en palabras y su señal en código ---------- */
+
+.pieza-traducir {
+  display: grid;
+  gap: 0;
+}
+
+.lado-riesgo,
+.lado-senal {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.lado-riesgo code {
+  color: #8fa8c6;
+  font-style: italic;
+}
+
+.lado-senal code b {
+  color: var(--color-cyan-bright);
+  font-weight: 600;
+}
