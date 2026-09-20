@@ -22,7 +22,10 @@ interface Props {
     | 'rojo'
     | 'metricas'
     | 'ruta'
-    | 'traducir';
+    | 'traducir'
+    | 'acceso'
+    | 'revision'
+    | 'vitals';
 }
 
 const { tipo } = Astro.props;
@@ -325,6 +328,77 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> el mensaje en pantalla es cosmética; la cookie es el hecho
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'acceso' && (
+        <div class="pieza-acceso">
+          {/* Lo que cubre la máquina y lo que no. La proporción es el dato:
+              ningún escáner serio promete más de un tercio. */}
+          <p class="franja-acceso">
+            <span class="sello-formato es-despues">axe</span>
+            <span class="barra-acceso"><i style="width:33%" /></span>
+            <code>~1/3</code>
+          </p>
+
+          <p class="franja-acceso es-manual">
+            <span class="sello-formato es-antes">criterio</span>
+            <span class="barra-acceso"><i class="es-manual" style="width:67%" /></span>
+            <code>~2/3</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> teclado, foco y textos que digan algo: eso no lo ve un escáner
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'revision' && (
+        <div class="pieza-revision">
+          {/* Lo que se aprueba sin mirar, y las tres preguntas que lo frenan. */}
+          <p class="sello-lgtm">LGTM 👍</p>
+
+          {[
+            '¿qué riesgo cubre?',
+            '¿está al nivel correcto?',
+            '¿qué comprueba de verdad?',
+          ].map((q) => (
+            <p class="fila-revision">
+              <span class="marca-revision">?</span>
+              <code>{q}</code>
+            </p>
+          ))}
+
+          <p class="aviso-formato">
+            <span>!</span> el código de producción se revisa; el de las pruebas se aprueba
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'vitals' && (
+        <div class="pieza-vitals">
+          {/* El servidor contestó rápido; la pantalla siguió pareciendo lenta. */}
+          <p class="fila-vital es-ok">
+            <span class="rotulo-vital">servidor</span>
+            <span class="barra-vital"><i style="width:12%" /></span>
+            <span class="valor-vital">200ms</span>
+          </p>
+
+          <p class="fila-vital es-alarma">
+            <span class="rotulo-vital">LCP</span>
+            <span class="barra-vital"><i style="width:78%" /></span>
+            <span class="valor-vital">3.4s</span>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> entre las dos caben las fuentes, el JS y las imágenes
           </p>
         </div>
       )

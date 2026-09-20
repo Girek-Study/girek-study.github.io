@@ -41,6 +41,9 @@ const notas = defineCollection({
         'metricas',
         'ruta',
         'traducir',
+        'acceso',
+        'revision',
+        'vitals',
       ])
       .optional(),
     /**

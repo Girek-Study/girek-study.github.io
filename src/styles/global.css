@@ -7103,3 +7103,129 @@ body::before {
   color: var(--color-cyan-bright);
   font-weight: 600;
 }
+
+/* ---------- Acceso: lo que cubre el escáner y lo que no ---------- */
+
+.pieza-acceso {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.franja-acceso {
+  display: grid;
+  grid-template-columns: 4.8rem minmax(0, 1fr) 2.6rem;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.barra-acceso {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.barra-acceso i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-cyan-bright), #22c55e);
+}
+
+.barra-acceso i.es-manual {
+  background: linear-gradient(90deg, var(--color-amber), var(--color-fox));
+}
+
+.franja-acceso code {
+  text-align: right;
+  color: #d5e2f2;
+}
+
+/* ---------- Revisión: el sello fácil y las preguntas que lo frenan ---------- */
+
+.pieza-revision {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.sello-lgtm {
+  justify-self: start;
+  margin-bottom: 0.3rem;
+  border-radius: 999px;
+  border: 1px dashed rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.12);
+  padding: 0.2rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #f87171;
+}
+
+.fila-revision {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.marca-revision {
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(255, 106, 26, 0.18);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-amber);
+}
+
+/* ---------- Vitals: lo que responde el servidor y lo que se ve ---------- */
+
+.pieza-vitals {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.fila-vital {
+  display: grid;
+  grid-template-columns: 4.4rem minmax(0, 1fr) 3rem;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.rotulo-vital {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #7e94b2;
+}
+
+.barra-vital {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.barra-vital i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-cyan-bright), #22c55e);
+}
+
+.fila-vital.es-alarma .barra-vital i {
+  background: linear-gradient(90deg, var(--color-amber), #f87171);
+}
+
+.valor-vital {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-align: right;
+  color: #d5e2f2;
+}
+
+.fila-vital.es-alarma .valor-vital {
+  color: #f87171;
+  font-weight: 600;
+}
