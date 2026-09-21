@@ -44,6 +44,15 @@ const notas = defineCollection({
         'acceso',
         'revision',
         'vitals',
+        'copiloto',
+        'contexto',
+        'vanidad',
+        'seguridad',
+        'esencia',
+        'gobernanza',
+        'agente',
+        'ax',
+        'grafo',
       ])
       .optional(),
     /**

@@ -25,7 +25,16 @@ interface Props {
     | 'traducir'
     | 'acceso'
     | 'revision'
-    | 'vitals';
+    | 'vitals'
+    | 'copiloto'
+    | 'contexto'
+    | 'vanidad'
+    | 'seguridad'
+    | 'esencia'
+    | 'gobernanza'
+    | 'agente'
+    | 'ax'
+    | 'grafo';
 }
 
 const { tipo } = Astro.props;
@@ -399,6 +408,177 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> entre las dos caben las fuentes, el JS y las imágenes
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'copiloto' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">la máquina</span>
+            <code>30 pruebas en un minuto</code>
+          </p>
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">la persona</span>
+            <code>cuál de las 30 <b>importa</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> lo que se abarató fue teclear, no decidir
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'contexto' && (
+        <div class="pieza-par">
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">lee</span>
+            <code>código · logs · trazas · tickets</code>
+          </p>
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">no lee</span>
+            <code>la queja del pasillo · el feriado · el miedo</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> los defectos que duelen viven en la segunda fila
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'vanidad' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">aplaude</span>
+            <code>cobertura 87% ↑</code>
+          </p>
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">incomoda</span>
+            <code>escapados a producción: <b>12</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el bueno es el que puede ponerse rojo por una decisión tuya
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'seguridad' && (
+        <div class="pieza-par">
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">antes</span>
+            <code>1× código · 1× revisión</code>
+          </p>
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">ahora</span>
+            <code>10× código · <b>1× revisión</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> la IA no trajo fallos nuevos: trajo diez veces la misma superficie
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'esencia' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">sin modelo</span>
+            <code>enviado → cancelado ← ¿se puede?</code>
+          </p>
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">con modelo</span>
+            <code>la transición inválida <b>salta sola</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> las preguntas que importan salen del modelo, no del requisito
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'gobernanza' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">silo</span>
+            <code>el prompt vive en tu historial de chat</code>
+          </p>
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">equipo</span>
+            <code>versionado, junto al código</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> la IA propone; detrás de lo que entra hay un nombre
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'agente' && (
+        <div class="pieza-par">
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">humano</span>
+            <code>se atasca → reclama</code>
+          </p>
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">agente</span>
+            <code>se atasca → <b>se va en silencio</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> sin queja no hay ticket, y sin ticket no hay señal
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'ax' && (
+        <div class="pieza-par">
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">humano</span>
+            <code>6 pasos hasta comprar</code>
+          </p>
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">agente</span>
+            <code>14 pasos · 3 reintentos · <b>más tokens</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> no mide al agente: mide lo navegable que eres para él
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'grafo' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">a mano</span>
+            <code>falló en el paso 4 · ¿con qué estado?</code>
+          </p>
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">con grafo</span>
+            <code>estado del nodo 3 · <b>reanudable</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> lo que no puedes observar no lo puedes probar
           </p>
         </div>
       )

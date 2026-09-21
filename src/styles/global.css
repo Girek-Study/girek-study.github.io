@@ -7229,3 +7229,37 @@ body::before {
   color: #f87171;
   font-weight: 600;
 }
+
+/* ---------- Pieza de pares: «esto frente a esto» ----------
+
+   Nueve portadas comparten esta forma —lo que hace la máquina frente a lo
+   que hace la persona, lo que aplaude frente a lo que incomoda—, así que
+   comparten también el estilo. Lo que cambia es el contenido, que es lo
+   que tiene que cambiar. */
+
+.pieza-par {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.fila-par {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+/* Lo que no funciona se lee apagado; lo que sí, en el cian del logo. */
+.fila-par.es-mal code {
+  color: #8fa8c6;
+}
+
+.fila-par.es-mal code b {
+  color: #f87171;
+  font-weight: 600;
+}
+
+.fila-par.es-bien code b {
+  color: var(--color-cyan-bright);
+  font-weight: 600;
+}
