@@ -19,6 +19,36 @@ salta la cadena, sale lo de siempre: una suite grande que nadie mira, con la
 pantalla cubierta al noventa por ciento y los defectos apareciendo igual en
 producción.
 
+```figura
+{
+  "tipo": "flujo",
+  "titulo": "El código es el quinto paso, no el primero",
+  "pasos": [
+    {
+      "que": "Qué puede salir mal",
+      "nota": "no qué hace la pantalla"
+    },
+    {
+      "que": "Cuál de esos importa",
+      "nota": "impacto y frecuencia"
+    },
+    {
+      "que": "A qué nivel se prueba",
+      "nota": "API si no necesita pantalla"
+    },
+    {
+      "que": "Cuál es la señal",
+      "nota": "qué verías si fallara"
+    },
+    {
+      "que": "Y entonces, el código",
+      "tono": "bueno",
+      "nota": "ya está escrito: solo falta teclearlo"
+    }
+  ]
+}
+```
+
 ## Decisión 1 · Qué puede salir mal
 
 No «qué hace la pantalla», sino **qué puede salir mal aquí**. Es otra

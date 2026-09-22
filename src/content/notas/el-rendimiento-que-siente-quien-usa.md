@@ -18,6 +18,15 @@ No se contradecían. Estaban midiendo cosas distintas. La prueba de carga mide
 poder usar la pantalla**. Entre esas dos cosas caben varios segundos de
 JavaScript, fuentes, imágenes y reflujo.
 
+```figura
+{ "tipo": "barras", "titulo": "El mismo instante, medido en dos sitios",
+  "barras": [
+    { "que": "servidor", "valor": 200, "etiqueta": "200 ms" },
+    { "que": "usable", "valor": 3400, "etiqueta": "3,4 s", "tono": "alarma" }
+  ],
+  "pie": "Entre las dos caben el JavaScript, las fuentes y las imágenes. La prueba de carga solo ve la primera." }
+```
+
 ## Las tres que miden lo que se siente
 
 Google las agrupa como Core Web Vitals y, más allá de que afecten al
@@ -82,6 +91,29 @@ recogiéndolo de gente real.
 
 Las dos hacen falta. El laboratorio te dice si esta versión empeoró; el campo
 te dice si tu producto va lento de verdad.
+
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "Dos medidas que no se sustituyen",
+  "izq": {
+    "rotulo": "Laboratorio",
+    "lineas": [
+      "Máquina limpia, red estable",
+      "Compara una versión con otra"
+    ],
+    "pie": "lo que pones en la puerta de calidad"
+  },
+  "der": {
+    "rotulo": "Campo",
+    "lineas": [
+      "Su teléfono de hace cuatro años",
+      "Dice si tu producto *va lento de verdad*"
+    ],
+    "pie": "solo se sabe recogiéndolo de gente real"
+  }
+}
+```
 
 ## Lo que suele salir cuando miras
 

@@ -74,6 +74,35 @@ Los otros dos usos que sí valen: **comparar dos estructuras grandes y señalar 
 difieren** —con XML y JSON de cientos de campos, es puro ahorro de vista— y **redactar el
 primer borrador de un caso o un reporte**, que después reescribo.
 
+```figura
+{
+  "tipo": "marcas",
+  "titulo": "Dónde delego en un modelo y dónde no",
+  "filas": [
+    {
+      "vale": true,
+      "que": "El primer borrador de una prueba",
+      "porque": "mecánico, y se revisa en un minuto"
+    },
+    {
+      "vale": true,
+      "que": "Datos con reglas cruzadas",
+      "porque": "tedioso, y no se cansa"
+    },
+    {
+      "vale": false,
+      "que": "Decidir si esa diferencia es un defecto",
+      "porque": "eso es criterio, y necesita contexto"
+    },
+    {
+      "vale": false,
+      "que": "Elegir el alcance de una regresión",
+      "porque": "depende de lo que nadie escribió"
+    }
+  ]
+}
+```
+
 ## Los cuatro errores que he visto de cerca
 
 **Tomar la diferencia por el defecto.** Es el más común y el que da nombre a esta nota.

@@ -56,6 +56,29 @@ bifurcaciones dibujadas son exactamente lo que necesitas para el diseño de
 casos: cada arista condicional es un caso, y las que nadie recorre nunca
 saltan a la vista.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "Cuando falla el paso 4",
+  "izq": {
+    "rotulo": "Estado a mano",
+    "lineas": [
+      "Tienes la excepción y poco más",
+      "Para repetirlo, recorres 1, 2 y 3"
+    ],
+    "pie": "reconstruir qué había en memoria es arqueología"
+  },
+  "der": {
+    "rotulo": "Estado gestionado",
+    "lineas": [
+      "El estado de cada nodo es *un dato*",
+      "Arrancas desde el punto de control"
+    ],
+    "pie": "de dos minutos por intento a dos segundos"
+  }
+}
+```
+
 ## Lo que no arregla ninguna de las dos
 
 Conviene no venderlo de más. **El no determinismo sigue ahí.** El modelo puede

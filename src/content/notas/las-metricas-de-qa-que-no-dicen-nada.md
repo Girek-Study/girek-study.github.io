@@ -34,6 +34,45 @@ ser uno muy bueno probando o uno que trabaja sobre un producto muy malo. Y
 sobre todo: castiga a quien los previene. Si haces bien la parte de revisar
 requisitos ambiguos antes de que se construyan, tu número baja.
 
+```figura
+{
+  "tipo": "marcas",
+  "titulo": "Esfuerzo o resultado",
+  "filas": [
+    {
+      "vale": false,
+      "que": "Casos ejecutados",
+      "porque": "partes un caso en tres y sube un 200%"
+    },
+    {
+      "vale": false,
+      "que": "Porcentaje de cobertura",
+      "porque": "una prueba sin asserts cubre igual"
+    },
+    {
+      "vale": false,
+      "que": "Defectos encontrados",
+      "porque": "castiga a quien los previene"
+    },
+    {
+      "vale": true,
+      "que": "Defectos escapados a producción",
+      "porque": "lo único que nota quien usa el producto"
+    },
+    {
+      "vale": true,
+      "que": "Minutos hasta el primer rojo",
+      "porque": "si son diez, el autor aún lo tiene en la cabeza"
+    },
+    {
+      "vale": true,
+      "que": "Proporción de ejecuciones flaky",
+      "porque": "dice si la suite es creíble"
+    }
+  ]
+}
+```
+
 ## Las que sí aguantan
 
 El cambio es mirar el resultado en vez del esfuerzo. Cuatro que sí he visto

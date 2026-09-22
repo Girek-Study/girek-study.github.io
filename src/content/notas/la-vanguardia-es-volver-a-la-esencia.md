@@ -44,6 +44,28 @@ bordes.
 para los flujos. Son cuatro técnicas, se aprenden en una tarde, y siguen
 siendo lo que separa una suite que cubre de una que abulta.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "Un campo que acepta de 1 a 999",
+  "izq": {
+    "rotulo": "Treinta valores al azar",
+    "lineas": [
+      "312, 447, 88, 501, 276…"
+    ],
+    "pie": "treinta veces la misma clase"
+  },
+  "der": {
+    "rotulo": "Los bordes",
+    "lineas": [
+      "1 · 999 · 0 · 1000 · *una letra*"
+    ],
+    "pie": "cinco casos, cinco comportamientos distintos"
+  },
+  "pie": "Un modelo genera los treinta del medio sin pestañear. Los cinco que importan salen de saber dónde están los bordes."
+}
+```
+
 ## Buenas prácticas de ingeniería, también en las pruebas
 
 El código de pruebas es código. Nombres que digan algo, funciones cortas, sin

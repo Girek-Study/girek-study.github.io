@@ -64,6 +64,32 @@ Con él, el día que alguien mete una consulta sin índice, el pull request se p
 rojo y el autor se entera mientras todavía tiene el cambio en la cabeza. Ese es
 todo el valor: no medir mejor, medir antes.
 
+```figura
+{
+  "tipo": "barras",
+  "titulo": "El promedio tranquiliza; la cola es la que espera",
+  "barras": [
+    {
+      "que": "p50",
+      "valor": 180,
+      "etiqueta": "180 ms"
+    },
+    {
+      "que": "p95",
+      "valor": 500,
+      "etiqueta": "500 ms"
+    },
+    {
+      "que": "p99",
+      "valor": 11000,
+      "etiqueta": "11 s",
+      "tono": "alarma"
+    }
+  ],
+  "pie": "El umbral estaba en el p95 y todo pasaba. El uno por ciento de la cola eran *miles de personas al día*."
+}
+```
+
 ## De dónde sale el umbral
 
 Aquí está la parte que no es técnica y es la que más cuesta.

@@ -48,6 +48,36 @@ El problema es que mostrar actividad y mostrar resultado son cosas distintas,
 y la primera es infinitamente más fácil. Un equipo puede pasarse un trimestre
 subiendo indicadores mientras la calidad real baja, y el tablero no se entera.
 
+```figura
+{
+  "tipo": "marcas",
+  "titulo": "La prueba del algodón: ¿ha cambiado alguna decisión?",
+  "filas": [
+    {
+      "vale": false,
+      "que": "Cobertura al 87%",
+      "porque": "sube sola y nunca retrasó una salida"
+    },
+    {
+      "vale": false,
+      "que": "340 casos automatizados",
+      "porque": "impresiona hasta que preguntas de cuántos"
+    },
+    {
+      "vale": true,
+      "que": "Doce escapados, cuatro afectaron a clientes",
+      "porque": "se pone feo cuando se recorta el tiempo de pruebas"
+    },
+    {
+      "vale": true,
+      "que": "Horas que la suite pasó en rojo",
+      "porque": "se pone feo cuando se aprueba con el pipeline roto"
+    }
+  ],
+  "pie": "Un indicador útil *puede ponerse en rojo* por una decisión tomada en esa misma sala."
+}
+```
+
 ## Lo que sí incomoda
 
 Un indicador útil tiene una propiedad que lo delata: **puede ponerse en rojo

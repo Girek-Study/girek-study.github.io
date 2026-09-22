@@ -37,6 +37,31 @@ reporte para que el defecto se arregle.
 es un número mal sumado: es alguien que viaja dos horas para que le digan que
 no tiene cita. Esa diferencia no está en la severidad del ticket.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "Lo que un modelo puede leer, y lo que no deja rastro",
+  "izq": {
+    "rotulo": "No lo ve",
+    "lineas": [
+      "La frustración del paso cuatro",
+      "El contrato firmado que mete prisa",
+      "Ocho dígitos de DNI y nueve de carné"
+    ],
+    "pie": "no está en ningún log"
+  },
+  "der": {
+    "rotulo": "Lo ve",
+    "lineas": [
+      "Código, trazas y registros",
+      "Requisitos e historial de defectos"
+    ],
+    "pie": "y ahí es buenísimo"
+  },
+  "pie": "Los defectos que duelen viven casi siempre en la primera columna."
+}
+```
+
 ## Un caso concreto
 
 En banca tuvimos un defecto que ninguna herramienta habría marcado. La

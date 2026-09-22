@@ -57,6 +57,27 @@ etiqueta, encabezados saltados y atributos ARIA mal puestos. Es mucho, y es
 **más o menos un tercio** de lo que exige la norma: las herramientas
 automáticas no cubren el resto y ningún proveedor serio dice lo contrario.
 
+```figura
+{
+  "tipo": "barras",
+  "titulo": "Lo que cubre un escáner, y lo que queda",
+  "barras": [
+    {
+      "que": "axe-core",
+      "valor": 33,
+      "etiqueta": "~1/3"
+    },
+    {
+      "que": "criterio",
+      "valor": 67,
+      "etiqueta": "~2/3",
+      "tono": "alarma"
+    }
+  ],
+  "pie": "Teclado, foco, textos que digan algo y errores que se anuncien: eso no lo ve ninguna herramienta."
+}
+```
+
 ## Lo que la máquina no ve, y tú sí
 
 Los otros dos tercios son criterio, que es justo la parte de QA que no se

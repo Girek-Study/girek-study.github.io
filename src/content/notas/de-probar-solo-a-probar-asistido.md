@@ -54,6 +54,30 @@ criterio, y esa distinción decide si alguien pierde una tarde.
 **Defender una decisión.** «No está listo» se sostiene ante una persona que
 quiere salir hoy. Ningún informe lo hace por ti.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "En qué se van las diez horas",
+  "izq": {
+    "rotulo": "Antes",
+    "lineas": [
+      "8 h teclear",
+      "2 h decidir"
+    ],
+    "pie": "la ejecución era el cuello de botella"
+  },
+  "der": {
+    "rotulo": "Ahora, si se hace bien",
+    "lineas": [
+      "2 h teclear",
+      "*8 h decidir*"
+    ],
+    "pie": "lo que suele pasar: teclear más"
+  },
+  "pie": "La proporción se invirtió. Lo honesto sería dedicar a pensar el tiempo que la máquina devolvió."
+}
+```
+
 ## El riesgo de la mezcla
 
 Lo que veo este año, y no en un equipo ni en dos: suites que crecieron el

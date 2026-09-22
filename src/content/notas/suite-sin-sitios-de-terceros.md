@@ -60,6 +60,29 @@ Lo he visto degradarse así en cuestión de semanas, y casi nunca por un mal dis
 pruebas. Basta con un rate limit, un cambio de DOM que no anunciaron o un servidor gratuito
 que se duerme.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "Qué se prueba contra el sitio de otro",
+  "izq": {
+    "rotulo": "Contra el tercero",
+    "lineas": [
+      "Su caída es tu rojo",
+      "Su rediseño es tu mañana perdida"
+    ],
+    "pie": "y no puedes arreglar ninguno de los dos"
+  },
+  "der": {
+    "rotulo": "Contra tu doble",
+    "lineas": [
+      "Respuesta fija y reproducible",
+      "Un contrato que *tú* verificas aparte"
+    ],
+    "pie": "el tercero se comprueba una vez al día, no en cada prueba"
+  }
+}
+```
+
 ## La regla
 
 Una prueba automatizada solo debería poder fallar por dos motivos: **el código cambió**, o

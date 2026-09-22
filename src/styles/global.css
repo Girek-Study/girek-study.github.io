@@ -7263,3 +7263,392 @@ body::before {
   color: var(--color-cyan-bright);
   font-weight: 600;
 }
+/* ============================================================================
+   FIGURAS DE LAS NOTAS
+
+   Las notas eran texto y bloques de código. Una idea de este oficio casi
+   siempre es una comparación, una secuencia o una proporción, y las tres se
+   entienden antes dibujadas. Estas son las seis piezas que entiende el plugin
+   de src/lib/figuras.mjs; en el Markdown se escriben como datos.
+
+   Viven en el cuerpo de la nota, así que heredan su ancho y su tipografía: no
+   son ilustraciones pegadas, son parte del texto.
+   ============================================================================ */
+
+.figura-nota {
+  margin: 2.4rem 0;
+  border-radius: 20px;
+  border: 1px solid var(--color-line);
+  background: linear-gradient(150deg, var(--color-surface) 0%, var(--color-cream-2) 100%);
+  padding: 1.6rem 1.7rem 1.5rem;
+  box-shadow: 0 14px 34px -26px rgba(29, 23, 18, 0.5);
+}
+
+.titulo-fig {
+  margin-bottom: 1.15rem;
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.12rem;
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.figura-nota figcaption {
+  margin-top: 1.15rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--color-line-strong);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.acento-fig {
+  color: var(--color-fox-dark);
+  font-weight: 600;
+}
+
+.rotulo-fig,
+.rotulo-lado,
+.rotulo-celda {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+/* ---------- Comparar ---------- */
+
+.cuerpo-fig.es-comparar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: 0.9rem;
+}
+
+.lado-fig {
+  border-radius: 14px;
+  padding: 1rem 1.1rem 1.05rem;
+}
+
+/* Lo que no funciona se reconoce por el rayado antes de leerlo. */
+.lado-fig.es-malo {
+  background: repeating-linear-gradient(135deg, #fff4ee 0 10px, #ffe8dc 10px 20px);
+  border: 1px dashed rgba(184, 57, 5, 0.38);
+}
+
+.lado-fig.es-bueno {
+  background: var(--color-cyan-tint);
+  border: 1px solid rgba(14, 116, 144, 0.26);
+}
+
+.lado-fig.es-malo .rotulo-lado { color: var(--color-fox-dark); }
+.lado-fig.es-bueno .rotulo-lado { color: var(--color-cyan-deep); }
+
+.linea-fig {
+  margin-top: 0.55rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--color-ink);
+}
+
+.lado-fig.es-malo .linea-fig { color: #8a5a45; }
+
+.pie-lado {
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-faint);
+}
+
+.vs-fig {
+  align-self: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--color-faint);
+}
+
+/* ---------- Flujo ---------- */
+
+.cuerpo-fig.es-flujo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.65rem;
+}
+
+/* Una banda de color arriba en vez de flechas entre cajas: al envolver en
+   dos filas, la flecha de la última quedaba apuntando al margen. */
+.paso-fig {
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  border-radius: 14px;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  padding: 0.85rem 0.95rem 0.9rem;
+}
+
+.paso-fig.es-malo {
+  background: repeating-linear-gradient(135deg, #fff4ee 0 10px, #ffe8dc 10px 20px);
+  border-style: dashed;
+  border-color: rgba(184, 57, 5, 0.38);
+}
+
+.paso-fig.es-bueno {
+  background: var(--color-cyan-tint);
+  border-color: rgba(14, 116, 144, 0.26);
+}
+
+.paso-fig::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-fox), var(--color-amber));
+}
+
+.paso-fig.es-bueno::before {
+  background: linear-gradient(90deg, var(--color-cyan), #22c55e);
+}
+
+.n-paso {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  color: var(--color-fox-dark);
+}
+
+.que-paso {
+  font-size: 0.92rem;
+  line-height: 1.32;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.nota-paso {
+  font-size: 0.78rem;
+  line-height: 1.38;
+  color: var(--color-ink-soft);
+}
+
+.flecha-fig {
+  align-self: center;
+  font-size: 1.05rem;
+  color: var(--color-fox);
+}
+
+/* ---------- Barras ---------- */
+
+.cuerpo-fig.es-barras {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.fila-barra {
+  display: grid;
+  grid-template-columns: minmax(6rem, 10rem) minmax(0, 1fr) 4.2rem;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.rotulo-barra {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--color-ink-soft);
+}
+
+.carril-barra {
+  height: 0.65rem;
+  border-radius: 999px;
+  background: rgba(29, 23, 18, 0.07);
+  overflow: hidden;
+}
+
+.carril-barra i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-cyan), #22c55e);
+}
+
+.fila-barra.es-alarma .carril-barra i {
+  background: linear-gradient(90deg, var(--color-amber), var(--color-fox-dark));
+}
+
+.valor-barra {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-ink);
+}
+
+.fila-barra.es-alarma .valor-barra {
+  color: var(--color-fox-dark);
+  font-weight: 600;
+}
+
+/* ---------- Capas ---------- */
+
+.cuerpo-fig.es-capas {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.capa-fig {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  padding: 0.6rem 0.9rem;
+}
+
+.capa-fig.es-base {
+  background: var(--color-cyan-tint);
+  border-color: rgba(14, 116, 144, 0.26);
+}
+
+.capa-fig.es-clave {
+  background: var(--color-fox-tint);
+  border-color: rgba(184, 57, 5, 0.3);
+}
+
+.capa-fig.es-techo {
+  background: linear-gradient(120deg, #101a2e 0%, #17233c 100%);
+  border-color: transparent;
+  color: #fff;
+}
+
+.n-capa {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-faint);
+}
+
+.capa-fig.es-techo .n-capa { color: rgba(255, 255, 255, 0.5); }
+
+.que-capa {
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+/* ---------- Matriz ---------- */
+
+.cuerpo-fig.es-matriz {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.rejilla-fig {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.celda-fig {
+  border-radius: 14px;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  padding: 0.85rem 1rem 0.9rem;
+  font-size: 0.88rem;
+  line-height: 1.38;
+}
+
+.celda-fig.es-alta { background: var(--color-fox-tint); border-color: rgba(184, 57, 5, 0.3); }
+.celda-fig.es-baja { background: var(--color-cyan-tint); border-color: rgba(14, 116, 144, 0.24); }
+
+.celda-fig p { margin-top: 0.4rem; }
+
+.eje-y,
+.eje-x {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.eje-y {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  justify-self: center;
+}
+
+.eje-x {
+  grid-column: 2;
+  text-align: center;
+}
+
+/* ---------- Marcas ---------- */
+
+.cuerpo-fig.es-marcas {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.fila-marca {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.7rem;
+}
+
+.marca-fig {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+}
+
+.fila-marca.es-si .marca-fig { color: #1f9d55; }
+.fila-marca.es-no .marca-fig { color: var(--color-fox-dark); }
+
+.que-marca {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+
+.fila-marca.es-no .que-marca {
+  color: var(--color-ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: rgba(184, 57, 5, 0.4);
+}
+
+.porque-marca {
+  grid-column: 2;
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-faint);
+}
+
+/* ---------- En pantallas estrechas, todo en una columna ---------- */
+
+@media (max-width: 720px) {
+  .figura-nota { padding: 1.2rem 1.15rem 1.15rem; }
+
+  .cuerpo-fig.es-comparar,
+  .cuerpo-fig.es-matriz .rejilla-fig {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* El «vs» se tumba entre los dos lados en vez de quedar de canto. */
+  .vs-fig { justify-self: center; }
+
+  .cuerpo-fig.es-flujo { flex-direction: column; }
+  .flecha-fig { transform: rotate(90deg); }
+
+  .fila-barra { grid-template-columns: minmax(4.5rem, 7rem) minmax(0, 1fr) 3.4rem; }
+  .capa-fig { margin-left: 0 !important; }
+
+  .cuerpo-fig.es-matriz { grid-template-columns: minmax(0, 1fr); }
+  .eje-y { display: none; }
+}

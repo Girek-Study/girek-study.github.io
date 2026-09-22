@@ -36,6 +36,27 @@ interpreta de más de una forma.
 **Coste por recorrido.** Los tokens consumidos. Es la traducción a dinero de
 todo lo anterior, y es el número que entiende cualquiera en una reunión.
 
+```figura
+{
+  "tipo": "barras",
+  "titulo": "El mismo objetivo, contado en pasos",
+  "barras": [
+    {
+      "que": "persona",
+      "valor": 6,
+      "etiqueta": "6"
+    },
+    {
+      "que": "agente",
+      "valor": 14,
+      "etiqueta": "14",
+      "tono": "alarma"
+    }
+  ],
+  "pie": "Esos ocho de diferencia son pantallas que no entendió a la primera. Y cada paso de más se paga en tokens."
+}
+```
+
 ## Cómo montarlo sin inventar nada
 
 No hace falta una herramienta nueva. Con el MCP de Playwright, un agente

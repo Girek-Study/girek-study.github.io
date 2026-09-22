@@ -41,6 +41,28 @@ prueba manual va a tocar en una tarde.
 **Llega tarde.** Cuando el defecto se ve en la interfaz, ya pasó por integración,
 certificación y probablemente por un release.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "El mismo importe, antes y después",
+  "izq": {
+    "rotulo": "XML",
+    "lineas": [
+      "<monto>1500.00</monto>"
+    ],
+    "pie": "todo es texto; el formato viaja con el dato"
+  },
+  "der": {
+    "rotulo": "JSON",
+    "lineas": [
+      "\"monto\": *1500*"
+    ],
+    "pie": "ahora es un número, y los decimales los pone quien pinta"
+  },
+  "pie": "La pantalla muestra lo mismo. El contrato cambió, y eso se ve *tres semanas después*, en un reporte que no cuadra."
+}
+```
+
 ## Lo que sí rompe
 
 Después de un buen número de servicios comparados, los hallazgos se repiten. Estos cinco

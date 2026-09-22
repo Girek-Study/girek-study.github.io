@@ -19,6 +19,52 @@ de dos años a veces conoce más. Está en el orden en que las aprendió.
 Esta es la ruta como yo la ordenaría hoy, con lo que de verdad cambia de nivel
 en cada capa.
 
+```figura
+{
+  "tipo": "capas",
+  "titulo": "Las ocho capas, y en cuál está la herramienta",
+  "capas": [
+    {
+      "n": "01",
+      "que": "Qué significa probar",
+      "tono": "base"
+    },
+    {
+      "n": "02",
+      "que": "El producto y su dominio",
+      "tono": "base"
+    },
+    {
+      "n": "03",
+      "que": "Programar de verdad"
+    },
+    {
+      "n": "04",
+      "que": "Cómo funciona por dentro"
+    },
+    {
+      "n": "05",
+      "que": "Automatización",
+      "tono": "clave"
+    },
+    {
+      "n": "06",
+      "que": "El pipeline"
+    },
+    {
+      "n": "07",
+      "que": "Carga, accesibilidad, trazas"
+    },
+    {
+      "n": "08",
+      "que": "Comunicar y decidir",
+      "tono": "techo"
+    }
+  ],
+  "pie": "Saltarse capas es llegar antes a la primera oferta y estancarse en la tercera."
+}
+```
+
 ## Capa 1 · Qué significa probar
 
 Antes que cualquier herramienta: entender que probar no es verificar que

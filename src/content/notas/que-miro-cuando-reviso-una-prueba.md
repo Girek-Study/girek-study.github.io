@@ -43,6 +43,34 @@ La suite crece porque nadie busca antes de escribir. Dos pruebas del mismo
 riesgo no dan el doble de confianza: dan el doble de mantenimiento y el doble
 de rojos cuando eso cambie.
 
+```figura
+{
+  "tipo": "capas",
+  "titulo": "Las tres primeras deciden si debe existir; las demás, si va a durar",
+  "capas": [
+    {
+      "n": "01-03",
+      "que": "¿Debería existir esta prueba?",
+      "tono": "base"
+    },
+    {
+      "n": "04-06",
+      "que": "Localizadores, esperas y datos"
+    },
+    {
+      "n": "07-08",
+      "que": "Qué comprueba y qué dice al fallar",
+      "tono": "clave"
+    },
+    {
+      "n": "09",
+      "que": "¿Se entiende en un minuto?",
+      "tono": "techo"
+    }
+  ]
+}
+```
+
 ## 4 · Los localizadores
 
 Lo que quiero ver: rol y nombre accesible, o un `data-testid` puesto a

@@ -78,6 +78,32 @@ cuarentena necesita tres cosas: un número visible en algún sitio donde se
 mire, un dueño por cada entrada, y una fecha. Se revisa cada semana, y la
 única regla es que no crece.
 
+```figura
+{
+  "tipo": "flujo",
+  "titulo": "Separar las dos poblaciones",
+  "pasos": [
+    {
+      "que": "Congela la lista de hoy",
+      "nota": "la que es, no la que crees"
+    },
+    {
+      "que": "Etiqueta y saca del gate",
+      "nota": "--grep-invert @cuarentena"
+    },
+    {
+      "que": "El verde vuelve a significar algo",
+      "tono": "bueno",
+      "nota": "media suite fiable > una entera que nadie lee"
+    },
+    {
+      "que": "Que la cuarentena duela",
+      "nota": "número visible, dueño y fecha"
+    }
+  ]
+}
+```
+
 ## Lo que hay que decidir en cada entrada
 
 Cuando revisas una prueba en cuarentena, solo hay tres finales, y conviene

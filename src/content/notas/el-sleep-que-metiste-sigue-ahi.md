@@ -62,6 +62,29 @@ DOM te va a decir que terminó.
 cierra el modal con una animación de 300 ms. La acción terminó, pero el efecto
 todavía no está.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "La misma espera, contada de dos formas",
+  "izq": {
+    "rotulo": "Por reloj",
+    "lineas": [
+      "waitForTimeout(3000)",
+      "Tres segundos siempre"
+    ],
+    "pie": "lento cuando va bien, corto cuando va mal"
+  },
+  "der": {
+    "rotulo": "Por condición",
+    "lineas": [
+      "await expect(fila).toBeVisible()",
+      "Sigue *en cuanto* aparece"
+    ],
+    "pie": "y falla diciendo qué no llegó"
+  }
+}
+```
+
 ## Qué escribir en su lugar
 
 Para el primer caso, la aserción que reintenta:

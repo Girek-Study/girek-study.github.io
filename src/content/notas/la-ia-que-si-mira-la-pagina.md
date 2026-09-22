@@ -59,6 +59,27 @@ nombres accesibles, así que lo que propone tiende a ser `getByRole` en vez de u
 XPath de siete niveles. Eso, que parece un efecto secundario, es la mitad del
 valor: son los localizadores que sobreviven al siguiente rediseño.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "Lo que el modelo recibe de cada forma",
+  "izq": {
+    "rotulo": "Con una captura",
+    "lineas": [
+      "«el botón azul de abajo»"
+    ],
+    "pie": "una interpretación: dos ejecuciones pueden entenderla distinto"
+  },
+  "der": {
+    "rotulo": "Con el árbol de accesibilidad",
+    "lineas": [
+      "button · name=*\"Ingresar\"*"
+    ],
+    "pie": "una referencia exacta, y de paso el localizador que sobrevive al rediseño"
+  }
+}
+```
+
 ## MCP o CLI: lo que dice el propio equipo
 
 Aquí hay un matiz que casi nadie menciona, y está escrito en el README del

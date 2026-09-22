@@ -35,6 +35,28 @@ queja, no hay dato. Solo una venta que no ocurrió.
 problema menor para un humano, que mira el contexto. Para un agente son una
 bifurcación sin criterio.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "Qué pasa cuando el flujo se atasca",
+  "izq": {
+    "rotulo": "Una persona",
+    "lineas": [
+      "Reclama, deja reseña, llama a soporte"
+    ],
+    "pie": "tienes una señal"
+  },
+  "der": {
+    "rotulo": "Un agente",
+    "lineas": [
+      "*Se va en silencio* y compra en otro sitio"
+    ],
+    "pie": "no hay ticket, no hay queja, no hay dato"
+  },
+  "pie": "La curva baja un poco y se atribuye a la estacionalidad."
+}
+```
+
 ## La señal que no vas a tener
 
 Lo que más me preocupa de esto no es técnico. Es que **el fallo es

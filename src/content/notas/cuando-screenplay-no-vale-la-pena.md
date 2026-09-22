@@ -75,6 +75,35 @@ distintos**. Un rediseño cambia los localizadores pero no la intención. Un seg
 cambia la tarea de login pero no los veinte tests que empiezan iniciando sesión. Si tienes
 suficientes pruebas, esa independencia te ahorra semanas al año.
 
+```figura
+{
+  "tipo": "matriz",
+  "titulo": "Dónde el patrón paga y dónde estorba",
+  "ejeY": "tamaño de la suite",
+  "ejeX": "rotación del equipo",
+  "celdas": [
+    {
+      "rotulo": "Suite grande · equipo que rota",
+      "que": "Aquí *paga*: la estructura sostiene lo que la memoria no.",
+      "tono": "baja"
+    },
+    {
+      "rotulo": "Suite grande · equipo estable",
+      "que": "Paga a medias. Conviene, pero sin prisa."
+    },
+    {
+      "rotulo": "Suite pequeña · equipo que rota",
+      "que": "Antes que el patrón, convenciones y revisión."
+    },
+    {
+      "rotulo": "Suite pequeña · equipo estable",
+      "que": "Adoptarlo ahora es *ceremonia*: cuesta más de lo que ordena.",
+      "tono": "alta"
+    }
+  ]
+}
+```
+
 ## Dónde está la línea
 
 Mi regla, después de aplicarlo en banca, fintech y salud:

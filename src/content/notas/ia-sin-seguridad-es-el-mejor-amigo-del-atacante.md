@@ -29,6 +29,33 @@ paquetes que no existen. Ese hueco ya tiene nombre —alguien registra el
 nombre inventado y le pone dentro lo que quiere—, y es exactamente el tipo de
 cosa que no se te ocurre revisar.
 
+```figura
+{
+  "tipo": "barras",
+  "titulo": "Lo que se multiplicó, y lo que no",
+  "barras": [
+    {
+      "que": "código",
+      "valor": 10,
+      "etiqueta": "10×",
+      "tono": "alarma"
+    },
+    {
+      "que": "superficie",
+      "valor": 10,
+      "etiqueta": "10×",
+      "tono": "alarma"
+    },
+    {
+      "que": "revisión",
+      "valor": 1,
+      "etiqueta": "1×"
+    }
+  ],
+  "pie": "La IA no trajo vulnerabilidades nuevas: trajo mucha más de la *misma superficie*, y se la dio a equipos que ya iban justos."
+}
+```
+
 ## Lo que deja de ser opcional
 
 **Validación de entradas, de verdad.** No que el formulario rechace letras en

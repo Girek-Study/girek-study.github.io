@@ -15,6 +15,32 @@ cómo ni con qué.
 Ese tercer estado parece libertad y en realidad es riesgo repartido. Tres
 reglas lo ordenan sin montar un comité.
 
+```figura
+{
+  "tipo": "flujo",
+  "titulo": "Tres reglas y un principio",
+  "pasos": [
+    {
+      "que": "Nada de silos",
+      "nota": "los prompts, versionados junto al código"
+    },
+    {
+      "que": "Una forma común",
+      "nota": "en qué sí, en qué no, qué se revisa"
+    },
+    {
+      "que": "Límites de propiedad",
+      "nota": "qué sale y de quién es lo que vuelve"
+    },
+    {
+      "que": "La IA propone; decides tú",
+      "tono": "bueno",
+      "nota": "detrás de lo que entra, hay un nombre"
+    }
+  ]
+}
+```
+
 ## Regla 1 · Nada de silos
 
 Lo que más me encuentro: cada persona se armó su método. Uno tiene un prompt

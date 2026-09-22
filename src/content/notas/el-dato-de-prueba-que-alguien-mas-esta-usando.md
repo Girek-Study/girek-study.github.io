@@ -50,6 +50,29 @@ daño colateral.
 reproducir un caso, le cambia el estado y se va a comer. La suite lleva tres
 días en rojo por eso.
 
+```figura
+{
+  "tipo": "comparar",
+  "titulo": "Qué pasa al subir los workers a dos",
+  "izq": {
+    "rotulo": "Cuenta compartida",
+    "lineas": [
+      "worker 1 → qa_test_01",
+      "worker 2 → qa_test_01"
+    ],
+    "pie": "una llega primero; la otra se pone roja"
+  },
+  "der": {
+    "rotulo": "Dato propio",
+    "lineas": [
+      "worker 1 → qa_1726502841_a7f3",
+      "worker 2 → qa_1726502844_b1e9"
+    ],
+    "pie": "no se ven, así que no se pisan"
+  }
+}
+```
+
 ## La regla que ordena todo esto
 
 Una prueba debe crear lo que necesita, usarlo y no depender de que nadie más lo
