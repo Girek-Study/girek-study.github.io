@@ -35,7 +35,8 @@ interface Props {
     | 'agente'
     | 'ax'
     | 'grafo'
-    | 'techo';
+    | 'techo'
+    | 'escalones';
 }
 
 const { tipo } = Astro.props;
@@ -600,6 +601,26 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> una petición se interpreta; un límite, no
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'escalones' && (
+        <div class="pieza-par">
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">02 · RAG</span>
+            <code>bien hecho, <b>esta semana</b></code>
+          </p>
+
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">04 · agentes</span>
+            <code>a medias, sobre una suite frágil</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el harness no es un escalón: es el suelo
           </p>
         </div>
       )
