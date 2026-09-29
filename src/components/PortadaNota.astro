@@ -34,7 +34,8 @@ interface Props {
     | 'gobernanza'
     | 'agente'
     | 'ax'
-    | 'grafo';
+    | 'grafo'
+    | 'techo';
 }
 
 const { tipo } = Astro.props;
@@ -579,6 +580,26 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> lo que no puedes observar no lo puedes probar
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'techo' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">prompt</span>
+            <code>«no toques ~/.aws»</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">permiso</span>
+            <code>~/.aws <b>no existe</b> para su proceso</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> una petición se interpreta; un límite, no
           </p>
         </div>
       )

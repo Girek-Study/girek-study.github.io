@@ -53,6 +53,7 @@ const notas = defineCollection({
         'agente',
         'ax',
         'grafo',
+        'techo',
       ])
       .optional(),
     /**
