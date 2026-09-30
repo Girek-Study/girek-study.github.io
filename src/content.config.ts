@@ -56,6 +56,7 @@ const notas = defineCollection({
         'techo',
         'escalones',
         'piramide',
+        'ruptura',
       ])
       .optional(),
     /**

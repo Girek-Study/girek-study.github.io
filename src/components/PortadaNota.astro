@@ -37,7 +37,8 @@ interface Props {
     | 'grafo'
     | 'techo'
     | 'escalones'
-    | 'piramide';
+    | 'piramide'
+    | 'ruptura';
 }
 
 const { tipo } = Astro.props;
@@ -642,6 +643,26 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> y los ejes que faltan: seguridad, rendimiento, accesibilidad
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'ruptura' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">p50</span>
+            <code>4,7 → 6,3 ms <b>apenas se mueve</b></code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">p95</span>
+            <code>19 → 161 ms <b>×8,5</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el doble de usuarios, y la mediana no avisó
           </p>
         </div>
       )
