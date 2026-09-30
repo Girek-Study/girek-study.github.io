@@ -36,7 +36,8 @@ interface Props {
     | 'ax'
     | 'grafo'
     | 'techo'
-    | 'escalones';
+    | 'escalones'
+    | 'piramide';
 }
 
 const { tipo } = Astro.props;
@@ -621,6 +622,26 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> el harness no es un escalón: es el suelo
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'piramide' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">catálogo</span>
+            <code>doce frameworks unitarios</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">criterio</span>
+            <code>el nivel más bajo donde <b>siga significando algo</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> y los ejes que faltan: seguridad, rendimiento, accesibilidad
           </p>
         </div>
       )
