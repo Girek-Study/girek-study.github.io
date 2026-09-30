@@ -17,7 +17,7 @@ completa y apretar hasta que se rompa.
 Los números finales son llamativos: **5.250 usuarios concurrentes** en ese
 mismo servidor de doce dólares. Pero el resultado es la parte menos
 interesante. Lo que me hizo pararlo tres veces es **cómo está diseñada la
-prueba**, porque hace bien seis cosas que llevo años echando de menos en
+prueba**, porque hace bien siete cosas que llevo años echando de menos en
 equipos con mucho más presupuesto.
 
 ## El montaje: todo en una caja
@@ -79,9 +79,10 @@ ensuciar la base. Y la escritura es justo la que bloquea.
 
 ## La mediana mintió; la cola, no
 
-Con 10, 50 y 100 usuarios: mediana de 5,2 ms, 4,5 ms y 4,2 ms. CPU al 9 %.
-Cero señal. La mediana incluso **baja** al añadir carga, porque la caché se
-calienta y el motor de JavaScript optimiza.
+La rampa fue 10, 50, 100, 200, y de ahí un salto a 1.000. Con los primeros
+escalones: mediana de 5,2 ms, 4,5 ms y 4,2 ms, y la CPU al 9 %. Cero señal. La
+mediana incluso **baja** al añadir carga, porque la caché se calienta y el
+motor de JavaScript optimiza.
 
 Si tu informe se queda ahí, concluyes que el servidor es infinito.
 
@@ -111,7 +112,14 @@ sobre la media, no tienes umbral.
 
 ## Encontrar el punto de ruptura es una bisección
 
-2.000 usuarios: pasa. 3.000: falla. ¿Y ahora? Se prueba a la mitad: 2.500.
+2.000 usuarios: pasa. 3.000: **se pasa del criterio de fallo del
+experimento**. ¿Y ahora? Se prueba a la mitad: 2.500.
+
+Esa frase escondida —«el criterio de fallo de mi experimento»— es la séptima
+cosa que hace bien, y va antes que todas las demás: **el umbral estaba escrito
+antes de correr la prueba**. Sin él, «3.000 falla» no significa nada, porque
+todo sistema responde a 3.000 usuarios; la pregunta es si responde lo bastante
+rápido, y eso solo se contesta contra un número acordado de antemano.
 
 Es tan obvio que da vergüenza escribirlo, y sin embargo la mayoría de las
 pruebas de carga que veo son **una sola corrida con un número redondo que
@@ -136,23 +144,24 @@ Saturarse y responder lento es degradación. Saturarse y empezar a devolver
 errores es caída. Son dos resultados muy distintos, y mucha gente publica el
 percentil sin mirar la tasa de error que lo acompaña.
 
-Dicho esto, aquí hay una decisión escondida que el experimento pasa por
-encima: **el p99 quedó fuera del límite y aun así se dio 2.500 por bueno**.
-Puede estar perfectamente bien —depende del producto—, pero es una decisión de
-contrato, no un detalle. Qué percentil es tu compromiso se acuerda antes de
-correr la prueba, no al leer el resultado.
+Y un matiz sobre ese umbral: **el p95 entró y el p99 se quedó fuera**, y el
+número que se cuenta es el que cumple el p95. Puede estar perfectamente bien
+—depende del producto—, pero deja ver que la pregunta no es solo cuál es tu
+umbral, sino **qué percentil lo mide**. Con el p95 el servidor aguanta 2.500;
+con el p99, bastantes menos. Es la misma prueba y dos titulares distintos.
 
 ## Mirar el recurso, no solo la respuesta
 
-Mientras la prueba corría se miraban las cosas que dicen **qué** se está
-rompiendo, no solo **que** algo se rompe:
+Cuando el servidor dijo basta, la pregunta siguiente no fue «¿cuántos
+aguanta?» sino **«¿qué se rompió?»**. Y para contestarla hay que estar mirando
+dentro mientras la prueba corre:
 
 ```figura
 { "tipo": "marcas", "titulo": "Lo que se observó dentro de la caja",
   "filas": [
     { "vale": true, "que": "RAM: 863 de 1.967 MB", "porque": "sobraba; la memoria no era el cuello" },
     { "vale": true, "que": "Postgres: consultas de ~1 ms", "porque": "la base de datos estaba tranquila" },
-    { "vale": true, "que": "CPU: al tope", "porque": "ahí estaba el cuello, y por eso el arreglo va por ahí" },
+    { "vale": true, "que": "CPU: al 90 %", "porque": "ahí estaba el cuello, y por eso el arreglo va por ahí" },
     { "vale": true, "que": "El generador de carga: 37 % de CPU", "porque": "no estaba saturado, así que los números son del sistema y no del generador" }
   ] }
 ```
@@ -202,8 +211,13 @@ respuesta sin llegar siquiera a molestar a Node: de 4.000 a **5.250**.
     { "n": "4", "que": "CDN — contesta sin que la petición llegue a tu servidor" },
     { "n": "5", "que": "El propio teléfono — la petición ni siquiera existe", "tono": "bueno" }
   ],
-  "pie": "Cuanto más cerca del usuario está la caché, menos trabajo hace todo lo que queda detrás." }
+  "pie": "La regla, tal cual la enuncia el autor: mueve la caché tan cerca de tus usuarios como razonablemente puedas." }
 ```
+
+Ese «razonablemente» es suyo y hace falta, porque cada peldaño hacia arriba
+compra rendimiento pagando con control. Una caché en el proceso la invalidas
+cuando quieras; una en el CDN, no del todo; y la del teléfono no la invalidas
+en absoluto.
 
 Total: **×2,1 usuarios con el mismo servidor de 12 dólares**, sin cambiar de
 arquitectura y sin añadir una sola pieza nueva.
@@ -236,9 +250,8 @@ El último tramo del experimento es el que convierte el número técnico en una
 respuesta que sirve para una reunión: **solo entre el 5 % y el 10 % de los
 usuarios de un producto están conectados a la vez**.
 
-Con esa conversión, 5.250 concurrentes sostienen del orden de 50.000 a 100.000
-usuarios registrados, con unos 30.000 activos al día. En un servidor de doce
-dólares.
+Con esa conversión, 5.250 concurrentes sostienen del orden de **25.000 a
+30.000 usuarios activos al día**. En un servidor de doce dólares.
 
 Me gusta esta parte porque es la traducción que casi ninguna prueba de carga
 hace. Entregamos percentiles y peticiones por segundo a gente que necesita
@@ -271,11 +284,12 @@ informe que se usa de uno que se archiva.
 
 ## Lo que me llevo
 
-Seis prácticas, y ninguna necesita herramientas caras:
+Siete prácticas, y ninguna necesita herramientas caras:
 
 ```figura
 { "tipo": "flujo", "titulo": "Cómo se hace una prueba de carga que sirve",
   "pasos": [
+    { "que": "Escribe el criterio de fallo antes de correr", "nota": "si no, ningún resultado significa nada" },
     { "que": "Siembra datos a escala real", "nota": "medio millón de filas, no veinte" },
     { "que": "Escribe el escenario como una persona", "nota": "esperas y ramas con probabilidad" },
     { "que": "Lee la cola, no la mediana", "nota": "p95 y p99, con la tasa de error al lado" },
