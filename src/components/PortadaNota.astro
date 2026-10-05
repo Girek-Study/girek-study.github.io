@@ -39,7 +39,8 @@ interface Props {
     | 'escalones'
     | 'piramide'
     | 'ruptura'
-    | 'pulso';
+    | 'pulso'
+    | 'brujula';
 }
 
 const { tipo } = Astro.props;
@@ -684,6 +685,26 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> el Page Object impecable y la suite archivada igual
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'brujula' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">te dicen</span>
+            <code>«aquí somos una <b>familia</b>»</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">firmaste</span>
+            <code>un contrato, con <b>preaviso y plazos</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> y una familia no te reestructura en quince minutos
           </p>
         </div>
       )
