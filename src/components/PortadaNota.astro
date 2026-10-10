@@ -40,7 +40,10 @@ interface Props {
     | 'piramide'
     | 'ruptura'
     | 'pulso'
-    | 'brujula';
+    | 'brujula'
+    | 'explorar'
+    | 'entrevista'
+    | 'balanza';
 }
 
 const { tipo } = Astro.props;
@@ -705,6 +708,66 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> y una familia no te reestructura en quince minutos
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'explorar' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">suite</span>
+            <code>comprueba <b>lo que ya sabías</b></code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">sesión</span>
+            <code>encuentra <b>lo que nadie formuló</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> nadie escribe un assert sobre algo que no se le ha ocurrido
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'entrevista' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">no separa</span>
+            <code>«¿diferencia entre smoke y sanity?»</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">sí separa</span>
+            <code>«¿qué <b>no</b> probarías de esto?»</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> lo que busco no tiene respuesta correcta
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'balanza' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">te preguntan</span>
+            <code>«¿está listo para salir?»</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">contestas</span>
+            <code>qué se probó, <b>qué no</b>, y qué puede pasar</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> la decisión no es tuya; la información, sí
           </p>
         </div>
       )

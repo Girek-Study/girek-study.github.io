@@ -59,6 +59,9 @@ const notas = defineCollection({
         'ruptura',
         'pulso',
         'brujula',
+        'explorar',
+        'entrevista',
+        'balanza',
       ])
       .optional(),
     /**
