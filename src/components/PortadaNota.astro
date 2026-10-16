@@ -44,7 +44,11 @@ interface Props {
     | 'explorar'
     | 'entrevista'
     | 'balanza'
-    | 'auditoria';
+    | 'auditoria'
+    | 'spec'
+    | 'riendas'
+    | 'anatomia'
+    | 'frameworks';
 }
 
 const { tipo } = Astro.props;
@@ -789,6 +793,86 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> si otra IA escribió las pruebas, el verde es un eco
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'spec' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">escribes</span>
+            <code>«podrá filtrar los pedidos»</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">decide él</span>
+            <code>solo por estado · <b>sin mensaje al no haber datos</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> la ambigüedad ya no se pregunta: se rellena
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'riendas' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">le pides</span>
+            <code>«implementa el módulo de pagos»</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">le pides</span>
+            <code>la validación de importe negativo, <b>aquí</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> si no puedes revisarlo en cinco minutos, pediste mal
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'anatomia' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">dibujan</span>
+            <code>modelo + herramientas</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">faltan</span>
+            <code>el bucle y <b>el criterio de parada</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el que no sabe parar es el que vacía la cuenta
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'frameworks' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">preguntas</span>
+            <code>«¿qué framework uso?»</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">falta antes</span>
+            <code>«¿hay <b>estado</b> entre pasos?»</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> y la mitad de las veces la respuesta es ninguno
           </p>
         </div>
       )

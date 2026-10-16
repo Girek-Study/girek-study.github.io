@@ -63,6 +63,10 @@ const notas = defineCollection({
         'entrevista',
         'balanza',
         'auditoria',
+        'spec',
+        'riendas',
+        'anatomia',
+        'frameworks',
       ])
       .optional(),
     /**
