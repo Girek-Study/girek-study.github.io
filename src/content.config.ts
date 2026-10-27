@@ -67,6 +67,10 @@ const notas = defineCollection({
         'riendas',
         'anatomia',
         'frameworks',
+        'varianza',
+        'juez',
+        'rag',
+        'sintetico',
       ])
       .optional(),
     /**

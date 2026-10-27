@@ -48,7 +48,11 @@ interface Props {
     | 'spec'
     | 'riendas'
     | 'anatomia'
-    | 'frameworks';
+    | 'frameworks'
+    | 'varianza'
+    | 'juez'
+    | 'rag'
+    | 'sintetico';
 }
 
 const { tipo } = Astro.props;
@@ -873,6 +877,86 @@ const { tipo } = Astro.props;
 
           <p class="aviso-formato">
             <span>!</span> y la mitad de las veces la respuesta es ninguno
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'varianza' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">afirmas</span>
+            <code>assertEquals(esperado, respuesta)</code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">afirmas</span>
+            <code>el importe sale de la BD · <b>acierta el 96 %</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> una ejecución ya no dice nada: lo que informa es la tasa
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'juez' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">le pides</span>
+            <code>«puntúa del 1 al 10» → <b>todo sale 7 u 8</b></code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">le pides</span>
+            <code>¿cita la fuente? ¿inventa datos? <b>sí o no</b></code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> premia lo largo, le pesa el orden y se prefiere a sí mismo
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'rag' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">mides</span>
+            <code>si la respuesta final <b>suena bien</b></code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">mides</span>
+            <code>si trajo lo correcto · si se ciñó a ello</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el documento correcto pero viejo pasa todas las métricas
+          </p>
+        </div>
+      )
+    }
+
+    {
+      tipo === 'sintetico' && (
+        <div class="pieza-par">
+          <p class="fila-par es-mal">
+            <span class="sello-formato es-antes">genera</span>
+            <code>«María López» · dirección completa · <b>cero nulos</b></code>
+          </p>
+
+          <p class="fila-par es-bien">
+            <span class="sello-formato es-despues">producción</span>
+            <code>«O'Brien» · el piso en el campo ciudad · 2019 a medias</code>
+          </p>
+
+          <p class="aviso-formato">
+            <span>!</span> el modelo genera lo típico; los defectos viven en lo que no lo es
           </p>
         </div>
       )
