@@ -11,14 +11,36 @@ const publicadas = (
 
 // Los minutos se calculan una sola vez aquí: la tarjeta y la ficha de arriba
 // tienen que decir lo mismo, y el cuerpo de la nota no se vuelve a recorrer.
-const notas = publicadas.map((nota) => ({
-  id: nota.id,
-  ...nota.data,
-  minutos: nota.data.minutos ?? minutosDeLectura(nota.body ?? ''),
-  // Los encabezados del cuerpo sirven de índice: dicen qué se trata dentro
-  // antes de abrirla, que es lo que decide si vale el clic.
-  secciones: [...(nota.body ?? '').matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim()),
-}));
+/** Sin acentos y en minúsculas: quien busca "evaluacion" espera encontrar
+ *  "evaluación", y nadie escribe las tildes en un buscador. */
+const normalizar = (texto: string) =>
+  texto
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '');
+
+const notas = publicadas.map((nota) => {
+  const secciones = [...(nota.body ?? '').matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim());
+
+  return {
+    id: nota.id,
+    ...nota.data,
+    minutos: nota.data.minutos ?? minutosDeLectura(nota.body ?? ''),
+    // Los encabezados del cuerpo sirven de índice: dicen qué se trata dentro
+    // antes de abrirla, que es lo que decide si vale el clic.
+    secciones,
+    /* El índice de búsqueda se arma en el build y viaja en un atributo.
+     *
+     * Buscar solo en el título deja fuera la mitad de las notas: lo que la
+     * gente recuerda suele ser una palabra del interior —"RAG", "flaky",
+     * "percentil"— y no cómo se titulaba. Por eso entran también el resumen,
+     * los temas y los encabezados. El cuerpo entero no: multiplicaría el peso
+     * del HTML por diez para devolver coincidencias en frases de paso. */
+    buscar: normalizar(
+      [nota.data.titulo, nota.data.resumen, ...nota.data.etiquetas, ...secciones].join(' '),
+    ),
+  };
+});
 
 /** El icono de cada nota sale del mismo campo que elige su portada: un dato
  * menos que mantener y ninguna forma de que los dos se contradigan. */
@@ -127,7 +149,7 @@ const [destacada, ...resto] = notas;
   title="Notas — Girek Study"
   description="Apuntes sobre automatización de pruebas, calidad de software y las decisiones de diseño que sostienen una suite a lo largo del tiempo."
 >
-  <section class="seccion relative overflow-hidden">
+  <section class="seccion relative overflow-hidden" id="portada-notas">
     <div class="blob -z-10 right-[-4rem] top-10 h-80 w-80" style="background: var(--color-amber)"></div>
     <div class="blob -z-10 left-[-6rem] top-40 h-64 w-64" style="background: var(--color-cyan-tint); animation-delay: -6s"></div>
 
@@ -249,38 +271,47 @@ const [destacada, ...resto] = notas;
     </div>
   </section>
 
-  <section class="seccion mx-auto max-w-[82rem] px-5 md:px-8">
+  <section class="seccion mx-auto max-w-[82rem] px-5 md:px-8" id="archivo">
     <div class="reveal cabecera-archivo">
-      <div>
+      <div class="titulo-archivo">
         <p class="eyebrow">El archivo</p>
         <h2 class="mt-3 font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-[2.7rem]">
           Todo lo demás
         </h2>
-      </div>
-
-      <div class="control-archivo">
-        {/* El espacio tras la cifra es explícito: en JSX el salto de línea
-            entre expresiones no deja ninguno. */}
-        <p class="nota-bloque">
-          <span class="cifra-archivo">{resto.length}</span>{' '}
-          {resto.length === 1 ? 'nota más' : 'notas más'}. Los temas también filtran aquí.
+        <p class="pie-titulo-archivo">
+          Busca por título, por tema o por lo que hay dentro de cada nota.
         </p>
-
-        {/* Los mandos solo aparecen si hay a dónde ir: con tres notas en una
-            pantalla ancha no hay nada que pasar. */}
-        <div class="mandos-carrusel" id="mandos-notas" hidden>
-          <button type="button" class="mando" data-ir="-1" aria-label="Notas anteriores">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 5.5 8.5 12 15 18.5" />
-            </svg>
-          </button>
-          <button type="button" class="mando" data-ir="1" aria-label="Notas siguientes">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m9 5.5 6.5 6.5L9 18.5" />
-            </svg>
-          </button>
-        </div>
       </div>
+
+      {/* El buscador va en la cabecera y no flotando sobre la rejilla: es lo
+          primero que se busca al llegar a un archivo de cuarenta notas. */}
+      <form class="buscador-notas" role="search" onsubmit="return false;">
+        <svg class="lupa-buscar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="10.8" cy="10.8" r="6.6" />
+          <path d="m15.8 15.8 4 4" />
+        </svg>
+
+        <input
+          type="search"
+          id="buscar-notas"
+          class="campo-buscar"
+          placeholder={`Buscar entre ${notas.length} notas…`}
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Buscar notas"
+          aria-describedby="resultado-archivo"
+        />
+
+        {/* El atajo se anuncia: si no se ve, no existe. Se esconde al escribir
+            porque entonces el sitio lo ocupa el botón de limpiar. */}
+        <kbd class="atajo-buscar" id="atajo-buscar" aria-hidden="true">/</kbd>
+
+        <button type="button" class="limpiar-buscar" id="limpiar-buscar" hidden aria-label="Limpiar la búsqueda">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+            <path d="m6.5 6.5 11 11M17.5 6.5l-11 11" />
+          </svg>
+        </button>
+      </form>
     </div>
 
     {
@@ -288,69 +319,81 @@ const [destacada, ...resto] = notas;
         <p class="font-mono text-sm text-[var(--color-faint)]">Todavía no hay notas publicadas.</p>
       ) : (
         <>
-
+          {/* El recuento es una región viva: quien navega con lector de
+              pantalla se entera de cuántas quedan sin salir del campo. */}
+          <p class="resultado-archivo" id="resultado-archivo" role="status" aria-live="polite">
+            <span class="cifra-archivo" id="cuenta-archivo">{resto.length}</span>
+            <span id="texto-archivo">{resto.length === 1 ? 'nota' : 'notas'} en el archivo</span>
+          </p>
 
           {resto.length > 0 && (
-            /* Carrusel y no rejilla: el archivo crece con cada nota y en dos
-               columnas empujaba el pie una pantalla más abajo cada vez. En
-               horizontal ocupa siempre lo mismo. */
-            <div class="carrusel-notas">
-              <ol class="pista-notas" id="pista-notas">
-                {resto.map((nota, i) => (
-                  <li data-temas={nota.etiquetas.map(llave).join('|')}>
-                    <a
-                      href={`/notas/${nota.id}/`}
-                      class="reveal tarjeta-nota card card-hover group"
-                      data-delay={`${(i % 3) * 70}ms`}
-                    >
-                      {/* El número no es decoración: dice cuántas van y en qué
-                          orden se escribieron. */}
-                      <span class="orden-nota" aria-hidden="true">
-                        {String(i + 2).padStart(2, '0')}
-                      </span>
-
-                      {nota.portada && ICONOS[nota.portada] && (
-                        <span class="icono-nota" aria-hidden="true">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <path d={ICONOS[nota.portada]} />
-                          </svg>
-                        </span>
-                      )}
-
-                      <span class="meta-nota">
-                        <time datetime={nota.fecha.toISOString()}>{formatearFecha(nota.fecha)}</time>
-                        <span aria-hidden="true">·</span>
-                        <span>{nota.minutos} min</span>
-                        {nota.borrador && <span class="sello-borrador">borrador</span>}
-                      </span>
-
-                      <h3 class="titulo-nota">{nota.titulo}</h3>
-                      <p class="resumen-nota">{nota.resumen}</p>
-
-                      <span class="temas-nota">
-                        {nota.etiquetas.map((tema) => (
-                          <span class="tema-claro">{tema}</span>
-                        ))}
-                      </span>
-
-                      <span class="pie-nota">
-                        Leer
-                        <svg class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+            /* Rejilla y no carrusel: en horizontal la última tarjeta siempre
+               quedaba cortada por el borde, que es justo la señal de que algo
+               está mal maquetado. El alto se controla mostrando de nueve en
+               nueve, no escondiendo el contenido de lado. */
+            <ol class="rejilla-archivo" id="rejilla-archivo">
+              {resto.map((nota, i) => (
+                <li
+                  data-temas={nota.etiquetas.map(llave).join('|')}
+                  data-buscar={nota.buscar}
+                  hidden={i >= 9}
+                >
+                  <a href={`/notas/${nota.id}/`} class="tarjeta-nota card card-hover group">
+                    {nota.portada && ICONOS[nota.portada] && (
+                      <span class="icono-nota" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                          <path d={ICONOS[nota.portada]} />
                         </svg>
                       </span>
-                    </a>
-                  </li>
-                ))}
-              </ol>
+                    )}
 
-              {/* Cuánto queda por ver. Se esconde igual que los mandos cuando
-                  todas las tarjetas caben a la vez. */}
-              <div class="riel-notas" id="riel-notas" hidden aria-hidden="true">
-                <span class="avance-notas" id="avance-notas"></span>
-              </div>
-            </div>
+                    <span class="meta-nota">
+                      <time datetime={nota.fecha.toISOString()}>{formatearFecha(nota.fecha)}</time>
+                      <span aria-hidden="true">·</span>
+                      <span>{nota.minutos} min</span>
+                      {nota.borrador && <span class="sello-borrador">borrador</span>}
+                    </span>
+
+                    <h3 class="titulo-nota">{nota.titulo}</h3>
+                    <p class="resumen-nota">{nota.resumen}</p>
+
+                    <span class="temas-nota">
+                      {nota.etiquetas.map((tema) => (
+                        <span class="tema-claro">{tema}</span>
+                      ))}
+                    </span>
+
+                    <span class="pie-nota">
+                      Leer
+                      <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                      </svg>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
           )}
+
+          {/* Sin resultados no se deja la pantalla en blanco: se dice qué se
+              buscó y se ofrece la salida. */}
+          <div class="vacio-archivo" id="vacio-archivo" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.6" />
+              <path d="m15.8 15.8 4 4M8.4 10.8h4.8" />
+            </svg>
+            <p>
+              Ninguna nota coincide con <strong id="vacio-termino"></strong>.
+            </p>
+            <button type="button" class="chip" id="limpiar-todo">Ver todas las notas</button>
+          </div>
+
+          <div class="mas-archivo" id="mas-archivo" hidden>
+            <button type="button" class="boton-mas" id="ver-mas">
+              Ver más notas
+              <span class="restantes-mas" id="restantes-mas"></span>
+            </button>
+          </div>
         </>
       )
     }
@@ -435,67 +478,207 @@ const [destacada, ...resto] = notas;
     paradas: () => [...document.querySelectorAll('.seccion')],
   });
 
-  /* Carrusel del archivo. El desplazamiento lo lleva el navegador con
-   * `scroll-snap` horizontal —ahí sí funciona: la caja mide exactamente lo que
-   * mide, al revés que en vertical, donde un sector más alto que la ventana no
-   * se puede anclar—. El guion solo pone los mandos y decide si hacen falta. */
-  const pista = document.getElementById('pista-notas');
-  const mandos = document.getElementById('mandos-notas');
-  const riel = document.getElementById('riel-notas');
-  const avance = document.getElementById('avance-notas');
+  /* ---------------------------------------------------------------------
+   * Buscador y filtro del archivo.
+   *
+   * Todo ocurre en el cliente sobre el HTML ya pintado: no hay índice que
+   * descargar ni petición que esperar. Con cuarenta notas, montar un buscador
+   * de verdad —con su índice invertido y su biblioteca— costaría más kilobytes
+   * que las notas mismas.
+   *
+   * El término y el tema se combinan: filtrar por "IA" y luego escribir "rag"
+   * busca dentro de lo ya filtrado, que es lo que espera cualquiera.
+   * ------------------------------------------------------------------- */
 
-  if (pista && mandos) {
-    const hayDeSobra = () => pista.scrollWidth > pista.clientWidth + 4;
+  const POR_TANDA = 9;
 
-    const revisarMandos = () => {
-      const sobra = hayDeSobra();
-      mandos.hidden = !sobra;
-      if (riel) riel.hidden = !sobra;
-      /* El desvanecido del borde derecho insinúa que hay más. Si todas las
-       * tarjetas caben, sobra: borraría la última sin motivo. */
-      pista.classList.toggle('hay-mas', sobra);
+  const campo = document.getElementById('buscar-notas') as HTMLInputElement | null;
+  const limpiar = document.getElementById('limpiar-buscar');
+  const atajo = document.getElementById('atajo-buscar');
+  const rejilla = document.getElementById('rejilla-archivo');
+  const vacio = document.getElementById('vacio-archivo');
+  const vacioTermino = document.getElementById('vacio-termino');
+  const cuenta = document.getElementById('cuenta-archivo');
+  const textoCuenta = document.getElementById('texto-archivo');
+  const bloqueMas = document.getElementById('mas-archivo');
+  const botonMas = document.getElementById('ver-mas');
+  const restantes = document.getElementById('restantes-mas');
+  const limpiarTodo = document.getElementById('limpiar-todo');
 
-      mandos.querySelectorAll<HTMLButtonElement>('.mando').forEach((boton) => {
-        const hacia = Number(boton.dataset.ir ?? '1');
-        const tope = pista.scrollWidth - pista.clientWidth;
-        boton.disabled =
-          hacia < 0 ? pista.scrollLeft <= 4 : pista.scrollLeft >= tope - 4;
-      });
+  const renglones = rejilla ? [...rejilla.querySelectorAll<HTMLLIElement>('li')] : [];
+  const destacada = document.querySelector<HTMLElement>('.nota-destacada');
+  const botones = document.querySelectorAll<HTMLButtonElement>('.chip-tema');
 
-      /* El guion de la barra ocupa la parte visible de la pista y se mueve con
-       * ella: dice a la vez cuánto se ve y por dónde vas. La barra del navegador
-       * hacía lo mismo, pero gris y con el grosor que decidiera el sistema. */
-      if (avance && sobra) {
-        const visible = pista.clientWidth / pista.scrollWidth;
-        const recorrido = pista.scrollLeft / (pista.scrollWidth - pista.clientWidth);
-        avance.style.width = `${visible * 100}%`;
-        avance.style.transform = `translateX(${(recorrido * (1 - visible) * 100) / visible}%)`;
-      }
-    };
+  let termino = '';
+  let tema = '';
+  let visibles = POR_TANDA;
 
-    mandos.querySelectorAll<HTMLButtonElement>('.mando').forEach((boton) => {
-      boton.addEventListener('click', () => {
-        // Una tarjeta por golpe: pasar de dos en dos se salta contenido.
-        const tarjeta = pista.querySelector('li');
-        const paso = tarjeta ? tarjeta.getBoundingClientRect().width + 18 : pista.clientWidth * 0.8;
-        pista.scrollBy({ left: paso * Number(boton.dataset.ir ?? '1'), behavior: 'smooth' });
-      });
+  /** La misma normalización que en el build: sin tildes y en minúsculas. */
+  const normalizar = (texto: string) =>
+    texto
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '');
+
+  const coincide = (renglon: HTMLElement) => {
+    const suTema = (renglon.dataset.temas ?? '').split('|');
+    if (tema && !suTema.includes(tema)) return false;
+    if (!termino) return true;
+
+    /* Todas las palabras, no la frase entera: "rag evaluacion" encuentra la
+     * nota que habla de las dos cosas aunque no aparezcan juntas ni en ese
+     * orden. Buscar la cadena literal devolvería cero y parecería que no hay
+     * nada escrito sobre el tema. */
+    return termino
+      .split(/\s+/)
+      .every((palabra) => (renglon.dataset.buscar ?? '').includes(palabra));
+  };
+
+  function pintar() {
+    const encontrados = renglones.filter(coincide);
+
+    renglones.forEach((renglon) => {
+      renglon.hidden = true;
+    });
+    encontrados.slice(0, visibles).forEach((renglon) => {
+      renglon.hidden = false;
     });
 
-    pista.addEventListener('scroll', revisarMandos, { passive: true });
-    window.addEventListener('resize', revisarMandos);
-    revisarMandos();
+    /* La destacada se esconde al buscar o al filtrar: si no, queda arriba una
+     * nota que no cumple lo que se pidió y se lee como un resultado más. */
+    let entraDestacada = false;
+
+    if (destacada) {
+      const suTema = (destacada.dataset.temas ?? '').split('|');
+      const suTexto = normalizar(destacada.textContent ?? '');
+      entraDestacada =
+        (!tema || suTema.includes(tema)) &&
+        (!termino || termino.split(/\s+/).every((palabra) => suTexto.includes(palabra)));
+
+      destacada.closest('.lado-destacada')?.toggleAttribute('hidden', !entraDestacada);
+    }
+
+    /* La destacada cuenta como resultado.
+     *
+     * Vive fuera de la rejilla pero el buscador también la filtra, así que
+     * dejarla fuera del recuento producía el caso absurdo de leer "0 notas
+     * encontradas" con una nota en pantalla, justo encima. */
+    const total = encontrados.length + (entraDestacada ? 1 : 0);
+    const quedan = Math.max(0, encontrados.length - visibles);
+    const filtrando = Boolean(termino || tema);
+
+    if (cuenta) cuenta.textContent = String(total);
+    if (textoCuenta) {
+      if (filtrando) {
+        textoCuenta.textContent = total === 1 ? 'nota encontrada' : 'notas encontradas';
+      } else {
+        textoCuenta.textContent = total === 1 ? 'nota en el archivo' : 'notas en el archivo';
+      }
+    }
+
+    if (vacio) vacio.hidden = total > 0;
+    // La rejilla se esconde cuando no hay nada EN ELLA, aunque la destacada sí
+    // haya entrado: una lista vacía con su borde puesto parece un fallo.
+    if (vacioTermino) {
+      vacioTermino.textContent = termino ? `«${campo?.value.trim()}»` : 'ese tema';
+    }
+    if (rejilla) rejilla.hidden = encontrados.length === 0;
+
+    if (bloqueMas) bloqueMas.hidden = quedan === 0;
+    if (restantes) restantes.textContent = `· quedan ${quedan}`;
+
+    if (limpiar) limpiar.hidden = !campo?.value;
+    if (atajo) atajo.hidden = Boolean(campo?.value);
+
+    /* Mientras se busca, la portada suelta su alto de pantalla completa.
+     *
+     * Las secciones miden 100svh y centran su contenido. Al esconder la nota
+     * destacada, el contenido encoge pero la sección no, y quedaba media
+     * pantalla en blanco entre los temas y los resultados: desde abajo parecía
+     * que la página se había roto. */
+    document.body.classList.toggle('filtrando-notas', filtrando);
+
+    /* La rejilla acaba de cambiar de alto sin que la ventana se haya movido:
+     * sin esto, las paradas del salto apuntan a donde estaban las tarjetas. */
+    salto.rearmar();
   }
 
-  /* Filtro por tema. Cada ficha declara sus temas en `data-temas`, así que
-   * filtrar es esconder lo que no lo lleva: no se reordena nada ni se vuelve a
-   * pintar la lista. */
-  const botones = document.querySelectorAll<HTMLButtonElement>('.chip-tema');
-  const fichas = document.querySelectorAll<HTMLElement>('[data-temas]');
+  function reiniciar() {
+    visibles = POR_TANDA;
+    pintar();
+  }
 
+  /* Un respiro antes de filtrar: escribiendo rápido se dispararía en cada
+   * tecla y la rejilla parpadearía. 120 ms no se notan al teclear. */
+  let temporizador: number | undefined;
+
+  campo?.addEventListener('input', () => {
+    window.clearTimeout(temporizador);
+    temporizador = window.setTimeout(() => {
+      termino = normalizar(campo.value.trim());
+      reiniciar();
+    }, 120);
+  });
+
+  /* Escape limpia sin sacar el foco del campo: es lo que hace cualquier
+   * buscador y lo que la mano ya tiene aprendido. */
+  campo?.addEventListener('keydown', (evento) => {
+    if (evento.key !== 'Escape') return;
+    campo.value = '';
+    termino = '';
+    reiniciar();
+  });
+
+  limpiar?.addEventListener('click', () => {
+    if (!campo) return;
+    campo.value = '';
+    termino = '';
+    reiniciar();
+    campo.focus();
+  });
+
+  botonMas?.addEventListener('click', () => {
+    visibles += POR_TANDA;
+    pintar();
+  });
+
+  limpiarTodo?.addEventListener('click', () => {
+    if (campo) campo.value = '';
+    termino = '';
+    tema = '';
+
+    botones.forEach((otro) => {
+      const activo = otro.dataset.tema === '';
+      otro.classList.toggle('is-activo', activo);
+      otro.setAttribute('aria-pressed', String(activo));
+    });
+
+    reiniciar();
+  });
+
+  /* "/" enfoca el buscador, como en GitHub. Se ignora si ya se está
+   * escribiendo en otro sitio: si no, la barra nunca llegaría al texto. */
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key !== '/' || evento.metaKey || evento.ctrlKey) return;
+
+    const activo = document.activeElement;
+    const escribiendo =
+      activo instanceof HTMLInputElement ||
+      activo instanceof HTMLTextAreaElement ||
+      (activo as HTMLElement | null)?.isContentEditable === true;
+
+    if (escribiendo) return;
+
+    evento.preventDefault();
+    campo?.focus();
+    campo?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  });
+
+  /* Filtro por tema. Los chips viven en la cabecera de la página y filtran la
+   * misma rejilla, así que comparten estado con el buscador. */
   botones.forEach((boton) => {
     boton.addEventListener('click', () => {
-      const tema = boton.dataset.tema ?? '';
+      tema = boton.dataset.tema ?? '';
 
       botones.forEach((otro) => {
         const activo = otro === boton;
@@ -503,23 +686,9 @@ const [destacada, ...resto] = notas;
         otro.setAttribute('aria-pressed', String(activo));
       });
 
-      fichas.forEach((ficha) => {
-        const suyos = (ficha.dataset.temas ?? '').split('|');
-        // La ficha destacada es un enlace suelto; la de la rejilla vive dentro
-        // de su <li>. Se esconde el elemento que declara los temas y, si está
-        // dentro de una lista, también su renglón, para que no quede el hueco.
-        const objetivo = ficha.closest('li') ?? ficha;
-        (objetivo as HTMLElement).hidden = tema !== '' && !suyos.includes(tema);
-      });
-
-      /* El archivo acaba de cambiar de alto sin que la ventana se haya movido:
-       * si no se recalculan, las paradas del salto apuntan a donde estaban las
-       * tarjetas antes de esconderse. */
-      salto.rearmar();
-
-      // Con menos tarjetas puede que ya no haya nada que pasar.
-      pista?.dispatchEvent(new Event('scroll'));
-      window.dispatchEvent(new Event('resize'));
+      reiniciar();
     });
   });
+
+  pintar();
 </script>

@@ -2580,8 +2580,9 @@ body::before {
   padding: 1.6rem 1.65rem 1.5rem;
 }
 
-/* El número se queda detrás del contenido, como marca de agua: ubica la nota
-   en la serie sin competir con el titular. */
+/* El número de serie, como marca de agua detrás del contenido.
+   Lo usa la portada, no el archivo: allí el filtro y el buscador reordenan lo
+   que se ve, y un número fijo en una rejilla que cambia solo desinforma. */
 .orden-nota {
   position: absolute;
   top: 1rem;
@@ -6515,151 +6516,216 @@ body::before {
   }
 }
 
-/* ---------- El archivo, en carrusel ---------- */
+/* ---------- El archivo: buscador y rejilla ---------- */
 
-.carrusel-notas {
-  position: relative;
-  margin-top: 1.5rem;
+/* Con una búsqueda o un filtro puestos, la portada deja de ocupar una pantalla
+   entera: la pone el guion al filtrar y la quita al limpiar. Sin esto, esconder
+   la nota destacada dejaba un hueco del alto de media ventana. */
+body.filtrando-notas #portada-notas,
+body.filtrando-notas #archivo {
+  min-height: 0;
+  justify-content: flex-start;
 }
 
-.pista-notas {
+
+/* Cabecera. El buscador va a la derecha del título en pantalla ancha y debajo
+   en cuanto deja de caber: partirlo en dos líneas antes de tiempo deja el
+   título flotando solo en una fila entera. */
+.cabecera-archivo {
   display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 2.5rem;
+}
+
+.titulo-archivo {
+  min-width: min(100%, 20rem);
+  flex: 1 1 22rem;
+}
+
+.pie-titulo-archivo {
+  margin-top: 0.85rem;
+  max-width: 34rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+/* --- El buscador --- */
+
+.buscador-notas {
+  position: relative;
+  display: flex;
+  flex: 0 1 24rem;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.1rem 0.95rem 0.1rem 1.05rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  /* Una sombra mínima. Sobre el fondo crema, un campo blanco con solo un borde
+     de un píxel se lee como un rectángulo pintado y no como algo donde escribir. */
+  box-shadow: 0 1px 2px rgba(29, 23, 18, 0.04);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+/* El foco se marca en el contenedor y no en el campo: el campo no tiene borde
+   propio, así que un outline suyo aparecía por dentro de la píldora. */
+.buscador-notas:focus-within {
+  border-color: rgba(255, 106, 26, 0.55);
+  box-shadow: 0 0 0 4px rgba(255, 106, 26, 0.12);
+}
+
+.lupa-buscar {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: none;
+  color: var(--color-faint);
+  transition: color 0.2s ease;
+}
+
+.buscador-notas:focus-within .lupa-buscar {
+  color: var(--color-fox-deep);
+}
+
+.campo-buscar {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.78rem 0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+}
+
+.campo-buscar::placeholder {
+  color: var(--color-faint);
+}
+
+.campo-buscar:focus {
+  outline: none;
+}
+
+/* Los navegadores dibujan su propia equis en los campos de búsqueda, con su
+   propio tamaño y su propio color. Se quita: ya hay un botón de limpiar que
+   sigue la tipografía del sitio. */
+.campo-buscar::-webkit-search-cancel-button,
+.campo-buscar::-webkit-search-decoration {
+  appearance: none;
+}
+
+.atajo-buscar {
+  flex: none;
+  min-width: 1.45rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 7px;
+  background: var(--color-cream-2);
+  padding: 0.1rem 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--color-faint);
+}
+
+/* En un teléfono no hay teclado físico: anunciar un atajo que no se puede
+   pulsar es ruido. */
+@media (max-width: 48rem) {
+  .atajo-buscar {
+    display: none;
+  }
+}
+
+.limpiar-buscar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-cream-2);
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.limpiar-buscar:hover {
+  background: var(--color-fox-tint);
+  color: var(--color-fox-dark);
+}
+
+.limpiar-buscar svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* --- El recuento --- */
+
+.resultado-archivo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin: 1.9rem 0 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+}
+
+.cifra-archivo {
+  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  color: var(--color-fox-dark);
+}
+
+/* --- La rejilla --- */
+
+.rejilla-archivo {
+  display: grid;
   gap: 1.15rem;
-  overflow-x: auto;
-  /* Aquí el anclaje sí funciona: una tarjeta mide exactamente lo que mide, al
-     revés que un sector vertical más alto que la ventana, que el navegador no
-     puede anclar. */
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: 0.25rem;
-  /* Sitio para que la sombra de las tarjetas no se recorte al desplazarse. */
-  padding: 0.5rem 0.25rem 1.25rem;
-  /* La barra del navegador es gris, de grosor ajeno y distinta en cada
-     sistema. Se quita, y el avance lo dibuja `.riel-notas`. */
-  scrollbar-width: none;
+  grid-template-columns: 1fr;
 }
 
-.pista-notas::-webkit-scrollbar {
-  display: none;
-}
-
-/* Riel de avance: el guion ocupa la parte visible de la pista, así que su
-   ancho dice cuánto se ve y su posición, por dónde vas. */
-.riel-notas {
-  overflow: hidden;
-  height: 3px;
-  border-radius: 999px;
-  background: var(--color-line);
-}
-
-.avance-notas {
-  display: block;
-  height: 100%;
-  width: 30%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--color-fox), #ffa62b);
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.pista-notas > li {
-  flex: 0 0 auto;
-  width: min(23rem, 82vw);
-  scroll-snap-align: start;
-}
-
-/* En una pantalla ancha, el contenido se quedaba en 82rem y sobraban tres
-   dedos de margen a cada lado. La pista se estira hacia la derecha hasta
-   comerse ese margen —nunca más, así que no puede desbordar— y la cabecera
-   se queda alineada con el resto de la página. */
-@media (min-width: 1280px) {
-  .pista-notas {
-    margin-right: calc(-1 * max(0px, (100vw - 82rem) / 2 - 1rem));
-    padding-right: 3rem;
-  }
-
-  .pista-notas > li {
-    width: 24rem;
+@media (min-width: 48rem) {
+  .rejilla-archivo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Con alto de sobra, la mitad de la pantalla quedaba vacía debajo de una
-   sola fila. En dos filas entra el doble de archivo sin alargar la página:
-   se sigue pasando de lado, pero por columnas. */
-@media (min-width: 1100px) and (min-height: 1040px) {
-  .pista-notas {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(2, 1fr);
-    grid-auto-columns: 24rem;
-    align-items: stretch;
-    row-gap: 0.75rem;
-    padding-top: 0.3rem;
-    padding-bottom: 0.7rem;
-    /* El aire que separa del título ya lo pone la cabecera. */
-    margin-top: -0.6rem;
-  }
-
-  .pista-notas > li {
-    width: auto;
-  }
-
-  /* Dos filas caben en la pantalla por poco, así que la tarjeta se aprieta
-     donde no se nota: márgenes internos, no tamaño de letra. */
-  .pista-notas .tarjeta-nota {
-    padding: 1.25rem 1.4rem 1.15rem;
-  }
-
-  .pista-notas .icono-nota {
-    margin-bottom: 0.7rem;
-  }
-
-  .pista-notas .titulo-nota {
-    margin-top: 0.7rem;
-  }
-
-  .pista-notas .temas-nota {
-    margin-top: 0.8rem;
-  }
-
-  .pista-notas .pie-nota {
-    padding-top: 0.8rem;
-  }
-
-  /* Con dos filas el resumen es lo único que puede crecer sin control: uno de
-     cinco líneas empujaba la segunda fila fuera de la pantalla. Recortado a
-     tres, todas las tarjetas traen el mismo bloque de texto, y el resto de la
-     nota se lee donde tiene que leerse, que es en la nota. */
-  .pista-notas .resumen-nota {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow: hidden;
-  }
-
-  /* El sector reserva 6rem arriba por la cabecera fija, que mide 4.5. Con una
-     sola fila ese respiro de más no molesta; con dos, es lo que dejaba el riel
-     de avance por debajo del borde de la pantalla. */
-  .seccion:has(.carrusel-notas) {
-    padding-top: 4.75rem;
-    padding-bottom: 2rem;
+@media (min-width: 72rem) {
+  .rejilla-archivo {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-/* El corte seco en el borde parecía un fallo de maquetación. Desvanecido,
-   se lee como lo que es: sigue habiendo tarjetas. La clase la pone el guion
-   solo cuando de verdad hay más. */
-.pista-notas.hay-mas {
-  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 5rem), transparent);
-  mask-image: linear-gradient(90deg, #000 calc(100% - 5rem), transparent);
+.rejilla-archivo > li {
+  display: flex;
+  min-width: 0;
 }
 
-.pista-notas .tarjeta-nota {
-  height: 100%;
+.rejilla-archivo .tarjeta-nota {
+  width: 100%;
 }
 
-/* Las tarjetas igualan su altura a la más alta, así que en las de título
-   corto quedaba un hueco muerto de tres líneas entre los temas y el pie.
-   Con una línea encima, ese aire se lee como separación y no como olvido. */
-.pista-notas .pie-nota {
+/* Un icono de cada color, alternando por columna. Con tres columnas, el ciclo
+   de dos colores no se alinea nunca con la rejilla y el resultado es un patrón
+   que no se repite en vertical. */
+.rejilla-archivo > li:nth-child(even) .icono-nota {
+  background: var(--color-cyan-tint);
+  color: var(--color-cyan-deep);
+}
+
+/* Las tarjetas de una fila igualan su altura a la más alta, así que en las de
+   título corto quedaba un hueco muerto entre los temas y el pie. Con una línea
+   encima, ese aire se lee como separación y no como olvido. */
+.rejilla-archivo .pie-nota {
   width: 100%;
   justify-content: space-between;
   margin-top: auto;
@@ -6669,7 +6735,7 @@ body::before {
 
 /* La flecha, en su propio botón redondo: da un objetivo claro al cursor y
    remata la tarjeta por la derecha, que era el lado que quedaba vacío. */
-.pista-notas .pie-nota svg {
+.rejilla-archivo .pie-nota svg {
   box-sizing: content-box;
   width: 0.85rem;
   height: 0.85rem;
@@ -6677,36 +6743,27 @@ body::before {
   border-radius: 50%;
   background: var(--color-fox-tint);
   color: var(--color-fox-dark);
-  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    background 0.25s ease,
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.pista-notas .tarjeta-nota:hover .pie-nota svg {
+.rejilla-archivo .tarjeta-nota:hover .pie-nota svg {
   background: var(--color-fox);
   color: #fff;
   transform: translateX(3px);
 }
 
-/* Los temas se pegan al pie en vez de flotar a media caja. */
-.pista-notas .temas-nota {
-  margin-top: 1rem;
-}
-
-/* El icono del tema, junto al número de orden. */
 .icono-nota {
   display: grid;
   place-items: center;
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 2.4rem;
+  height: 2.4rem;
   margin-bottom: 1rem;
   border-radius: 13px;
   background: var(--color-fox-tint);
   color: var(--color-fox-dark);
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.pista-notas > li:nth-child(even) .icono-nota {
-  background: var(--color-cyan-tint);
-  color: var(--color-cyan-deep);
 }
 
 .tarjeta-nota:hover .icono-nota {
@@ -6718,83 +6775,85 @@ body::before {
   height: 1.25rem;
 }
 
-/* Cabecera del archivo. Los mandos van pegados al título, que es donde se
-   buscan: abajo y sueltos parecían de la sección siguiente. */
-.cabecera-archivo {
+/* --- Ver más --- */
+
+.mas-archivo {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.25rem 2rem;
+  justify-content: center;
+  margin-top: 2.25rem;
 }
 
-.control-archivo {
-  display: flex;
+.boton-mas {
+  display: inline-flex;
   align-items: center;
-  gap: 1.1rem;
-  margin-left: auto;
-}
-
-.control-archivo .nota-bloque {
-  max-width: 22rem;
-  margin: 0;
-  text-align: right;
-}
-
-.cifra-archivo {
-  font-family: 'Clash Display', var(--font-display, system-ui), sans-serif;
-  font-size: 1.35rem;
-  color: var(--color-fox-dark);
-  letter-spacing: -0.02em;
-}
-
-.mandos-carrusel {
-  display: flex;
-  flex: none;
-  gap: 0.5rem;
-}
-
-@media (max-width: 640px) {
-  /* En un teléfono se pasa con el dedo: los mandos sobran, y el recuento
-     vuelve a la izquierda bajo el título. */
-  .control-archivo { margin-left: 0; }
-  .control-archivo .nota-bloque { text-align: left; }
-  .control-archivo .mandos-carrusel { display: none; }
-}
-
-.mando {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
+  gap: 0.55rem;
   border: 1px solid var(--color-line-strong);
+  border-radius: 999px;
   background: var(--color-surface);
+  padding: 0.78rem 1.6rem;
+  font-size: 0.92rem;
+  font-weight: 600;
   color: var(--color-ink);
   cursor: pointer;
   transition:
-    border-color 0.22s ease,
-    color 0.22s ease,
-    opacity 0.22s ease,
-    transform 0.22s ease;
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
-.mando:hover:not(:disabled) {
-  border-color: var(--color-fox);
-  color: var(--color-fox-dark);
+.boton-mas:hover {
+  border-color: rgba(255, 106, 26, 0.5);
+  background: var(--color-fox-tint);
   transform: translateY(-2px);
 }
 
-/* Deshabilitado y no escondido: si desaparecieran, los dos botones bailarían
-   de sitio cada vez que se llega a un extremo. */
-.mando:disabled {
-  opacity: 0.35;
-  cursor: default;
+.restantes-mas {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--color-faint);
 }
 
-.mando svg {
-  width: 1.1rem;
-  height: 1.1rem;
+/* --- Sin resultados --- */
+
+.vacio-archivo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  border: 1px dashed var(--color-line-strong);
+  border-radius: 22px;
+  padding: 3.25rem 1.5rem;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.vacio-archivo svg {
+  width: 2.1rem;
+  height: 2.1rem;
+  color: var(--color-faint);
+}
+
+.vacio-archivo strong {
+  color: var(--color-ink);
+}
+
+/* El archivo era la última parada antes del pie y llegaba pegado a él. */
+.seccion:has(.rejilla-archivo) {
+  padding-bottom: 3.5rem;
+}
+
+@media (max-width: 48rem) {
+  .cabecera-archivo {
+    gap: 1.15rem;
+  }
+
+  .buscador-notas {
+    flex: 1 1 100%;
+  }
+
+  .resultado-archivo {
+    margin-top: 1.5rem;
+  }
 }
 
 /* ---------- Espera: por reloj contra por condición ---------- */
