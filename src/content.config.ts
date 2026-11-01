@@ -71,6 +71,7 @@ const notas = defineCollection({
         'juez',
         'rag',
         'sintetico',
+        'confianza',
       ])
       .optional(),
     /**

@@ -194,10 +194,13 @@ const COLOR_LENGUAJE: Record<string, string> = {
           style={`--columnas:${Math.min(repos.length, 3)}`}
         >
           {repos.map((r, i) => (
-            <a
-              href={r.url}
-              target="_blank"
-              rel="noopener"
+            /* La tarjeta entera lleva al repositorio, pero los que tienen
+               documentación de calidad necesitan un segundo enlace, y un <a>
+               dentro de otro <a> no es HTML válido. De ahí el patrón de enlace
+               que tapa la tarjeta: el <article> no es interactivo, el enlace
+               principal se estira por encima de todo, y el de la documentación
+               se levanta un nivel más para quedar por delante. */
+            <article
               class="reveal card card-hover ficha-repo group"
               data-delay={`${(i % 3) * 70}ms`}
             >
@@ -247,7 +250,28 @@ const COLOR_LENGUAJE: Record<string, string> = {
                   </svg>
                 </span>
               </span>
-            </a>
+
+              <a
+                href={r.url}
+                target="_blank"
+                rel="noopener"
+                class="enlace-tapa"
+                aria-label={`Ver el código de ${r.nombre} en GitHub`}
+              />
+
+              {r.docs && (
+                <a href={r.docs} target="_blank" rel="noopener" class="enlace-docs">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H15l5 5v9.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Z" />
+                    <path d="M14.5 4v5.5H20M8 13h8M8 16.5h5" />
+                  </svg>
+                  <span>
+                    <b>Documentación de calidad</b>
+                    <small>{r.docsResumen}</small>
+                  </span>
+                </a>
+              )}
+            </article>
           ))}
         </div>
       ) : (

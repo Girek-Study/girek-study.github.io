@@ -17,6 +17,22 @@ const USUARIO = 'Girek-Study';
  */
 const FUERA_DEL_PORTAFOLIO = [USUARIO.toLowerCase(), `${USUARIO.toLowerCase()}.github.io`];
 
+/**
+ * Repositorios que llevan una carpeta `docs/` con el trabajo de calidad previo
+ * al código: análisis funcional, diseño de casos, matriz de trazabilidad,
+ * análisis de riesgos y hallazgos.
+ *
+ * Se mantiene a mano porque la API no dice si una carpeta existe sin una
+ * petición extra por repositorio, y porque no toda carpeta `docs/` es esto. Si
+ * alguna vez son muchos, se comprueba en el build con una sola llamada al árbol
+ * de cada repositorio.
+ */
+const CON_DOCUMENTACION_QA: Record<string, string> = {
+  'screenplay-web-bdd': 'Análisis, casos, riesgos y 8 defectos encontrados',
+  'screenplay-mobile-bdd': 'Análisis, casos, riesgos y 9 hallazgos encontrados',
+  'k6-performance-suite': 'Modelo de carga, umbrales, riesgos y 6 hallazgos',
+};
+
 export interface RepoPublico {
   nombre: string;
   descripcion: string;
@@ -25,6 +41,10 @@ export interface RepoPublico {
   lenguaje: string | null;
   estrellas: number;
   actualizado: string;
+  /** Enlace a la carpeta `docs/`, o null si ese repositorio no la tiene. */
+  docs: string | null;
+  /** Qué hay dentro, para que el enlace diga algo más que «documentación». */
+  docsResumen: string | null;
 }
 
 interface RepoApi {
@@ -82,6 +102,8 @@ export async function obtenerRepos(): Promise<RepoPublico[]> {
         lenguaje: r.language,
         estrellas: r.stargazers_count,
         actualizado: r.pushed_at,
+        docs: CON_DOCUMENTACION_QA[r.name] ? `${r.html_url}/tree/main/docs` : null,
+        docsResumen: CON_DOCUMENTACION_QA[r.name] ?? null,
       }));
   } catch (error) {
     console.warn('[github] no se pudo consultar la API:', error);
