@@ -14,8 +14,18 @@ const USUARIO = 'Girek-Study';
  * El homónimo solo guarda el README del perfil, y el del sitio es este mismo
  * sitio: enseñar su código en su propio portafolio no dice nada del trabajo y
  * además deja a la vista cómo está montada la página.
+ *
+ * `playwright-screenplay-ts` es el antecesor de `screenplay-web-bdd`: el mismo
+ * patrón sobre la misma app de ejemplo, sin Cucumber. En una rejilla de
+ * tarjetas los dos se leen como el mismo repositorio repetido. Sigue público y
+ * sigue enlazado desde las notas que lo usan de material, que es donde la
+ * comparación entre los dos es el tema y no ruido.
  */
-const FUERA_DEL_PORTAFOLIO = [USUARIO.toLowerCase(), `${USUARIO.toLowerCase()}.github.io`];
+const FUERA_DEL_PORTAFOLIO = [
+  USUARIO.toLowerCase(),
+  `${USUARIO.toLowerCase()}.github.io`,
+  'playwright-screenplay-ts',
+];
 
 /**
  * Repositorios que llevan una carpeta `docs/` con el trabajo de calidad previo
