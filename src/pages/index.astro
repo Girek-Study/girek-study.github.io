@@ -76,7 +76,7 @@ const plural = (n: number, singular: string, plural_: string) =>
 const entradas = [
   {
     etiqueta: 'Código',
-    contador: `${plural(repos.length, 'repositorio', 'repositorios')} abierto`,
+    contador: plural(repos.length, 'repositorio abierto', 'repositorios abiertos'),
     listo: true,
     titulo: 'Frameworks que puedes clonar',
     texto:

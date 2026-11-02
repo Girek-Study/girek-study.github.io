@@ -41,6 +41,9 @@ const CON_DOCUMENTACION_QA: Record<string, string> = {
   'screenplay-web-bdd': 'Análisis, casos, riesgos y 8 defectos encontrados',
   'screenplay-mobile-bdd': 'Análisis, casos, riesgos y 9 hallazgos encontrados',
   'k6-performance-suite': 'Modelo de carga, umbrales, riesgos y 6 hallazgos',
+  'karate-api-contract': 'Contrato, casos, riesgos y 9 hallazgos: 4 puestos y 5 propios',
+  'restassured-api-flows': 'Flujos, casos, riesgos y 5 hallazgos: 1 puesto y 4 propios',
+  'playwright-api-ui': 'Pantalla, casos, riesgos y 6 hallazgos: 4 puestos y 2 propios',
 };
 
 export interface RepoPublico {
