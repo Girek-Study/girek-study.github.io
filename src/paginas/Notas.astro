@@ -1,0 +1,707 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { idiomaDe, textos, PAREJAS } from '../i18n';
+import { formatearFecha, minutosDeLectura } from '../utils/fechas';
+import { profile } from '../data/site';
+
+// Los borradores se ven en `npm run dev` pero nunca se publican.
+const publicadas = (
+  await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador)
+).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+
+// Los minutos se calculan una sola vez aquí: la tarjeta y la ficha de arriba
+// tienen que decir lo mismo, y el cuerpo de la nota no se vuelve a recorrer.
+/** Sin acentos y en minúsculas: quien busca "evaluacion" espera encontrar
+ *  "evaluación", y nadie escribe las tildes en un buscador. */
+const normalizar = (texto: string) =>
+  texto
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '');
+
+const notas = publicadas.map((nota) => {
+  const secciones = [...(nota.body ?? '').matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim());
+
+  return {
+    id: nota.id,
+    ...nota.data,
+    minutos: nota.data.minutos ?? minutosDeLectura(nota.body ?? ''),
+    // Los encabezados del cuerpo sirven de índice: dicen qué se trata dentro
+    // antes de abrirla, que es lo que decide si vale el clic.
+    secciones,
+    /* El índice de búsqueda se arma en el build y viaja en un atributo.
+     *
+     * Buscar solo en el título deja fuera la mitad de las notas: lo que la
+     * gente recuerda suele ser una palabra del interior —"RAG", "flaky",
+     * "percentil"— y no cómo se titulaba. Por eso entran también el resumen,
+     * los temas y los encabezados. El cuerpo entero no: multiplicaría el peso
+     * del HTML por diez para devolver coincidencias en frases de paso. */
+    buscar: normalizar(
+      [nota.data.titulo, nota.data.resumen, ...nota.data.etiquetas, ...secciones].join(' '),
+    ),
+  };
+});
+
+/** El icono de cada nota sale del mismo campo que elige su portada: un dato
+ * menos que mantener y ninguna forma de que los dos se contradigan. */
+const ICONOS: Record<string, string> = {
+  contrato:
+    'M7.5 3.5h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z M9 8.5h6 M9 12h6 M9 15.5h3.5',
+  capas: 'm12 3.4 8.6 4.1-8.6 4.1-8.6-4.1 8.6-4.1Z M3.4 12l8.6 4.1 8.6-4.1 M3.4 16.2l8.6 4.1 8.6-4.1',
+  pipeline:
+    'M5.5 7.5h3.2 M15.3 7.5h3.2 M5.5 16.5h3.2 M15.3 16.5h3.2 M12 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z M12 19a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z M12 10v4',
+  criterio: 'M3.5 6.5h17 M6.5 12h11 M10 17.5h4',
+  // Reloj: la espera que se quedó puesta.
+  espera: 'M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z M12 7.6V12l3.1 1.9',
+  // Árbol de accesibilidad: lo que el modelo lee en vez de la captura.
+  mcp: 'M6 4.5v15 M6 8h5 M6 15.5h5 M13.5 5.5h5v5h-5z M13.5 13h5v5h-5z',
+  // Cilindro: el registro que dos pruebas se disputan.
+  datos: 'M12 3.5c3.6 0 6.5 1.1 6.5 2.5S15.6 8.5 12 8.5 5.5 7.4 5.5 6 8.4 3.5 12 3.5Z M5.5 6v12c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5V6 M5.5 12c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5',
+  // Velocímetro: el percentil que nadie mira.
+  carga: 'M3.6 17.5a8.4 8.4 0 1 1 16.8 0 M12 13.6l4.2-3.7',
+  // Aviso: el rojo que dejó de avisar.
+  rojo: 'M12 4.4 21 19.6H3L12 4.4Z M12 10v4.1 M12 16.9v.2',
+  // Barras: lo que se mide y lo que se cree medir.
+  metricas: 'M4 19.5h16 M7.5 19.5v-4.6 M12 19.5v-8.4 M16.5 19.5v-11.6',
+  // Escalones: las capas que se suben en orden.
+  ruta: 'M3.5 19.5h4v-4h4v-4h4v-4h4',
+  // De un lado al otro: el riesgo en palabras y su assert.
+  traducir: 'M4 8h7 M4 12h5 M4 16h7 M14.5 12h5.5 M17.5 9.2 20.3 12l-2.8 2.8',
+  // La figura universal de accesibilidad.
+  acceso: 'M12 5.6a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2Z M4.5 8.2c2.4.9 4.9 1.4 7.5 1.4s5.1-.5 7.5-1.4 M12 9.6v5.2 M12 14.8 9 21.4 M12 14.8 15 21.4',
+  // Marca de revisión sobre una lista.
+  revision: 'M4 6.5h9 M4 11h9 M4 15.5h6 M14.5 16.2l2.2 2.3 4.3-5',
+  // Medidor: lo que siente quien mira la pantalla.
+  vitals: 'M3.5 17.6a8.5 8.5 0 1 1 17 0 M12 17.6V12 M12 12l3.4-3.1',
+  // Dos manos en el mismo mando: la máquina propone, la persona decide.
+  copiloto: 'M4.5 12.5h15 M7 12.5V9.4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3.1 M6.5 16.4h2.6 M14.9 16.4h2.6 M4.5 12.5v4.6a1.6 1.6 0 0 0 1.6 1.6h11.8a1.6 1.6 0 0 0 1.6-1.6v-4.6',
+  // Lo que entra en el marco y lo que se queda fuera.
+  contexto: 'M4 4.6h7.4v7.4H4z M14 9.5h6 M14 13.5h6 M14 17.5h6 M4 15.4h7.4',
+  // El número que sube solo, en un marco.
+  vanidad: 'M3.6 5.5h16.8v13H3.6z M7.2 15.2l3.3-3.6 2.6 2.3 3.7-4.4',
+  // Escudo con una grieta.
+  seguridad: 'M12 3.2 20 6v6c0 4.2-3.3 7.4-8 8.8-4.7-1.4-8-4.6-8-8.8V6l8-2.8Z M12 8.4v3.4 M12 14.4v.2',
+  // Cimiento: lo que sostiene lo de arriba.
+  esencia: 'M4 19.5h16 M6.5 19.5v-5h11v5 M9 14.5V9.2h6v5.3 M12 9.2V4.6',
+  // Documento con sello: la regla escrita.
+  gobernanza: 'M6.5 3.5h8l4 4v13h-12z M14.5 3.5v4h4 M9 12.5h6 M9 16h4',
+  // Cursor de máquina: el usuario que no tiene ojos.
+  agente: 'M5.5 5.5h13v9h-13z M9.5 18.5h5 M12 14.5v4 M9.2 9.2v1.4 M14.8 9.2v1.4',
+  // Ruta con reintentos: lo que cuesta cada paso de más.
+  ax: 'M4.5 18.5 9 11l4 4.5 6.5-10 M4.5 18.5h15',
+  // Grafo con estado: nodos y sus aristas.
+  grafo: 'M6.5 6.4a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z M17.5 12.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z M6.5 21.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z M6.5 6.4v11.1 M8.2 5.4l7.7 3.6 M8.2 18.6l7.7-6.4',
+  // Techo con una flecha que choca: hasta aquí y no más.
+  techo: 'M3.5 6.5h17 M12 20.5V10.2 M8.6 13.6 12 10.2l3.4 3.4',
+  // Escalones con el suelo marcado: lo que sostiene los cuatro.
+  escalones: 'M3 20.5h18 M6 20.5v-3.4h4v-3.4h4v-3.4h4',
+  // Pirámide con sus tres pisos: la forma es la consecuencia, no el objetivo.
+  piramide: 'M12 3.6 21 19.5H3zM7.5 14h9M9.8 9.2h4.4',
+  // Curva plana que se dispara: la cola que sube cuando la mediana no se mueve.
+  ruptura: 'M4 4.5v15h16.5 M6.4 16.8h6.4c2.3 0 3-1.5 3.6-9.5 M12.8 19.5v-3.4',
+  // Pulso que se aplana: la suite que sigue ahí y ya no late.
+  pulso: 'M2.5 12h3.6l1.8-4.6 2.9 9.4 2.1-6 1.3 2.4h1.6 M17.5 12h4',
+  // Brújula: el norte es tuyo, no del organigrama.
+  brujula: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z M15.4 8.6l-2 4.8-4.8 2 2-4.8z',
+  // Lupa con un más dentro: buscar lo que todavía no sabes que existe.
+  explorar: 'M10.5 17.5a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z M15.6 15.6l4.9 4.9 M10.5 7.6v5.8 M7.6 10.5h5.8',
+  // Dos bocadillos enfrentados: la conversación, no el cuestionario.
+  entrevista: 'M3.4 5h9.2v6H6.6l-3.2 2.6z M11.4 10.4h9.2v6h-2.8l-3.2 2.6v-2.6h-3.2z',
+  // Balanza: la decisión no es tuya, pero los platillos los llenas tú.
+  balanza: 'M12 4.2v16.2 M7 20.4h10 M4 8.2h16 M4 8.2 1.7 13.8h4.6z M20 8.2l-2.3 5.6h4.6z M12 4.2 4 8.2 M12 4.2l8 4',
+  // Un ojo con marcas: mirar lo que decide el que construye.
+  auditoria: 'M3 12s3.6-6 9-6 9 6 9 6-3.6 6-9 6-9-6-9-6Z M12 14.6a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.2Z M12 2.2v1.6 M12 20.2v1.6',
+  // Documento con una marca: la spec que ahora lee una máquina.
+  spec: 'M6.4 3.2h8l4 4v13.6H6.4z M14.4 3.2v4h4 M9 12.2l1.8 1.9 4.2-4.5',
+  // Riendas: el agente tira, tú decides hasta dónde.
+  riendas: 'M4.5 6.5h15 M7 6.5v4.2a5 5 0 0 0 10 0V6.5 M12 15.4v5.1 M9 20.5h6',
+  // Cuerpo con sus partes: lo que hay dentro, no el diagrama de fuera.
+  anatomia: 'M12 4.8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z M12 6.4v7.8 M8 9.4h8 M12 14.2 8.6 21 M12 14.2 15.4 21',
+  // Piezas que encajan: cada framework resuelve una capa.
+  frameworks: 'M3.6 3.6h7v7h-7z M13.4 3.6h7v7h-7z M3.6 13.4h7v7h-7z M13.4 13.4h7v7h-7z',
+  // Tres barras de alturas distintas: la misma entrada, otra salida.
+  varianza: 'M4 20.4h16.4 M7.6 20.4v-6.2 M12.2 20.4v-11 M16.8 20.4v-8.4 M7.6 11.2v-1.4 M12.2 6.4V5 M16.8 9.2V7.8',
+  // Balanza con un platillo cargado: el juez que no está calibrado.
+  juez: 'M12 4.4v16 M6.6 20.4h10.8 M4 8.4h16 M4 8.4 1.6 14.6h4.8zM20 8.4l-2.4 6.2h4.8z M12 4.4 4 8.4',
+  // Lupa sobre un documento: buscar primero, redactar después.
+  rag: 'M5.4 3.4h8l3.6 3.6v5.4 M13.4 3.4v3.8h3.6 M5.4 3.4v17h5 M14.6 20.4a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Z M17.8 19.2l2.8 2.8',
+  // Molde que repite la misma pieza: lo generado se parece demasiado.
+  sintetico: 'M4 4.6h6.4v6.4H4z M13.6 4.6H20v6.4h-6.4z M4 13.6h6.4V20H4z M13.6 13.6H20V20h-6.4z M7.2 7.8h.01M16.8 7.8h.01M7.2 16.8h.01M16.8 16.8h.01',
+};
+
+/** Un tema se filtra por su llave, no por su rótulo: "API Testing" → "api-testing". */
+const llave = (tema: string) => tema.toLowerCase().replace(/\s+/g, '-');
+
+const conteo = new Map<string, number>();
+for (const nota of notas) {
+  for (const tema of nota.etiquetas) conteo.set(tema, (conteo.get(tema) ?? 0) + 1);
+}
+// Primero los temas sobre los que más he escrito; a igualdad, alfabético.
+const temas = [...conteo.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+const minutosTotales = notas.reduce((suma, nota) => suma + nota.minutos, 0);
+
+// La más reciente va destacada; el resto, en rejilla.
+const [destacada, ...resto] = notas;
+
+/* El idioma sale de la URL: este mismo cuerpo lo renderizan /notas y
+ * /en/notes. Las notas en sí solo existen en español; lo que se traduce aquí
+ * es la página que las lista. Ver src/i18n/index.ts. */
+const idioma = idiomaDe(Astro.url.pathname);
+const tx = textos(idioma);
+const n = tx.notas;
+const ruta = (es: string) => PAREJAS.find((x) => x.es === es)![idioma];
+---
+
+<Layout title={n.meta.titulo} description={n.meta.descripcion}>
+  <section class="seccion relative overflow-hidden" id="portada-notas">
+    <div class="blob -z-10 right-[-4rem] top-10 h-80 w-80" style="background: var(--color-amber)"></div>
+    <div class="blob -z-10 left-[-6rem] top-40 h-64 w-64" style="background: var(--color-cyan-tint); animation-delay: -6s"></div>
+
+    <div class="mx-auto max-w-[82rem] px-5 md:px-8">
+      {/* La primera pantalla enseña lo último publicado, no una ficha de
+          recuentos: lo que se ve al llegar es una nota que se puede abrir. Las
+          cifras bajan a una línea bajo la bajada, que es todo el sitio que
+          necesitan. */}
+      <div class="reparto-notas">
+        <div class="lado-notas">
+          <p class="reveal eyebrow">{n.rotulo}</p>
+          <h1 class="reveal titulo-notas" data-delay="60ms">{n.titular}</h1>
+          <p class="reveal bajada-notas" data-delay="110ms">
+            {n.bajada}
+          </p>
+
+          {/* Solo en inglés: avisa de que las notas no están traducidas antes
+              de que alguien abra una y se lo encuentre. */}
+          {n.avisoIdioma && <p class="reveal aviso-idioma" data-delay="130ms">{n.avisoIdioma}</p>}
+
+          <dl class="reveal tira-cifras" data-delay="160ms">
+            <div>
+              <dd>{notas.length}</dd>
+              <dt>{n.unaNota(notas.length)}</dt>
+            </div>
+            <div>
+              <dd>{temas.length}</dd>
+              <dt>{n.temas}</dt>
+            </div>
+            <div>
+              <dd>{minutosTotales}<span class="unidad-notas">{n.minutos}</span></dd>
+              <dt>{n.deLectura}</dt>
+            </div>
+          </dl>
+
+          <a href="/rss.xml" class="reveal enlace-rss" data-delay="210ms">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="6.18" cy="17.82" r="2.18"></circle>
+              <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"></path>
+            </svg>
+            {n.rss}
+          </a>
+        </div>
+
+        <div class="lado-destacada">
+          <a
+            href={`/notas/${destacada.id}/`}
+            class="reveal nota-destacada group"
+            data-delay="80ms"
+            data-temas={destacada.etiquetas.map(llave).join('|')}
+          >
+            <span class="trama-cierre pointer-events-none absolute inset-0" aria-hidden="true" />
+            <span class="brillo-cierre pointer-events-none absolute -right-28 -top-36 h-96 w-96 rounded-full" aria-hidden="true" />
+
+            <span class="cuerpo-destacada">
+              <span class="block">
+                <span class="meta-destacada">
+                  <span class="sello-destacada">{n.ultimo}</span>
+                  <time datetime={destacada.fecha.toISOString()}>{formatearFecha(destacada.fecha, idioma)}</time>
+                  <span aria-hidden="true">·</span>
+                  <span>{n.minutosDeLectura(destacada.minutos)}</span>
+                </span>
+
+                <h2 class="mt-5 font-display text-[1.9rem] leading-[1.12] tracking-tight md:text-[2.6rem]">
+                  {destacada.titulo}
+                </h2>
+                <p class="mt-4 leading-relaxed text-white/80">{destacada.resumen}</p>
+
+                <span class="mt-6 flex flex-wrap items-center gap-2">
+                  {destacada.etiquetas.map((tema) => (
+                    <span class="tema-oscuro">{tema}</span>
+                  ))}
+                </span>
+
+                <span class="mt-7 inline-flex items-center gap-2 font-semibold">
+                  {n.leerLaNota}
+                  <svg
+                    class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                  </svg>
+                </span>
+              </span>
+
+              {destacada.secciones.length > 0 && (
+                <span class="indice-destacada">
+                  <span class="rotulo-indice">{n.loQueHayDentro}</span>
+                  <ol class="mt-3.5 space-y-2.5">
+                    {destacada.secciones.map((seccion, n) => (
+                      <li class="renglon-indice">
+                        <span class="numero-indice">{String(n + 1).padStart(2, '0')}</span>
+                        <span>{seccion}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </span>
+              )}
+            </span>
+          </a>
+        </div>
+      </div>
+
+      {/* Los temas cierran la primera pantalla: antes de bajar ya se sabe de
+          qué va todo esto y se puede acotar sin recorrer el archivo. */}
+      <nav class="reveal barra-temas barra-cabecera" aria-label={n.filtrarPorTema} data-delay="200ms">
+        <button type="button" class="chip chip-tema is-activo" data-tema="" aria-pressed="true">
+          {n.todas} <span class="cuenta-tema">{notas.length}</span>
+        </button>
+        {temas.map(([tema, veces]) => (
+          <button type="button" class="chip chip-tema" data-tema={llave(tema)} aria-pressed="false">
+            {tema} <span class="cuenta-tema">{veces}</span>
+          </button>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <section class="seccion mx-auto max-w-[82rem] px-5 md:px-8" id="archivo">
+    <div class="reveal cabecera-archivo">
+      <div class="titulo-archivo">
+        <p class="eyebrow">{n.archivoRotulo}</p>
+        <h2 class="mt-3 font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-[2.7rem]">
+          {n.archivoTitulo}
+        </h2>
+        <p class="pie-titulo-archivo">
+          {n.archivoNota}
+        </p>
+      </div>
+
+      {/* El buscador va en la cabecera y no flotando sobre la rejilla: es lo
+          primero que se busca al llegar a un archivo de cuarenta notas. */}
+      <form class="buscador-notas" role="search" onsubmit="return false;">
+        <svg class="lupa-buscar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="10.8" cy="10.8" r="6.6" />
+          <path d="m15.8 15.8 4 4" />
+        </svg>
+
+        <input
+          type="search"
+          id="buscar-notas"
+          class="campo-buscar"
+          placeholder={n.buscarEntre(notas.length)}
+          autocomplete="off"
+          spellcheck="false"
+          aria-label={n.buscarNotas}
+          aria-describedby="resultado-archivo"
+        />
+
+        {/* El atajo se anuncia: si no se ve, no existe. Se esconde al escribir
+            porque entonces el sitio lo ocupa el botón de limpiar. */}
+        <kbd class="atajo-buscar" id="atajo-buscar" aria-hidden="true">/</kbd>
+
+        <button type="button" class="limpiar-buscar" id="limpiar-buscar" hidden aria-label={n.limpiarBusqueda}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+            <path d="m6.5 6.5 11 11M17.5 6.5l-11 11" />
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    {
+      notas.length === 0 ? (
+        <p class="font-mono text-sm text-[var(--color-faint)]">{n.sinNotas}</p>
+      ) : (
+        <>
+          {/* El recuento es una región viva: quien navega con lector de
+              pantalla se entera de cuántas quedan sin salir del campo. */}
+          <p class="resultado-archivo" id="resultado-archivo" role="status" aria-live="polite">
+            <span class="cifra-archivo" id="cuenta-archivo">{resto.length}</span>
+            <span id="texto-archivo">{resto.length === 1 ? 'nota' : 'notas'} en el archivo</span>
+          </p>
+
+          {resto.length > 0 && (
+            /* Rejilla y no carrusel: en horizontal la última tarjeta siempre
+               quedaba cortada por el borde, que es justo la señal de que algo
+               está mal maquetado. El alto se controla mostrando de nueve en
+               nueve, no escondiendo el contenido de lado. */
+            <ol class="rejilla-archivo" id="rejilla-archivo">
+              {resto.map((nota, i) => (
+                <li
+                  data-temas={nota.etiquetas.map(llave).join('|')}
+                  data-buscar={nota.buscar}
+                  hidden={i >= 9}
+                >
+                  <a href={`/notas/${nota.id}/`} class="tarjeta-nota card card-hover group">
+                    {nota.portada && ICONOS[nota.portada] && (
+                      <span class="icono-nota" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                          <path d={ICONOS[nota.portada]} />
+                        </svg>
+                      </span>
+                    )}
+
+                    <span class="meta-nota">
+                      <time datetime={nota.fecha.toISOString()}>{formatearFecha(nota.fecha, idioma)}</time>
+                      <span aria-hidden="true">·</span>
+                      <span>{nota.minutos} min</span>
+                      {nota.borrador && <span class="sello-borrador">{n.borrador}</span>}
+                    </span>
+
+                    <h3 class="titulo-nota">{nota.titulo}</h3>
+                    <p class="resumen-nota">{nota.resumen}</p>
+
+                    <span class="temas-nota">
+                      {nota.etiquetas.map((tema) => (
+                        <span class="tema-claro">{tema}</span>
+                      ))}
+                    </span>
+
+                    <span class="pie-nota">
+                      {n.leer}
+                      <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                      </svg>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          )}
+
+          {/* Sin resultados no se deja la pantalla en blanco: se dice qué se
+              buscó y se ofrece la salida. */}
+          <div class="vacio-archivo" id="vacio-archivo" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.6" />
+              <path d="m15.8 15.8 4 4M8.4 10.8h4.8" />
+            </svg>
+            <p>
+              {n.sinCoincidencias} <strong id="vacio-termino"></strong>.
+            </p>
+            <button type="button" class="chip" id="limpiar-todo">{n.verTodas}</button>
+          </div>
+
+          <div class="mas-archivo" id="mas-archivo" hidden>
+            <button type="button" class="boton-mas" id="ver-mas">
+              {n.verMas}
+              <span class="restantes-mas" id="restantes-mas"></span>
+            </button>
+          </div>
+        </>
+      )
+    }
+  </section>
+
+  {/* El pie necesitaba su parada: el archivo acababa pegado a él y el salto
+      dejaba las dos cosas partidas por la mitad. */}
+  <section class="seccion cierre-inicio sector-cierre mx-auto max-w-[82rem] px-5 md:px-8">
+    <div class="bloque-cierre reveal relative overflow-hidden rounded-[28px] text-white">
+      <div class="trama-cierre pointer-events-none absolute inset-0" aria-hidden="true"></div>
+      <div class="brillo-cierre pointer-events-none absolute -right-32 -top-40 h-96 w-96 rounded-full" aria-hidden="true"></div>
+
+      <div class="relative">
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-white/65">{n.cierreRotulo}</p>
+        <h2 class="mt-3.5 max-w-3xl font-display text-3xl leading-[1.08] tracking-tight md:text-[2.7rem]">
+          {n.cierreTitulo}
+        </h2>
+        <p class="mt-4 max-w-2xl leading-relaxed text-white/80">
+          {n.cierreTexto}
+        </p>
+
+        <div class="mt-9 grid gap-3 md:grid-cols-3">
+          <a href={`mailto:${profile.email}`} class="tarjeta-cierre group">
+            <span class="icono-cierre" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2.8" y="4.8" width="18.4" height="14.4" rx="2.4" />
+                <path d="m3.4 6.4 8.6 6 8.6-6" />
+              </svg>
+            </span>
+            <span class="mt-4 flex items-center gap-2 font-display text-[1.15rem] leading-tight tracking-tight">
+              {n.cierreEscribeme}
+              <svg class="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+              </svg>
+            </span>
+            <span class="mt-1.5 block break-words text-[0.85rem] leading-relaxed text-white/70">{profile.email}</span>
+          </a>
+
+          <a href={ruta('/portafolio')} class="tarjeta-cierre group">
+            <span class="icono-cierre" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m8.4 8.2-4.6 3.8 4.6 3.8 M15.6 8.2l4.6 3.8-4.6 3.8 M13.6 4.6l-3.2 14.8" />
+              </svg>
+            </span>
+            <span class="mt-4 flex items-center gap-2 font-display text-[1.15rem] leading-tight tracking-tight">
+              {n.cierreCodigo}
+              <svg class="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+              </svg>
+            </span>
+            <span class="mt-1.5 block text-[0.85rem] leading-relaxed text-white/70">{n.cierreCodigoDetalle}</span>
+          </a>
+
+          <a href="/rss.xml" class="tarjeta-cierre group">
+            <span class="icono-cierre" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="6.18" cy="17.82" r="2.18" />
+                <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z" />
+              </svg>
+            </span>
+            <span class="mt-4 flex items-center gap-2 font-display text-[1.15rem] leading-tight tracking-tight">
+              {n.cierreRss}
+              <svg class="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+              </svg>
+            </span>
+            <span class="mt-1.5 block text-[0.85rem] leading-relaxed text-white/70">{n.cierreRssDetalle}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script
+  define:vars={{
+    ETIQUETA_ARCHIVO: { una: n.notaEnArchivo(1), varias: n.notaEnArchivo(2) },
+    ETIQUETA_ENCONTRADAS: { una: n.encontrada(1), varias: n.encontrada(2) },
+  }}
+>
+  import { activarSaltoPorSectores } from '../scripts/salto-por-sectores';
+
+  /* Dos paradas: la cabecera y el archivo. El archivo es más alto que la
+   * ventana, así que se recorre por dentro antes de llegar al pie. */
+  const salto = activarSaltoPorSectores({
+    paradas: () => [...document.querySelectorAll('.seccion')],
+  });
+
+  /* ---------------------------------------------------------------------
+   * Buscador y filtro del archivo.
+   *
+   * Todo ocurre en el cliente sobre el HTML ya pintado: no hay índice que
+   * descargar ni petición que esperar. Con cuarenta notas, montar un buscador
+   * de verdad —con su índice invertido y su biblioteca— costaría más kilobytes
+   * que las notas mismas.
+   *
+   * El término y el tema se combinan: filtrar por "IA" y luego escribir "rag"
+   * busca dentro de lo ya filtrado, que es lo que espera cualquiera.
+   * ------------------------------------------------------------------- */
+
+  const POR_TANDA = 9;
+
+  const campo = document.getElementById('buscar-notas') as HTMLInputElement | null;
+  const limpiar = document.getElementById('limpiar-buscar');
+  const atajo = document.getElementById('atajo-buscar');
+  const rejilla = document.getElementById('rejilla-archivo');
+  const vacio = document.getElementById('vacio-archivo');
+  const vacioTermino = document.getElementById('vacio-termino');
+  const cuenta = document.getElementById('cuenta-archivo');
+  const textoCuenta = document.getElementById('texto-archivo');
+  const bloqueMas = document.getElementById('mas-archivo');
+  const botonMas = document.getElementById('ver-mas');
+  const restantes = document.getElementById('restantes-mas');
+  const limpiarTodo = document.getElementById('limpiar-todo');
+
+  const renglones = rejilla ? [...rejilla.querySelectorAll<HTMLLIElement>('li')] : [];
+  const destacada = document.querySelector<HTMLElement>('.nota-destacada');
+  const botones = document.querySelectorAll<HTMLButtonElement>('.chip-tema');
+
+  let termino = '';
+  let tema = '';
+  let visibles = POR_TANDA;
+
+  /** La misma normalización que en el build: sin tildes y en minúsculas. */
+  const normalizar = (texto: string) =>
+    texto
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '');
+
+  const coincide = (renglon: HTMLElement) => {
+    const suTema = (renglon.dataset.temas ?? '').split('|');
+    if (tema && !suTema.includes(tema)) return false;
+    if (!termino) return true;
+
+    /* Todas las palabras, no la frase entera: "rag evaluacion" encuentra la
+     * nota que habla de las dos cosas aunque no aparezcan juntas ni en ese
+     * orden. Buscar la cadena literal devolvería cero y parecería que no hay
+     * nada escrito sobre el tema. */
+    return termino
+      .split(/\s+/)
+      .every((palabra) => (renglon.dataset.buscar ?? '').includes(palabra));
+  };
+
+  function pintar() {
+    const encontrados = renglones.filter(coincide);
+
+    renglones.forEach((renglon) => {
+      renglon.hidden = true;
+    });
+    encontrados.slice(0, visibles).forEach((renglon) => {
+      renglon.hidden = false;
+    });
+
+    /* La destacada se esconde al buscar o al filtrar: si no, queda arriba una
+     * nota que no cumple lo que se pidió y se lee como un resultado más. */
+    let entraDestacada = false;
+
+    if (destacada) {
+      const suTema = (destacada.dataset.temas ?? '').split('|');
+      const suTexto = normalizar(destacada.textContent ?? '');
+      entraDestacada =
+        (!tema || suTema.includes(tema)) &&
+        (!termino || termino.split(/\s+/).every((palabra) => suTexto.includes(palabra)));
+
+      destacada.closest('.lado-destacada')?.toggleAttribute('hidden', !entraDestacada);
+    }
+
+    /* La destacada cuenta como resultado.
+     *
+     * Vive fuera de la rejilla pero el buscador también la filtra, así que
+     * dejarla fuera del recuento producía el caso absurdo de leer "0 notas
+     * encontradas" con una nota en pantalla, justo encima. */
+    const total = encontrados.length + (entraDestacada ? 1 : 0);
+    const quedan = Math.max(0, encontrados.length - visibles);
+    const filtrando = Boolean(termino || tema);
+
+    if (cuenta) cuenta.textContent = String(total);
+    if (textoCuenta) {
+      if (filtrando) {
+        textoCuenta.textContent = ETIQUETA_ENCONTRADAS[total === 1 ? 'una' : 'varias'];
+      } else {
+        textoCuenta.textContent = ETIQUETA_ARCHIVO[total === 1 ? 'una' : 'varias'];
+      }
+    }
+
+    if (vacio) vacio.hidden = total > 0;
+    // La rejilla se esconde cuando no hay nada EN ELLA, aunque la destacada sí
+    // haya entrado: una lista vacía con su borde puesto parece un fallo.
+    if (vacioTermino) {
+      vacioTermino.textContent = termino ? `«${campo?.value.trim()}»` : 'ese tema';
+    }
+    if (rejilla) rejilla.hidden = encontrados.length === 0;
+
+    if (bloqueMas) bloqueMas.hidden = quedan === 0;
+    if (restantes) restantes.textContent = `· quedan ${quedan}`;
+
+    if (limpiar) limpiar.hidden = !campo?.value;
+    if (atajo) atajo.hidden = Boolean(campo?.value);
+
+    /* Mientras se busca, la portada suelta su alto de pantalla completa.
+     *
+     * Las secciones miden 100svh y centran su contenido. Al esconder la nota
+     * destacada, el contenido encoge pero la sección no, y quedaba media
+     * pantalla en blanco entre los temas y los resultados: desde abajo parecía
+     * que la página se había roto. */
+    document.body.classList.toggle('filtrando-notas', filtrando);
+
+    /* La rejilla acaba de cambiar de alto sin que la ventana se haya movido:
+     * sin esto, las paradas del salto apuntan a donde estaban las tarjetas. */
+    salto.rearmar();
+  }
+
+  function reiniciar() {
+    visibles = POR_TANDA;
+    pintar();
+  }
+
+  /* Un respiro antes de filtrar: escribiendo rápido se dispararía en cada
+   * tecla y la rejilla parpadearía. 120 ms no se notan al teclear. */
+  let temporizador: number | undefined;
+
+  campo?.addEventListener('input', () => {
+    window.clearTimeout(temporizador);
+    temporizador = window.setTimeout(() => {
+      termino = normalizar(campo.value.trim());
+      reiniciar();
+    }, 120);
+  });
+
+  /* Escape limpia sin sacar el foco del campo: es lo que hace cualquier
+   * buscador y lo que la mano ya tiene aprendido. */
+  campo?.addEventListener('keydown', (evento) => {
+    if (evento.key !== 'Escape') return;
+    campo.value = '';
+    termino = '';
+    reiniciar();
+  });
+
+  limpiar?.addEventListener('click', () => {
+    if (!campo) return;
+    campo.value = '';
+    termino = '';
+    reiniciar();
+    campo.focus();
+  });
+
+  botonMas?.addEventListener('click', () => {
+    visibles += POR_TANDA;
+    pintar();
+  });
+
+  limpiarTodo?.addEventListener('click', () => {
+    if (campo) campo.value = '';
+    termino = '';
+    tema = '';
+
+    botones.forEach((otro) => {
+      const activo = otro.dataset.tema === '';
+      otro.classList.toggle('is-activo', activo);
+      otro.setAttribute('aria-pressed', String(activo));
+    });
+
+    reiniciar();
+  });
+
+  /* "/" enfoca el buscador, como en GitHub. Se ignora si ya se está
+   * escribiendo en otro sitio: si no, la barra nunca llegaría al texto. */
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key !== '/' || evento.metaKey || evento.ctrlKey) return;
+
+    const activo = document.activeElement;
+    const escribiendo =
+      activo instanceof HTMLInputElement ||
+      activo instanceof HTMLTextAreaElement ||
+      (activo as HTMLElement | null)?.isContentEditable === true;
+
+    if (escribiendo) return;
+
+    evento.preventDefault();
+    campo?.focus();
+    campo?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  });
+
+  /* Filtro por tema. Los chips viven en la cabecera de la página y filtran la
+   * misma rejilla, así que comparten estado con el buscador. */
+  botones.forEach((boton) => {
+    boton.addEventListener('click', () => {
+      tema = boton.dataset.tema ?? '';
+
+      botones.forEach((otro) => {
+        const activo = otro === boton;
+        otro.classList.toggle('is-activo', activo);
+        otro.setAttribute('aria-pressed', String(activo));
+      });
+
+      reiniciar();
+    });
+  });
+
+  pintar();
+</script>

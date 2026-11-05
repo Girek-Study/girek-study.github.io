@@ -1,3 +1,5 @@
+import type { Bilingue } from '../i18n';
+
 // ============================================================================
 //  DATOS DE APOYO DE LA PÁGINA DE TRAYECTORIA
 //
@@ -15,26 +17,26 @@
 export const cifras = [
   {
     valor: '10',
-    etiqueta: 'años en calidad de software',
-    detalle: 'De programador Java a líder de práctica',
+    etiqueta: { es: 'años en calidad de software', en: 'years in software quality' },
+    detalle: { es: 'De programador Java a líder de práctica', en: 'From Java developer to practice lead' },
     icono: 'reloj',
   },
   {
     valor: '8',
-    etiqueta: 'agentes de IA construidos',
-    detalle: 'En uso por equipos, no demos',
+    etiqueta: { es: 'agentes de IA construidos', en: 'AI agents built' },
+    detalle: { es: 'En uso por equipos, no demos', en: 'In use by teams, not demos' },
     icono: 'chip',
   },
   {
     valor: '−70%',
-    etiqueta: 'tiempo de validación por release',
-    detalle: 'Ejecución paralela en contenedores',
+    etiqueta: { es: 'tiempo de validación por release', en: 'validation time per release' },
+    detalle: { es: 'Ejecución paralela en contenedores', en: 'Parallel execution in containers' },
     icono: 'grafico',
   },
   {
     valor: '4',
-    etiqueta: 'países donde he trabajado',
-    detalle: 'Perú, México, Chile y Puerto Rico',
+    etiqueta: { es: 'países donde he trabajado', en: 'countries I have worked in' },
+    detalle: { es: 'Perú, México, Chile y Puerto Rico', en: 'Peru, Mexico, Chile and Puerto Rico' },
     icono: 'globo',
     // Los archivos están en public/paises/, los mismos de la línea de tiempo.
     banderas: [
@@ -55,9 +57,8 @@ export interface Competencia {
 
 export const competencias: Competencia[] = [
   {
-    area: 'Automatización',
-    detalle:
-      'Frameworks pensados para que los mantenga otro equipo, no para lucir en una demo.',
+    area: { es: 'Automatización', en: 'Test automation' },
+    detalle: { es: 'Frameworks pensados para que los mantenga otro equipo, no para lucir en una demo.', en: 'Frameworks built so another team can maintain them, not to look good in a demo.' },
     items: [
       'Playwright',
       'TypeScript',
@@ -72,20 +73,18 @@ export const competencias: Competencia[] = [
     ],
   },
   {
-    area: 'APIs e integración',
-    detalle:
-      'Validar el contrato, no solo el código 200: tipos, campos opcionales, errores e integridad de datos.',
+    area: { es: 'APIs e integración', en: 'APIs and integration' },
+    detalle: { es: 'Validar el contrato, no solo el código 200: tipos, campos opcionales, errores e integridad de datos.', en: 'Validating the contract, not just the 200: types, optional fields, errors and data integrity.' },
     items: ['RestAssured', 'Karate', 'Postman', 'REST', 'SOAP', 'Contract testing', 'SQL'],
   },
   {
-    area: 'Rendimiento y seguridad',
-    detalle: 'Conocer el punto de quiebre antes que los usuarios, y dentro del pipeline.',
+    area: { es: 'Rendimiento y seguridad', en: 'Performance and security' },
+    detalle: { es: 'Conocer el punto de quiebre antes que los usuarios, y dentro del pipeline.', en: 'Knowing the breaking point before the users do, and from inside the pipeline.' },
     items: ['k6', 'JMeter', 'Gatling', 'LoadRunner', 'OWASP ZAP', 'SonarQube'],
   },
   {
-    area: 'CI/CD y plataformas',
-    detalle:
-      'Base de DevOps real: pipelines, contenedores e infraestructura como código, no solo consumirlos.',
+    area: { es: 'CI/CD y plataformas', en: 'CI/CD and platforms' },
+    detalle: { es: 'Base de DevOps real: pipelines, contenedores e infraestructura como código, no solo consumirlos.', en: 'Real DevOps grounding: pipelines, containers and infrastructure as code, not just consuming them.' },
     items: [
       'Jenkins',
       'GitLab CI',
@@ -99,9 +98,8 @@ export const competencias: Competencia[] = [
     ],
   },
   {
-    area: 'IA aplicada al testing',
-    detalle:
-      'Desde asistir el diseño de pruebas hasta construir agentes que hacen el trabajo repetitivo del chapter. Siempre bajo revisión humana.',
+    area: { es: 'IA aplicada al testing', en: 'AI applied to testing' },
+    detalle: { es: 'Desde asistir el diseño de pruebas hasta construir agentes que hacen el trabajo repetitivo del chapter. Siempre bajo revisión humana.', en: 'From assisting test design to building agents that do the chapter\u2019s repetitive work. Always under human review.' },
     items: [
       'GPT',
       'Claude',
@@ -114,9 +112,8 @@ export const competencias: Competencia[] = [
     ],
   },
   {
-    area: 'Liderazgo y estrategia',
-    detalle:
-      'Lo que decide si una práctica de calidad sobrevive al segundo trimestre.',
+    area: { es: 'Liderazgo y estrategia', en: 'Leadership and strategy' },
+    detalle: { es: 'Lo que decide si una práctica de calidad sobrevive al segundo trimestre.', en: 'What decides whether a quality practice survives its second quarter.' },
     items: [
       'Gobierno de QA',
       'Estrategia de pruebas',
@@ -130,12 +127,12 @@ export const competencias: Competencia[] = [
   },
   {
     area: 'Lenguajes',
-    detalle: 'Empecé programando; por eso discuto el código con desarrollo de igual a igual.',
+    detalle: { es: 'Empecé programando; por eso discuto el código con desarrollo de igual a igual.', en: 'I started out writing code; that is why I discuss it with developers as an equal.' },
     items: ['TypeScript', 'JavaScript', 'Java', 'Python', 'C#'],
   },
   {
     area: 'Metodologías',
-    detalle: 'Marcos de trabajo con los que he entregado, no solo estudiado.',
+    detalle: { es: 'Marcos de trabajo con los que he entregado, no solo estudiado.', en: 'Frameworks I have delivered with, not just studied.' },
     items: ['Scrum', 'Kanban', 'Lean', 'SAFe', 'Agile Testing'],
   },
 ];
@@ -149,50 +146,58 @@ export const competencias: Competencia[] = [
  */
 export interface LogroDestacado {
   cifra: string;
-  titulo: string;
-  detalle: string;
+  titulo: Bilingue;
+  detalle: Bilingue;
   sector: string;
   icono: string;
-  barra?: { antes: number; despues: number; etiquetaAntes: string; etiquetaDespues: string };
+  barra?: {
+    antes: number;
+    despues: number;
+    etiquetaAntes: Bilingue;
+    etiquetaDespues: Bilingue;
+  };
   /** Alternativa a la barra cuando la cifra es un recuento de personas. */
-  puntos?: { cantidad: number; etiqueta: string };
+  puntos?: { cantidad: number; etiqueta: Bilingue };
 }
 
 export const logrosDestacados: LogroDestacado[] = [
   {
     cifra: '−70%',
-    titulo: 'Tiempo de validación por release',
-    detalle:
-      'Ejecución paralela y distribuida en contenedores Docker sobre Jenkins y GitLab CI.',
+    titulo: { es: 'Tiempo de validación por release', en: 'Validation time per release' },
+    detalle: { es: 'Ejecución paralela y distribuida en contenedores Docker sobre Jenkins y GitLab CI.', en: 'Parallel, distributed runs in Docker containers on Jenkins and GitLab CI.' },
     sector: 'Fintech',
     icono: 'M12 7v5l3 2 M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
-    barra: { antes: 100, despues: 30, etiquetaAntes: 'Antes', etiquetaDespues: 'Después' },
+    barra: { antes: 100, despues: 30, etiquetaAntes: { es: 'Antes', en: 'Before' },
+      etiquetaDespues: { es: 'Después', en: 'After' } },
   },
   {
     cifra: '+70%',
-    titulo: 'Cobertura automatizada',
-    detalle:
-      'Suites en Playwright y Specflow que redujeron de forma notoria los errores críticos que llegaban a producción.',
+    titulo: { es: 'Cobertura automatizada', en: 'Automated coverage' },
+    detalle: { es: 'Suites en Playwright y Specflow que redujeron de forma notoria los errores críticos que llegaban a producción.', en: 'Suites in Playwright and Specflow that markedly cut the critical bugs reaching production.' },
     sector: 'Datos y analítica',
     icono: 'M3 17l6-6 4 4 8-8 M21 7v5h-5',
-    barra: { antes: 30, despues: 100, etiquetaAntes: 'Al llegar', etiquetaDespues: 'Al salir' },
+    barra: { antes: 30, despues: 100, etiquetaAntes: { es: 'Al llegar', en: 'On arrival' },
+      etiquetaDespues: { es: 'Al salir', en: 'On leaving' } },
   },
   {
     cifra: '−40%',
-    titulo: 'Tiempo de ejecución de la suite',
-    detalle: 'Paralelización y optimización de scripts, sin perder cobertura.',
+    titulo: { es: 'Tiempo de ejecución de la suite', en: 'Suite run time' },
+    detalle: { es: 'Paralelización y optimización de scripts, sin perder cobertura.', en: 'Parallelisation and script optimisation, without losing coverage.' },
     sector: 'Datos y analítica',
     icono: 'M13 2 3 14h9l-1 8 10-12h-9l1-8Z',
-    barra: { antes: 100, despues: 60, etiquetaAntes: 'Antes', etiquetaDespues: 'Después' },
+    barra: { antes: 100, despues: 60, etiquetaAntes: { es: 'Antes', en: 'Before' },
+      etiquetaDespues: { es: 'Después', en: 'After' } },
   },
   {
     cifra: '15',
-    titulo: 'Ingenieros de calidad coordinados',
-    detalle:
-      'Chapter al servicio de varias tribus del banco más grande del Perú, con estándares comunes y un programa de mentoría propio.',
+    titulo: { es: 'Ingenieros de calidad coordinados', en: 'Quality engineers coordinated' },
+    detalle: { es: 'Chapter al servicio de varias tribus del banco más grande del Perú, con estándares comunes y un programa de mentoría propio.', en: 'A chapter serving several tribes of the largest bank in Peru, with shared standards and its own mentoring program.' },
     sector: 'Banca',
     icono: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
-    puntos: { cantidad: 15, etiqueta: 'Un chapter, varias tribus' },
+    puntos: {
+      cantidad: 15,
+      etiqueta: { es: 'Un chapter, varias tribus', en: 'One chapter, several tribes' },
+    },
   },
 ];
 
@@ -425,8 +430,8 @@ export const clientes: Cliente[] = [
 // ============================================================================
 
 export interface AplicacionIA {
-  titulo: string;
-  detalle: string;
+  titulo: Bilingue;
+  detalle: Bilingue;
   contexto: string;
   /** Clave del icono de línea con que se rotula la tarjeta. */
   icono?: string;
@@ -445,9 +450,8 @@ export interface AplicacionIA {
 /** Herramientas y agentes construidos, no solo modelos consumidos. */
 export const agentesIA: AplicacionIA[] = [
   {
-    titulo: 'Panel de agentes para un chapter de QA',
-    detalle:
-      'Consola web local desde la que el equipo lanza los agentes, sigue el progreso en vivo y consulta el historial, sin tocar una terminal. Los agentes comparten una sola fuente de credenciales y se interconectan entre sí.',
+    titulo: { es: 'Panel de agentes para un chapter de QA', en: 'Agent console for a QA chapter' },
+    detalle: { es: 'Consola web local desde la que el equipo lanza los agentes, sigue el progreso en vivo y consulta el historial, sin tocar una terminal. Los agentes comparten una sola fuente de credenciales y se interconectan entre sí.', en: 'A local web console from which the team launches the agents, follows progress live and checks the history, without touching a terminal. The agents share a single source of credentials and talk to each other.' },
     contexto: 'Sector salud',
     icono: 'panel',
     fases: ['Requisitos', 'Diseño', 'Priorización', 'Verificación', 'Defectos', 'Mantenimiento'],
@@ -458,9 +462,8 @@ export const agentesIA: AplicacionIA[] = [
     },
   },
   {
-    titulo: 'Agente auditor de casos de prueba',
-    detalle:
-      'Audita la sección de validación de un documento de requerimientos, redacta los casos, los inserta en su tabla y publica el resumen en la herramienta de gestión del equipo. Lo que antes era una tarde de copiar y pegar.',
+    titulo: { es: 'Agente auditor de casos de prueba', en: 'Test case auditing agent' },
+    detalle: { es: 'Audita la sección de validación de un documento de requerimientos, redacta los casos, los inserta en su tabla y publica el resumen en la herramienta de gestión del equipo. Lo que antes era una tarde de copiar y pegar.', en: 'It audits the validation section of a requirements document, drafts the cases, inserts them into its table and posts the summary to the team\u2019s management tool. What used to be an afternoon of copy and paste.' },
     contexto: 'Sector salud',
     icono: 'auditoria',
     fases: ['Requisitos', 'Diseño'],
@@ -471,9 +474,8 @@ export const agentesIA: AplicacionIA[] = [
     },
   },
   {
-    titulo: 'Agente de estado de ejecución',
-    detalle:
-      'Lee el resultado y la evidencia de cada caso ejecutado, informa el avance y mueve el tícket a certificación o a correctivo según lo encontrado.',
+    titulo: { es: 'Agente de estado de ejecución', en: 'Execution status agent' },
+    detalle: { es: 'Lee el resultado y la evidencia de cada caso ejecutado, informa el avance y mueve el tícket a certificación o a correctivo según lo encontrado.', en: 'It reads the result and the evidence of each executed case, reports progress and moves the ticket to certification or to fixing, depending on what it found.' },
     contexto: 'Sector salud',
     icono: 'ejecucion',
     fases: ['Verificación', 'Defectos'],
@@ -484,9 +486,8 @@ export const agentesIA: AplicacionIA[] = [
     },
   },
   {
-    titulo: 'Generador de casos para la herramienta de gestión',
-    detalle:
-      'Convierte criterios de aceptación, historias de usuario e imágenes de flujo en casos estructurados, y los empaqueta listos para importación masiva. Versiona cada entrega por tícket y genera el diff contra la anterior, así se ve qué cambió y por qué.',
+    titulo: { es: 'Generador de casos para la herramienta de gestión', en: 'Case generator for the management tool' },
+    detalle: { es: 'Convierte criterios de aceptación, historias de usuario e imágenes de flujo en casos estructurados, y los empaqueta listos para importación masiva. Versiona cada entrega por tícket y genera el diff contra la anterior, así se ve qué cambió y por qué.', en: 'It turns acceptance criteria, user stories and flow images into structured cases, packaged for bulk import. It versions each delivery by ticket and produces the diff against the previous one, so you can see what changed and why.' },
     contexto: 'Sector retail',
     icono: 'generador',
     fases: ['Diseño'],
@@ -497,9 +498,8 @@ export const agentesIA: AplicacionIA[] = [
     },
   },
   {
-    titulo: 'Agente de análisis de historias de usuario',
-    detalle:
-      'Lee la historia y sus criterios de aceptación, señala ambigüedades y vacíos, y propone los escenarios que faltan — antes de que alguien escriba código. Es Shift-Left hecho herramienta.',
+    titulo: { es: 'Agente de análisis de historias de usuario', en: 'User story analysis agent' },
+    detalle: { es: 'Lee la historia y sus criterios de aceptación, señala ambigüedades y vacíos, y propone los escenarios que faltan — antes de que alguien escriba código. Es Shift-Left hecho herramienta.', en: 'It reads the story and its acceptance criteria, flags ambiguities and gaps, and proposes the missing scenarios \u2014 before anyone writes code. Shift-Left turned into a tool.' },
     contexto: 'Producto de IA',
     icono: 'lupa',
     fases: ['Requisitos'],
@@ -510,9 +510,8 @@ export const agentesIA: AplicacionIA[] = [
     },
   },
   {
-    titulo: 'Agente generador de datos de prueba',
-    detalle:
-      'Produce los datos válidos, de borde y de error que cada flujo necesita, respetando las reglas del dominio. Deja de depender de un juego de datos que alguien preparó a mano hace meses.',
+    titulo: { es: 'Agente generador de datos de prueba', en: 'Test data generation agent' },
+    detalle: { es: 'Produce los datos válidos, de borde y de error que cada flujo necesita, respetando las reglas del dominio. Deja de depender de un juego de datos que alguien preparó a mano hace meses.', en: 'It produces the valid, boundary and error data each flow needs, respecting the domain rules. No more depending on a dataset someone prepared by hand months ago.' },
     contexto: 'Sector salud',
     icono: 'datos',
     fases: ['Diseño'],
@@ -523,9 +522,8 @@ export const agentesIA: AplicacionIA[] = [
     },
   },
   {
-    titulo: 'Agente de rendimiento con k6',
-    detalle:
-      'Genera los escenarios de carga a partir de los servicios a probar y analiza los resultados: dónde está el punto de quiebre, qué percentil se degrada primero y si el hallazgo es del sistema o del entorno.',
+    titulo: { es: 'Agente de rendimiento con k6', en: 'Performance agent with k6' },
+    detalle: { es: 'Genera los escenarios de carga a partir de los servicios a probar y analiza los resultados: dónde está el punto de quiebre, qué percentil se degrada primero y si el hallazgo es del sistema o del entorno.', en: 'It generates the load scenarios from the services under test and analyses the results: where the breaking point is, which percentile degrades first, and whether the finding belongs to the system or to the environment.' },
     contexto: 'Sector salud',
     icono: 'rendimiento',
     fases: ['Verificación'],
@@ -536,9 +534,8 @@ export const agentesIA: AplicacionIA[] = [
     },
   },
   {
-    titulo: 'Agente depurador de fallos web',
-    detalle:
-      'Cuando un test se pone rojo, investiga la causa raíz: si el selector dejó de existir tras un cambio de la aplicación, si el fallo es intermitente o si es un defecto real. Ataca el mayor consumo de tiempo de cualquier suite grande.',
+    titulo: { es: 'Agente depurador de fallos web', en: 'Web failure debugging agent' },
+    detalle: { es: 'Cuando un test se pone rojo, investiga la causa raíz: si el selector dejó de existir tras un cambio de la aplicación, si el fallo es intermitente o si es un defecto real. Ataca el mayor consumo de tiempo de cualquier suite grande.', en: 'When a test goes red, it investigates the root cause: whether the selector stopped existing after an application change, whether the failure is intermittent, or whether it is a real defect. It attacks the biggest time sink of any large suite.' },
     contexto: 'Producto de IA',
     icono: 'bug',
     fases: ['Defectos', 'Mantenimiento'],
@@ -553,51 +550,44 @@ export const agentesIA: AplicacionIA[] = [
 /** IA dentro del ciclo de pruebas, en proyectos de cliente. */
 export const iaEnElCiclo: AplicacionIA[] = [
   {
-    titulo: 'Análisis de requerimientos',
-    detalle:
-      'Leer un documento largo y extraer los campos, las reglas y los criterios que hay que verificar, antes de escribir un solo caso.',
+    titulo: { es: 'Análisis de requerimientos', en: 'Requirements analysis' },
+    detalle: { es: 'Leer un documento largo y extraer los campos, las reglas y los criterios que hay que verificar, antes de escribir un solo caso.', en: 'Reading a long document and extracting the fields, rules and criteria that need verifying, before writing a single case.' },
     contexto: 'Banca',
     etapa: 'Requisitos',
   },
   {
-    titulo: 'Diseño de casos y análisis de cobertura',
-    detalle:
-      'Generar escenarios a partir de los criterios de aceptación y detectar qué quedó sin cubrir, acortando el tiempo de diseño y el de mantenimiento.',
+    titulo: { es: 'Diseño de casos y análisis de cobertura', en: 'Case design and coverage analysis' },
+    detalle: { es: 'Generar escenarios a partir de los criterios de aceptación y detectar qué quedó sin cubrir, acortando el tiempo de diseño y el de mantenimiento.', en: 'Generating scenarios from the acceptance criteria and spotting what was left uncovered, shortening both design and maintenance time.' },
     contexto: 'Salud',
     etapa: 'Diseño',
   },
   {
-    titulo: 'Priorización basada en riesgo',
-    detalle:
-      'Decidir qué se ejecuta primero y qué se automatiza, en función del riesgo de liberación y no del orden en que llegaron los requerimientos.',
+    titulo: { es: 'Priorización basada en riesgo', en: 'Risk-based prioritisation' },
+    detalle: { es: 'Decidir qué se ejecuta primero y qué se automatiza, en función del riesgo de liberación y no del orden en que llegaron los requerimientos.', en: 'Deciding what runs first and what gets automated, based on release risk rather than the order the requirements arrived in.' },
     contexto: 'Salud y fintech',
     etapa: 'Priorización',
   },
   {
-    titulo: 'Revisión de estructuras JSON y XML',
-    detalle:
-      'Comparar el contrato del servicio legado contra el migrado y señalar dónde difieren, campo por campo, en migraciones de cientos de servicios.',
+    titulo: { es: 'Revisión de estructuras JSON y XML', en: 'Reviewing JSON and XML structures' },
+    detalle: { es: 'Comparar el contrato del servicio legado contra el migrado y señalar dónde difieren, campo por campo, en migraciones de cientos de servicios.', en: 'Comparing the legacy service contract against the migrated one and flagging where they differ, field by field, across migrations of hundreds of services.' },
     contexto: 'Banca',
     etapa: 'Verificación',
   },
   {
-    titulo: 'Análisis de defectos',
-    detalle:
-      'Agrupar fallos, acelerar el diagnóstico y separar el defecto real del ruido de infraestructura.',
+    titulo: { es: 'Análisis de defectos', en: 'Defect analysis' },
+    detalle: { es: 'Agrupar fallos, acelerar el diagnóstico y separar el defecto real del ruido de infraestructura.', en: 'Clustering failures, speeding up diagnosis and separating the real defect from infrastructure noise.' },
     contexto: 'Banca y fintech',
     etapa: 'Defectos',
   },
   {
-    titulo: 'Mantenimiento predictivo de la suite',
-    detalle:
-      'Machine learning aplicado al mantenimiento de scripts y al análisis predictivo de fallos, que redujo los falsos positivos que hacían que el equipo dejara de mirar los reportes.',
+    titulo: { es: 'Mantenimiento predictivo de la suite', en: 'Predictive suite maintenance' },
+    detalle: { es: 'Machine learning aplicado al mantenimiento de scripts y al análisis predictivo de fallos, que redujo los falsos positivos que hacían que el equipo dejara de mirar los reportes.', en: 'Machine learning applied to script maintenance and predictive failure analysis, which cut the false positives that were making the team stop looking at the reports.' },
     contexto: 'Fintech',
     etapa: 'Mantenimiento',
   },
   {
-    titulo: 'Probar productos que llevan IA dentro',
-    detalle:
-      'Analítica de video con inteligencia artificial: aquí la prueba no termina en que la interfaz responda — hay que verificar que el modelo detecte lo que debe y que la analítica cuadre con lo que pasó frente a la cámara.',
+    titulo: { es: 'Probar productos que llevan IA dentro', en: 'Testing products with AI inside' },
+    detalle: { es: 'Analítica de video con inteligencia artificial: aquí la prueba no termina en que la interfaz responda — hay que verificar que el modelo detecte lo que debe y que la analítica cuadre con lo que pasó frente a la cámara.', en: 'AI-driven video analytics: here testing does not end with the interface responding \u2014 you have to verify that the model detects what it should and that the analytics match what happened in front of the camera.' },
     contexto: 'Producto propio',
     etapa: 'Caso aparte',
   },

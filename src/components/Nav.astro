@@ -1,10 +1,21 @@
 ---
+import SelectorIdioma from './SelectorIdioma.astro';
+import { idiomaDe, textos, PAREJAS } from '../i18n';
+
+const idioma = idiomaDe(Astro.url.pathname);
+const t = textos(idioma);
+
+/* Los destinos salen del mapa de parejas de `src/i18n`, que es el mismo que
+ * usan el selector y los hreflang. Si mañana cambia una ruta, cambia en un
+ * sitio y no en tres. */
+const ruta = (es: string) => PAREJAS.find((p) => p.es === es)![idioma];
+
 const links = [
-  { href: '/', label: 'Inicio' },
-  { href: '/trayectoria', label: 'Trayectoria' },
-  { href: '/girek-study', label: 'Girek Study' },
-  { href: '/notas', label: 'Notas' },
-  { href: '/portafolio', label: 'Portafolio' },
+  { href: ruta('/'), label: t.nav.inicio },
+  { href: ruta('/trayectoria'), label: t.nav.trayectoria },
+  { href: ruta('/girek-study'), label: t.nav.girekStudy },
+  { href: ruta('/notas'), label: t.nav.notas },
+  { href: ruta('/portafolio'), label: t.nav.portafolio },
 ];
 
 // El botón de la barra será el acceso a la zona de alumnos. Hasta que exista
@@ -13,13 +24,23 @@ const links = [
 const MOSTRAR_ACCESO = false;
 
 const path = Astro.url.pathname;
-const isActive = (href: string) =>
-  href === '/' ? path === '/' : path.startsWith(href);
+
+/* Antes bastaba `path.startsWith(href)`. Con dos idiomas ya no: la portada en
+ * inglés es `/en/`, y `startsWith` la daría por activa en todas las páginas
+ * que cuelgan de ella. Las raíces se comparan enteras y el resto por prefijo,
+ * que es lo que mantiene «Notas» marcado dentro de una nota. */
+const normal = (s: string) => (s.length > 1 && s.endsWith('/') ? s.slice(0, -1) : s);
+const isActive = (href: string) => {
+  const h = normal(href);
+  const p = normal(path);
+  if (h === '' || h === '/') return p === '' || p === '/';
+  return p === h || p.startsWith(`${h}/`);
+};
 ---
 
 <header id="site-nav" class="fixed inset-x-0 top-0 z-50 transition-all duration-300">
   <nav class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 md:px-8">
-    <a href="/" class="group flex items-center gap-2.5" aria-label="Girek Study — Inicio">
+    <a href={ruta('/')} class="group flex items-center gap-2.5" aria-label={t.nav.irAInicio}>
       <span class="grid h-11 w-11 place-items-center transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-110">
         <img src="/brand/girek-fox-head.png" alt="" width="44" height="44" class="h-full w-full object-contain" />
       </span>
@@ -47,6 +68,9 @@ const isActive = (href: string) =>
           </li>
         ))
       }
+      <li class="ml-2">
+        <SelectorIdioma />
+      </li>
       {
         MOSTRAR_ACCESO && (
           <li class="ml-2">
@@ -62,7 +86,7 @@ const isActive = (href: string) =>
     <button
       id="nav-toggle"
       class="grid h-10 w-10 place-items-center rounded-lg border border-[var(--color-line-strong)] text-[var(--color-ink)] md:hidden"
-      aria-label="Abrir menú"
+      aria-label={t.nav.abrirMenu}
       aria-expanded="false"
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -97,6 +121,9 @@ const isActive = (href: string) =>
             </li>
           ))
         }
+        <li class="px-1 pt-2">
+          <SelectorIdioma variante="ancho" />
+        </li>
       </ul>
     </div>
   </div>

@@ -1,0 +1,453 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { profile } from '../data/site';
+import { girekStudy, cursos, testimonios } from '../data/courses';
+import { obtenerRepos } from '../data/github';
+import { idiomaDe, textos, elegir, PAREJAS } from '../i18n';
+
+/* El idioma sale de la URL: este mismo cuerpo lo renderizan /girek-study y
+ * /en/girek-study. Ver src/i18n/index.ts. */
+const idioma = idiomaDe(Astro.url.pathname);
+const t = textos(idioma);
+const e = t.estudio;
+const ruta = (es: string) => PAREJAS.find((p) => p.es === es)![idioma];
+
+const svgs = import.meta.glob<string>('../herramientas/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+const herramientas = ['playwright', 'typescript', 'cucumber', 'appium', 'k6', 'docker'].map(
+  (slug) => ({ slug, svg: svgs[`../herramientas/${slug}.svg`] }),
+);
+
+const asunto = e.asuntoCorreo;
+
+/* Las tres cifras de la portada salen de las fuentes reales —la API de GitHub
+ * y la colección de notas—, así que no pueden mentir sobre lo que hay
+ * publicado. Se resuelven en el build. */
+const repos = await obtenerRepos(idioma);
+const notas = await getCollection('notas', ({ data }) => import.meta.env.DEV || !data.borrador);
+
+const cifras = [
+  {
+    valor: String(repos.length),
+    etiqueta: e.repositorios(repos.length),
+    trazo: 'm8.4 8.2-4.6 3.8 4.6 3.8 M15.6 8.2l4.6 3.8-4.6 3.8 M13.6 4.6l-3.2 14.8',
+  },
+  {
+    valor: String(notas.length),
+    etiqueta: e.notasPublicadas(notas.length),
+    trazo:
+      'M14 3.5H7.5A2 2 0 0 0 5.5 5.5v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8.2z M14 3.5v4.7h4.5 M8.6 12.6h6.8 M8.6 16h4.6',
+  },
+  {
+    valor: String(cursos.length),
+    etiqueta: e.rutas(cursos.length),
+    trazo:
+      'm12 3.4 9.2 4.4-9.2 4.4-9.2-4.4 9.2-4.4Z M5.6 10.1v5c0 1.7 2.9 3 6.4 3s6.4-1.3 6.4-3v-5 M21.2 7.8v6',
+  },
+];
+
+/* El nivel es la única etiqueta de color: el estado se dice con palabras al
+ * pie. Antes cada curso llevaba «Próximamente» arriba y «En preparación»
+ * debajo del título, que es lo mismo dicho dos veces. */
+const nivelColor: Record<string, string> = {
+  Inicial: 'nivel-inicial',
+  Intermedio: 'nivel-intermedio',
+  Avanzado: 'nivel-avanzado',
+};
+
+const disponibles = cursos.filter((c) => c.estado === 'Disponible').length;
+---
+
+<Layout title={e.meta.titulo} description={elegir(girekStudy.descripcion, idioma)}>
+  <!-- ============ PORTADA ============ -->
+  {/* Un plano oscuro a pantalla completa, no una página clara más: es el mismo
+      navy con el que Girek Study se presenta en la portada del sitio, y aquí
+      ocupa todo. Va como panel dentro de la sección y no a sangre para que la
+      barra de navegación, que es clara y fija, siga teniendo su fondo. */}
+  <section class="seccion portada-estudio">
+    <div class="panel-portada">
+      <div class="trama-portada" aria-hidden="true"></div>
+      <div class="halo-portada halo-fuego" aria-hidden="true"></div>
+      <div class="halo-portada halo-agua" aria-hidden="true"></div>
+
+      <div class="dentro-portada">
+        <div class="lado-argumento">
+          <p class="rotulo-estudio reveal" data-delay="80ms">
+            <span>{e.rotulo[0]}</span>
+            <span aria-hidden="true">·</span>
+            <span>{e.rotulo[1]}</span>
+            <span aria-hidden="true">·</span>
+            <span>{e.rotulo[2]}</span>
+          </p>
+
+          {/* El lema como titular de verdad, y la palabra que lo distingue en el
+              color de la marca. Antes el h1 estaba oculto y el lema era un
+              párrafo más: la página no tenía encabezado visible. */}
+          <h1 class="lema-estudio reveal" data-delay="160ms">
+            {e.lemaAntes} <span class="resalte-lema">{e.lemaResalte}</span>
+          </h1>
+
+          <p class="bajada-estudio reveal" data-delay="260ms">
+            {e.bajada}
+          </p>
+
+          <div class="botones-estudio reveal" data-delay="340ms">
+            <a href="#cursos" class="btn btn-primary">
+              {e.verTemario}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+              </svg>
+            </a>
+            <a href={ruta('/portafolio')} class="btn btn-vidrio">
+              {e.verCodigo}
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 1.8a10.2 10.2 0 0 0-3.22 19.88c.51.1.7-.22.7-.49l-.01-1.9c-2.84.62-3.44-1.2-3.44-1.2-.46-1.18-1.13-1.5-1.13-1.5-.93-.63.07-.62.07-.62 1.03.07 1.57 1.06 1.57 1.06.91 1.57 2.4 1.12 2.99.85.09-.66.36-1.12.65-1.38-2.27-.26-4.65-1.14-4.65-5.06 0-1.12.4-2.03 1.05-2.74-.1-.26-.46-1.3.1-2.71 0 0 .86-.28 2.81 1.05a9.7 9.7 0 0 1 5.12 0c1.95-1.33 2.81-1.05 2.81-1.05.56 1.41.2 2.45.1 2.71.65.71 1.05 1.62 1.05 2.74 0 3.93-2.39 4.79-4.67 5.05.37.32.69.94.69 1.9l-.01 2.81c0 .27.19.6.71.49A10.2 10.2 0 0 0 12 1.8Z" />
+              </svg>
+            </a>
+          </div>
+
+          {/* Decirlo de frente: las clases no han abierto. Un botón de inscripción
+              sobre un temario vacío es lo que quema la confianza. */}
+          <p class="senal-oscura reveal" data-delay="420ms">
+            <span class="latido es-espera" aria-hidden="true"></span>
+            {disponibles === 0 ? e.sinClases : e.cursosAbiertos(disponibles)}
+          </p>
+
+          <div class="stack-estudio reveal" data-delay="470ms">
+            <p class="rotulo-stack">{e.conQueSeTrabaja}</p>
+            <ul>
+              {
+                herramientas.map((h) => (
+                  <li class="herramienta ficha-stack" set:html={h.svg} />
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+
+        {/* El zorro con las piezas del oficio alrededor: el código que se
+            escribe y la lista que se pone en verde. Esta página trata justo de
+            pasar de lo uno a lo otro. */}
+        <div class="escena-estudio reveal" data-delay="240ms">
+          <span class="aura-estudio" aria-hidden="true"></span>
+          <span class="anillo anillo-uno" aria-hidden="true"></span>
+          <span class="anillo anillo-dos" aria-hidden="true"></span>
+          <img src="/brand/girek-fox-full.png" alt="" width="576" height="452" class="zorro-escena" fetchpriority="high" />
+
+          <span class="pieza-flotante pieza-codigo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m8.4 8.2-4.6 3.8 4.6 3.8 M15.6 8.2l4.6 3.8-4.6 3.8" />
+            </svg>
+          </span>
+
+          <span class="pieza-flotante pieza-lista" aria-hidden="true">
+            <span class="linea-lista"><i></i><b></b></span>
+            <span class="linea-lista"><i></i><b></b></span>
+            <span class="linea-lista"><i></i><b></b></span>
+          </span>
+
+          {/* El final de una ejecución: es a donde lleva todo lo que se enseña
+              aquí, y en verde se entiende sin explicarlo. Sin números: una
+              cifra de adorno en una ilustración sigue siendo una cifra que no
+              se puede sustentar. */}
+          <span class="pieza-flotante pieza-consola" aria-hidden="true">
+            <span class="semaforo"><i></i><i></i><i></i></span>
+            <span class="salida-consola">
+              <span class="tic">✓</span> tests passed
+            </span>
+          </span>
+
+          {/* Las etapas de un pipeline, con la última en verde. */}
+          <span class="pieza-flotante pieza-pipeline" aria-hidden="true">
+            <span class="etapa-pipeline"></span>
+            <span class="tramo-pipeline"></span>
+            <span class="etapa-pipeline"></span>
+            <span class="tramo-pipeline"></span>
+            <span class="etapa-pipeline es-verde"></span>
+          </span>
+        </div>
+      </div>
+
+      {/* Las cifras cierran el plano: lo que hay publicado, sin adjetivos. */}
+      <div class="pie-portada reveal" data-delay="500ms">
+        <dl class="cifras-estudio">
+          {
+            cifras.map((c) => (
+              <div>
+                <span class="icono-cifra" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d={c.trazo} />
+                  </svg>
+                </span>
+                <span>
+                  <dd data-cuenta={c.valor}>0</dd>
+                  <dt>{c.etiqueta}</dt>
+                </span>
+              </div>
+            ))
+          }
+        </dl>
+
+        <a href={ruta('/notas')} class="salida-portada">
+          {e.empezarPorNotas}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARA QUIÉN ES ============ -->
+  <section class="seccion mx-auto max-w-6xl px-5 md:px-8">
+    <div class="reveal cabecera-bloque">
+      <div>
+        <p class="eyebrow">{e.paraQuienRotulo}</p>
+        <h2 class="mt-3 font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-[2.7rem]">
+          {e.paraQuienTitulo}
+        </h2>
+      </div>
+      <p class="nota-bloque">
+        {e.paraQuienNota}
+      </p>
+    </div>
+
+    <ol class="rejilla-perfiles">
+      {
+        girekStudy.paraQuien.map((p, i) => (
+          <li class="reveal" data-delay={`${i * 80}ms`}>
+            <a href={p.href} class="card card-hover ficha-perfil group">
+              <span class="cabeza-perfil">
+                <span class="numero-perfil" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d={p.trazo} />
+                  </svg>
+                </span>
+                <span class="orden-perfil" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              </span>
+
+              <span class="rol-perfil">{elegir(p.rol, idioma)}</span>
+
+              {/* Lo que esa persona diría en voz alta. Entre describir un perfil
+                  y repetirle lo que le pasa, lo segundo es lo que hace que siga
+                  leyendo. */}
+              <span class="sintoma-perfil">{elegir(p.sintoma, idioma)}</span>
+
+              <span class="texto-perfil">{elegir(p.texto, idioma)}</span>
+
+              {/* El destino no es un curso que no ha abierto: es material que
+                  ya se puede leer o clonar hoy. */}
+              <span class="puerta-perfil">
+                <span class="rotulo-puerta">{e.empiezaPor}</span>
+                <span class="destino-puerta">
+                  {elegir(p.empieza, idioma)}
+                  <svg class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                  </svg>
+                </span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- ============ CURSOS ============ -->
+  <section id="cursos" class="seccion mx-auto max-w-6xl px-5 md:px-8">
+    <div class="reveal cabecera-bloque">
+      <div>
+        <p class="eyebrow">{e.programaRotulo}</p>
+        <h2 class="mt-3 font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-[2.7rem]">
+          {e.programaTitulo}
+        </h2>
+      </div>
+      <p class="nota-bloque">
+        {e.programaNota}
+      </p>
+    </div>
+
+    <div class="rejilla-cursos">
+      {
+        cursos.map((c, i) => (
+          <article class="reveal card card-hover ficha-curso" data-delay={`${(i % 2) * 90}ms`}>
+            <div class="cabeza-curso">
+              <span class:list={['nivel-curso', nivelColor[c.nivel]]}>{e.niveles[c.nivel] ?? c.nivel}</span>
+              <span class="numero-curso" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+
+            <h3 class="titulo-curso">{elegir(c.titulo, idioma)}</h3>
+            <p class="texto-curso">{elegir(c.descripcion, idioma)}</p>
+
+            <span class="temas-nota">
+              {c.temas.map((tema) => (
+                <span class="tema-claro">{t.portafolio.etiquetas[tema] ?? tema}</span>
+              ))}
+            </span>
+
+            <div class="pie-curso">
+              <span class:list={['estado-puerta', c.estado !== 'Disponible' && 'es-pendiente']}>
+                {c.estado === 'Disponible' ? e.abierto : elegir(c.duracion, idioma)}
+              </span>
+
+              {/* Si el curso ya tiene su repositorio publicado, el enlace vale
+                  más que el aviso de que la clase no ha abierto. */}
+              {c.enlace && (
+                <a href={c.enlace} target="_blank" rel="noopener" class="enlace-curso">
+                  {e.codigoYa}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 17 17 7M9 7h8v8" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    testimonios.length > 0 && (
+      <section class="seccion mx-auto max-w-6xl px-5 md:px-8">
+        <div class="reveal cabecera-bloque">
+          <div>
+            <p class="eyebrow">{e.comunidadRotulo}</p>
+            <h2 class="mt-3 font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-[2.7rem]">
+              {e.comunidadTitulo}
+            </h2>
+          </div>
+        </div>
+        <div class="rejilla-notas">
+          {testimonios.map((cita, i) => (
+            <figure class="reveal card card-hover tarjeta-nota" data-delay={`${i * 80}ms`}>
+              <span class="comilla" aria-hidden="true">“</span>
+              <blockquote class="resumen-nota">{cita.texto}</blockquote>
+              <figcaption class="firma-testimonio">
+                <span class="inicial-testimonio">{cita.nombre.charAt(0)}</span>
+                <span>
+                  <span class="nombre-canal">{cita.nombre}</span>
+                  <span class="dato-canal">{cita.rol}</span>
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ============ CIERRE ============ -->
+  <section class="seccion cierre-inicio mx-auto max-w-6xl px-5 md:px-8">
+    <div class="bloque-cierre reveal relative overflow-hidden rounded-[28px] p-9 text-white md:p-12">
+      <div class="trama-cierre pointer-events-none absolute inset-0" aria-hidden="true"></div>
+      <div class="brillo-cierre pointer-events-none absolute -right-32 -top-40 h-96 w-96 rounded-full" aria-hidden="true"></div>
+
+      <div class="relative">
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-white/65">{e.cierreRotulo}</p>
+        <h2 class="mt-3.5 max-w-3xl font-display text-3xl leading-[1.08] tracking-tight md:text-[2.7rem]">
+          {e.cierreTitulo}
+        </h2>
+        <p class="mt-4 max-w-2xl leading-relaxed text-white/80">
+          {e.cierreTexto}
+        </p>
+
+        <div class="mt-9 grid gap-3 md:grid-cols-3">
+          {
+            [
+              {
+                href: ruta('/portafolio'),
+                titulo: e.cierreCodigo,
+                detalle: e.cierreCodigoDetalle,
+                trazo: 'm8.4 8.2-4.6 3.8 4.6 3.8 M15.6 8.2l4.6 3.8-4.6 3.8 M13.6 4.6l-3.2 14.8',
+              },
+              {
+                href: ruta('/notas'),
+                titulo: e.cierreNotas,
+                detalle: e.cierreNotasDetalle,
+                trazo:
+                  'M14 3.5H7.5A2 2 0 0 0 5.5 5.5v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8.2z M14 3.5v4.7h4.5 M8.6 12.6h6.8 M8.6 16h4.6',
+              },
+              {
+                href: `mailto:${profile.email}?subject=${asunto}`,
+                titulo: e.cierreAviso,
+                detalle: e.cierreAvisoDetalle,
+                trazo: 'M2.8 5.8h18.4v12.4H2.8z M3.4 6.4l8.6 6 8.6-6',
+              },
+            ].map((d) => (
+              <a href={d.href} class="tarjeta-cierre group">
+                <span class="icono-cierre" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d={d.trazo} />
+                  </svg>
+                </span>
+                <span class="mt-4 flex items-center gap-2 font-display text-[1.15rem] leading-tight tracking-tight">
+                  {d.titulo}
+                  <svg class="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12h13M12 5.5 18.5 12 12 18.5" />
+                  </svg>
+                </span>
+                <span class="mt-1.5 block text-[0.85rem] leading-relaxed text-white/70">{d.detalle}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { activarSaltoPorSectores } from '../scripts/salto-por-sectores';
+
+  activarSaltoPorSectores({ paradas: () => [...document.querySelectorAll('.seccion')] });
+
+  /* Las cifras suben desde cero al entrar. Un número que se mueve se mira; uno
+   * ya escrito se salta. Se anima una sola vez: repetirlo en cada vuelta al
+   * sector cansa. */
+  const contar = (el: HTMLElement) => {
+    const final = Number(el.dataset.cuenta ?? '0');
+    if (!Number.isFinite(final) || final <= 0) {
+      el.textContent = el.dataset.cuenta ?? '0';
+      return;
+    }
+
+    const duracion = 900;
+    const arranque = performance.now();
+
+    const paso = (ahora: number) => {
+      const avance = Math.min((ahora - arranque) / duracion, 1);
+      // Desaceleración cúbica: arranca rápido y llega frenando.
+      const suave = 1 - Math.pow(1 - avance, 3);
+      el.textContent = String(Math.round(final * suave));
+      if (avance < 1) requestAnimationFrame(paso);
+    };
+
+    requestAnimationFrame(paso);
+  };
+
+  const cifras = document.querySelectorAll<HTMLElement>('[data-cuenta]');
+
+  if (cifras.length) {
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      cifras.forEach((el) => (el.textContent = el.dataset.cuenta ?? '0'));
+    } else {
+      const mirador = new IntersectionObserver(
+        (entradas) => {
+          entradas.forEach((entrada) => {
+            if (!entrada.isIntersecting) return;
+            contar(entrada.target as HTMLElement);
+            mirador.unobserve(entrada.target);
+          });
+        },
+        { threshold: 0.6 },
+      );
+      cifras.forEach((el) => mirador.observe(el));
+    }
+  }
+</script>

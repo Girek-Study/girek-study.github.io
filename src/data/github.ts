@@ -6,6 +6,8 @@
 //  que el visitante no paga ninguna llamada a la API.
 // ============================================================================
 
+import { textos, elegir, type Idioma, type Bilingue } from '../i18n';
+
 const USUARIO = 'Girek-Study';
 
 /**
@@ -37,13 +39,31 @@ const FUERA_DEL_PORTAFOLIO = [
  * alguna vez son muchos, se comprueba en el build con una sola llamada al árbol
  * de cada repositorio.
  */
-const CON_DOCUMENTACION_QA: Record<string, string> = {
-  'screenplay-web-bdd': 'Análisis, casos, riesgos y 8 defectos encontrados',
-  'screenplay-mobile-bdd': 'Análisis, casos, riesgos y 9 hallazgos encontrados',
-  'k6-performance-suite': 'Modelo de carga, umbrales, riesgos y 6 hallazgos',
-  'karate-api-contract': 'Contrato, casos, riesgos y 9 hallazgos: 4 puestos y 5 propios',
-  'restassured-api-flows': 'Flujos, casos, riesgos y 5 hallazgos: 1 puesto y 4 propios',
-  'playwright-api-ui': 'Pantalla, casos, riesgos y 6 hallazgos: 4 puestos y 2 propios',
+const CON_DOCUMENTACION_QA: Record<string, Bilingue> = {
+  'screenplay-web-bdd': {
+    es: 'Análisis, casos, riesgos y 8 defectos encontrados',
+    en: 'Analysis, cases, risks and 8 defects found',
+  },
+  'screenplay-mobile-bdd': {
+    es: 'Análisis, casos, riesgos y 9 hallazgos encontrados',
+    en: 'Analysis, cases, risks and 9 findings',
+  },
+  'k6-performance-suite': {
+    es: 'Modelo de carga, umbrales, riesgos y 6 hallazgos',
+    en: 'Load model, thresholds, risks and 6 findings',
+  },
+  'karate-api-contract': {
+    es: 'Contrato, casos, riesgos y 9 hallazgos: 4 puestos y 5 propios',
+    en: 'Contract, cases, risks and 9 findings: 4 planted, 5 my own',
+  },
+  'restassured-api-flows': {
+    es: 'Flujos, casos, riesgos y 5 hallazgos: 1 puesto y 4 propios',
+    en: 'Flows, cases, risks and 5 findings: 1 planted, 4 my own',
+  },
+  'playwright-api-ui': {
+    es: 'Pantalla, casos, riesgos y 6 hallazgos: 4 puestos y 2 propios',
+    en: 'UI, cases, risks and 6 findings: 4 planted, 2 my own',
+  },
 };
 
 export interface RepoPublico {
@@ -81,7 +101,7 @@ interface RepoApi {
  * devuelve una lista vacía y la página muestra su mensaje de respaldo. Un
  * despliegue no debe caerse porque un servicio ajeno tuvo un mal minuto.
  */
-export async function obtenerRepos(): Promise<RepoPublico[]> {
+export async function obtenerRepos(idioma: Idioma = 'es'): Promise<RepoPublico[]> {
   const cabeceras: Record<string, string> = {
     Accept: 'application/vnd.github+json',
     'User-Agent': 'girek-study-web',
@@ -116,7 +136,9 @@ export async function obtenerRepos(): Promise<RepoPublico[]> {
         estrellas: r.stargazers_count,
         actualizado: r.pushed_at,
         docs: CON_DOCUMENTACION_QA[r.name] ? `${r.html_url}/tree/main/docs` : null,
-        docsResumen: CON_DOCUMENTACION_QA[r.name] ?? null,
+        docsResumen: CON_DOCUMENTACION_QA[r.name]
+          ? elegir(CON_DOCUMENTACION_QA[r.name], idioma)
+          : null,
       }));
   } catch (error) {
     console.warn('[github] no se pudo consultar la API:', error);
@@ -125,17 +147,16 @@ export async function obtenerRepos(): Promise<RepoPublico[]> {
 }
 
 /** "hace 3 días", "hace 2 meses". Para que se note que el sitio está vivo. */
-export function haceCuanto(iso: string): string {
+export function haceCuanto(iso: string, idioma: Idioma = 'es'): string {
+  const t = textos(idioma).tiempo;
   const dias = Math.floor((Date.now() - new Date(iso).getTime()) / 86_400_000);
 
-  if (dias <= 0) return 'hoy';
-  if (dias === 1) return 'ayer';
-  if (dias < 30) return `hace ${dias} días`;
+  if (dias <= 0) return t.hoy;
+  if (dias === 1) return t.ayer;
+  if (dias < 30) return t.haceDias(dias);
 
   const meses = Math.floor(dias / 30);
-  if (meses === 1) return 'hace un mes';
-  if (meses < 12) return `hace ${meses} meses`;
+  if (meses < 12) return t.haceMeses(meses);
 
-  const anios = Math.floor(meses / 12);
-  return anios === 1 ? 'hace un año' : `hace ${anios} años`;
+  return t.haceAnios(Math.floor(meses / 12));
 }

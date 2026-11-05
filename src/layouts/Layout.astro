@@ -3,19 +3,36 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { profile, analiticaCloudflare } from '../data/site';
+import {
+  idiomaDe,
+  textos,
+  alternativas,
+  elegir,
+  ETIQUETA_LANG,
+  LOCALE_OG,
+  IDIOMA_POR_DEFECTO,
+} from '../i18n';
 
 interface Props {
   title?: string;
   description?: string;
 }
 
+const idioma = idiomaDe(Astro.url.pathname);
+const t = textos(idioma);
+
+/* Las dos URL de esta pagina, para los hreflang. Viene vacio en una nota, que
+ * solo existe en espanol: declarar una alternativa que no existe le dice a
+ * Google que el sitio esta roto, y es peor que no declarar nada. */
+const otrasVersiones = alternativas(Astro.url.pathname).map((a) => ({
+  idioma: a.idioma,
+  href: new URL(a.ruta, Astro.site).href,
+}));
+
 // Lo que se ve al compartir el enlace en WhatsApp, LinkedIn o Slack. Antes
 // heredaba el titular personal y la biografía; ahora dice lo mismo que la
 // portada, que es la promesa de la marca.
-const {
-  title = 'Girek Study — Automatización de pruebas y QA en español',
-  description = 'La calidad no se repite: se programa. Frameworks abiertos que puedes clonar, con las decisiones de diseño explicadas. Por Giancarlo Palomino, Quality Engineer con 10 años en banca, fintech y salud.',
-} = Astro.props;
+const { title = t.meta.titulo, description = t.meta.descripcion } = Astro.props;
 
 const canonica = new URL(Astro.url.pathname, Astro.site).href;
 const baliza = JSON.stringify({ token: analiticaCloudflare });
@@ -38,7 +55,7 @@ const datosEstructurados = {
       alternateName: ['Girek Study — automatización de pruebas', 'Girek'],
       description:
         'Automatización de pruebas y QA en español: frameworks abiertos, decisiones de diseño explicadas y, próximamente, clases.',
-      inLanguage: 'es',
+      inLanguage: idioma,
       publisher: { '@id': `${Astro.site}#persona` },
     },
     {
@@ -49,7 +66,7 @@ const datosEstructurados = {
       url: Astro.site?.href,
       email: `mailto:${profile.email}`,
       jobTitle: 'Quality Engineer · Test Automation Lead',
-      description: profile.bio,
+      description: elegir(profile.bio, idioma),
       knowsAbout: [
         'Automatización de pruebas',
         'Quality Engineering',
@@ -67,7 +84,7 @@ const datosEstructurados = {
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={ETIQUETA_LANG[idioma]}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -79,12 +96,26 @@ const datosEstructurados = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonica} />
+    {
+      /* hreflang. `x-default` apunta al espanol porque es el original y el
+         idioma de las notas, que son el 89% del sitio. */
+      otrasVersiones.map((v) => <link rel="alternate" hreflang={v.idioma} href={v.href} />)
+    }
+    {
+      otrasVersiones.length > 0 && (
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={otrasVersiones.find((v) => v.idioma === IDIOMA_POR_DEFECTO)?.href}
+        />
+      )
+    }
     <link rel="alternate" type="application/rss+xml" title="Girek Study — Notas" href="/rss.xml" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Girek Study" />
-    <meta property="og:locale" content="es_PE" />
+    <meta property="og:locale" content={LOCALE_OG[idioma]} />
     <meta property="og:url" content={canonica} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -134,7 +165,7 @@ const datosEstructurados = {
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[var(--color-accent)] focus:px-4 focus:py-2 focus:text-[var(--color-ink-950)]"
-      >Saltar al contenido</a
+      >{t.nav.saltarAlContenido}</a
     >
     <Nav />
     <main id="main">

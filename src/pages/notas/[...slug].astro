@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { formatearFecha, minutosDeLectura } from '../../utils/fechas';
+import { elegir } from '../../i18n';
 import { profile } from '../../data/site';
 import PortadaNota from '../../components/PortadaNota.astro';
 
@@ -101,7 +102,7 @@ const articulo = {
           <img src="/girek-foto-sm.png" alt="" width="48" height="48" loading="eager" />
           <div class="min-w-0">
             <p class="nombre-firma">{profile.nombreCompleto}</p>
-            <p class="cargo-firma">Quality Engineer · {profile.ubicacion}</p>
+            <p class="cargo-firma">Quality Engineer · {elegir(profile.ubicacion, 'es')}</p>
           </div>
           <div class="datos-firma">
             <time datetime={nota.data.fecha.toISOString()}>{formatearFecha(nota.data.fecha)}</time>

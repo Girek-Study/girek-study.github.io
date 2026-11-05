@@ -7779,3 +7779,21 @@ body.filtrando-notas #archivo {
   .cuerpo-fig.es-matriz { grid-template-columns: minmax(0, 1fr); }
   .eje-y { display: none; }
 }
+
+/* ===========================================================================
+   AVISO DE IDIOMA
+   Solo aparece en /en/notes. Las notas estan en espanol y eso no es un hueco
+   por tapar: es lo que distingue al proyecto. Se dice antes de que alguien
+   abra una nota y se lo encuentre, con el peso de una nota al margen y no el
+   de una advertencia de error.
+   =========================================================================== */
+.aviso-idioma {
+  margin-top: 1.35rem;
+  max-width: 44ch;
+  padding-left: 0.95rem;
+  border-left: 2px solid var(--color-fox-deep);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--color-ink-soft);
+  text-wrap: pretty;
+}

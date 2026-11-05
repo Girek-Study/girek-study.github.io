@@ -29,8 +29,34 @@ de personas ni enlaces a sistemas del cliente.
 cronológico se sostiene solo. Las fechas exactas siguen en `cv-datos.json` por si hay que
 reponerlas.
 
-**6. Español en todo** — contenido, comentarios y commits (conventional commits en español,
-sin `Co-Authored-By`).
+**6. El español es el contenido; el inglés es una capa de presentación.** Código, comentarios
+y commits van en español (conventional commits, sin `Co-Authored-By`). Las **notas no se
+traducen**: son el 89% del texto del sitio y su valor está en cómo están escritas. El inglés
+cubre las cinco páginas de sitio, y `/en/notes` lo dice en voz alta en lugar de disimularlo.
+
+## Los dos idiomas
+
+Español en la raíz, inglés bajo `/en/`. El núcleo está en `src/i18n/`:
+
+| Archivo | Qué hace |
+| --- | --- |
+| `index.ts` | Idiomas, mapa de rutas (`PAREJAS`), `hreflang`, `elegir()` y `aplanar()` |
+| `es.ts` | El diccionario original. De aquí sale el tipo `Diccionario` |
+| `en.ts` | Debe tener **exactamente** la misma forma; el build falla si falta una clave |
+
+- **Una página, dos URL.** El cuerpo vive en `src/paginas/` y deduce el idioma del
+  `pathname`. Los archivos de `src/pages/` solo declaran la ruta. No hay dos copias.
+- **Las rutas inglesas se escriben en inglés**: `/en/experience`, no `/en/trayectoria`.
+  Si cambia una, cambia en `PAREJAS` y el selector, el menú y los `hreflang` la siguen.
+- **Los datos de `src/data/` son bilingues campo a campo**: un `string` sale igual en los dos
+  idiomas —correcto para un nombre propio o una tecnología— y un `{ es, en }` se traduce.
+  Se pinta con `elegir(campo, idioma)`.
+- **Lo que viaja al navegador va aplanado.** Trayectoria serializa sus datos a JSON para los
+  diálogos; se pasa por `aplanar(datos, idioma)` antes, o el script pintaría `[object
+  Object]`.
+- **Una nota no tiene `hreflang`.** Solo existe en español, y declarar una alternativa
+  inexistente le dice a Google que el sitio está roto. Desde una nota, el selector lleva al
+  índice de notas del otro idioma y lo avisa en el `title`.
 
 ## Dónde se edita el contenido
 

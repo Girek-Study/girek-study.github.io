@@ -1,0 +1,138 @@
+---
+/**
+ * Selector de idioma.
+ *
+ * Dos enlaces, no un desplegable: con dos opciones un `<select>` esconde la
+ * mitad de la información y cuesta un clic de más. Son enlaces de verdad —no
+ * botones con JavaScript—, así que funcionan con el teclado, se pueden abrir
+ * en otra pestaña y Google los sigue.
+ *
+ * En una nota, donde no hay versión en inglés, el enlace lleva al índice de
+ * notas y lo dice en el `title`. Mover a alguien a otra página sin avisar es
+ * peor que no ofrecer el cambio.
+ */
+import { IDIOMAS, NOMBRE_IDIOMA, idiomaDe, destinoDelSelector, textos } from '../i18n';
+
+interface Props {
+  /** `compacto` va en la barra de escritorio; `ancho`, en el panel móvil. */
+  variante?: 'compacto' | 'ancho';
+}
+
+const { variante = 'compacto' } = Astro.props;
+
+const actual = idiomaDe(Astro.url.pathname);
+const t = textos(actual);
+
+const opciones = IDIOMAS.map((idioma) => {
+  const { ruta, mismaPagina } = destinoDelSelector(Astro.url.pathname, idioma);
+  return {
+    idioma,
+    ruta,
+    activo: idioma === actual,
+    // El aviso solo tiene sentido en el idioma al que se va: alguien que pulsa
+    // «English» está leyendo inglés a partir de ese momento.
+    titulo: mismaPagina
+      ? NOMBRE_IDIOMA[idioma]
+      : idioma === 'en'
+        ? 'The notes are only in Spanish — this opens the notes index'
+        : 'Esta página solo está en español',
+  };
+});
+---
+
+<div
+  class:list={['selector-idioma', variante === 'ancho' && 'es-ancho']}
+  role="group"
+  aria-label={t.nav.cambiarIdioma}
+>
+  {
+    opciones.map((o) => (
+      <a
+        href={o.ruta}
+        hreflang={o.idioma}
+        lang={o.idioma}
+        title={o.titulo}
+        aria-current={o.activo ? 'true' : undefined}
+        class:list={['opcion-idioma', o.activo && 'is-activa']}
+      >
+        <span class="sigla-idioma">{o.idioma.toUpperCase()}</span>
+        <span class="nombre-idioma">{NOMBRE_IDIOMA[o.idioma]}</span>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .selector-idioma {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.1875rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.625rem;
+    background: var(--color-surface);
+  }
+
+  .opcion-idioma {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3125rem 0.5rem;
+    border-radius: 0.4375rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-soft);
+    transition:
+      color 0.2s,
+      background-color 0.2s;
+  }
+
+  .opcion-idioma:hover {
+    color: var(--color-ink);
+    background: var(--color-cream-2);
+  }
+
+  .opcion-idioma.is-activa {
+    color: var(--color-fox-deep);
+    background: var(--color-fox-tint);
+  }
+
+  /* En la barra solo cabe la sigla; el nombre completo queda para lectores de
+     pantalla y para el panel móvil, donde sí hay sitio. */
+  .nombre-idioma {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .es-ancho {
+    display: flex;
+    width: 100%;
+  }
+
+  .es-ancho .opcion-idioma {
+    flex: 1;
+    justify-content: center;
+    padding-block: 0.625rem;
+    font-size: 0.9rem;
+  }
+
+  .es-ancho .sigla-idioma {
+    display: none;
+  }
+
+  .es-ancho .nombre-idioma {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+  }
+</style>

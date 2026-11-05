@@ -1,16 +1,23 @@
 ---
 import { profile } from '../data/site';
+import { idiomaDe, textos, PAREJAS, elegir } from '../i18n';
+
 const year = 2026;
+
+const idioma = idiomaDe(Astro.url.pathname);
+const t = textos(idioma);
 
 /* Los enlaces salen de aquí y no del marcado: antes faltaban Inicio y Notas
  * en la columna de navegación, y nadie lo nota hasta que busca una página que
  * sí existe. */
+const ruta = (es: string) => PAREJAS.find((p) => p.es === es)![idioma];
+
 const navegar = [
-  { texto: 'Inicio', href: '/' },
-  { texto: 'Trayectoria', href: '/trayectoria' },
-  { texto: 'Girek Study', href: '/girek-study' },
-  { texto: 'Notas', href: '/notas' },
-  { texto: 'Portafolio', href: '/portafolio' },
+  { texto: t.nav.inicio, href: ruta('/') },
+  { texto: t.nav.trayectoria, href: ruta('/trayectoria') },
+  { texto: t.nav.girekStudy, href: ruta('/girek-study') },
+  { texto: t.nav.notas, href: ruta('/notas') },
+  { texto: t.nav.portafolio, href: ruta('/portafolio') },
 ];
 
 const conectar = [
@@ -52,7 +59,7 @@ const conectar = [
   <div class="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
     <div class="cuerpo-pie">
       <div class="marca-pie">
-        <a href="/" class="flex items-center gap-2.5">
+        <a href={ruta('/')} class="flex items-center gap-2.5">
           <img src="/brand/girek-fox-head.png" alt="" width="44" height="44" class="h-11 w-11 object-contain" />
           <span class="font-display text-xl leading-none">
             Girek <span class="text-[var(--color-fox-deep)]">Study</span>
@@ -60,19 +67,18 @@ const conectar = [
         </a>
 
         <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          {profile.titular} · {profile.ubicacion}. Automatización de pruebas y enseñanza de QA con
-          Girek Study.
+          {elegir(profile.titular, idioma)} · {elegir(profile.ubicacion, idioma)}. {t.pie.descripcion}
         </p>
 
         <p class="senal-pie">
           <span class="latido" aria-hidden="true"></span>
-          Abierto a propuestas · Remoto
+          {t.pie.disponible}
         </p>
       </div>
 
       <div class="columnas-pie">
         <div>
-          <h3 class="eyebrow mb-3.5">Navega</h3>
+          <h3 class="eyebrow mb-3.5">{t.pie.navega}</h3>
           <ul class="lista-pie">
             {navegar.map((e) => (
               <li>
@@ -83,7 +89,7 @@ const conectar = [
         </div>
 
         <div>
-          <h3 class="eyebrow mb-3.5">Conecta</h3>
+          <h3 class="eyebrow mb-3.5">{t.pie.conecta}</h3>
           <ul class="lista-pie">
             {conectar.map((e) => (
               <li>
@@ -105,16 +111,16 @@ const conectar = [
         {/* El correo, como algo que se pulsa. Antes era un enlace subrayado más
             en una lista de tres. */}
         <div class="contacto-pie">
-          <h3 class="eyebrow mb-3.5">¿Hablamos?</h3>
+          <h3 class="eyebrow mb-3.5">{t.pie.hablamos}</h3>
           <p class="text-sm leading-relaxed text-[var(--color-ink-soft)]">
-            Cuéntame en qué punto está la calidad de lo que estás construyendo.
+            {t.pie.invitacion}
           </p>
           <a href={`mailto:${profile.email}`} class="btn btn-primary mt-4 w-full justify-center text-sm">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="2.8" y="4.8" width="18.4" height="14.4" rx="2.4" />
               <path d="m3.4 6.4 8.6 6 8.6-6" />
             </svg>
-            Escríbeme
+            {t.pie.escribeme}
           </a>
           <a href={`mailto:${profile.email}`} class="correo-pie">{profile.email}</a>
         </div>
@@ -123,7 +129,7 @@ const conectar = [
 
     <div class="linea-pie">
       <p>© {year} {profile.nombreCompleto}</p>
-      <p>Hecho con Astro + Tailwind · Desplegado en GitHub Pages</p>
+      <p>{t.pie.hechoCon}</p>
     </div>
   </div>
 </footer>
